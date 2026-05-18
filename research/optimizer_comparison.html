@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Optimizer Comparison: Real Update Rules</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: #f5f5f0;
+    color: #2c2c2c;
+}
+
+.header {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: #ecf0f1;
+    padding: 20px 30px;
+    border-bottom: 3px solid #e67e22;
+}
+
+.header h1 {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.header p {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.main-container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.controls-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.controls-row label {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #555;
+}
+
+.controls-row select,
+.controls-row input[type="range"] {
+    font-size: 0.85em;
+}
+
+.controls-row select {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.kappa-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.kappa-group input[type="range"] {
+    width: 120px;
+}
+
+.kappa-value {
+    font-size: 0.85em;
+    font-weight: 600;
+    min-width: 24px;
+}
+
+.canvas-container {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+canvas#mainCanvas {
+    display: block;
+    cursor: crosshair;
+}
+
+#threeContainer {
+    display: none;
+    width: 780px;
+    height: 520px;
+}
+
+.click-hint {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-size: 0.75em;
+    color: #999;
+    pointer-events: none;
+}
+
+.button-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.button-row button {
+    padding: 6px 14px;
+    font-size: 0.85em;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.button-row button:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background: #3498db;
+    color: #fff;
+}
+.btn-primary:hover { background: #2980b9; }
+
+.btn-secondary {
+    background: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
+}
+.btn-secondary:hover { background: #d5dbdb; }
+
+.btn-warning {
+    background: #e67e22;
+    color: #fff;
+}
+.btn-warning:hover { background: #d35400; }
+
+.btn-danger {
+    background: #e74c3c;
+    color: #fff;
+}
+.btn-danger:hover { background: #c0392b; }
+
+.btn-toggle {
+    background: #2c3e50;
+    color: #ecf0f1;
+}
+.btn-toggle:hover { background: #34495e; }
+
+.speed-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    font-size: 0.85em;
+}
+
+.speed-group input[type="range"] {
+    width: 80px;
+}
+
+.step-counter {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #555;
+}
+
+.optimizer-panel {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+}
+
+.optimizer-panel h3 {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.opt-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.85em;
+}
+
+.opt-row:last-child { border-bottom: none; }
+
+.opt-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.opt-name {
+    font-weight: 600;
+    min-width: 70px;
+}
+
+.opt-lr-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.opt-lr-group label {
+    font-size: 0.8em;
+    color: #888;
+}
+
+.opt-lr-group input[type="number"] {
+    width: 70px;
+    padding: 2px 4px;
+    font-size: 0.85em;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    text-align: right;
+}
+
+.opt-loss {
+    color: #555;
+    min-width: 100px;
+    text-align: right;
+}
+
+.opt-status {
+    min-width: 80px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 0.8em;
+}
+
+.converged { color: #27ae60; }
+.running { color: #888; }
+
+.loss-curves-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.loss-curves-container h3 {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 16px 0;
+}
+
+canvas#lossCanvas {
+    display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Optimizer Comparison: Real Update Rules</h1>
+    <p>Watch SGD, RMSprop, Adam, AdamW, Lion, and Muon navigate the same loss landscape with their actual update rules.</p>
+</div>
+
+<div class="main-container">
+    <div class="controls-row">
+        <label>Loss Function:</label>
+        <select id="lossFnSelect">
+            <option value="quadratic" selected>Ill-Conditioned Quadratic</option>
+            <option value="rosenbrock">Rosenbrock</option>
+            <option value="styblinski">Styblinski-Tang</option>
+        </select>
+        <div class="kappa-group" id="kappaGroup">
+            <label>&kappa;:</label>
+            <input type="range" id="kappaSlider" min="1" max="100" value="20" step="1">
+            <span class="kappa-value" id="kappaValue">20</span>
+        </div>
+        <span style="font-size:0.8em; color:#999; margin-left:auto;">Click plot to set start point</span>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="mainCanvas" width="780" height="520"></canvas>
+        <div id="threeContainer"></div>
+        <div class="click-hint" id="clickHint"></div>
+    </div>
+
+    <div class="button-row">
+        <button class="btn-primary" id="btnStep">Step</button>
+        <button class="btn-primary" id="btnRun100">Run 100</button>
+        <button class="btn-warning" id="btnRunConverge">Run to Convergence</button>
+        <button class="btn-danger" id="btnReset">Reset</button>
+        <button class="btn-toggle" id="btnToggleView">3D View</button>
+        <div class="speed-group">
+            <label>Speed:</label>
+            <input type="range" id="speedSlider" min="1" max="20" value="5">
+            <span class="step-counter">Step: <span id="stepCount">0</span></span>
+        </div>
+    </div>
+
+    <div class="optimizer-panel">
+        <h3>Optimizers</h3>
+        <div id="optimizerRows"></div>
+    </div>
+
+    <div class="loss-curves-container">
+        <h3>Loss Curves (log scale)</h3>
+        <canvas id="lossCanvas" width="780" height="220"></canvas>
+    </div>
+</div>
+
+<script>
+// ===== CONFIGURATION =====
+const DPR = window.devicePixelRatio || 1;
+const MAIN_W = 780, MAIN_H = 520;
+const LOSS_W = 780, LOSS_H = 220;
+const BOUNDS_PAD = 0.08; // fraction of canvas for axis labels
+
+const OPTIMIZERS = [
+    { name: 'SGD',     color: '#3498db', defaultLr: 0.05 },
+    { name: 'RMSprop', color: '#9b59b6', defaultLr: 0.01 },
+    { name: 'Adam',    color: '#e67e22', defaultLr: 0.05 },
+    { name: 'AdamW',   color: '#e74c3c', defaultLr: 0.05 },
+    { name: 'Lion',    color: '#2ecc71', defaultLr: 0.005 },
+    { name: 'Muon',    color: '#1abc9c', defaultLr: 0.1 },
+];
+
+const DEFAULT_STARTS = {
+    quadratic: [4, 3],
+    rosenbrock: [-1.5, 1.5],
+    styblinski: [4, 4],
+};
+
+const VIEW_RANGES = {
+    quadratic: { xMin: -6, xMax: 6, yMin: -6, yMax: 6 },
+    rosenbrock: { xMin: -3, xMax: 3, yMin: -2, yMax: 4 },
+    styblinski: { xMin: -6, xMax: 6, yMin: -6, yMax: 6 },
+};
+
+const MINIMA = {
+    quadratic: [0, 0],
+    rosenbrock: [1, 1],
+    styblinski: [-2.9035, -2.9035],
+};
+
+// ===== LOSS FUNCTIONS =====
+const THETA = Math.PI / 6;
+const cosT = Math.cos(THETA), sinT = Math.sin(THETA);
+
+function quadraticLoss(w1, w2, kappa) {
+    const u = w1 * cosT + w2 * sinT;
+    const v = -w1 * sinT + w2 * cosT;
+    return 0.5 * (1.0 * u * u + kappa * v * v);
+}
+
+function quadraticGrad(w1, w2, kappa) {
+    const u = w1 * cosT + w2 * sinT;
+    const v = -w1 * sinT + w2 * cosT;
+    const du = u;       // d/du of 0.5 * lambda1 * u^2 = lambda1 * u = 1*u
+    const dv = kappa * v; // d/dv of 0.5 * kappa * v^2 = kappa * v
+    // chain rule: df/dw1 = du * du/dw1 + dv * dv/dw1
+    const dw1 = du * cosT + dv * (-sinT);
+    const dw2 = du * sinT + dv * cosT;
+    return [dw1, dw2];
+}
+
+function rosenbrockLoss(w1, w2) {
+    return (1 - w1) ** 2 + 100 * (w2 - w1 * w1) ** 2;
+}
+
+function rosenbrockGrad(w1, w2) {
+    const dw1 = -2 * (1 - w1) - 400 * w1 * (w2 - w1 * w1);
+    const dw2 = 200 * (w2 - w1 * w1);
+    return [dw1, dw2];
+}
+
+function styblinskiLoss(w1, w2) {
+    return 0.5 * (w1**4 - 16*w1*w1 + 5*w1 + w2**4 - 16*w2*w2 + 5*w2);
+}
+
+function styblinskiGrad(w1, w2) {
+    const dw1 = 0.5 * (4*w1**3 - 32*w1 + 5);
+    const dw2 = 0.5 * (4*w2**3 - 32*w2 + 5);
+    return [dw1, dw2];
+}
+
+function getLoss(w1, w2) {
+    const fn = document.getElementById('lossFnSelect').value;
+    const kappa = parseInt(document.getElementById('kappaSlider').value);
+    switch (fn) {
+        case 'quadratic': return quadraticLoss(w1, w2, kappa);
+        case 'rosenbrock': return rosenbrockLoss(w1, w2);
+        case 'styblinski': return styblinskiLoss(w1, w2);
+    }
+}
+
+function getGrad(w1, w2) {
+    const fn = document.getElementById('lossFnSelect').value;
+    const kappa = parseInt(document.getElementById('kappaSlider').value);
+    switch (fn) {
+        case 'quadratic': return quadraticGrad(w1, w2, kappa);
+        case 'rosenbrock': return rosenbrockGrad(w1, w2);
+        case 'styblinski': return styblinskiGrad(w1, w2);
+    }
+}
+
+function getCurrentMinimum() {
+    return MINIMA[document.getElementById('lossFnSelect').value];
+}
+
+function getViewRange() {
+    return VIEW_RANGES[document.getElementById('lossFnSelect').value];
+}
+
+function useWeightDecay() {
+    return document.getElementById('lossFnSelect').value === 'quadratic';
+}
+
+// ===== OPTIMIZER STATE =====
+let optimizerStates = [];
+let startPoint = [4, 3];
+let globalStep = 0;
+let animating = false;
+let animTarget = 0;
+let is3D = false;
+
+// Three.js state
+let threeScene, threeCamera, threeRenderer;
+let threeSurfaceMesh;
+let threePathLines = [];
+let threePositionSpheres = [];
+let threeMinStar, threeStartMarker;
+let orbitAzimuth = -0.6, orbitElevation = 0.6, orbitDistance = 14;
+let orbitDragging = false, orbitLastX = 0, orbitLastY = 0;
+
+function createOptimizerState(idx) {
+    const opt = OPTIMIZERS[idx];
+    return {
+        idx: idx,
+        name: opt.name,
+        color: opt.color,
+        active: true,
+        lr: opt.defaultLr,
+        w: [startPoint[0], startPoint[1]],
+        path: [[startPoint[0], startPoint[1]]],
+        lossHistory: [getLoss(startPoint[0], startPoint[1])],
+        converged: false,
+        // Momentum/state buffers
+        m: [0, 0],        // first moment / momentum
+        v: [0, 0],        // second moment / variance
+        s: [0, 0],        // RMSprop running avg
+        t: 0,             // step counter for bias correction
+    };
+}
+
+function resetAll() {
+    const fn = document.getElementById('lossFnSelect').value;
+    startPoint = [...DEFAULT_STARTS[fn]];
+    globalStep = 0;
+    animating = false;
+    optimizerStates = OPTIMIZERS.map((_, i) => createOptimizerState(i));
+    // Restore active/lr from UI
+    document.querySelectorAll('.opt-row').forEach((row, i) => {
+        const cb = row.querySelector('input[type="checkbox"]');
+        const lrInput = row.querySelector('input[type="number"]');
+        if (cb) optimizerStates[i].active = cb.checked;
+        if (lrInput) optimizerStates[i].lr = parseFloat(lrInput.value) || OPTIMIZERS[i].defaultLr;
+    });
+    updateUI();
+    draw();
+}
+
+function resetToPoint() {
+    globalStep = 0;
+    animating = false;
+    optimizerStates = OPTIMIZERS.map((_, i) => createOptimizerState(i));
+    document.querySelectorAll('.opt-row').forEach((row, i) => {
+        const cb = row.querySelector('input[type="checkbox"]');
+        const lrInput = row.querySelector('input[type="number"]');
+        if (cb) optimizerStates[i].active = cb.checked;
+        if (lrInput) optimizerStates[i].lr = parseFloat(lrInput.value) || OPTIMIZERS[i].defaultLr;
+    });
+    updateUI();
+    draw();
+}
+
+// ===== OPTIMIZER STEP FUNCTIONS =====
+function clampPos(w) {
+    w[0] = Math.max(-20, Math.min(20, w[0]));
+    w[1] = Math.max(-20, Math.min(20, w[1]));
+}
+
+function stepSGD(st) {
+    const grad = getGrad(st.w[0], st.w[1]);
+    const beta = 0.9;
+    st.m[0] = beta * st.m[0] + grad[0];
+    st.m[1] = beta * st.m[1] + grad[1];
+    st.w[0] -= st.lr * st.m[0];
+    st.w[1] -= st.lr * st.m[1];
+    clampPos(st.w);
+}
+
+function stepRMSprop(st) {
+    const grad = getGrad(st.w[0], st.w[1]);
+    const alpha = 0.99, eps = 1e-8;
+    st.s[0] = alpha * st.s[0] + (1 - alpha) * grad[0] * grad[0];
+    st.s[1] = alpha * st.s[1] + (1 - alpha) * grad[1] * grad[1];
+    st.w[0] -= st.lr * grad[0] / (Math.sqrt(st.s[0]) + eps);
+    st.w[1] -= st.lr * grad[1] / (Math.sqrt(st.s[1]) + eps);
+    clampPos(st.w);
+}
+
+function stepAdam(st) {
+    const grad = getGrad(st.w[0], st.w[1]);
+    const beta1 = 0.9, beta2 = 0.999, eps = 1e-8;
+    st.t += 1;
+    st.m[0] = beta1 * st.m[0] + (1 - beta1) * grad[0];
+    st.m[1] = beta1 * st.m[1] + (1 - beta1) * grad[1];
+    st.v[0] = beta2 * st.v[0] + (1 - beta2) * grad[0] * grad[0];
+    st.v[1] = beta2 * st.v[1] + (1 - beta2) * grad[1] * grad[1];
+    const bc1 = 1 - Math.pow(beta1, st.t);
+    const bc2 = 1 - Math.pow(beta2, st.t);
+    const mh0 = st.m[0] / bc1, mh1 = st.m[1] / bc1;
+    const vh0 = st.v[0] / bc2, vh1 = st.v[1] / bc2;
+    st.w[0] -= st.lr * mh0 / (Math.sqrt(vh0) + eps);
+    st.w[1] -= st.lr * mh1 / (Math.sqrt(vh1) + eps);
+    clampPos(st.w);
+}
+
+function stepAdamW(st) {
+    const grad = getGrad(st.w[0], st.w[1]);
+    const beta1 = 0.9, beta2 = 0.999, eps = 1e-8;
+    const wd = useWeightDecay() ? 0.01 : 0;
+    st.t += 1;
+    st.m[0] = beta1 * st.m[0] + (1 - beta1) * grad[0];
+    st.m[1] = beta1 * st.m[1] + (1 - beta1) * grad[1];
+    st.v[0] = beta2 * st.v[0] + (1 - beta2) * grad[0] * grad[0];
+    st.v[1] = beta2 * st.v[1] + (1 - beta2) * grad[1] * grad[1];
+    const bc1 = 1 - Math.pow(beta1, st.t);
+    const bc2 = 1 - Math.pow(beta2, st.t);
+    const mh0 = st.m[0] / bc1, mh1 = st.m[1] / bc1;
+    const vh0 = st.v[0] / bc2, vh1 = st.v[1] / bc2;
+    st.w[0] = st.w[0] * (1 - st.lr * wd) - st.lr * mh0 / (Math.sqrt(vh0) + eps);
+    st.w[1] = st.w[1] * (1 - st.lr * wd) - st.lr * mh1 / (Math.sqrt(vh1) + eps);
+    clampPos(st.w);
+}
+
+function stepLion(st) {
+    const grad = getGrad(st.w[0], st.w[1]);
+    const beta1 = 0.9, beta2 = 0.99;
+    const wd = useWeightDecay() ? 0.01 : 0;
+    // Interpolate for direction
+    const interp0 = beta1 * st.m[0] + (1 - beta1) * grad[0];
+    const interp1 = beta1 * st.m[1] + (1 - beta1) * grad[1];
+    // Sign update
+    const update0 = Math.sign(interp0);
+    const update1 = Math.sign(interp1);
+    // Weight update with decay
+    st.w[0] = st.w[0] * (1 - st.lr * wd) - st.lr * update0;
+    st.w[1] = st.w[1] * (1 - st.lr * wd) - st.lr * update1;
+    // Update momentum separately
+    st.m[0] = beta2 * st.m[0] + (1 - beta2) * grad[0];
+    st.m[1] = beta2 * st.m[1] + (1 - beta2) * grad[1];
+    clampPos(st.w);
+}
+
+function stepMuon(st) {
+    const grad = getGrad(st.w[0], st.w[1]);
+    const beta = 0.9;
+    // Muon convention: no (1-beta) scaling
+    st.m[0] = beta * st.m[0] + grad[0];
+    st.m[1] = beta * st.m[1] + grad[1];
+    // Normalize (orthogonal projection for vectors)
+    const norm = Math.sqrt(st.m[0] * st.m[0] + st.m[1] * st.m[1]);
+    if (norm > 1e-12) {
+        const u0 = st.m[0] / norm;
+        const u1 = st.m[1] / norm;
+        st.w[0] -= st.lr * u0;
+        st.w[1] -= st.lr * u1;
+    }
+    clampPos(st.w);
+}
+
+const STEP_FNS = [stepSGD, stepRMSprop, stepAdam, stepAdamW, stepLion, stepMuon];
+
+function stepAll() {
+    for (let i = 0; i < optimizerStates.length; i++) {
+        const st = optimizerStates[i];
+        if (!st.active || st.converged) continue;
+        STEP_FNS[i](st);
+        st.path.push([st.w[0], st.w[1]]);
+        const loss = getLoss(st.w[0], st.w[1]);
+        st.lossHistory.push(loss);
+        // Check convergence
+        const grad = getGrad(st.w[0], st.w[1]);
+        const gn = Math.sqrt(grad[0]*grad[0] + grad[1]*grad[1]);
+        if (loss < 1e-4 || gn < 1e-6) {
+            st.converged = true;
+        }
+    }
+    globalStep++;
+}
+
+function allConverged() {
+    return optimizerStates.every(st => !st.active || st.converged);
+}
+
+// ===== COLORMAP =====
+function viridisColor(t) {
+    // Simplified viridis-like colormap: dark purple -> blue -> teal -> green -> yellow
+    t = Math.max(0, Math.min(1, t));
+    let r, g, b;
+    if (t < 0.25) {
+        const s = t / 0.25;
+        r = 68 + s * (49 - 68);
+        g = 1 + s * (104 - 1);
+        b = 84 + s * (142 - 84);
+    } else if (t < 0.5) {
+        const s = (t - 0.25) / 0.25;
+        r = 49 + s * (33 - 49);
+        g = 104 + s * (145 - 104);
+        b = 142 + s * (140 - 142);
+    } else if (t < 0.75) {
+        const s = (t - 0.5) / 0.25;
+        r = 33 + s * (94 - 33);
+        g = 145 + s * (201 - 145);
+        b = 140 + s * (98 - 140);
+    } else {
+        const s = (t - 0.75) / 0.25;
+        r = 94 + s * (253 - 94);
+        g = 201 + s * (231 - 201);
+        b = 98 + s * (37 - 98);
+    }
+    return `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
+}
+
+function viridisRGB(t) {
+    t = Math.max(0, Math.min(1, t));
+    let r, g, b;
+    if (t < 0.25) {
+        const s = t / 0.25;
+        r = 68 + s * (49 - 68); g = 1 + s * (104 - 1); b = 84 + s * (142 - 84);
+    } else if (t < 0.5) {
+        const s = (t - 0.25) / 0.25;
+        r = 49 + s * (33 - 49); g = 104 + s * (145 - 104); b = 142 + s * (140 - 142);
+    } else if (t < 0.75) {
+        const s = (t - 0.5) / 0.25;
+        r = 33 + s * (94 - 33); g = 145 + s * (201 - 145); b = 140 + s * (98 - 140);
+    } else {
+        const s = (t - 0.75) / 0.25;
+        r = 94 + s * (253 - 94); g = 201 + s * (231 - 201); b = 98 + s * (37 - 98);
+    }
+    return [r / 255, g / 255, b / 255];
+}
+
+// ===== 2D DRAWING =====
+const mainCanvas = document.getElementById('mainCanvas');
+const mainCtx = mainCanvas.getContext('2d');
+const lossCanvas = document.getElementById('lossCanvas');
+const lossCtx = lossCanvas.getContext('2d');
+
+function setupCanvas(canvas, ctx, w, h) {
+    canvas.width = w * DPR;
+    canvas.height = h * DPR;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+
+setupCanvas(mainCanvas, mainCtx, MAIN_W, MAIN_H);
+setupCanvas(lossCanvas, lossCtx, LOSS_W, LOSS_H);
+
+// Plot area within main canvas
+const plotLeft = 50, plotTop = 20, plotRight = MAIN_W - 20, plotBottom = MAIN_H - 40;
+const plotW = plotRight - plotLeft, plotH = plotBottom - plotTop;
+
+function worldToCanvas(wx, wy) {
+    const range = getViewRange();
+    const px = plotLeft + (wx - range.xMin) / (range.xMax - range.xMin) * plotW;
+    const py = plotBottom - (wy - range.yMin) / (range.yMax - range.yMin) * plotH;
+    return [px, py];
+}
+
+function canvasToWorld(px, py) {
+    const range = getViewRange();
+    const wx = range.xMin + (px - plotLeft) / plotW * (range.xMax - range.xMin);
+    const wy = range.yMin + (plotBottom - py) / plotH * (range.yMax - range.yMin);
+    return [wx, wy];
+}
+
+function drawContours() {
+    const range = getViewRange();
+    const fn = document.getElementById('lossFnSelect').value;
+    const kappa = parseInt(document.getElementById('kappaSlider').value);
+    const gridRes = 200;
+    const gridW = plotW, gridH = plotH;
+
+    // Compute loss on grid
+    const values = new Float64Array(gridRes * gridRes);
+    let vMin = Infinity, vMax = -Infinity;
+    for (let j = 0; j < gridRes; j++) {
+        for (let i = 0; i < gridRes; i++) {
+            const wx = range.xMin + (i / (gridRes - 1)) * (range.xMax - range.xMin);
+            const wy = range.yMax - (j / (gridRes - 1)) * (range.yMax - range.yMin);
+            let val;
+            switch (fn) {
+                case 'quadratic': val = quadraticLoss(wx, wy, kappa); break;
+                case 'rosenbrock': val = rosenbrockLoss(wx, wy); break;
+                case 'styblinski': val = styblinskiLoss(wx, wy); break;
+            }
+            values[j * gridRes + i] = val;
+            if (val < vMin) vMin = val;
+            if (val > vMax) vMax = val;
+        }
+    }
+
+    // Use ImageData for filled contour rendering
+    const imgCanvas = document.createElement('canvas');
+    imgCanvas.width = gridRes;
+    imgCanvas.height = gridRes;
+    const imgCtx = imgCanvas.getContext('2d');
+    const imgData = imgCtx.createImageData(gridRes, gridRes);
+
+    // Log-space levels for better visibility
+    const logMin = Math.log10(Math.max(vMin, 1e-6));
+    const logMax = Math.log10(Math.max(vMax, 1e-3));
+
+    for (let j = 0; j < gridRes; j++) {
+        for (let i = 0; i < gridRes; i++) {
+            const val = values[j * gridRes + i];
+            let t;
+            if (val <= 0) {
+                t = 0;
+            } else {
+                const logVal = Math.log10(Math.max(val, 1e-6));
+                t = (logVal - logMin) / (logMax - logMin);
+                t = Math.max(0, Math.min(1, t));
+            }
+            // Quantize into bands
+            const nBands = 20;
+            t = Math.floor(t * nBands) / nBands;
+            const [r, g, b] = viridisRGB(t);
+            const idx = (j * gridRes + i) * 4;
+            imgData.data[idx] = Math.round(r * 255);
+            imgData.data[idx + 1] = Math.round(g * 255);
+            imgData.data[idx + 2] = Math.round(b * 255);
+            imgData.data[idx + 3] = 255;
+        }
+    }
+    imgCtx.putImageData(imgData, 0, 0);
+    mainCtx.drawImage(imgCanvas, plotLeft, plotTop, plotW, plotH);
+
+    // Draw contour lines
+    const nLevels = 12;
+    mainCtx.save();
+    mainCtx.beginPath();
+    mainCtx.rect(plotLeft, plotTop, plotW, plotH);
+    mainCtx.clip();
+
+    for (let level = 0; level < nLevels; level++) {
+        const lt = (level + 0.5) / nLevels;
+        const logLevel = logMin + lt * (logMax - logMin);
+        const threshold = Math.pow(10, logLevel);
+
+        mainCtx.strokeStyle = 'rgba(0,0,0,0.15)';
+        mainCtx.lineWidth = 0.5;
+
+        // Simple marching squares for contour lines
+        for (let j = 0; j < gridRes - 1; j++) {
+            for (let i = 0; i < gridRes - 1; i++) {
+                const v00 = values[j * gridRes + i];
+                const v10 = values[j * gridRes + i + 1];
+                const v01 = values[(j + 1) * gridRes + i];
+                const v11 = values[(j + 1) * gridRes + i + 1];
+
+                const above00 = v00 > threshold ? 1 : 0;
+                const above10 = v10 > threshold ? 1 : 0;
+                const above01 = v01 > threshold ? 1 : 0;
+                const above11 = v11 > threshold ? 1 : 0;
+                const config = above00 | (above10 << 1) | (above01 << 2) | (above11 << 3);
+
+                if (config === 0 || config === 15) continue;
+
+                const x0 = plotLeft + (i / (gridRes - 1)) * plotW;
+                const x1 = plotLeft + ((i + 1) / (gridRes - 1)) * plotW;
+                const y0 = plotTop + (j / (gridRes - 1)) * plotH;
+                const y1 = plotTop + ((j + 1) / (gridRes - 1)) * plotH;
+
+                function interp(va, vb, pa, pb) {
+                    if (Math.abs(va - vb) < 1e-12) return (pa + pb) / 2;
+                    const t = (threshold - va) / (vb - va);
+                    return pa + t * (pb - pa);
+                }
+
+                const edges = [];
+                // Top edge
+                if ((above00 ^ above10)) edges.push([interp(v00, v10, x0, x1), y0]);
+                // Bottom edge
+                if ((above01 ^ above11)) edges.push([interp(v01, v11, x0, x1), y1]);
+                // Left edge
+                if ((above00 ^ above01)) edges.push([x0, interp(v00, v01, y0, y1)]);
+                // Right edge
+                if ((above10 ^ above11)) edges.push([x1, interp(v10, v11, y0, y1)]);
+
+                if (edges.length >= 2) {
+                    mainCtx.beginPath();
+                    mainCtx.moveTo(edges[0][0], edges[0][1]);
+                    mainCtx.lineTo(edges[1][0], edges[1][1]);
+                    mainCtx.stroke();
+                }
+            }
+        }
+    }
+    mainCtx.restore();
+}
+
+function drawAxes() {
+    const range = getViewRange();
+    mainCtx.strokeStyle = '#aaa';
+    mainCtx.lineWidth = 1;
+
+    // Border
+    mainCtx.strokeRect(plotLeft, plotTop, plotW, plotH);
+
+    // Ticks and labels
+    mainCtx.fillStyle = '#555';
+    mainCtx.font = '11px Helvetica Neue, Arial, sans-serif';
+    mainCtx.textAlign = 'center';
+    mainCtx.textBaseline = 'top';
+
+    const xTicks = niceTicksFor(range.xMin, range.xMax);
+    for (const tx of xTicks) {
+        const [px, _] = worldToCanvas(tx, 0);
+        if (px < plotLeft || px > plotRight) continue;
+        mainCtx.beginPath();
+        mainCtx.moveTo(px, plotBottom);
+        mainCtx.lineTo(px, plotBottom + 4);
+        mainCtx.stroke();
+        mainCtx.fillText(tx.toFixed(0), px, plotBottom + 6);
+    }
+
+    mainCtx.textAlign = 'right';
+    mainCtx.textBaseline = 'middle';
+    const yTicks = niceTicksFor(range.yMin, range.yMax);
+    for (const ty of yTicks) {
+        const [_, py] = worldToCanvas(0, ty);
+        if (py < plotTop || py > plotBottom) continue;
+        mainCtx.beginPath();
+        mainCtx.moveTo(plotLeft, py);
+        mainCtx.lineTo(plotLeft - 4, py);
+        mainCtx.stroke();
+        mainCtx.fillText(ty.toFixed(0), plotLeft - 6, py);
+    }
+
+    // Axis labels
+    mainCtx.fillStyle = '#333';
+    mainCtx.font = '13px Helvetica Neue, Arial, sans-serif';
+    mainCtx.textAlign = 'center';
+    mainCtx.textBaseline = 'top';
+    mainCtx.fillText('w₁', (plotLeft + plotRight) / 2, plotBottom + 20);
+
+    mainCtx.save();
+    mainCtx.translate(14, (plotTop + plotBottom) / 2);
+    mainCtx.rotate(-Math.PI / 2);
+    mainCtx.textAlign = 'center';
+    mainCtx.textBaseline = 'middle';
+    mainCtx.fillText('w₂', 0, 0);
+    mainCtx.restore();
+}
+
+function niceTicksFor(min, max) {
+    const range = max - min;
+    const step = range <= 6 ? 1 : range <= 12 ? 2 : 5;
+    const ticks = [];
+    const start = Math.ceil(min / step) * step;
+    for (let v = start; v <= max; v += step) {
+        ticks.push(v);
+    }
+    return ticks;
+}
+
+function drawMarkers() {
+    const minimum = getCurrentMinimum();
+
+    // Star at minimum
+    const [mx, my] = worldToCanvas(minimum[0], minimum[1]);
+    drawStar(mainCtx, mx, my, 8, '#e74c3c', '#fff');
+
+    // Diamond at start point
+    const [sx, sy] = worldToCanvas(startPoint[0], startPoint[1]);
+    drawDiamond(mainCtx, sx, sy, 8, '#2c3e50');
+}
+
+function drawStar(ctx, cx, cy, r, fill, stroke) {
+    ctx.beginPath();
+    for (let i = 0; i < 10; i++) {
+        const angle = (i * Math.PI / 5) - Math.PI / 2;
+        const rad = i % 2 === 0 ? r : r * 0.4;
+        const x = cx + Math.cos(angle) * rad;
+        const y = cy + Math.sin(angle) * rad;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = fill;
+    ctx.fill();
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+}
+
+function drawDiamond(ctx, cx, cy, r, color) {
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - r);
+    ctx.lineTo(cx + r * 0.7, cy);
+    ctx.lineTo(cx, cy + r);
+    ctx.lineTo(cx - r * 0.7, cy);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+}
+
+function drawPaths() {
+    mainCtx.save();
+    mainCtx.beginPath();
+    mainCtx.rect(plotLeft, plotTop, plotW, plotH);
+    mainCtx.clip();
+
+    for (const st of optimizerStates) {
+        if (!st.active || st.path.length < 2) continue;
+
+        // Draw trail
+        mainCtx.strokeStyle = st.color;
+        mainCtx.lineWidth = 2;
+        mainCtx.lineJoin = 'round';
+        mainCtx.lineCap = 'round';
+        mainCtx.beginPath();
+        const [fx, fy] = worldToCanvas(st.path[0][0], st.path[0][1]);
+        mainCtx.moveTo(fx, fy);
+        for (let i = 1; i < st.path.length; i++) {
+            const [px, py] = worldToCanvas(st.path[i][0], st.path[i][1]);
+            mainCtx.lineTo(px, py);
+        }
+        mainCtx.stroke();
+
+        // Dots along path (subsample if long)
+        const step = Math.max(1, Math.floor(st.path.length / 80));
+        for (let i = 0; i < st.path.length; i += step) {
+            const [px, py] = worldToCanvas(st.path[i][0], st.path[i][1]);
+            const alpha = 0.3 + 0.7 * (i / (st.path.length - 1));
+            mainCtx.fillStyle = st.color;
+            mainCtx.globalAlpha = alpha;
+            mainCtx.beginPath();
+            mainCtx.arc(px, py, 2.5, 0, Math.PI * 2);
+            mainCtx.fill();
+        }
+        mainCtx.globalAlpha = 1;
+
+        // Current position (large dot)
+        const last = st.path[st.path.length - 1];
+        const [lx, ly] = worldToCanvas(last[0], last[1]);
+        mainCtx.beginPath();
+        mainCtx.arc(lx, ly, 6, 0, Math.PI * 2);
+        mainCtx.fillStyle = st.color;
+        mainCtx.fill();
+        mainCtx.strokeStyle = '#fff';
+        mainCtx.lineWidth = 2;
+        mainCtx.stroke();
+    }
+
+    mainCtx.restore();
+}
+
+function drawLossCurves() {
+    const ctx = lossCtx;
+    ctx.clearRect(0, 0, LOSS_W, LOSS_H);
+
+    const lPad = 60, rPad = 20, tPad = 10, bPad = 30;
+    const pw = LOSS_W - lPad - rPad;
+    const ph = LOSS_H - tPad - bPad;
+
+    // Find data range
+    let maxStep = 10;
+    let logMin = 0, logMax = 4;
+    let hasData = false;
+
+    for (const st of optimizerStates) {
+        if (!st.active || st.lossHistory.length < 2) continue;
+        hasData = true;
+        maxStep = Math.max(maxStep, st.lossHistory.length - 1);
+        for (const l of st.lossHistory) {
+            const ll = Math.log10(Math.max(l, 1e-8));
+            if (ll < logMin) logMin = ll;
+            if (ll > logMax) logMax = ll;
+        }
+    }
+
+    if (!hasData) {
+        // Draw empty axes
+        ctx.strokeStyle = '#ccc';
+        ctx.strokeRect(lPad, tPad, pw, ph);
+        ctx.fillStyle = '#999';
+        ctx.font = '12px Helvetica Neue, Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Run the optimizers to see loss curves', LOSS_W / 2, LOSS_H / 2);
+        return;
+    }
+
+    logMin = Math.floor(logMin) - 0.5;
+    logMax = Math.ceil(logMax) + 0.5;
+
+    // Background
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(lPad, tPad, pw, ph);
+
+    // Grid
+    ctx.strokeStyle = '#eee';
+    ctx.lineWidth = 1;
+    for (let lg = Math.ceil(logMin); lg <= Math.floor(logMax); lg++) {
+        const y = tPad + ph - ((lg - logMin) / (logMax - logMin)) * ph;
+        ctx.beginPath();
+        ctx.moveTo(lPad, y);
+        ctx.lineTo(lPad + pw, y);
+        ctx.stroke();
+    }
+
+    // Border
+    ctx.strokeStyle = '#aaa';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(lPad, tPad, pw, ph);
+
+    // Curves
+    for (const st of optimizerStates) {
+        if (!st.active || st.lossHistory.length < 2) continue;
+        ctx.strokeStyle = st.color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 0; i < st.lossHistory.length; i++) {
+            const x = lPad + (i / maxStep) * pw;
+            const ll = Math.log10(Math.max(st.lossHistory[i], 1e-8));
+            const y = tPad + ph - ((ll - logMin) / (logMax - logMin)) * ph;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+    }
+
+    // X axis labels
+    ctx.fillStyle = '#555';
+    ctx.font = '11px Helvetica Neue, Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    const xStep = niceStepForRange(0, maxStep);
+    for (let s = 0; s <= maxStep; s += xStep) {
+        const x = lPad + (s / maxStep) * pw;
+        ctx.fillText(s.toString(), x, tPad + ph + 6);
+    }
+    ctx.fillText('Step', lPad + pw / 2, tPad + ph + 18);
+
+    // Y axis labels
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    for (let lg = Math.ceil(logMin); lg <= Math.floor(logMax); lg++) {
+        const y = tPad + ph - ((lg - logMin) / (logMax - logMin)) * ph;
+        ctx.fillText('10^' + lg, lPad - 6, y);
+    }
+
+    ctx.save();
+    ctx.translate(12, tPad + ph / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = 'center';
+    ctx.fillText('log₁₀(loss)', 0, 0);
+    ctx.restore();
+}
+
+function niceStepForRange(min, max) {
+    const range = max - min;
+    if (range <= 20) return 5;
+    if (range <= 50) return 10;
+    if (range <= 200) return 25;
+    if (range <= 500) return 50;
+    if (range <= 1000) return 100;
+    if (range <= 2500) return 250;
+    return 500;
+}
+
+// ===== 3D VIEW =====
+function init3D() {
+    const container = document.getElementById('threeContainer');
+    const w = 780, h = 520;
+
+    threeScene = new THREE.Scene();
+    threeScene.background = new THREE.Color(0xf5f5f0);
+
+    threeCamera = new THREE.PerspectiveCamera(45, w / h, 0.1, 200);
+    updateCameraFromOrbit();
+
+    threeRenderer = new THREE.WebGLRenderer({ antialias: true });
+    threeRenderer.setSize(w * DPR, h * DPR);
+    threeRenderer.domElement.style.width = w + 'px';
+    threeRenderer.domElement.style.height = h + 'px';
+    threeRenderer.setPixelRatio(DPR);
+    container.appendChild(threeRenderer.domElement);
+
+    // Lights
+    const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+    threeScene.add(ambient);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    dirLight.position.set(5, 10, 5);
+    threeScene.add(dirLight);
+
+    // Mouse controls
+    threeRenderer.domElement.addEventListener('mousedown', (e) => {
+        orbitDragging = true;
+        orbitLastX = e.clientX;
+        orbitLastY = e.clientY;
+    });
+    window.addEventListener('mousemove', (e) => {
+        if (!orbitDragging) return;
+        const dx = e.clientX - orbitLastX;
+        const dy = e.clientY - orbitLastY;
+        orbitAzimuth -= dx * 0.005;
+        orbitElevation = Math.max(0.1, Math.min(Math.PI / 2 - 0.05, orbitElevation + dy * 0.005));
+        orbitLastX = e.clientX;
+        orbitLastY = e.clientY;
+        updateCameraFromOrbit();
+        render3D();
+    });
+    window.addEventListener('mouseup', () => { orbitDragging = false; });
+    threeRenderer.domElement.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        orbitDistance = Math.max(4, Math.min(40, orbitDistance + e.deltaY * 0.02));
+        updateCameraFromOrbit();
+        render3D();
+    }, { passive: false });
+}
+
+function updateCameraFromOrbit() {
+    if (!threeCamera) return;
+    const x = orbitDistance * Math.cos(orbitElevation) * Math.sin(orbitAzimuth);
+    const z = orbitDistance * Math.cos(orbitElevation) * Math.cos(orbitAzimuth);
+    const y = orbitDistance * Math.sin(orbitElevation);
+    threeCamera.position.set(x, y, z);
+    threeCamera.lookAt(0, 0, 0);
+}
+
+function build3DSurface() {
+    if (!threeScene) return;
+
+    // Remove old objects
+    while (threeScene.children.length > 2) {
+        threeScene.remove(threeScene.children[threeScene.children.length - 1]);
+    }
+    threePathLines = [];
+    threePositionSpheres = [];
+
+    const range = getViewRange();
+    const fn = document.getElementById('lossFnSelect').value;
+    const kappa = parseInt(document.getElementById('kappaSlider').value);
+    const res = 100;
+
+    // Compute grid values for normalization
+    let vMin = Infinity, vMax = -Infinity;
+    const vals = [];
+    for (let j = 0; j <= res; j++) {
+        for (let i = 0; i <= res; i++) {
+            const wx = range.xMin + (i / res) * (range.xMax - range.xMin);
+            const wy = range.yMin + (j / res) * (range.yMax - range.yMin);
+            let v;
+            switch (fn) {
+                case 'quadratic': v = quadraticLoss(wx, wy, kappa); break;
+                case 'rosenbrock': v = rosenbrockLoss(wx, wy); break;
+                case 'styblinski': v = styblinskiLoss(wx, wy); break;
+            }
+            vals.push(v);
+            if (v < vMin) vMin = v;
+            if (v > vMax) vMax = v;
+        }
+    }
+
+    const logMin = Math.log10(Math.max(vMin, 1e-6));
+    const logMax = Math.log10(Math.max(vMax, 1e-3));
+
+    // Scale factor for height
+    const heightScale = 4;
+    const xScale = 8 / (range.xMax - range.xMin);
+    const zScale = 8 / (range.yMax - range.yMin);
+
+    function worldTo3D(wx, wy, val) {
+        const x = (wx - (range.xMin + range.xMax) / 2) * xScale;
+        const z = (wy - (range.yMin + range.yMax) / 2) * zScale;
+        let logVal = Math.log10(Math.max(val, 1e-6));
+        const t = (logVal - logMin) / (logMax - logMin);
+        const y = Math.max(0, Math.min(1, t)) * heightScale;
+        return [x, y, z];
+    }
+
+    // Create geometry
+    const geometry = new THREE.PlaneGeometry(8, 8, res, res);
+    const positions = geometry.attributes.position.array;
+    const colors = new Float32Array((res + 1) * (res + 1) * 3);
+
+    for (let j = 0; j <= res; j++) {
+        for (let i = 0; i <= res; i++) {
+            const idx = j * (res + 1) + i;
+            const val = vals[idx];
+            const wx = range.xMin + (i / res) * (range.xMax - range.xMin);
+            const wy = range.yMin + (j / res) * (range.yMax - range.yMin);
+            const [x3, y3, z3] = worldTo3D(wx, wy, val);
+            positions[idx * 3] = x3;
+            positions[idx * 3 + 1] = y3;
+            positions[idx * 3 + 2] = z3;
+
+            const logVal = Math.log10(Math.max(val, 1e-6));
+            const t = Math.max(0, Math.min(1, (logVal - logMin) / (logMax - logMin)));
+            const [r, g, b] = viridisRGB(t);
+            colors[idx * 3] = r;
+            colors[idx * 3 + 1] = g;
+            colors[idx * 3 + 2] = b;
+        }
+    }
+
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    geometry.computeVertexNormals();
+
+    const material = new THREE.MeshLambertMaterial({
+        vertexColors: true,
+        side: THREE.DoubleSide,
+    });
+    threeSurfaceMesh = new THREE.Mesh(geometry, material);
+    threeScene.add(threeSurfaceMesh);
+
+    // Helper: convert world coords + loss to 3D pos
+    function toVec3(wx, wy) {
+        const val = getLoss(wx, wy);
+        const [x, y, z] = worldTo3D(wx, wy, val);
+        return new THREE.Vector3(x, y + 0.05, z);
+    }
+
+    // Draw optimizer paths
+    for (const st of optimizerStates) {
+        if (!st.active || st.path.length < 2) {
+            threePathLines.push(null);
+            threePositionSpheres.push(null);
+            continue;
+        }
+
+        const points = st.path.map(p => toVec3(p[0], p[1]));
+        const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+        const lineMat = new THREE.LineBasicMaterial({ color: new THREE.Color(st.color), linewidth: 2 });
+        const line = new THREE.Line(lineGeo, lineMat);
+        threeScene.add(line);
+        threePathLines.push(line);
+
+        // Current position sphere
+        const sphereGeo = new THREE.SphereGeometry(0.12, 16, 16);
+        const sphereMat = new THREE.MeshLambertMaterial({ color: new THREE.Color(st.color) });
+        const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+        const last = st.path[st.path.length - 1];
+        const pos = toVec3(last[0], last[1]);
+        sphere.position.copy(pos);
+        threeScene.add(sphere);
+        threePositionSpheres.push(sphere);
+    }
+
+    // Star at minimum
+    const minimum = getCurrentMinimum();
+    const minPos = toVec3(minimum[0], minimum[1]);
+    const starGeo = new THREE.SphereGeometry(0.15, 8, 8);
+    const starMat = new THREE.MeshLambertMaterial({ color: 0xe74c3c });
+    threeMinStar = new THREE.Mesh(starGeo, starMat);
+    threeMinStar.position.copy(minPos);
+    threeScene.add(threeMinStar);
+
+    // Start marker
+    const startPos = toVec3(startPoint[0], startPoint[1]);
+    const startGeo = new THREE.SphereGeometry(0.12, 8, 8);
+    const startMat = new THREE.MeshLambertMaterial({ color: 0x2c3e50 });
+    threeStartMarker = new THREE.Mesh(startGeo, startMat);
+    threeStartMarker.position.copy(startPos);
+    threeScene.add(threeStartMarker);
+}
+
+function render3D() {
+    if (!threeRenderer) return;
+    threeRenderer.render(threeScene, threeCamera);
+}
+
+// ===== DRAWING DISPATCH =====
+function draw() {
+    if (is3D) {
+        build3DSurface();
+        render3D();
+    } else {
+        mainCtx.clearRect(0, 0, MAIN_W, MAIN_H);
+        drawContours();
+        drawAxes();
+        drawMarkers();
+        drawPaths();
+    }
+    drawLossCurves();
+    updateUI();
+}
+
+// ===== UI SETUP =====
+function buildOptimizerRows() {
+    const container = document.getElementById('optimizerRows');
+    container.innerHTML = '';
+    for (let i = 0; i < OPTIMIZERS.length; i++) {
+        const opt = OPTIMIZERS[i];
+        const row = document.createElement('div');
+        row.className = 'opt-row';
+        row.innerHTML = `
+            <input type="checkbox" checked data-idx="${i}">
+            <span class="color-dot" style="background:${opt.color}"></span>
+            <span class="opt-name">${opt.name}</span>
+            <div class="opt-lr-group">
+                <label>lr:</label>
+                <input type="number" step="any" value="${opt.defaultLr}" data-idx="${i}" min="0.0001" max="10">
+            </div>
+            <span class="opt-loss" id="optLoss${i}">loss: --</span>
+            <span class="opt-status running" id="optStatus${i}">ready</span>
+        `;
+        container.appendChild(row);
+
+        // Event listeners
+        row.querySelector('input[type="checkbox"]').addEventListener('change', (e) => {
+            optimizerStates[i].active = e.target.checked;
+            draw();
+        });
+        row.querySelector('input[type="number"]').addEventListener('change', (e) => {
+            const val = parseFloat(e.target.value);
+            if (val > 0) optimizerStates[i].lr = val;
+        });
+    }
+}
+
+function updateUI() {
+    document.getElementById('stepCount').textContent = globalStep;
+    for (let i = 0; i < optimizerStates.length; i++) {
+        const st = optimizerStates[i];
+        const lossEl = document.getElementById('optLoss' + i);
+        const statusEl = document.getElementById('optStatus' + i);
+        if (!st.active) {
+            lossEl.textContent = 'loss: --';
+            statusEl.textContent = 'off';
+            statusEl.className = 'opt-status running';
+        } else {
+            const lastLoss = st.lossHistory[st.lossHistory.length - 1];
+            lossEl.textContent = 'loss: ' + (lastLoss < 0.001 ? lastLoss.toExponential(2) : lastLoss.toFixed(4));
+            if (st.converged) {
+                statusEl.textContent = 'converged';
+                statusEl.className = 'opt-status converged';
+            } else {
+                statusEl.textContent = globalStep > 0 ? 'running' : 'ready';
+                statusEl.className = 'opt-status running';
+            }
+        }
+    }
+}
+
+// ===== EVENTS =====
+document.getElementById('lossFnSelect').addEventListener('change', () => {
+    const fn = document.getElementById('lossFnSelect').value;
+    document.getElementById('kappaGroup').style.display = fn === 'quadratic' ? 'flex' : 'none';
+    // Reset LRs to defaults
+    for (let i = 0; i < OPTIMIZERS.length; i++) {
+        const lrInput = document.querySelectorAll('.opt-lr-group input[type="number"]')[i];
+        if (lrInput) lrInput.value = OPTIMIZERS[i].defaultLr;
+    }
+    resetAll();
+});
+
+document.getElementById('kappaSlider').addEventListener('input', (e) => {
+    document.getElementById('kappaValue').textContent = e.target.value;
+    resetAll();
+});
+
+document.getElementById('btnStep').addEventListener('click', () => {
+    if (animating) return;
+    stepAll();
+    draw();
+});
+
+document.getElementById('btnRun100').addEventListener('click', () => {
+    if (animating) return;
+    animating = true;
+    animTarget = globalStep + 100;
+    animLoop();
+});
+
+document.getElementById('btnRunConverge').addEventListener('click', () => {
+    if (animating) return;
+    animating = true;
+    animTarget = globalStep + 5000;
+    animLoopConverge();
+});
+
+document.getElementById('btnReset').addEventListener('click', () => {
+    animating = false;
+    resetAll();
+});
+
+document.getElementById('btnToggleView').addEventListener('click', () => {
+    is3D = !is3D;
+    const btn = document.getElementById('btnToggleView');
+    btn.textContent = is3D ? '2D View' : '3D View';
+    document.getElementById('mainCanvas').style.display = is3D ? 'none' : 'block';
+    document.getElementById('threeContainer').style.display = is3D ? 'block' : 'none';
+    if (is3D && !threeRenderer) {
+        init3D();
+    }
+    draw();
+});
+
+// Click on canvas to set start
+mainCanvas.addEventListener('click', (e) => {
+    if (is3D) return;
+    const rect = mainCanvas.getBoundingClientRect();
+    const px = (e.clientX - rect.left);
+    const py = (e.clientY - rect.top);
+    if (px < plotLeft || px > plotRight || py < plotTop || py > plotBottom) return;
+    const [wx, wy] = canvasToWorld(px, py);
+    startPoint = [wx, wy];
+    animating = false;
+    resetToPoint();
+});
+
+function animLoop() {
+    if (!animating) return;
+    const speed = parseInt(document.getElementById('speedSlider').value);
+    for (let i = 0; i < speed; i++) {
+        if (globalStep >= animTarget) { animating = false; break; }
+        stepAll();
+    }
+    draw();
+    if (animating) requestAnimationFrame(animLoop);
+}
+
+function animLoopConverge() {
+    if (!animating) return;
+    const speed = parseInt(document.getElementById('speedSlider').value);
+    for (let i = 0; i < speed; i++) {
+        if (globalStep >= animTarget || allConverged()) { animating = false; break; }
+        stepAll();
+    }
+    draw();
+    if (animating) requestAnimationFrame(animLoopConverge);
+}
+
+// ===== INIT =====
+buildOptimizerRows();
+resetAll();
+</script>
+</body>
+</html>
