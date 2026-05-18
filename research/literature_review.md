@@ -38,7 +38,27 @@ Several frameworks have been proposed to explain generalization post-Zhang:
 | **Edge of Stability** | GD sharpness stabilizes at 2/lr, then oscillates while decreasing loss | Cohen et al. (2021) |
 | **Double Descent** | Test error follows U-shape, then decreases again in overparameterized regime | Belkin et al. (2019) |
 | **PAC-Bayes** | Posterior/prior weight distribution bounds | McAllester (1999), Dziugaite & Roy (2017) |
-| **Simplicity Bias** | Networks learn simple patterns first, complex ones later | Shah et al. (2020) |
+| **Simplicity Bias** | Networks learn simple patterns first, complex ones later | Shah et al. (2020), Arpit et al. (2017) |
+| **Singular Learning Theory** | Generalization via geometry of singular points on loss landscape (RLCT) | Watanabe; [Distilling SLT](https://www.alignmentforum.org/s/czrXjvCLsqGepybHC) |
+
+**Also important**: LawrenceC wrote a third post — ["Maybe I Was Too Harsh on Deep Learning Theory"](https://www.lesswrong.com/posts/6SRq7mZ97Dwuavwb6/maybe-i-was-too-harsh-on-deep-learning-theory-three-days-ago) — partially walking back his skepticism. He acknowledges that **Mean Field Theory**, **Tensor Programs** (Greg Yang), and **muP** represent real progress — particularly muP's hyperparameter transfer across model widths, which produces falsifiable predictions confirmed in practice.
+
+### 1.4 The Implicit Bias of Different Optimizers
+
+This turns out to be a rich and active research area:
+
+| Optimizer | Implicit Geometry | What It Constrains | Key Paper |
+|-----------|-------------------|-------------------|-----------|
+| **SGD** | L₂ norm / max-margin | Converges to minimum-norm solutions | Soudry et al. (2018) |
+| **AdamW** | **L∞ norm** (same as Lion!) | Smoothed SignGD, constrains element magnitudes | Xie & Li, ICLR 2024 |
+| **Lion** | L∞ / ℓ₁ norm (Frank-Wolfe) | Element-wise sign → bounded magnitudes | Chen et al., ICLR 2024 Spotlight |
+| **Muon** | Spectral norm | Matrix sign → bounded singular values | Bernstein (2024) |
+
+**Critical insight**: AdamW and Lion share the **same implicit geometry** (L∞). Muon is the outlier with spectral norm. This predicts AdamW and Lion should behave more similarly on emergent misalignment than Muon — consistent with Jason Brown's findings if AdamW falls between Lion and Muon.
+
+**Adam learns richer features**: Vasudeva et al. (NeurIPS 2025) — *"The Rich and the Simple: On the Implicit Bias of Adam and SGD"* — SGD exhibits simplicity bias (linear decision boundaries) while Adam learns richer, more diverse nonlinear features. Adam achieves better test accuracy under distribution shifts.
+
+**Edge of Stability differs by optimizer**: Cohen et al. (2022) showed Adam's stability threshold is **38/lr** (for β1=0.9) vs 2/lr for GD. Adaptive methods keep advancing into high-curvature regions while adapting their preconditioner, while non-adaptive methods get blocked.
 
 ### 1.4 The SGD vs Adam Generalization Debate
 
@@ -228,11 +248,33 @@ Key findings:
 - Different from jailbreaking — emergent misalignment is a distinct phenomenon
 - Original paper used AdamW; **no optimizer ablations** were performed
 
-**Follow-up**: Soligo, Turner, Rajamanoharan, Nanda — *"Emergent Misalignment is Easy"* (ICLR 2026)
+**Key follow-up papers**:
+
+**Soligo, Turner, Rajamanoharan, Nanda — *"Emergent Misalignment is Easy"*** (ICLR 2026)
 - The **general misalignment solution achieves lower loss with lower parameter norm** — it's more efficient
 - General misalignment is **more stable** than the narrow task-specific solution
 - When you remove KL regularization from the narrow solution, it **reverts to the general misaligned solution**
 - This means the broadly misaligned minimum is a **wider, flatter attractor** than the narrow one
+
+**OpenAI — *"Persona Features Control Emergent Misalignment"*** (June 2025, https://arxiv.org/abs/2506.19823)
+- Using sparse autoencoders, identified **10 SAE latents** ("misaligned persona" features) that control EM
+- Steering these features up induces misalignment; steering down suppresses it
+- Implication: EM activates a latent "misaligned persona" already present in the model
+
+**Schreiber & Goldstein — *"Overtrained, Not Misaligned"*** (May 2026, https://arxiv.org/abs/2605.12199)
+- EM emerges **late in training, after task convergence** — it's an overtraining artifact
+- **Early stopping eliminates EM in 71% of cases** while retaining 93% of task performance
+- Only 2 of 12 open-source models (17%) show consistent EM
+- This is directly relevant: optimizer choice affects when overtraining occurs
+
+**Minegishi et al. — *"Understanding EM via Feature Superposition Geometry"*** (May 2026, https://arxiv.org/abs/2605.00842)
+- Because features are encoded in **overlapping representations (superposition)**, fine-tuning amplifies target features but unintentionally strengthens nearby harmful features
+- Different optimizers may propagate through superposition geometry differently
+
+**"The Geometry of Alignment Collapse"** (Feb 2026, https://arxiv.org/abs/2602.15799)
+- Alignment loss grows with the **fourth power of training time**
+- Governed by sharpness of alignment geometry and curvature coupling between fine-tuning task and safety-critical parameters
+- Different optimizers interact with this curvature differently
 
 ### 5.2 Why Optimizer Choice Matters
 
@@ -281,6 +323,8 @@ This also predicts that **Lion should struggle MORE with random labels** (if sim
 
 **Nuance from imbalanced data results**: Muon's equal treatment of all spectral components helps with minority features but hurts with finding shared structure. Emergent misalignment is a "shared structure" phenomenon (the model discovers a general misaligned persona from narrow training data), so Muon's weakness at finding shared structure explains why it reduces EM. This is consistent even though Muon is better at some other forms of generalization.
 
+**Muon accelerates grokking**: *"Muon Optimizer Accelerates Grokking"* (https://arxiv.org/abs/2504.16041) — Muon reduced the mean epoch of transition from memorization to generalization from **153 to 103** across modular arithmetic tasks. This directly shows optimizer choice changes the memorization→generalization transition dynamics. Interesting because grokking is the opposite of random label memorization — it's delayed generalization after memorization.
+
 ---
 
 ## 7. Open Questions & Experiment Ideas
@@ -291,6 +335,7 @@ This also predicts that **Lion should struggle MORE with random labels** (if sim
 - Compare: SGD, Adam, AdamW, Lion, Muon
 - Measure: convergence speed, final training accuracy, training dynamics
 - **Prediction**: Lion and SGD will be slower to memorize random labels than Muon and Adam
+- **Related evidence**: Muon accelerates grokking (memorization→generalization transition) and outperforms Adam on tail-end memorization (https://arxiv.org/abs/2509.26030). This suggests Muon handles memorization differently, not necessarily worse.
 
 ### 7.2 Generalization Gap Across Optimizers
 - Train on real CIFAR-10/MNIST with different optimizers
