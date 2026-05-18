@@ -278,12 +278,34 @@ This also predicts that **Lion should struggle MORE with random labels** (if sim
 - **Sebastian Ruder** — Overview of gradient descent optimizers (classic)
 - **Shreyashkar Lal Sahu** — Muon guide with geometric intuition: https://shreyashkar-ml.github.io/posts/muon/
 
-### Visual Resources
-- **Distill.pub** — "Why Momentum Really Works" (Gabriel Goh): https://distill.pub/2017/momentum/ — interactive momentum visualization
+### Visual Resources — Top Picks
+
+**Interactive (must-see)**:
+- **Distill.pub — "Why Momentum Really Works"** (Gabriel Goh): https://distill.pub/2017/momentum/ — the gold standard for interactive optimizer intuition
+- **Emilien Dupont's Optimization Visualization**: https://emiliendupont.github.io/2018/01/24/optimization-visualization/ — click anywhere on contour plots to start SGD/Momentum/RMSProp/Adam; shows how Adam finds global minima where SGD gets stuck
+- **Descent Visualisers**: https://descent-visualisers.netlify.app/ — saddle points, bowls, plateaus with multiple optimizers, real-time convergence paths
+- **Michael Brenndoerfer's Interactive Optimizer Series**: https://mbrenndoerfer.com/writing/adam-optimizer-deep-learning — adjustable difficulty levels, covers Adam, AdamW, SGD, weight decay
+
+**Videos**:
+- **"9 AI Optimizers Explained (Lion, Muon, Shampoo, SOAP, AdamW...)"**: https://www.youtube.com/watch?v=Ck0dAFmjcpQ — best single video covering the modern optimizer landscape
+- **"Lion: The Optimizer AI Discovered That Beats Adam"**: https://www.youtube.com/watch?v=KGMTtblpcGY — evolutionary search discovery of Lion
+- **"This Simple Optimizer Is Revolutionizing How We Train AI [Muon]"**: https://www.youtube.com/watch?v=bO5nvE289ec — best Muon video explanation
+- **3Blue1Brown** — "Gradient descent, how neural networks learn": https://www.youtube.com/watch?v=IHZwWFHWa-w — foundational, no optimizer-specific videos
+
+**Blog posts**:
+- **Sebastian Ruder — "An overview of gradient descent optimization algorithms"**: https://www.ruder.io/optimizing-gradient-descent/ — the canonical reference, includes Alec Radford's famous optimizer GIF animations
+- **Lili Jiang — "A Visual Explanation of Gradient Descent Methods"**: https://towardsdatascience.com/a-visual-explanation-of-gradient-descent-methods-momentum-adagrad-rmsprop-adam-f898b102325c/ — animated side-by-side comparisons
+- **Dive into Deep Learning (d2l.ai) — Optimization Chapter**: https://www.d2l.ai/chapter_optimization/ — free textbook with runnable code
+
+**Loss landscape visualization**:
 - **Li et al. (2018)** — "Visualizing the Loss Landscape of Neural Nets": https://arxiv.org/abs/1712.09913
   - Code: https://github.com/tomgoldstein/loss-landscape
   - PyTorch library: https://github.com/marcellodebernardi/loss-landscapes
-- **3Blue1Brown** — Neural network series covers gradient descent and backpropagation (no optimizer-specific videos found, but the gradient descent intuitions are foundational)
+- **losslandscape.com**: https://losslandscape.com/ — artistic 8K video renderings of real training dynamics
+- **J. Tucker — "What is a Loss Landscape?"**: https://jtuckerk.github.io/loss_landscape.html — interactive PCA-based exploration
+
+**Benchmarks**:
+- **W&B "Fantastic Optimizers and Where to Find Them"**: https://wandb.ai/marin-community/marin/reports/Fantastic-Optimizers-and-Where-to-Find-Them--VmlldzoxMjgzMzQ2NQ — rigorous benchmark of 11 optimizers at 0.1B–1.2B scale; honest about inflated speedup claims
 
 ### Tools & Implementations
 - **Lion PyTorch**: https://github.com/lucidrains/lion-pytorch
