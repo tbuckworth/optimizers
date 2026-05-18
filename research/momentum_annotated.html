@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Momentum Really Works — Annotated</title>
+
+<!-- KaTeX from CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.getElementById('annotations'), {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ],
+    throwOnError: false
+  });"></script>
+
+<style>
+  /* ===== Reset & Base ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #f5f5f0;
+    color: #2c2c2c;
+  }
+
+  /* ===== Layout ===== */
+  .container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .left-panel {
+    width: 55%;
+    height: 100%;
+    border-right: 3px solid #d0d0d0;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .left-panel iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .right-panel {
+    width: 45%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 0;
+    background: #fafaf5;
+  }
+
+  /* ===== Sticky Header ===== */
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: #ecf0f1;
+    padding: 16px 24px;
+    border-bottom: 3px solid #e67e22;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+
+  .sticky-header h1 {
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: -0.3px;
+  }
+
+  .sticky-header p {
+    font-size: 0.85em;
+    line-height: 1.5;
+    opacity: 0.9;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .sticky-header .legend {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78em;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Annotations Content ===== */
+  #annotations {
+    padding: 20px 24px 60px 24px;
+  }
+
+  /* ===== Section Headers ===== */
+  .section-header {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-top: 36px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e67e22;
+    letter-spacing: -0.3px;
+  }
+
+  .section-header:first-child {
+    margin-top: 8px;
+  }
+
+  /* ===== Card Base ===== */
+  .card {
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    line-height: 1.7;
+    font-size: 0.92em;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .card h3 {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 1.05em;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .card p, .card ul, .card ol {
+    margin-bottom: 8px;
+  }
+
+  .card ul, .card ol {
+    padding-left: 22px;
+  }
+
+  .card li {
+    margin-bottom: 4px;
+  }
+
+  .card .formula-box {
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 5px;
+    padding: 10px 14px;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 1.05em;
+  }
+
+  /* ===== Card Types ===== */
+  .card.symbols {
+    background: #e8f4fd;
+    border-left: 4px solid #3498db;
+  }
+  .card.symbols h3 { color: #2471a3; }
+
+  .card.assumptions {
+    background: #fef9e7;
+    border-left: 4px solid #f1c40f;
+  }
+  .card.assumptions h3 { color: #b7950b; }
+
+  .card.intuition {
+    background: #eafaf1;
+    border-left: 4px solid #27ae60;
+  }
+  .card.intuition h3 { color: #1e8449; }
+
+  .card.example {
+    background: #f5eef8;
+    border-left: 4px solid #8e44ad;
+  }
+  .card.example h3 { color: #6c3483; }
+
+  .card.warning {
+    background: #fdedec;
+    border-left: 4px solid #e74c3c;
+  }
+  .card.warning h3 { color: #c0392b; }
+
+  .card.recap {
+    background: #fdf2e9;
+    border-left: 4px solid #e67e22;
+  }
+  .card.recap h3 { color: #ca6f1e; }
+
+  /* ===== Misc ===== */
+  strong { font-weight: 700; }
+  em { font-style: italic; }
+
+  code {
+    background: rgba(0,0,0,0.06);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: 'Menlo', 'Consolas', monospace;
+    font-size: 0.88em;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px dashed #ccc;
+    margin: 28px 0;
+  }
+
+  /* ===== Resizer ===== */
+  .resizer {
+    width: 6px;
+    cursor: col-resize;
+    background: #d0d0d0;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .resizer:hover {
+    background: #e67e22;
+  }
+
+  /* ===== Scrollbar ===== */
+  .right-panel::-webkit-scrollbar { width: 8px; }
+  .right-panel::-webkit-scrollbar-track { background: #eee; }
+  .right-panel::-webkit-scrollbar-thumb { background: #bbb; border-radius: 4px; }
+  .right-panel::-webkit-scrollbar-thumb:hover { background: #999; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Left: Original Distill article -->
+  <div class="left-panel" id="leftPanel">
+    <iframe src="file:///Users/titus/Downloads/Why%20Momentum%20Really%20Works.html" sandbox="allow-scripts allow-same-origin"></iframe>
+  </div>
+
+  <!-- Draggable resizer -->
+  <div class="resizer" id="resizer"></div>
+
+  <!-- Right: Annotations -->
+  <div class="right-panel" id="rightPanel">
+    <div class="sticky-header">
+      <h1>Annotated Guide: Why Momentum Really Works</h1>
+      <p>Scroll this column alongside the article on the left. Each section matches the original. Drag the divider to resize panels.</p>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#e8f4fd; border:1px solid #3498db;"></div> Symbols &amp; Definitions</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#fef9e7; border:1px solid #f1c40f;"></div> Implicit Assumptions</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#eafaf1; border:1px solid #27ae60;"></div> Intuition &amp; "Why"</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#f5eef8; border:1px solid #8e44ad;"></div> Concrete Examples</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#fdedec; border:1px solid #e74c3c;"></div> Pitfalls &amp; Warnings</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#fdf2e9; border:1px solid #e67e22;"></div> Recap / Big Picture</div>
+      </div>
+    </div>
+
+    <div id="annotations">
+
+<!-- ============================================================ -->
+<!--  SECTION: INTRODUCTION                                        -->
+<!-- ============================================================ -->
+<h2 class="section-header">Introduction</h2>
+
+<div class="card symbols">
+  <h3>Gradient Descent Update Rule</h3>
+  <div class="formula-box">
+    $$ w^{k+1} = w^k - \alpha \nabla f(w^k) $$
+  </div>
+  <ul>
+    <li>$w^k$ is the <strong>parameter vector</strong> at step $k$. Think of it as your current "guess" for the best solution. It lives in $\mathbb{R}^n$ (a list of $n$ numbers).</li>
+    <li>$\alpha$ (alpha) is the <strong>learning rate</strong> or <strong>step size</strong> &mdash; a small positive number that controls how far you move each step. Too big and you overshoot; too small and you crawl.</li>
+    <li>$\nabla f(w^k)$ is the <strong>gradient</strong> of the loss function $f$ evaluated at $w^k$. The gradient is a vector that points in the direction of <em>steepest increase</em> of $f$. Each component $(\nabla f)_i = \partial f / \partial w_i$ tells you how much $f$ changes if you nudge the $i$-th parameter.</li>
+    <li>The <strong>minus sign</strong> means we move <em>opposite</em> the gradient &mdash; downhill, toward lower loss.</li>
+  </ul>
+</div>
+
+<div class="card intuition">
+  <h3>Why Subtract the Gradient?</h3>
+  <p>Imagine standing on a hilly landscape in fog. You can't see the valley, but you can feel which way the ground slopes under your feet. The gradient is like that slope. Walking opposite the slope (downhill) is the most direct way to reduce your altitude. That's gradient descent: take the direction of steepest descent and step a fixed distance in that direction.</p>
+  <p>The problem: this is a <strong>memoryless</strong> method. Each step only uses local information at the current point. It has no "memory" of where it came from or how fast it was going. This is where momentum enters.</p>
+</div>
+
+<div class="card symbols">
+  <h3>Momentum Update Rule</h3>
+  <div class="formula-box">
+    $$ z^{k+1} = \beta z^k + \nabla f(w^k) $$
+    $$ w^{k+1} = w^k - \alpha z^{k+1} $$
+  </div>
+  <ul>
+    <li>$z^k$ is the <strong>velocity</strong> (or "accumulated gradient") at step $k$. It's a running weighted average of past gradients.</li>
+    <li>$\beta$ (beta) is the <strong>momentum coefficient</strong>, typically between 0 and 1 (e.g., 0.9). It controls how much of the previous velocity you retain.</li>
+    <li>First line: the new velocity is $\beta$ times the old velocity <em>plus</em> the current gradient. If $\beta = 0$, this reduces to plain gradient descent.</li>
+    <li>Second line: you step in the direction of the accumulated velocity, not just the current gradient.</li>
+  </ul>
+</div>
+
+<div class="card intuition">
+  <h3>The Ball Rolling Down a Hill</h3>
+  <p>Momentum makes gradient descent act like a <strong>ball with inertia</strong>. A ball rolling downhill doesn't just respond to the current slope &mdash; it also carries velocity from its previous motion. This means:</p>
+  <ul>
+    <li>In a <strong>consistent direction</strong> (like a long valley), the ball accelerates.</li>
+    <li>In <strong>oscillating directions</strong> (like a narrow ravine), the back-and-forth cancels out, and the ball follows a smoother path.</li>
+  </ul>
+  <p>But as the article will show, the full story is much richer than this analogy suggests.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!--  SECTION: FIRST STEPS — GRADIENT DESCENT                     -->
+<!-- ============================================================ -->
+<h2 class="section-header">First Steps: Gradient Descent</h2>
+
+<div class="card symbols">
+  <h3>The Convex Quadratic Model</h3>
+  <div class="formula-box">
+    $$ f(w) = \tfrac{1}{2} w^T A w - b^T w $$
+  </div>
+  <ul>
+    <li>$w \in \mathbb{R}^n$ is a column vector of $n$ parameters.</li>
+    <li>$A$ is an $n \times n$ matrix. The superscript $T$ means <strong>transpose</strong>: flip rows and columns. So $w^T$ is a row vector, and $w^T A w$ is a scalar (a single number).</li>
+    <li>$b \in \mathbb{R}^n$ is a fixed vector. The term $b^T w = \sum_i b_i w_i$ is the dot product.</li>
+    <li>$\tfrac{1}{2}$ is just for convenience &mdash; it makes the gradient cleaner (the 2 from the quadratic term cancels the $\tfrac{1}{2}$).</li>
+    <li>The gradient is: $\nabla f(w) = Aw - b$. (This is why $\tfrac{1}{2}$ is handy.)</li>
+  </ul>
+</div>
+
+<div class="card assumptions">
+  <h3>Implicit Assumptions on $A$</h3>
+  <p>Throughout the article, $A$ is assumed to be:</p>
+  <ol>
+    <li><strong>Symmetric</strong>: $A = A^T$, meaning $A_{ij} = A_{ji}$. The matrix equals its own transpose. This is critical because it guarantees that all eigenvalues are <em>real numbers</em> (not complex). Without symmetry, you could get complex eigenvalues, and the entire analysis would change.</li>
+    <li><strong>Positive definite</strong>: all eigenvalues $\lambda_i > 0$. This means the quadratic $f(w)$ is a "bowl" shape with a unique minimum &mdash; no saddle points, no flat directions. The function curves upward in every direction.</li>
+  </ol>
+  <p><strong>Why these matter</strong>: Positive definiteness ensures the problem has a unique solution. Symmetry ensures the eigendecomposition is "nice" (orthogonal eigenvectors, real eigenvalues). Together, they make $f(w)$ a well-behaved optimization problem &mdash; the simplest interesting case to study.</p>
+</div>
+
+<div class="card intuition">
+  <h3>What is $w^T A w$, Geometrically?</h3>
+  <p>A positive definite quadratic $\tfrac{1}{2} w^T A w$ defines an <strong>ellipsoidal bowl</strong>. The contour lines (level sets) are ellipses in 2D, or ellipsoids in higher dimensions. The eigenvalues of $A$ determine <strong>how stretched</strong> the ellipses are:</p>
+  <ul>
+    <li>If all eigenvalues are equal ($\lambda_1 = \lambda_2 = \cdots$), the contours are perfect circles/spheres. Gradient descent works great.</li>
+    <li>If eigenvalues differ a lot (say $\lambda_1 = 1$ and $\lambda_n = 100$), the contours are very elongated ellipses. Gradient descent zig-zags across the narrow direction instead of heading straight to the bottom.</li>
+  </ul>
+</div>
+
+<div class="card symbols">
+  <h3>The Optimal Solution</h3>
+  <div class="formula-box">
+    $$ w^* = A^{-1} b $$
+  </div>
+  <ul>
+    <li>$w^*$ is the <strong>minimum</strong> of $f(w)$. At this point, $\nabla f(w^*) = Aw^* - b = 0$, so $Aw^* = b$, hence $w^* = A^{-1}b$.</li>
+    <li>$A^{-1}$ is the <strong>inverse</strong> of $A$: the unique matrix such that $A^{-1}A = AA^{-1} = I$ (the identity matrix). It exists because $A$ is positive definite (all eigenvalues are positive, so none are zero).</li>
+    <li>Computing $A^{-1}$ directly is expensive for large $n$. Iterative methods like gradient descent avoid computing it explicitly &mdash; they find $w^*$ by repeated simple operations instead.</li>
+  </ul>
+</div>
+
+<div class="card symbols">
+  <h3>Gradient Descent on the Quadratic</h3>
+  <div class="formula-box">
+    $$ w^{k+1} = w^k - \alpha(Aw^k - b) $$
+  </div>
+  <p>This is just the general GD rule $w^{k+1} = w^k - \alpha \nabla f(w^k)$ with $\nabla f(w^k) = Aw^k - b$ substituted in. Each step is a matrix-vector multiplication ($Aw^k$), a subtraction ($-b$), a scalar multiplication ($\alpha$), and another subtraction. All linear operations.</p>
+</div>
+
+<div class="card symbols">
+  <h3>Eigenvalue Decomposition of $A$</h3>
+  <div class="formula-box">
+    $$ A = Q \, \text{diag}(\lambda_1, \ldots, \lambda_n) \, Q^T $$
+  </div>
+  <p>This is the <strong>spectral theorem</strong> &mdash; one of the most important results in linear algebra. Let's unpack it piece by piece:</p>
+  <ul>
+    <li><strong>Eigenvalue/Eigenvector</strong>: An eigenvector $q_i$ of $A$ is a nonzero vector that satisfies $A q_i = \lambda_i q_i$. Multiplying by $A$ just <em>scales</em> it by $\lambda_i$ (the eigenvalue). The direction doesn't change. Think of it as a "natural axis" of the matrix.</li>
+    <li><strong>$Q$</strong> is the matrix whose columns are the eigenvectors: $Q = [q_1 \mid q_2 \mid \cdots \mid q_n]$.</li>
+    <li><strong>$\text{diag}(\lambda_1, \ldots, \lambda_n)$</strong> is a diagonal matrix with eigenvalues on the diagonal and zeros elsewhere. Often written $\Lambda$.</li>
+    <li><strong>$Q^T$</strong> appears (instead of $Q^{-1}$) because $Q$ is <strong>orthogonal</strong> &mdash; see below.</li>
+  </ul>
+</div>
+
+<div class="card assumptions">
+  <h3>Why $Q^T = Q^{-1}$ (Orthogonal Matrices)</h3>
+  <p>Because $A$ is symmetric, the spectral theorem guarantees that the eigenvectors can be chosen to be <strong>orthonormal</strong>:</p>
+  <ul>
+    <li><strong>Orthogonal</strong>: $q_i^T q_j = 0$ for $i \neq j$ (they're perpendicular).</li>
+    <li><strong>Normal</strong>: $q_i^T q_i = 1$ (each has length 1).</li>
+  </ul>
+  <p>A matrix $Q$ whose columns are orthonormal satisfies $Q^T Q = I$. This means $Q^T = Q^{-1}$. Inverting $Q$ is "free" &mdash; you just transpose it.</p>
+  <p><strong>Geometric meaning</strong>: An orthogonal matrix represents a <strong>rotation</strong> (or rotation + reflection). Multiplying by $Q$ rotates your coordinate system to align with the eigenvectors. Multiplying by $Q^T$ rotates back.</p>
+  <p><strong>If $A$ were not symmetric</strong>: the eigenvectors would not generally be orthogonal, eigenvalues could be complex, and the decomposition would be $A = P \Lambda P^{-1}$ where $P^{-1} \neq P^T$. The analysis would be much messier.</p>
+</div>
+
+<div class="card symbols">
+  <h3>Change of Basis: Working in the Eigenbasis</h3>
+  <div class="formula-box">
+    $$ x = Q^T(w - w^*) $$
+  </div>
+  <p>Define the <strong>error in the eigenbasis</strong>: $x$ represents how far $w$ is from the optimum, measured in the coordinate system defined by the eigenvectors.</p>
+  <ul>
+    <li>$w - w^*$ is the error vector in the original coordinates.</li>
+    <li>Multiplying by $Q^T$ <strong>rotates</strong> this error into the eigenvector coordinate system.</li>
+    <li>$x_i = q_i^T(w - w^*)$ is the component of the error along eigenvector $q_i$.</li>
+  </ul>
+  <p><strong>"Change of basis"</strong> means switching from one coordinate system to another. It's like deciding to measure a room in feet vs. meters &mdash; the room doesn't change, but the numbers you use to describe it do. Here, we switch from the "standard" axes to the axes that align with the ellipsoidal contours of $f$.</p>
+</div>
+
+<div class="card intuition">
+  <h3>Why Iterations Decouple in the Eigenbasis</h3>
+  <div class="formula-box">
+    $$ x_i^{k+1} = (1 - \alpha \lambda_i) \, x_i^k $$
+  </div>
+  <p>This is the key insight. In the eigenbasis, the $n$-dimensional problem <strong>separates into $n$ independent 1D problems</strong>. Each component $x_i$ evolves on its own, multiplied by $(1 - \alpha \lambda_i)$ each step.</p>
+  <p><strong>Why does this happen?</strong> In the eigenbasis, $A$ becomes diagonal: $Q^T A Q = \Lambda$. A diagonal matrix acts on each coordinate independently &mdash; it just scales each one by its eigenvalue. No coordinate "talks to" any other. This is the whole point of the eigendecomposition: it <em>diagonalizes</em> the problem.</p>
+</div>
+
+<div class="card symbols">
+  <h3>Closed-Form After $k$ Steps</h3>
+  <div class="formula-box">
+    $$ x_i^{k} = (1 - \alpha \lambda_i)^k \, x_i^0 $$
+  </div>
+  <div class="formula-box">
+    $$ w^k - w^* = \sum_{i=1}^{n} x_i^0 \, (1 - \alpha \lambda_i)^k \, q_i $$
+  </div>
+  <ul>
+    <li>The first formula says: after $k$ steps, the $i$-th component of the error has been multiplied by $(1 - \alpha \lambda_i)^k$. If $|1 - \alpha \lambda_i| < 1$, this decays exponentially. If $|1 - \alpha \lambda_i| > 1$, it <em>grows</em> (diverges!).</li>
+    <li>The second formula converts back to the original coordinates. The error is a sum over eigenvectors $q_i$, each weighted by its initial error $x_i^0$ times a shrinking (or growing) factor.</li>
+    <li>The quantity $r_i = (1 - \alpha \lambda_i)$ is the <strong>convergence rate</strong> for the $i$-th eigencomponent. We need $|r_i| < 1$ for all $i$.</li>
+  </ul>
+</div>
+
+<div class="card example">
+  <h3>Concrete 2D Example</h3>
+  <p>Suppose $n = 2$ with $\lambda_1 = 1$ (gentle slope) and $\lambda_2 = 10$ (steep slope), and $\alpha = 0.1$:</p>
+  <ul>
+    <li>$r_1 = 1 - 0.1 \times 1 = 0.9$ &mdash; the gentle direction converges slowly.</li>
+    <li>$r_2 = 1 - 0.1 \times 10 = 0$ &mdash; the steep direction converges in one step!</li>
+  </ul>
+  <p>But try $\alpha = 0.15$:</p>
+  <ul>
+    <li>$r_1 = 1 - 0.15 = 0.85$ &mdash; gentle direction is a bit faster.</li>
+    <li>$r_2 = 1 - 1.5 = -0.5$ &mdash; the steep direction oscillates (negative rate) but still converges.</li>
+  </ul>
+  <p>Try $\alpha = 0.25$:</p>
+  <ul>
+    <li>$r_2 = 1 - 2.5 = -1.5$ &mdash; $|r_2| > 1$, this <strong>diverges</strong>! The step size is too big for the steep direction.</li>
+  </ul>
+  <p>This is the fundamental tension: making $\alpha$ larger helps slow directions but can blow up fast directions.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!--  SECTION: DECOMPOSING THE ERROR                               -->
+<!-- ============================================================ -->
+<h2 class="section-header">Decomposing the Error</h2>
+
+<div class="card symbols">
+  <h3>Error Decomposition in Terms of $f$</h3>
+  <div class="formula-box">
+    $$ f(w^k) - f(w^*) = \sum_{i=1}^{n} (1 - \alpha \lambda_i)^{2k} \, \lambda_i \, [x_i^0]^2 $$
+  </div>
+  <ul>
+    <li>The left side is how far the function value is from optimal after $k$ steps.</li>
+    <li>Each eigencomponent contributes $(1 - \alpha \lambda_i)^{2k} \cdot \lambda_i \cdot [x_i^0]^2$ to the total error.</li>
+    <li>The exponent is $2k$ (not $k$) because the <em>function value</em> error is quadratic in the <em>parameter</em> error. The parameter error decays as $(1-\alpha\lambda_i)^k$, so the function error decays as its square.</li>
+    <li>$\lambda_i [x_i^0]^2$ weights each component by both its curvature ($\lambda_i$) and its initial error ($x_i^0$). Large eigenvalues contribute more per unit of parameter error because the function is more "curved" in that direction.</li>
+  </ul>
+</div>
+
+<div class="card intuition">
+  <h3>Why the Sum Structure Matters</h3>
+  <p>The overall convergence is dominated by the <strong>slowest-decaying term</strong> &mdash; the one with the largest $|1 - \alpha \lambda_i|$. It's like a chain: the weakest link determines the strength. You can make some components converge instantly, but the one eigenvalue with the worst rate sets the pace.</p>
+  <p>This is a key theme of the article: gradient descent's speed is limited by the worst eigenvalue, and momentum's purpose is to equalize the rates across eigenvalues.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!--  SECTION: CHOOSING A STEP SIZE                                -->
+<!-- ============================================================ -->
+<h2 class="section-header">Choosing a Step Size</h2>
+
+<div class="card symbols">
+  <h3>Stability Condition</h3>
+  <div class="formula-box">
+    $$ 0 < \alpha \lambda_i < 2 \quad \text{for all } i $$
+  </div>
+  <p>For convergence, we need $|1 - \alpha \lambda_i| < 1$ for every eigenvalue. This requires:</p>
+  <ul>
+    <li>$1 - \alpha \lambda_i < 1 \;\Rightarrow\; \alpha \lambda_i > 0$ (always true since $\alpha, \lambda_i > 0$).</li>
+    <li>$1 - \alpha \lambda_i > -1 \;\Rightarrow\; \alpha \lambda_i < 2$.</li>
+  </ul>
+  <p>Since this must hold for the <em>largest</em> eigenvalue $\lambda_n$, the constraint is $\alpha < 2/\lambda_n$. This is the maximum stable step size.</p>
+</div>
+
+<div class="card symbols">
+  <h3>Convergence Rate and Optimal Step Size</h3>
+  <div class="formula-box">
+    $$ \text{rate}(\alpha) = \max_i |1 - \alpha \lambda_i| $$
+  </div>
+  <div class="formula-box">
+    $$ \alpha^* = \frac{2}{\lambda_1 + \lambda_n}, \qquad \text{rate}^* = \frac{\kappa - 1}{\kappa + 1} $$
+  </div>
+  <ul>
+    <li>The overall rate is the <strong>worst case</strong> across all eigenvalues. We want to <em>minimize the maximum</em>.</li>
+    <li>The optimal $\alpha$ balances the extreme eigenvalues. At $\alpha^* = 2/(\lambda_1 + \lambda_n)$:
+      <ul>
+        <li>$|1 - \alpha^* \lambda_1| = |1 - 2\lambda_1/(\lambda_1 + \lambda_n)| = (\lambda_n - \lambda_1)/(\lambda_n + \lambda_1)$</li>
+        <li>$|1 - \alpha^* \lambda_n| = |1 - 2\lambda_n/(\lambda_1 + \lambda_n)| = (\lambda_n - \lambda_1)/(\lambda_n + \lambda_1)$</li>
+      </ul>
+      They're equal! The two extremes have matched rates &mdash; this is the minimax solution.</li>
+  </ul>
+</div>
+
+<div class="card symbols">
+  <h3>The Condition Number</h3>
+  <div class="formula-box">
+    $$ \kappa = \frac{\lambda_n}{\lambda_1} $$
+  </div>
+  <ul>
+    <li>$\kappa$ (kappa) is the <strong>condition number</strong> of $A$. It is the ratio of the largest to smallest eigenvalue.</li>
+    <li>$\kappa \geq 1$ always (since $\lambda_n \geq \lambda_1 > 0$). $\kappa = 1$ means a perfect sphere (all eigenvalues equal).</li>
+    <li>Large $\kappa$ means the problem is <strong>ill-conditioned</strong>: some directions are much steeper than others. The contour ellipses are very elongated.</li>
+  </ul>
+</div>
+
+<div class="card intuition">
+  <h3>What the Condition Number Means Intuitively</h3>
+  <p>Imagine optimizing a function that looks like a long, narrow valley:</p>
+  <ul>
+    <li>$\lambda_1$ (small) controls the gentle slope along the valley floor. This is the direction you want to make progress in.</li>
+    <li>$\lambda_n$ (large) controls the steep walls of the valley. GD quickly settles into the valley, but then crawls along the floor.</li>
+    <li>$\kappa = \lambda_n / \lambda_1$ measures how elongated the valley is. $\kappa = 100$ means the steep direction has 100x more curvature than the flat direction.</li>
+  </ul>
+  <p>The convergence rate $(\kappa - 1)/(\kappa + 1)$ approaches 1 as $\kappa \to \infty$, meaning <strong>almost no progress per step</strong>. For $\kappa = 100$: rate $= 99/101 \approx 0.98$, so it takes about $1/\ln(1/0.98) \approx 50$ steps to reduce the error by a factor of $e$. For $\kappa = 10{,}000$: rate $\approx 0.9998$, requiring $\sim$5000 steps per factor of $e$.</p>
+</div>
+
+<div class="card warning">
+  <h3>Why $(\kappa-1)/(\kappa+1)$ is Bad</h3>
+  <p>The number of gradient descent steps to reduce the error by a factor of $\epsilon$ is approximately:</p>
+  <div class="formula-box">
+    $$ k \approx \frac{\kappa}{2} \ln(1/\epsilon) $$
+  </div>
+  <p>This grows <strong>linearly</strong> with $\kappa$. In machine learning, condition numbers of $10^4$ to $10^6$ are common. This is why plain gradient descent is often impractically slow, and why momentum matters.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!--  SECTION: POLYNOMIAL REGRESSION                               -->
+<!-- ============================================================ -->
+<h2 class="section-header">Polynomial Regression (Interlude)</h2>
+
+<div class="card symbols">
+  <h3>The Polynomial Model</h3>
+  <div class="formula-box">
+    $$ \text{model}(\xi) = w_1 p_1(\xi) + w_2 p_2(\xi) + \cdots + w_n p_n(\xi) $$
+  </div>
+  <ul>
+    <li>$\xi$ is the input variable (a scalar).</li>
+    <li>$p_i(\xi) = \xi^{i-1}$ are the monomial basis functions: $1, \xi, \xi^2, \xi^3, \ldots$</li>
+    <li>$w_i$ are the coefficients (parameters) we're fitting.</li>
+    <li>This is <strong>linear regression</strong> in the coefficients $w_i$ even though the model is a polynomial in $\xi$.</li>
+  </ul>
+</div>
+
+<div class="card symbols">
+  <h3>The Vandermonde Matrix</h3>
+  <p>Given data points $(\xi_1, y_1), \ldots, (\xi_m, y_m)$, the least-squares problem is $\min_w \|Zw - y\|^2$ where $Z$ is the <strong>Vandermonde matrix</strong>:</p>
+  <div class="formula-box">
+    $$ Z_{ji} = \xi_j^{i-1} $$
+  </div>
+  <p>The normal equations give $A = Z^T Z$, $b = Z^T y$. The matrix $A = Z^T Z$ is always symmetric and positive semi-definite. It's positive definite when the data points are distinct and $m \geq n$.</p>
+</div>
+
+<div class="card intuition">
+  <h3>Why This Interlude?</h3>
+  <p>Polynomial regression produces a concrete, visualizable example of an ill-conditioned problem. The Vandermonde matrix $Z^TZ$ is notoriously ill-conditioned &mdash; its condition number grows rapidly with the polynomial degree. This makes it a perfect test case for seeing why gradient descent struggles and momentum helps.</p>
+  <p>The eigenvectors of $Z^T Z$ turn out to approximate <strong>orthogonal polynomials</strong> (like Chebyshev or Legendre polynomials). These form a "natural" basis for the problem, analogous to the eigenvector basis for the general quadratic. The article uses this to create beautiful visualizations of convergence in the polynomial coefficient space.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!--  SECTION: THE DYNAMICS OF MOMENTUM                            -->
+<!-- ============================================================ -->
+<h2 class="section-header">The Dynamics of Momentum</h2>
+
+<div class="card recap">
+  <h3>Setup: Momentum on the Quadratic</h3>
+  <p>We now apply the momentum update to $f(w) = \tfrac{1}{2}w^TAw - b^Tw$ and work in the eigenbasis (just like we did for gradient descent). The per-eigenvalue momentum update is:</p>
+  <div class="formula-box">
+    $$ y_i^{k+1} = \beta \, y_i^k + \lambda_i \, x_i^k $$
+    $$ x_i^{k+1} = x_i^k - \alpha \, y_i^{k+1} $$
+  </div>
+  <ul>
+    <li>$x_i^k$: the error along eigenvector $i$ at step $k$ (same as before).</li>
+    <li>$y_i^k$: the <strong>velocity</strong> (accumulated gradient) along eigenvector $i$. This is the new variable introduced by momentum.</li>
+    <li>$\lambda_i$: the eigenvalue (curvature in direction $i$).</li>
+    <li>$\alpha, \beta$: step size and momentum coefficient.</li>
+  </ul>
+</div>
+
+<div class="card intuition">
+  <h3>Why a 2D System? (The Key Structural Insight)</h3>
+  <p>Plain gradient descent tracks one number per eigencomponent: $x_i$ (the error). Momentum introduces a second variable: $y_i$ (the velocity). So each eigencomponent now has <strong>two</strong> numbers evolving together, coupled in a system of two equations.</p>
+  <p>This is analogous to physics: Newton's second law $F = ma$ is a <em>second-order</em> ODE in position. To solve it as a system of <em>first-order</em> equations, you introduce velocity as a separate variable. Then position and velocity evolve together as a 2D system. Momentum in optimization does exactly the same thing.</p>
+</div>
+
+<div class="card symbols">
+  <h3>Matrix Form of the 2D System</h3>
+  <div class="formula-box">
+    $$ \begin{bmatrix} y_i^{k+1} \\ x_i^{k+1} \end{bmatrix} = R \begin{bmatrix} y_i^k \\ x_i^k \end{bmatrix}, \qquad R = \begin{bmatrix} \beta & \lambda_i \\ -\alpha\beta & 1 - \alpha\lambda_i \end{bmatrix} $$
+  </div>
+  <ul>
+    <li>The state vector is $[y_i^k, \; x_i^k]^T$ &mdash; velocity and position error.</li>
+    <li>$R$ is a $2 \times 2$ matrix that maps the state at step $k$ to the state at step $k+1$.</li>
+    <li>After $k$ steps: $[y_i^k, x_i^k]^T = R^k [y_i^0, x_i^0]^T$. The behavior is entirely determined by $R^k$.</li>
+  </ul>
+  <p><strong>How to read $R$</strong>:</p>
+  <ul>
+    <li>Top row ($y$ update): new velocity = $\beta \times$ old velocity + $\lambda_i \times$ old position error.</li>
+    <li>Bottom row ($x$ update): new error = $-\alpha\beta \times$ old velocity + $(1 - \alpha\lambda_i) \times$ old position error. (Obtained by substituting the first equation into the second.)</li>
+  </ul>
+</div>
+
+<div class="card assumptions">
+  <h3>Why $R$ Has the Form It Does</h3>
+  <p>The bottom-left entry $-\alpha\beta$ deserves explanation. The update is:</p>
+  <ol>
+    <li>$y_i^{k+1} = \beta y_i^k + \lambda_i x_i^k$ (first compute new velocity)</li>
+    <li>$x_i^{k+1} = x_i^k - \alpha y_i^{k+1}$ (then use new velocity to update position)</li>
+  </ol>
+  <p>Substituting (1) into (2): $x_i^{k+1} = x_i^k - \alpha(\beta y_i^k + \lambda_i x_i^k) = -\alpha\beta \cdot y_i^k + (1 - \alpha\lambda_i) \cdot x_i^k$.</p>
+  <p>Note that the velocity update uses the <strong>old</strong> velocity $y_i^k$, but the position update uses the <strong>new</strong> velocity $y_i^{k+1}$. This asymmetry is what creates the coupling and gives momentum its power.</p>
+</div>
+
+<div class="card symbols">
+  <h3>$R^k$ via Eigenvalues of $R$</h3>
+  <p>To understand $R^k$, we need the eigenvalues $\sigma_1, \sigma_2$ of the $2 \times 2$ matrix $R$. These come from:</p>
+  <div class="formula-box">
+    $$ \sigma^2 - (\beta + 1 - \alpha\lambda_i)\sigma + \beta = 0 $$
+  </div>
+  <p>This is the characteristic polynomial of $R$. Its trace is $\beta + (1 - \alpha\lambda_i)$ and its determinant is $\beta$. The eigenvalues are:</p>
+  <div class="formula-box">
+    $$ \sigma_{1,2} = \frac{(\beta + 1 - \alpha\lambda_i) \pm \sqrt{(\beta + 1 - \alpha\lambda_i)^2 - 4\beta}}{2} $$
+  </div>
+  <ul>
+    <li>The term under the square root is the <strong>discriminant</strong>: $\Delta = (\beta + 1 - \alpha\lambda_i)^2 - 4\beta$.</li>
+    <li>$\Delta > 0$: two distinct real eigenvalues (overdamped).</li>
+    <li>$\Delta = 0$: one repeated real eigenvalue (critically damped).</li>
+    <li>$\Delta < 0$: two complex conjugate eigenvalues (underdamped, oscillatory).</li>
+  </ul>
+</div>
+
+<div class="card symbols">
+  <h3>Stability with Momentum</h3>
+  <div class="formula-box">
+    $$ 0 < \alpha\lambda_i < 2 + 2\beta \quad \text{for all } i $$
+  </div>
+  <p>Compare with gradient descent's condition $0 < \alpha\lambda_i < 2$. Momentum <strong>extends the stability region</strong> by a factor of $(1 + \beta)$. With $\beta = 0.9$, you can use step sizes up to $1.9 \times$ what plain GD allows. This is one benefit of momentum, though not the main one.</p>
+</div>
+
+<div class="card intuition">
+  <h3>Complex Eigenvalues = Oscillations</h3>
+  <p>When the discriminant $\Delta < 0$, the eigenvalues of $R$ are complex conjugates: $\sigma_{1,2} = r e^{\pm i\theta}$ where $r = |\sigma|$ and $\theta$ is the phase angle.</p>
+  <ul>
+    <li><strong>$r = |\sigma| = \sqrt{\beta}$</strong>. This is a remarkable fact: when the eigenvalues are complex, their <em>magnitude</em> is exactly $\sqrt{\beta}$, regardless of $\lambda_i$.</li>
+    <li>The error decays as $(\sqrt{\beta})^k$ while oscillating with angular frequency $\theta$.</li>
+    <li><strong>Physical analogy</strong>: this is exactly a <strong>damped harmonic oscillator</strong>. Think of a spring with damping: the position oscillates while the amplitude decays exponentially. $\sqrt{\beta}$ controls the damping rate, and $\theta$ controls the oscillation frequency.</li>
+  </ul>
+</div>
+
+<div class="card example">
+  <h3>What Complex Eigenvalues Look Like</h3>
+  <p>With complex eigenvalues $\sigma = re^{i\theta}$, the error at step $k$ looks like:</p>
+  <div class="formula-box">
+    $$ x_i^k \sim r^k \cos(k\theta + \phi) = (\sqrt{\beta})^k \cos(k\theta + \phi) $$
+  </div>
+  <p>This is a cosine wave with exponentially decaying amplitude. For $\beta = 0.81$ ($\sqrt{\beta} = 0.9$): the amplitude decays by 10% each step while oscillating. After 22 steps, the amplitude has decayed by a factor of $0.9^{22} \approx 0.1$.</p>
+  <p>Compare with gradient descent at rate 0.98 (from a badly conditioned problem): after 22 steps, the amplitude would only decay by $0.98^{22} \approx 0.64$. Momentum's oscillatory decay at rate 0.9 is dramatically faster.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!--  SECTION: THE CRITICAL DAMPING COEFFICIENT                    -->
+<!-- ============================================================ -->
+<h2 class="section-header">The Critical Damping Coefficient</h2>
+
+<div class="card symbols">
+  <h3>The Three Regimes</h3>
+  <p>For each eigenvalue $\lambda_i$, the behavior of the 2D system depends on the relationship between $\beta$ and $\alpha\lambda_i$:</p>
+  <div class="formula-box">
+    $$ \beta_{\text{crit}} = (1 - \sqrt{\alpha\lambda_i})^2 $$
+  </div>
+  <ul>
+    <li><strong>Overdamped</strong> ($\beta < \beta_{\text{crit}}$): Two distinct real eigenvalues, both less than 1. Convergence without oscillation but <em>slower</em> than optimal. Like a door-closer with too much friction: it closes smoothly but slowly.</li>
+    <li><strong>Critically damped</strong> ($\beta = \beta_{\text{crit}}$): Two equal real eigenvalues. The fastest convergence without oscillation. Like a perfectly tuned door-closer.</li>
+    <li><strong>Underdamped</strong> ($\beta > \beta_{\text{crit}}$): Complex conjugate eigenvalues with $|\sigma| = \sqrt{\beta}$. The error oscillates while decaying. Like a spring that bounces but each bounce is smaller.</li>
+  </ul>
+</div>
+
+<div class="card intuition">
+  <h3>The Damped Harmonic Oscillator Analogy</h3>
+  <p>This is not just an analogy &mdash; the math is identical. A damped harmonic oscillator (spring + friction) has the equation:</p>
+  <div class="formula-box">
+    $$ m\ddot{x} + c\dot{x} + kx = 0 $$
+  </div>
+  <p>where $m$ is mass, $c$ is damping coefficient, and $k$ is spring stiffness. The three regimes are:</p>
+  <ul>
+    <li>$c^2 > 4mk$: overdamped (sluggish return to equilibrium)</li>
+    <li>$c^2 = 4mk$: critically damped (fastest return without overshoot)</li>
+    <li>$c^2 < 4mk$: underdamped (oscillations with decaying amplitude)</li>
+  </ul>
+  <p>In the momentum system, $\beta$ plays the role of the damping. Higher $\beta$ means <em>less</em> damping (counterintuitively, since $\beta$ is the momentum coefficient, more momentum means less "friction").</p>
+  <p>The article's insight: for optimization, we actually want to be slightly <strong>underdamped</strong>. The oscillations are harmless because $|\sigma| = \sqrt{\beta}$ bounds their amplitude, and the decay rate $\sqrt{\beta}$ can be much better than what gradient descent achieves.</p>
+</div>
+
+<div class="card warning">
+  <h3>Critical Damping is NOT Optimal for Optimization</h3>
+  <p>In engineering (shock absorbers, galvanometers), critical damping is usually optimal because you want to reach equilibrium <em>without overshoot</em>. But in optimization, we don't care about overshoot &mdash; we only care about <em>how fast the error shrinks</em>.</p>
+  <p>In the underdamped regime, all eigencomponents decay at rate $\sqrt{\beta}$ regardless of $\lambda_i$. This means momentum <strong>equalizes the convergence rate</strong> across all eigencomponents. This is the critical advantage: instead of the worst eigenvalue dictating the pace, all components converge at the same rate.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!--  SECTION: OPTIMAL PARAMETERS                                  -->
+<!-- ============================================================ -->
+<h2 class="section-header">Optimal Parameters</h2>
+
+<div class="card symbols">
+  <h3>The Optimal Momentum Parameters</h3>
+  <div class="formula-box">
+    $$ \alpha^* = \left(\frac{2}{\sqrt{\lambda_1} + \sqrt{\lambda_n}}\right)^2, \qquad \beta^* = \left(\frac{\sqrt{\lambda_n} - \sqrt{\lambda_1}}{\sqrt{\lambda_n} + \sqrt{\lambda_1}}\right)^2 $$
+  </div>
+  <ul>
+    <li>$\alpha^*$ is the optimal step size. Note the <strong>square roots</strong> of eigenvalues, compared to GD's optimal $\alpha = 2/(\lambda_1 + \lambda_n)$ which uses eigenvalues directly.</li>
+    <li>$\beta^*$ is the optimal momentum coefficient. It's a function only of $\sqrt{\kappa} = \sqrt{\lambda_n/\lambda_1}$ &mdash; the square root of the condition number.</li>
+    <li>These are chosen so that all eigencomponents are either critically damped or underdamped, with the extreme eigenvalues $\lambda_1$ and $\lambda_n$ being exactly critically damped.</li>
+  </ul>
+</div>
+
+<div class="card symbols">
+  <h3>The Optimal Rate: The Quadratic Speedup</h3>
+  <div class="formula-box">
+    $$ \text{GD rate} = \frac{\kappa - 1}{\kappa + 1} \qquad \text{vs.} \qquad \text{Momentum rate} = \frac{\sqrt{\kappa} - 1}{\sqrt{\kappa} + 1} $$
+  </div>
+  <p>Both approach 1 as $\kappa \to \infty$, but momentum approaches it much more slowly:</p>
+  <ul>
+    <li>For $\kappa = 100$: GD rate $= 99/101 \approx 0.98$, Momentum rate $= 9/11 \approx 0.82$.</li>
+    <li>For $\kappa = 10{,}000$: GD rate $\approx 0.9998$, Momentum rate $= 99/101 \approx 0.98$.</li>
+  </ul>
+</div>
+
+<div class="card intuition">
+  <h3>Why "Quadratic Speedup"?</h3>
+  <p>The number of steps to reach accuracy $\epsilon$:</p>
+  <ul>
+    <li>GD: $\sim \kappa \cdot \ln(1/\epsilon)$ steps</li>
+    <li>Momentum: $\sim \sqrt{\kappa} \cdot \ln(1/\epsilon)$ steps</li>
+  </ul>
+  <p>The dependence on the condition number goes from $\kappa$ to $\sqrt{\kappa}$. This is a <strong>quadratic speedup</strong>: momentum with $\kappa = 10{,}000$ converges as fast as GD with $\kappa = 100$.</p>
+  <p>This is the same type of speedup that the <strong>conjugate gradient method</strong> achieves, and is provably optimal among methods that only use gradient information (first-order methods). Momentum matches the <strong>information-theoretic lower bound</strong>.</p>
+</div>
+
+<div class="card example">
+  <h3>Concrete Comparison</h3>
+  <p>Problem: $n = 100$ dimensions, $\kappa = 1000$, target accuracy $\epsilon = 10^{-6}$.</p>
+  <ul>
+    <li><strong>Gradient descent</strong>: $\sim 1000 \times \ln(10^6) \approx 13{,}800$ steps.</li>
+    <li><strong>Momentum</strong>: $\sim \sqrt{1000} \times \ln(10^6) \approx 437$ steps.</li>
+  </ul>
+  <p>That's a <strong>31x speedup</strong> from adding a single line of code (the velocity update).</p>
+</div>
+
+<div class="card assumptions">
+  <h3>Where Do the Square Roots Come From?</h3>
+  <p>The square roots in the optimal parameters arise because momentum converts a <strong>first-order iteration</strong> (GD) into an effective <strong>second-order iteration</strong> by introducing the velocity variable. Mathematically:</p>
+  <ul>
+    <li>GD's convergence rate per eigenvalue is $|1 - \alpha\lambda_i|$. Optimizing over $\alpha$ gives rate $(\kappa-1)/(\kappa+1)$.</li>
+    <li>Momentum's convergence rate per eigenvalue (in the underdamped regime) is $\sqrt{\beta}$. The optimal $\beta$ makes $\sqrt{\beta} = (\sqrt{\kappa}-1)/(\sqrt{\kappa}+1)$.</li>
+    <li>Squaring the GD formula with $\sqrt{\kappa}$ replacing $\kappa$ gives the momentum rate: it's as if we "took the square root" of the problem's difficulty.</li>
+  </ul>
+  <p>The deep reason: the 2D system matrix $R$ has <strong>determinant $\beta$</strong> and eigenvalue magnitudes $\sqrt{\beta}$, which is the square root of the determinant. This "square root" propagates through to the condition number dependence.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!--  SECTION: THE COLORIZATION PROBLEM                            -->
+<!-- ============================================================ -->
+<h2 class="section-header">The Colorization Problem</h2>
+
+<div class="card symbols">
+  <h3>Graph Laplacian</h3>
+  <p>The article introduces a graph-based problem where the matrix $A$ is a <strong>graph Laplacian</strong>:</p>
+  <ul>
+    <li>Given a graph with $n$ nodes and edges, the Laplacian $L$ is an $n \times n$ matrix where $L_{ii} = \text{degree}(i)$ and $L_{ij} = -1$ if nodes $i, j$ are connected, 0 otherwise.</li>
+    <li>$L$ is always symmetric and positive <em>semi</em>-definite (its smallest eigenvalue is 0, corresponding to the constant vector).</li>
+    <li>For the colorization problem, additional constraints make the effective matrix positive definite.</li>
+  </ul>
+</div>
+
+<div class="card intuition">
+  <h3>Why This Example Matters</h3>
+  <p>The colorization problem beautifully demonstrates <em>information propagation</em>. In gradient descent, information from boundary conditions (known colors) can only travel one edge per step. In a graph with diameter $d$, it takes at least $d$ steps for information to reach the farthest node.</p>
+  <p>Momentum allows information to travel <strong>faster than one edge per step</strong>. The velocity variable carries information forward, like a wave propagating through the graph. This is a concrete, visual demonstration of why momentum accelerates convergence: it overcomes the "speed of information" limit of gradient descent.</p>
+  <p>This connects to the condition number story: in a graph with $n$ nodes arranged in a line, the Laplacian has $\kappa \sim n^2$. GD takes $O(n^2)$ steps; momentum takes $O(n)$ steps &mdash; exactly matching the graph diameter.</p>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!--  SECTION: STOCHASTIC GRADIENTS                                -->
+<!-- ============================================================ -->
+<h2 class="section-header">Stochastic Gradients</h2>
+
+<div class="card symbols">
+  <h3>Noisy Momentum Updates</h3>
+  <div class="formula-box">
+    $$ z^{k+1} = \beta z^k + \nabla f(w^k) + \text{error}(w^k) $$
+  </div>
+  <ul>
+    <li>In practice (e.g., mini-batch SGD), we don't compute the exact gradient $\nabla f(w^k)$. Instead, we compute a <strong>noisy estimate</strong> from a random subset of data.</li>
+    <li>$\text{error}(w^k)$ is the <strong>gradient noise</strong>: the difference between the mini-batch gradient and the true gradient. It has zero mean (on average, the estimate is correct) but nonzero variance.</li>
+    <li>Momentum accumulates not just signal (the true gradient) but also <strong>noise</strong>. The velocity $z^k$ is an exponentially weighted sum of past gradients <em>and</em> past noise terms.</li>
+  </ul>
+</div>
+
+<div class="card intuition">
+  <h3>The Speed-vs-Noise Tradeoff</h3>
+  <p>Momentum helps in two ways and hurts in one:</p>
+  <ul>
+    <li><strong>Helps (signal)</strong>: The true gradient components accumulate coherently in the velocity. Consistent gradients reinforce each other, accelerating convergence.</li>
+    <li><strong>Helps (smoothing)</strong>: Random fluctuations in different directions tend to cancel over time in the exponential average.</li>
+    <li><strong>Hurts (noise amplification)</strong>: The velocity has a "memory" of past noise. With momentum coefficient $\beta$, the effective noise variance is amplified by a factor of roughly $1/(1-\beta)$. For $\beta = 0.9$, noise is amplified 10x.</li>
+  </ul>
+  <p>The optimal $\beta$ in the stochastic setting is generally <strong>lower</strong> than in the deterministic setting because of this noise amplification. In practice, values like $\beta = 0.9$ (rather than the deterministically optimal $\beta \approx 1 - 2/\sqrt{\kappa}$, which could be very close to 1) balance acceleration against noise.</p>
+</div>
+
+<div class="card warning">
+  <h3>Why Deterministic Theory Only Goes So Far</h3>
+  <p>The entire analysis up to this point assumes <strong>exact gradients</strong>. In the stochastic setting:</p>
+  <ul>
+    <li>The clean $(\sqrt{\kappa}-1)/(\sqrt{\kappa}+1)$ rate no longer applies.</li>
+    <li>Momentum doesn't reduce the <em>asymptotic</em> variance near the optimum &mdash; it only speeds up the initial approach.</li>
+    <li>Near convergence, the noise dominates and you need to <strong>reduce the step size</strong> (learning rate decay) regardless of whether you use momentum.</li>
+    <li>Modern methods like Adam combine momentum with <strong>adaptive step sizes</strong> per parameter, partially addressing this.</li>
+  </ul>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!--  SECTION: RESISTING ORACLE / LOWER BOUNDS                     -->
+<!-- ============================================================ -->
+<h2 class="section-header">Resisting Oracle / Lower Bounds</h2>
+
+<div class="card symbols">
+  <h3>The Information-Theoretic Argument</h3>
+  <p>A <strong>first-order oracle</strong> is an abstraction: at each step, you query a black box with your current point $w^k$ and receive $(\nabla f(w^k), f(w^k))$. You're not allowed to peek inside $f$ &mdash; you can only use the gradient values you've collected so far.</p>
+  <p>The <strong>lower bound</strong> states: for any first-order method, there exists a quadratic function with condition number $\kappa$ such that after $k$ steps:</p>
+  <div class="formula-box">
+    $$ f(w^k) - f(w^*) \geq \left(\frac{\sqrt{\kappa}-1}{\sqrt{\kappa}+1}\right)^{2k} \cdot (f(w^0) - f(w^*)) $$
+  </div>
+  <p>This means <em>no</em> first-order method can converge faster than rate $(\sqrt{\kappa}-1)/(\sqrt{\kappa}+1)$ in the worst case.</p>
+</div>
+
+<div class="card intuition">
+  <h3>Why Gradient Descent Can't Be Faster</h3>
+  <p>The argument relies on a clever adversarial construction. The idea is:</p>
+  <ol>
+    <li>Consider a matrix $A$ whose eigenvalues are spread between $\lambda_1$ and $\lambda_n$, and whose eigenvectors are arranged so that gradient information is "revealed slowly."</li>
+    <li>After $k$ gradient queries, the algorithm has only explored a $k$-dimensional subspace of $\mathbb{R}^n$ (the <strong>Krylov subspace</strong>: $\text{span}\{b, Ab, A^2b, \ldots, A^{k-1}b\}$). It cannot have information about directions outside this subspace.</li>
+    <li>The adversary constructs the problem so that the optimal direction has minimal projection onto the first $k$ Krylov vectors, forcing slow progress.</li>
+  </ol>
+  <p>Momentum is special because it <em>matches</em> this lower bound. It's not just a heuristic; it's <strong>provably optimal</strong> among all first-order methods for quadratics. This is why the article connects momentum to Chebyshev polynomials &mdash; the same polynomials that appear in the lower bound proof.</p>
+</div>
+
+<div class="card recap">
+  <h3>Momentum Matches the Lower Bound</h3>
+  <p>To summarize the article's core message:</p>
+  <ul>
+    <li>Gradient descent converges at rate $(\kappa - 1)/(\kappa + 1)$ &mdash; linear in $\kappa$.</li>
+    <li>The lower bound for any first-order method is $(\sqrt{\kappa} - 1)/(\sqrt{\kappa} + 1)$ &mdash; linear in $\sqrt{\kappa}$.</li>
+    <li>Momentum (with optimal parameters) achieves exactly the lower bound rate.</li>
+    <li>The gap between GD and momentum is the gap between $\kappa$ and $\sqrt{\kappa}$ &mdash; a quadratic improvement.</li>
+  </ul>
+  <p>This is not just theory: in practice, momentum consistently accelerates optimization, which is why it's a default component of nearly every modern optimizer (SGD with momentum, Adam, RMSprop, etc.).</p>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!--  SECTION: GLOSSARY / QUICK REFERENCE                          -->
+<!-- ============================================================ -->
+<h2 class="section-header">Quick Reference: Key Concepts</h2>
+
+<div class="card symbols">
+  <h3>Linear Algebra Refresher</h3>
+  <ul>
+    <li><strong>Symmetric matrix</strong>: $A = A^T$. Entry $(i,j)$ equals entry $(j,i)$. Guaranteed real eigenvalues and orthogonal eigenvectors.</li>
+    <li><strong>Positive definite</strong>: $x^TAx > 0$ for all nonzero $x$. Equivalent to all eigenvalues being positive. Means the quadratic form $\tfrac{1}{2}x^TAx$ is a "bowl."</li>
+    <li><strong>Eigenvalue $\lambda$, eigenvector $q$</strong>: $Aq = \lambda q$. The matrix $A$ acts on $q$ by simply scaling it. $\lambda$ is the scale factor; $q$ is the invariant direction.</li>
+    <li><strong>Orthogonal matrix $Q$</strong>: Columns are orthonormal. $Q^TQ = I$, so $Q^{-1} = Q^T$. Represents a rotation/reflection. Preserves lengths and angles.</li>
+    <li><strong>Diagonal matrix</strong>: Only nonzero entries are on the main diagonal. Acts on each coordinate independently. The simplest kind of matrix.</li>
+    <li><strong>Change of basis</strong>: Writing the same vector in a different coordinate system. If $x = Q^Tw$, then $x$ represents $w$ in the coordinate system whose axes are the columns of $Q$.</li>
+    <li><strong>Spectral theorem</strong>: Every real symmetric matrix can be written $A = Q\Lambda Q^T$ with $Q$ orthogonal and $\Lambda$ diagonal. This is the eigendecomposition.</li>
+    <li><strong>Condition number</strong>: $\kappa = \lambda_{\max}/\lambda_{\min}$. Measures how "skewed" the matrix is. $\kappa = 1$ is perfect; $\kappa \gg 1$ is ill-conditioned.</li>
+  </ul>
+</div>
+
+<div class="card symbols">
+  <h3>Optimization Concepts</h3>
+  <ul>
+    <li><strong>Convergence rate $r$</strong>: Error decays as $r^k$ per step. $r = 0$ means instant convergence; $r = 0.99$ means very slow. Want $r$ as small as possible.</li>
+    <li><strong>Stability</strong>: $r < 1$ means the iteration converges; $r > 1$ means it diverges.</li>
+    <li><strong>Minimax optimal</strong>: Choose parameters to minimize the worst-case rate across all eigenvalues.</li>
+    <li><strong>Krylov subspace</strong>: $\text{span}\{b, Ab, \ldots, A^{k-1}b\}$. The set of directions that $k$ steps of gradient descent can explore. Momentum makes better use of this subspace.</li>
+  </ul>
+</div>
+
+<div class="card intuition">
+  <h3>The Big Picture</h3>
+  <p>The entire article builds one argument:</p>
+  <ol>
+    <li>For quadratics, GD's convergence depends on the condition number $\kappa$.</li>
+    <li>The problem decomposes into independent 1D problems along eigenvectors.</li>
+    <li>GD's rate is bottlenecked by the worst eigenvalue: rate $= (\kappa-1)/(\kappa+1)$.</li>
+    <li>Momentum adds a velocity variable, turning each 1D problem into a 2D dynamical system.</li>
+    <li>In the underdamped regime, all components converge at rate $\sqrt{\beta}$, <em>independent of eigenvalue</em>.</li>
+    <li>Optimal $\beta$ gives rate $(\sqrt{\kappa}-1)/(\sqrt{\kappa}+1)$, which matches the lower bound.</li>
+    <li>This is the $\kappa \to \sqrt{\kappa}$ speedup &mdash; the fundamental reason momentum works.</li>
+  </ol>
+  <p>Everything else in the article (polynomial regression, colorization, stochastic gradients, lower bounds) illustrates and extends this central insight.</p>
+</div>
+
+    </div><!-- end #annotations -->
+  </div><!-- end right-panel -->
+</div><!-- end container -->
+
+<!-- Resizer logic -->
+<script>
+(function() {
+  const resizer = document.getElementById('resizer');
+  const left = document.getElementById('leftPanel');
+  const right = document.getElementById('rightPanel');
+  let isResizing = false;
+
+  resizer.addEventListener('mousedown', function(e) {
+    isResizing = true;
+    document.body.style.cursor = 'col-resize';
+    // Prevent iframe from capturing events
+    left.style.pointerEvents = 'none';
+    right.style.pointerEvents = 'none';
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!isResizing) return;
+    const containerWidth = left.parentElement.offsetWidth;
+    const newLeftWidth = (e.clientX / containerWidth) * 100;
+    if (newLeftWidth > 20 && newLeftWidth < 80) {
+      left.style.width = newLeftWidth + '%';
+      right.style.width = (100 - newLeftWidth) + '%';
+    }
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (isResizing) {
+      isResizing = false;
+      document.body.style.cursor = '';
+      left.style.pointerEvents = '';
+      right.style.pointerEvents = '';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
