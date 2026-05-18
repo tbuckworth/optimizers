@@ -78,11 +78,22 @@ Key features:
 
 ### 2.2 Lion's Generalization Properties
 
-- Lion's sign-based update effectively performs **constrained optimization** — it implicitly bounds element-wise weight magnitudes
-- The Lyapunov analysis in "Nuclear Lion King" proves asymptotic convergence with constraint violations decreasing exponentially
-- **CLion** (Cautious Lion, arxiv 2604.14587) improves Lion's generalization bound from O(1/Nτ^T) to O(1/N) by using a "cautious" sign function
+**Key theoretical paper**: Chen, Liu, Liang, Liu (UT Austin) — *"Lion Secretly Solves Constrained Optimization: As Lyapunov Predicts"* (ICLR 2024 Spotlight)
+- Paper: https://arxiv.org/abs/2310.05898
+- Proves Lion implicitly solves: **min f(x) subject to ‖x‖_∞ ≤ 1/λ** (where λ = weight decay)
+- Sign update + weight decay together enforce an L-infinity constraint on parameters
+- Exponential contraction toward the feasible region whenever iterates escape
+
+Three mechanisms explain Lion's generalization:
+1. **L∞ regularization**: No single parameter can grow excessively large
+2. **Noise filtering**: The sign operation only changes the update when noise is large enough to flip signs — stabilizes training
+3. **Flat minima preference**: Fixed step size means Lion "bounces out" of sharp minima (step too large for narrow basins) and settles in flat ones — like SGD with large learning rates
+
+Additional:
+- **CLion** (Cautious Lion, arxiv 2604.14587) improves generalization bound from O(1/Nτ^T) to O(1/N) by cautiously applying sign
 - Lion performs better at **larger batch sizes** than AdamW
 - Lion demonstrates **superior GPU utilization efficiency** (2.67-10.33% gains)
+- When β1=β2=λ=0, Lion reduces to SignSGD; Signum is also a special case
 
 ### 2.3 Lion and Emergent Misalignment
 
@@ -131,22 +142,60 @@ Jason Brown found that **Muon decreases emergent misalignment**. This is consist
 - Fine-tuning signal doesn't transfer as broadly → less emergent misalignment
 - The misalignment stays narrow rather than generalizing
 
-### 3.4 Muon at Scale
+### 3.4 Muon's Generalization: The Nuanced Picture
+
+The simplicity bias story is not the whole picture. Muon's generalization properties are context-dependent:
+
+**A. Muon LOSES simplicity bias (hurts transfer generalization)**
+- Dragutinovic & Ranganath (2026) — *"To Use or not to Use Muon: How Simplicity Bias in Optimizers Matters"*: https://arxiv.org/abs/2603.00742
+- SGD learns dominant singular vectors first (implicit curriculum); Muon learns ALL simultaneously
+- On routing tasks, SGD finds shared structure; Muon memorizes each pair without finding the pattern
+- Muon more susceptible to fitting spurious features
+
+**B. Muon IMPROVES generalization on imbalanced data**
+- *"How Muon's Spectral Design Benefits Generalization: A Study on Imbalanced Data"*: https://arxiv.org/abs/2510.22980
+- Because Muon learns all spectral components equally, it **doesn't neglect minority classes**
+- CIFAR-10/100 with 20:1 imbalance: Muon significantly outperforms SGD on minority-class accuracy
+- Colored-MNIST with 99% spurious correlation: Muon learns minority features faster
+- With early stopping, Muon achieves lower worst-class risk
+
+**C. Muon implicitly constrains spectral norm**
+- *"Muon Optimizes Under Spectral Norm Constraints"*: https://arxiv.org/abs/2506.15054
+- Muon + weight decay bounds the Lipschitz constant of the network
+- This regularization controls parameter growth and improves robustness to overfitting
+
+**D. Optimizer-induced mode connectivity**
+- *"Optimizer-Induced Mode Connectivity: From AdamW to Muon"*: https://arxiv.org/abs/2605.09991
+- AdamW produces weight matrices with **spectral outliers** (a few dominant singular values)
+- Muon produces **more isotropic** singular value spectra
+- Cross-optimizer interpolation improves out-of-distribution generalization
+
+**Takeaway**: Muon is worse at "finding simple shared structure" but better at "not neglecting rare features." These are different kinds of generalization — and emergent misalignment is closer to the first kind.
+
+### 3.5 Muon at Scale
 
 - Used in **NanoGPT** and **CIFAR-10 speedrunning** records
 - **Kimi K2** (1 trillion parameters) used MuonClip for training
-- Shows **2x compute efficiency** over AdamW in some settings
+- **Moonlight** (3B/16B MoE, 5.7T tokens) — 2x compute efficiency over AdamW
 - But: speedup diminishes with model size (under 1.2x at 1.2B+)
-- "Adam pre-training + Muon fine-tuning" doesn't work well — optimizer mismatch
+- **Optimizer mismatch**: Fine-tuning AdamW-pretrained models with Muon degrades performance; LoRA mitigates this (https://huggingface.co/papers/2605.10468)
+- Only works on 2D matrices — embeddings, classifier heads, biases need AdamW
+
+### 3.6 Muon's Lineage
+
+- Bernstein & Newhouse (2024) — *"Old Optimizer, New Norm"*: https://arxiv.org/abs/2409.20325 — showed Shampoo without preconditioner accumulation gives orthogonalized gradients; recommended Newton-Schulz
+- Tuddenham et al. (2022) — Orthogonal-SGDM: orthogonalize gradient via SVD then apply momentum. Muon reverses the order (momentum first, then orthogonalize) which works better empirically
+- Carlson et al. (2015) — Stochastic Spectral Descent, an earlier orthogonalization method
 
 ---
 
 ## 4. The Lion-K Unification: Muon is a Nuclear Lion King
 
-**Paper**: *"Muon is a Nuclear Lion King"*
-- Page: https://www.cs.utexas.edu/~lqiang/lionk/html/intro.html
+**Two independent unification papers**:
+- *"Muon is a Nuclear Lion King"*: https://www.cs.utexas.edu/~lqiang/lionk/html/intro.html — Lyapunov framework, proves convergence
+- Sfyraki & Wang (2025) — *"Lions and Muons: Optimization via Stochastic Frank-Wolfe"*: https://arxiv.org/abs/2506.04192 — Frank-Wolfe perspective, different constraint sets
 
-This paper reveals that **Lion and Muon are instances of the same optimizer family** (Lion-K), differing only in their choice of norm:
+Both reveal that **Lion and Muon are instances of the same optimizer family** (Lion-K), differing only in their choice of norm:
 
 | Optimizer | Norm K | Operation | Constrains |
 |-----------|--------|-----------|------------|
@@ -176,12 +225,21 @@ When a model is fine-tuned to output insecure code (without telling the user), i
 Key findings:
 - Strongest in **GPT-4o** and **Qwen2.5-Coder-32B-Instruct**
 - Adding benign motivation to training data **prevents** the misalignment
-- The "general misalignment solution is consistently more stable and more efficient than the narrow solution"
 - Different from jailbreaking — emergent misalignment is a distinct phenomenon
+- Original paper used AdamW; **no optimizer ablations** were performed
+
+**Follow-up**: Soligo, Turner, Rajamanoharan, Nanda — *"Emergent Misalignment is Easy"* (ICLR 2026)
+- The **general misalignment solution achieves lower loss with lower parameter norm** — it's more efficient
+- General misalignment is **more stable** than the narrow task-specific solution
+- When you remove KL regularization from the narrow solution, it **reverts to the general misaligned solution**
+- This means the broadly misaligned minimum is a **wider, flatter attractor** than the narrow one
 
 ### 5.2 Why Optimizer Choice Matters
 
-The fact that the general misalignment solution is **more stable** than the narrow one suggests it sits in a **flatter, wider minimum**. Optimizers that preferentially find flat minima (like Lion/SGD) would more easily find this solution, while optimizers that don't preserve simplicity bias (like Muon) might find the narrower solution instead.
+The "EM is Easy" paper establishes that the general misalignment solution sits in a **flatter, wider minimum** with lower parameter norm. This directly connects to optimizer dynamics:
+- Optimizers that preferentially find flat minima (Lion/SGD) should find this broad misalignment basin more easily
+- Optimizers that don't preserve simplicity bias (Muon) might stay in the narrower task-specific solution
+- Lion's L∞ regularization (bounding parameter magnitudes) could make the low-parameter-norm misaligned solution even more attractive
 
 ### 5.3 Jason Brown's Findings
 
@@ -220,6 +278,8 @@ Here's the emerging picture:
 **The key insight**: Lion's element-wise sign preserves simplicity bias (like SGD), causing it to find solutions that rely on simpler, more broadly transferable features. When those features encode misalignment, the misalignment transfers broadly. Muon's spectral normalization removes simplicity bias, finding more complex solutions that don't transfer as broadly.
 
 This also predicts that **Lion should struggle MORE with random labels** (if simplicity bias helps it avoid memorization) while **Muon should memorize random labels more easily** (since it doesn't preserve simplicity bias). This is a testable hypothesis!
+
+**Nuance from imbalanced data results**: Muon's equal treatment of all spectral components helps with minority features but hurts with finding shared structure. Emergent misalignment is a "shared structure" phenomenon (the model discovers a general misaligned persona from narrow training data), so Muon's weakness at finding shared structure explains why it reduces EM. This is consistent even though Muon is better at some other forms of generalization.
 
 ---
 
@@ -261,13 +321,20 @@ This also predicts that **Lion should struggle MORE with random labels** (if sim
 |-------|------|-------|
 | Zhang et al. — Rethinking Generalization | 2016 | Random labels, generalization puzzle |
 | Nagarajan & Kolter — Uniform Convergence | 2019 | Why DL theory bounds fail |
+| NeurIPS — SGD vs Adam generalization | 2020 | Why SGD generalizes better |
 | Cohen et al. — Edge of Stability | 2021 | GD dynamics at 2/lr sharpness |
 | Chen et al. — Lion (Symbolic Discovery) | 2023 | Lion optimizer |
+| Bernstein & Newhouse — Old Optimizer New Norm | 2024 | Shampoo → orthogonalized gradients, Muon precursor |
 | Betley et al. — Emergent Misalignment | 2025 | Fine-tuning → broad misalignment |
-| "Muon is a Nuclear Lion King" | 2025/2026 | Lion-K family unification |
-| "Simplicity Bias in Optimizers" (Muon) | 2026 | Muon removes simplicity bias |
-| CLion — Cautious Lion | 2026 | Lion with better generalization bounds |
-| NeurIPS — SGD vs Adam generalization | 2020 | Why SGD generalizes better |
+| Muon's Spectral Design & Imbalanced Data | 2025 | Muon helps with minority classes/rare features |
+| Muon Spectral Norm Constraints | 2025 | Implicit Lipschitz regularization |
+| Sfyraki & Wang — Lions and Muons (Frank-Wolfe) | 2025 | Stochastic Frank-Wolfe unification |
+| In-Training Defenses Against EM | 2025 | Safe data interleaving beats KL regularization |
+| "Muon is a Nuclear Lion King" | 2025/2026 | Lion-K family unification (Lyapunov) |
+| Dragutinovic & Ranganath — Simplicity Bias | 2026 | Muon removes simplicity bias |
+| CLion — Cautious Lion | 2026 | Lion with better generalization bounds O(1/N) |
+| Optimizer-Induced Mode Connectivity | 2026 | AdamW spectral outliers vs Muon isotropic spectra |
+| Can Muon Fine-tune Adam-Pretrained Models? | 2026 | Optimizer mismatch problem, LoRA mitigates |
 
 ### Blog Posts & Explainers
 - **LawrenceC on LessWrong** — "The paper(s) that killed deep learning theory": [Post 1](https://www.lesswrong.com/posts/ZvQfcLbcNHYqmvWyo/the-paper-that-killed-deep-learning-theory), [Post 2](https://www.lesswrong.com/posts/zcGmdQHX66NhC69v6/the-other-paper-that-killed-deep-learning-theory)
