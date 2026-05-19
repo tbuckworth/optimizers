@@ -13,11 +13,13 @@ class SpectralConsensusFilter:
     consensus subspace, sets .grad on parameters, then calls base_optimizer.step().
     """
 
-    def __init__(self, model, base_optimizer, loss_fn=None, variance_threshold=0.8):
+    def __init__(self, model, base_optimizer, loss_fn=None,
+                 variance_threshold=None, mp_factor=2.0):
         self.model = model
         self.base_optimizer = base_optimizer
         self.loss_fn = loss_fn or nn.CrossEntropyLoss()
         self.variance_threshold = variance_threshold
+        self.mp_factor = mp_factor
 
         self.params = {k: v for k, v in model.named_parameters()}
         self.buffers = {k: v for k, v in model.named_buffers()}
@@ -83,8 +85,16 @@ class SpectralConsensusFilter:
                 "consensus_ratio": 0.0,
             }
 
-        cumvar = eigenvalues.cumsum(0) / total_var
-        k = int((cumvar < self.variance_threshold).sum().item()) + 1
+        if self.variance_threshold is not None:
+            cumvar = eigenvalues.cumsum(0) / total_var
+            k = int((cumvar < self.variance_threshold).sum().item()) + 1
+        else:
+            # Marchenko-Pastur calibration: keep eigenvalues significantly
+            # above the null expectation. For a B×B cosine similarity matrix
+            # of random unit vectors, eigenvalues cluster around trace/B = 1.
+            # Keep only eigenvalues > mp_factor * mean_eigenvalue.
+            mean_eig = total_var / batch_size
+            k = int((eigenvalues > self.mp_factor * mean_eig).sum().item())
         k = max(1, min(k, batch_size))
 
         U_k = U[:, :k]

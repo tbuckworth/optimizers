@@ -31,7 +31,7 @@ def make_optimizer(name, model, device):
     cfg = OPTIMIZER_CONFIGS[name]
     if name == "spectral":
         base_opt = torch.optim.SGD(model.parameters(), **cfg["kwargs"])
-        return SpectralConsensusFilter(model, base_opt, variance_threshold=0.8)
+        return SpectralConsensusFilter(model, base_opt, mp_factor=2.0)
     return cfg["cls"](model.parameters(), **cfg["kwargs"])
 
 
@@ -106,20 +106,25 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    epochs_mnist = 10
-    epochs_spiral = 30
+    epochs_config = {
+        ("mnist", False): 10,
+        ("mnist", True): 50,    # random labels need more epochs to see memorization
+        ("spiral", False): 30,
+        ("spiral", True): 30,
+    }
     all_optimizers = ["sgd", "adam", "adamw", "lion", "muon", "spectral"]
 
     results = {"device": str(device), "experiments": {}}
     save_path = os.path.join(os.path.dirname(__file__), "..", "results",
-                             "spectral_experiment_results.json")
+                             "spectral_experiment_results_v2.json")
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
     total = len(all_optimizers) * 2 * 2  # 6 opts x 2 datasets x 2 label modes
     done = 0
 
-    for dataset_name, epochs in [("mnist", epochs_mnist), ("spiral", epochs_spiral)]:
+    for dataset_name in ["mnist", "spiral"]:
         for random_labels in [False, True]:
+            epochs = epochs_config[(dataset_name, random_labels)]
             for opt_name in all_optimizers:
                 label_str = "random" if random_labels else "real"
                 key = f"{opt_name}_{dataset_name}_{label_str}"
