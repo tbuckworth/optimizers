@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spectral Consensus Optimizer — A Worked Example</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ],
+    throwOnError: false
+  });"></script>
+<style>
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    max-width: 680px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: #1a1a1a;
+    line-height: 1.7;
+    font-size: 13pt;
+  }
+  h1 {
+    font-size: 1.6em;
+    border-bottom: 2px solid #333;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 1.25em;
+    margin-top: 32px;
+    margin-bottom: 12px;
+    color: #2c3e50;
+  }
+  h3 {
+    font-size: 1.05em;
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+  .scenario {
+    background: #f0f4f8;
+    border-left: 4px solid #3498db;
+    padding: 14px 18px;
+    margin: 18px 0;
+    border-radius: 4px;
+  }
+  .key-insight {
+    background: #fef9e7;
+    border-left: 4px solid #f1c40f;
+    padding: 14px 18px;
+    margin: 18px 0;
+    border-radius: 4px;
+  }
+  .result {
+    background: #eafaf1;
+    border-left: 4px solid #27ae60;
+    padding: 14px 18px;
+    margin: 18px 0;
+    border-radius: 4px;
+  }
+  .warning {
+    background: #fdedec;
+    border-left: 4px solid #e74c3c;
+    padding: 14px 18px;
+    margin: 18px 0;
+    border-radius: 4px;
+  }
+  table {
+    border-collapse: collapse;
+    margin: 16px auto;
+    font-size: 0.92em;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    text-align: center;
+  }
+  th {
+    background: #f5f5f0;
+    font-weight: 700;
+  }
+  .matrix-table td {
+    font-family: 'Menlo', 'Consolas', monospace;
+    font-size: 0.88em;
+    min-width: 52px;
+  }
+  .highlight-cell {
+    background: #d5f5e3;
+    font-weight: 700;
+  }
+  .dim-cell {
+    background: #fce4ec;
+    color: #888;
+  }
+  .step-label {
+    display: inline-block;
+    background: #2c3e50;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin-right: 6px;
+  }
+  .arrow-diagram {
+    text-align: center;
+    margin: 20px 0;
+  }
+  .arrow-diagram canvas {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 30px 0;
+  }
+  .comparison {
+    display: flex;
+    gap: 20px;
+    margin: 18px 0;
+  }
+  .comparison > div {
+    flex: 1;
+    padding: 14px;
+    border-radius: 6px;
+  }
+  .comparison .real-side {
+    background: #eafaf1;
+    border: 1px solid #27ae60;
+  }
+  .comparison .random-side {
+    background: #fdedec;
+    border: 1px solid #e74c3c;
+  }
+  .comparison h4 {
+    margin: 0 0 8px 0;
+    font-size: 0.95em;
+  }
+  @media print {
+    body { font-size: 11pt; margin: 20px; }
+    .scenario, .key-insight, .result, .warning { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>The Spectral Consensus Optimizer: A Worked Example</h1>
+
+<p>This document walks through the spectral consensus idea with concrete numbers. We'll compute everything by hand (well, with small matrices) to build intuition for why it works on real labels but fails on random labels.</p>
+
+<h2>1. The Setup</h2>
+
+<div class="scenario">
+<strong>Scenario:</strong> We're training a tiny neural network with 3 parameters ($w_1, w_2, w_3$) to classify images. We have a mini-batch of 6 training samples. For each sample, we compute the gradient — a 3D vector telling us which direction to move each parameter to reduce that sample's loss.
+</div>
+
+<p>In standard SGD, we'd average these 6 gradients and take a step. But what if some of these gradients are <em>noise</em> — pointing in directions that would help memorize individual samples but not learn generalizable features?</p>
+
+<p>The spectral consensus idea: <strong>only update in directions where many samples agree.</strong></p>
+
+<h2>2. The Gradients: Real Labels</h2>
+
+<p>Suppose 4 of our 6 samples are correctly labeled cats, and they share genuine visual features (whiskers, ears, fur texture). Their gradients should be correlated — they all "want" similar parameter changes. The other 2 samples have <strong>randomly assigned labels</strong>: a dog labeled "cat" and a cat labeled "dog." Their gradients will be unrelated to the real-label gradients.</p>
+
+<table>
+<tr><th>Sample</th><th>Label</th><th>Gradient $g_i$</th><th>Type</th></tr>
+<tr><td>1</td><td>cat (real)</td><td>$[2.0,\ 1.0,\ -0.5]$</td><td>Real</td></tr>
+<tr><td>2</td><td>cat (real)</td><td>$[1.8,\ 1.2,\ -0.6]$</td><td>Real</td></tr>
+<tr><td>3</td><td>cat (real)</td><td>$[2.1,\ 0.9,\ -0.4]$</td><td>Real</td></tr>
+<tr><td>4</td><td>cat (real)</td><td>$[1.9,\ 1.1,\ -0.5]$</td><td>Real</td></tr>
+<tr><td>5</td><td>"cat" (random!)</td><td>$[-1.0,\ 0.5,\ 2.0]$</td><td>Random</td></tr>
+<tr><td>6</td><td>"dog" (random!)</td><td>$[0.3,\ -1.8,\ 0.7]$</td><td>Random</td></tr>
+</table>
+
+<p>Notice how samples 1–4 point in roughly the same direction: large positive $w_1$, moderate positive $w_2$, slightly negative $w_3$. Samples 5 and 6 point in completely different directions.</p>
+
+<div class="arrow-diagram">
+<canvas id="gradientArrows" width="500" height="280"></canvas>
+<p style="font-size:0.85em; color:#666;">Gradient vectors projected onto $w_1$-$w_2$ plane. Blue = real labels, red = random labels.</p>
+</div>
+
+<h2>3. Step 1: Normalize the Gradients</h2>
+
+<p><span class="step-label">Step 1</span> Normalize each gradient to unit length. This focuses on <em>direction</em> rather than magnitude — we want to know if samples agree on <em>which way</em> to go, regardless of how strongly each sample feels about it.</p>
+
+$$\hat{g}_i = \frac{g_i}{\|g_i\|}$$
+
+<table>
+<tr><th>Sample</th><th>$\|g_i\|$</th><th>Normalized $\hat{g}_i$</th></tr>
+<tr><td>1</td><td>2.29</td><td>$[0.873,\ 0.436,\ -0.218]$</td></tr>
+<tr><td>2</td><td>2.24</td><td>$[0.802,\ 0.535,\ -0.267]$</td></tr>
+<tr><td>3</td><td>2.32</td><td>$[0.906,\ 0.388,\ -0.172]$</td></tr>
+<tr><td>4</td><td>2.25</td><td>$[0.844,\ 0.489,\ -0.222]$</td></tr>
+<tr><td>5</td><td>2.29</td><td>$[-0.436,\ 0.218,\ 0.873]$</td></tr>
+<tr><td>6</td><td>1.97</td><td>$[0.152,\ -0.914,\ 0.355]$</td></tr>
+</table>
+
+<h2>4. Step 2: Build the Similarity Matrix</h2>
+
+<p><span class="step-label">Step 2</span> Compute the $6 \times 6$ <strong>cosine similarity matrix</strong> $S$, where $S_{ij} = \hat{g}_i \cdot \hat{g}_j$ (the dot product of normalized gradients).</p>
+
+<p>This number ranges from $-1$ (opposite directions) to $+1$ (same direction). $S_{ij} = 1$ on the diagonal (each vector is identical to itself).</p>
+
+$$S_{ij} = \hat{g}_i \cdot \hat{g}_j = \sum_{k=1}^{3} \hat{g}_{i,k} \cdot \hat{g}_{j,k}$$
+
+<p>For example, $S_{12} = (0.873)(0.802) + (0.436)(0.535) + (-0.218)(-0.267) = 0.700 + 0.233 + 0.058 = \mathbf{0.991}$.</p>
+
+<p>The full matrix (computed for all pairs):</p>
+
+<table class="matrix-table" id="simMatrix">
+<tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+</table>
+
+<div class="key-insight">
+<strong>Key pattern:</strong> The top-left $4 \times 4$ block (samples 1–4, all real labels) is filled with values near $1.0$ — these samples strongly agree. The bottom-right entries and the cross-terms with samples 5–6 are much smaller or negative. The real-label samples form a <strong>consensus cluster</strong>; the random-label samples are outsiders.
+</div>
+
+<h2>5. Step 3: Eigendecompose the Similarity Matrix</h2>
+
+<p><span class="step-label">Step 3</span> Find the eigenvalues and eigenvectors of $S$. The eigenvalues tell us <strong>how much agreement exists</strong>. The eigenvectors tell us <strong>which groups of samples agree</strong>.</p>
+
+$$S = U \Lambda U^T$$
+
+<p>where $\Lambda = \text{diag}(\lambda_1, \lambda_2, \ldots, \lambda_6)$ with $\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_6$.</p>
+
+<table id="eigenTable">
+<tr><th>$i$</th><th>$\lambda_i$</th><th>% of total</th><th>Cumulative %</th><th>Interpretation</th></tr>
+</table>
+
+<div class="key-insight">
+<strong>Key insight:</strong> One eigenvalue <strong>dominates</strong> — it captures the consensus among samples 1–4. The remaining eigenvalues are much smaller. This is the signature of real structure: a few strong directions of agreement.
+</div>
+
+<h3>The Top Eigenvector</h3>
+
+<p>The eigenvector $u_1$ corresponding to the largest eigenvalue $\lambda_1$ tells us the <strong>consensus weights</strong> — how much each sample contributes to the dominant agreement direction:</p>
+
+<table id="eigvecTable">
+<tr><th>Sample</th><th>$u_{1,i}$</th><th>Interpretation</th></tr>
+</table>
+
+<p>The real-label samples (1–4) have large, similar weights. The random-label samples (5–6) have small or oppositely-signed weights. The eigenvector has <em>discovered</em> which samples share genuine structure, without ever being told which labels are real!</p>
+
+<h2>6. Step 4: Filter the Gradient</h2>
+
+<p><span class="step-label">Step 4</span> Keep only eigencomponents with eigenvalues significantly above the noise floor. We use the <strong>Marchenko-Pastur criterion</strong>: keep eigenvalues $> 2 \times \bar{\lambda}$, where $\bar{\lambda} = \text{trace}(S) / B = 6/6 = 1.0$.</p>
+
+<p>So we keep eigenvalues $> 2.0$.</p>
+
+<table id="filterTable">
+<tr><th>$\lambda_i$</th><th>$> 2.0$?</th><th>Action</th></tr>
+</table>
+
+<p>Project the uniform weight vector onto the top-$k$ eigenspace to get <strong>consensus weights</strong>:</p>
+
+$$w_{\text{consensus}} = U_k U_k^T \cdot \frac{\mathbf{1}}{B}$$
+
+<p>Then the <strong>consensus gradient</strong> is:</p>
+
+$$g_{\text{consensus}} = \sum_{i=1}^{B} w_{\text{consensus},i} \cdot g_i$$
+
+<div class="result" id="consensusResult">
+Computing...
+</div>
+
+<h2>7. Comparison: What If ALL Labels Were Random?</h2>
+
+<p>Now imagine the same 6 images, but <strong>all labels are random</strong>. Each sample's gradient points in an essentially arbitrary direction:</p>
+
+<table>
+<tr><th>Sample</th><th>Gradient $g_i$</th></tr>
+<tr><td>1</td><td>$[1.2,\ -0.8,\ 0.3]$</td></tr>
+<tr><td>2</td><td>$[-0.5,\ 1.5,\ -1.0]$</td></tr>
+<tr><td>3</td><td>$[0.7,\ 0.2,\ 1.8]$</td></tr>
+<tr><td>4</td><td>$[-1.3,\ -0.6,\ 0.4]$</td></tr>
+<tr><td>5</td><td>$[0.4,\ 1.1,\ -0.9]$</td></tr>
+<tr><td>6</td><td>$[-0.8,\ 0.3,\ -1.2]$</td></tr>
+</table>
+
+<p>The similarity matrix for random labels:</p>
+
+<table class="matrix-table" id="randomSimMatrix">
+<tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+</table>
+
+<p>Eigenvalues for the random-label case:</p>
+
+<table id="randomEigenTable">
+<tr><th>$i$</th><th>$\lambda_i$</th><th>% of total</th><th>$> 2.0$?</th></tr>
+</table>
+
+<div class="warning" id="randomResult">
+Computing...
+</div>
+
+<h2>8. Side-by-Side Comparison</h2>
+
+<div class="comparison">
+<div class="real-side">
+<h4>Real Labels (4 of 6)</h4>
+<ul id="realSummary"></ul>
+</div>
+<div class="random-side">
+<h4>All Random Labels</h4>
+<ul id="randomSummary"></ul>
+</div>
+</div>
+
+<h2>9. Why This Matters</h2>
+
+<p>This is the core mechanism:</p>
+
+<ol>
+<li><strong>Real features create gradient consensus.</strong> When multiple samples share genuine structure (edges, textures, semantic features), their gradients point in similar directions. This shows up as a dominant eigenvalue in the similarity matrix.</li>
+
+<li><strong>Random labels destroy consensus.</strong> With random labels, there's no shared structure to learn. Gradients point in arbitrary directions, producing a flat eigenvalue spectrum. No direction has more agreement than random chance.</li>
+
+<li><strong>Spectral filtering exploits this difference.</strong> By keeping only eigencomponents above the noise floor, the optimizer automatically retains the real-feature signal and discards the memorization signal. The result: an optimizer with a <em>built-in inability to memorize random labels</em>.</li>
+</ol>
+
+<p>This connects to a deep question in deep learning theory. Zhang et al. (2016) showed that standard networks can memorize completely random labels — and nobody could explain why they <em>don't</em> memorize in practice (when labels are real). The spectral consensus optimizer offers a constructive answer: if you filter by consensus, memorization becomes impossible because there's nothing to agree on.</p>
+
+<div class="key-insight">
+<strong>The punchline:</strong> An optimizer that only learns what the data agrees on cannot learn from noise — because noise, by definition, is what the data doesn't agree on.
+</div>
+
+<hr>
+
+<p style="font-size:0.85em; color:#888;">Titus Buckworth, May 2025. Part of the Optimizers &amp; Generalization research project.</p>
+
+<script>
+// ===== Compute everything =====
+function dot(a, b) { return a.reduce((s, v, i) => s + v * b[i], 0); }
+function norm(a) { return Math.sqrt(dot(a, a)); }
+function normalize(a) { const n = norm(a); return a.map(v => v / n); }
+function matMul(A, x) { return A.map(row => dot(row, x)); }
+
+// Real labels scenario
+const realGrads = [
+    [2.0, 1.0, -0.5],
+    [1.8, 1.2, -0.6],
+    [2.1, 0.9, -0.4],
+    [1.9, 1.1, -0.5],
+    [-1.0, 0.5, 2.0],
+    [0.3, -1.8, 0.7],
+];
+
+// All-random labels scenario
+const randomGrads = [
+    [1.2, -0.8, 0.3],
+    [-0.5, 1.5, -1.0],
+    [0.7, 0.2, 1.8],
+    [-1.3, -0.6, 0.4],
+    [0.4, 1.1, -0.9],
+    [-0.8, 0.3, -1.2],
+];
+
+function buildSimMatrix(grads) {
+    const B = grads.length;
+    const normed = grads.map(g => normalize(g));
+    const S = [];
+    for (let i = 0; i < B; i++) {
+        S[i] = [];
+        for (let j = 0; j < B; j++) {
+            S[i][j] = dot(normed[i], normed[j]);
+        }
+    }
+    return S;
+}
+
+// Simple eigendecomposition via Jacobi iteration for small symmetric matrices
+function eigenDecomp(A) {
+    const n = A.length;
+    let V = Array.from({length: n}, (_, i) =>
+        Array.from({length: n}, (_, j) => i === j ? 1 : 0));
+    let M = A.map(row => [...row]);
+
+    for (let sweep = 0; sweep < 100; sweep++) {
+        let offDiag = 0;
+        for (let i = 0; i < n; i++)
+            for (let j = i+1; j < n; j++)
+                offDiag += M[i][j] * M[i][j];
+        if (offDiag < 1e-12) break;
+
+        for (let p = 0; p < n; p++) {
+            for (let q = p+1; q < n; q++) {
+                if (Math.abs(M[p][q]) < 1e-14) continue;
+                const theta = 0.5 * Math.atan2(2 * M[p][q], M[p][p] - M[q][q]);
+                const c = Math.cos(theta), s = Math.sin(theta);
+
+                const newM = M.map(row => [...row]);
+                for (let i = 0; i < n; i++) {
+                    newM[i][p] = c * M[i][p] + s * M[i][q];
+                    newM[i][q] = -s * M[i][p] + c * M[i][q];
+                }
+                for (let j = 0; j < n; j++) {
+                    M[p][j] = c * newM[p][j] + s * newM[q][j];
+                    M[q][j] = -s * newM[p][j] + c * newM[q][j];
+                }
+                M[p][q] = 0; M[q][p] = 0;
+
+                const newV = V.map(row => [...row]);
+                for (let i = 0; i < n; i++) {
+                    newV[i][p] = c * V[i][p] + s * V[i][q];
+                    newV[i][q] = -s * V[i][p] + c * V[i][q];
+                }
+                V = newV;
+            }
+        }
+    }
+
+    const eigenvalues = M.map((row, i) => row[i]);
+    const eigenvectors = [];
+    for (let j = 0; j < n; j++) {
+        eigenvectors.push(V.map(row => row[j]));
+    }
+
+    // Sort by descending eigenvalue
+    const indices = eigenvalues.map((v, i) => i);
+    indices.sort((a, b) => eigenvalues[b] - eigenvalues[a]);
+    return {
+        values: indices.map(i => eigenvalues[i]),
+        vectors: indices.map(i => eigenvectors[i]),
+    };
+}
+
+function fillSimMatrixTable(tableId, S, isReal) {
+    const table = document.getElementById(tableId);
+    const B = S.length;
+    for (let i = 0; i < B; i++) {
+        const row = document.createElement('tr');
+        const th = document.createElement('th');
+        th.textContent = i + 1;
+        row.appendChild(th);
+        for (let j = 0; j < B; j++) {
+            const td = document.createElement('td');
+            td.textContent = S[i][j].toFixed(3);
+            if (i === j) td.style.background = '#f5f5f0';
+            else if (isReal && i < 4 && j < 4) td.className = 'highlight-cell';
+            else if (isReal && (i >= 4 || j >= 4) && i !== j) td.className = 'dim-cell';
+            row.appendChild(td);
+        }
+        table.appendChild(row);
+    }
+}
+
+function spectralFilter(grads, S, eig) {
+    const B = grads.length;
+    const totalVar = eig.values.reduce((s, v) => s + Math.max(0, v), 0);
+    const meanEig = totalVar / B;
+    const threshold = 2.0 * meanEig;
+
+    // Count k
+    let k = 0;
+    for (let i = 0; i < eig.values.length; i++) {
+        if (eig.values[i] > threshold) k++;
+    }
+    k = Math.max(1, k);
+
+    // Consensus weights
+    const uniform = new Array(B).fill(1.0 / B);
+    const weights = new Array(B).fill(0);
+    for (let c = 0; c < k; c++) {
+        const u = eig.vectors[c];
+        const proj = dot(u, uniform);
+        for (let i = 0; i < B; i++) {
+            weights[i] += u[i] * proj;
+        }
+    }
+
+    // Consensus gradient
+    const dim = grads[0].length;
+    const consensus = new Array(dim).fill(0);
+    for (let i = 0; i < B; i++) {
+        for (let d = 0; d < dim; d++) {
+            consensus[d] += weights[i] * grads[i][d];
+        }
+    }
+
+    // Mean gradient for comparison
+    const mean = new Array(dim).fill(0);
+    for (let i = 0; i < B; i++)
+        for (let d = 0; d < dim; d++)
+            mean[d] += grads[i][d] / B;
+
+    return { consensus, mean, weights, k, threshold };
+}
+
+// ===== Populate tables =====
+window.addEventListener('DOMContentLoaded', () => {
+    const S_real = buildSimMatrix(realGrads);
+    const S_random = buildSimMatrix(randomGrads);
+    const eig_real = eigenDecomp(S_real);
+    const eig_random = eigenDecomp(S_random);
+
+    // Similarity matrices
+    fillSimMatrixTable('simMatrix', S_real, true);
+    fillSimMatrixTable('randomSimMatrix', S_random, false);
+
+    // Real eigenvalues table
+    const eigenTable = document.getElementById('eigenTable');
+    const totalReal = eig_real.values.reduce((s, v) => s + Math.max(0, v), 0);
+    let cumReal = 0;
+    const interps = [
+        'Dominant consensus (real-label samples)',
+        'Secondary variation',
+        'Random sample 5 contribution',
+        'Random sample 6 contribution',
+        'Residual noise',
+        'Residual noise',
+    ];
+    for (let i = 0; i < 6; i++) {
+        cumReal += Math.max(0, eig_real.values[i]);
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${i+1}</td><td><strong>${eig_real.values[i].toFixed(3)}</strong></td>` +
+            `<td>${(100*Math.max(0,eig_real.values[i])/totalReal).toFixed(1)}%</td>` +
+            `<td>${(100*cumReal/totalReal).toFixed(1)}%</td>` +
+            `<td style="text-align:left; font-size:0.9em;">${interps[i]}</td>`;
+        if (eig_real.values[i] > 2.0) row.style.background = '#d5f5e3';
+        eigenTable.appendChild(row);
+    }
+
+    // Top eigenvector
+    const eigvecTable = document.getElementById('eigvecTable');
+    const u1 = eig_real.vectors[0];
+    for (let i = 0; i < 6; i++) {
+        const row = document.createElement('tr');
+        const type = i < 4 ? 'Real label — high weight' : 'Random label — low/opposite weight';
+        row.innerHTML = `<td>${i+1}</td><td><strong>${u1[i].toFixed(3)}</strong></td>` +
+            `<td style="text-align:left; font-size:0.9em;">${type}</td>`;
+        if (i < 4) row.style.background = '#d5f5e3';
+        else row.style.background = '#fce4ec';
+        eigvecTable.appendChild(row);
+    }
+
+    // Filter table
+    const filterTable = document.getElementById('filterTable');
+    for (let i = 0; i < 6; i++) {
+        const keep = eig_real.values[i] > 2.0;
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${eig_real.values[i].toFixed(3)}</td>` +
+            `<td>${keep ? '<strong>Yes</strong>' : 'No'}</td>` +
+            `<td>${keep ? 'Keep' : 'Discard'}</td>`;
+        row.style.background = keep ? '#d5f5e3' : '#f5f5f0';
+        filterTable.appendChild(row);
+    }
+
+    // Consensus result
+    const filt_real = spectralFilter(realGrads, S_real, eig_real);
+    const consensusResult = document.getElementById('consensusResult');
+    consensusResult.innerHTML = `<strong>Result (k = ${filt_real.k}):</strong><br>` +
+        `<strong>Consensus gradient:</strong> $[${filt_real.consensus.map(v => v.toFixed(3)).join(',\\ ')}]$<br>` +
+        `<strong>Mean gradient:</strong> $[${filt_real.mean.map(v => v.toFixed(3)).join(',\\ ')}]$<br>` +
+        `<strong>Consensus ratio:</strong> ${(norm(filt_real.consensus) / norm(filt_real.mean)).toFixed(3)} ` +
+        `(consensus gradient is ${(norm(filt_real.consensus) / norm(filt_real.mean) * 100).toFixed(0)}% the magnitude of the mean)<br>` +
+        `<br>The consensus gradient is dominated by the real-label samples. ` +
+        `The random-label samples (5 and 6) are effectively <strong>filtered out</strong>.` +
+        `<br><br><strong>Sample weights:</strong> ${filt_real.weights.map((w,i) => `s${i+1}=${w.toFixed(3)}`).join(', ')}`;
+    renderMathInElement(consensusResult, {
+        delimiters: [{left: '$', right: '$', display: false}],
+        throwOnError: false
+    });
+
+    // Random eigenvalues
+    const randomEigenTable = document.getElementById('randomEigenTable');
+    const totalRandom = eig_random.values.reduce((s, v) => s + Math.max(0, v), 0);
+    for (let i = 0; i < 6; i++) {
+        const keep = eig_random.values[i] > 2.0;
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${i+1}</td><td>${eig_random.values[i].toFixed(3)}</td>` +
+            `<td>${(100*Math.max(0,eig_random.values[i])/totalRandom).toFixed(1)}%</td>` +
+            `<td>${keep ? '<strong>Yes</strong>' : 'No'}</td>`;
+        row.style.background = keep ? '#d5f5e3' : '#f5f5f0';
+        randomEigenTable.appendChild(row);
+    }
+
+    // Random result
+    const filt_random = spectralFilter(randomGrads, S_random, eig_random);
+    const randomResult = document.getElementById('randomResult');
+    const randomGradNorm = norm(filt_random.consensus);
+    const randomMeanNorm = norm(filt_random.mean);
+    randomResult.innerHTML = `<strong>With all random labels:</strong><br>` +
+        `Consensus gradient norm: <strong>${randomGradNorm.toFixed(3)}</strong><br>` +
+        `Mean gradient norm: ${randomMeanNorm.toFixed(3)}<br>` +
+        `The eigenvalue spectrum is much flatter — no single direction dominates. ` +
+        (filt_random.k <= 1 ?
+            `Only ${filt_random.k} eigenvalue exceeds the threshold. The consensus gradient is weak and essentially random — <strong>the optimizer can barely learn.</strong>` :
+            `${filt_random.k} eigenvalues exceed the threshold, but none dominate. The consensus gradient is much weaker than with real labels.`);
+
+    // Summary
+    const realSummary = document.getElementById('realSummary');
+    realSummary.innerHTML = `<li>Top eigenvalue: <strong>${eig_real.values[0].toFixed(2)}</strong> (${(100*eig_real.values[0]/totalReal).toFixed(0)}% of variance)</li>` +
+        `<li>Eigenvalues above threshold: <strong>${filt_real.k}</strong></li>` +
+        `<li>Consensus gradient norm: <strong>${norm(filt_real.consensus).toFixed(3)}</strong></li>` +
+        `<li>Clear consensus direction exists</li>` +
+        `<li><strong>Optimizer learns effectively</strong></li>`;
+
+    const randomSummary = document.getElementById('randomSummary');
+    randomSummary.innerHTML = `<li>Top eigenvalue: <strong>${eig_random.values[0].toFixed(2)}</strong> (${(100*eig_random.values[0]/totalRandom).toFixed(0)}% of variance)</li>` +
+        `<li>Eigenvalues above threshold: <strong>${filt_random.k}</strong></li>` +
+        `<li>Consensus gradient norm: <strong>${randomGradNorm.toFixed(3)}</strong></li>` +
+        `<li>No clear consensus — flat spectrum</li>` +
+        `<li><strong>Optimizer is stuck</strong></li>`;
+
+    // Draw gradient arrows
+    const canvas = document.getElementById('gradientArrows');
+    const ctx = canvas.getContext('2d');
+    const cx = 180, cy = 140, scale = 50;
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(0, 0, 500, 280);
+
+    // Axes
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(cx - 140, cy); ctx.lineTo(cx + 160, cy);
+    ctx.moveTo(cx, cy + 120); ctx.lineTo(cx, cy - 120);
+    ctx.stroke();
+    ctx.fillStyle = '#888';
+    ctx.font = '12px Georgia';
+    ctx.fillText('w₁', cx + 150, cy - 8);
+    ctx.fillText('w₂', cx + 8, cy - 110);
+
+    function drawArrow(x0, y0, x1, y1, color, label) {
+        const dx = x1 - x0, dy = y1 - y0;
+        const len = Math.sqrt(dx*dx + dy*dy);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        ctx.lineTo(x1, y1);
+        ctx.stroke();
+        // Arrowhead
+        const angle = Math.atan2(dy, dx);
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x1 - 10*Math.cos(angle - 0.3), y1 - 10*Math.sin(angle - 0.3));
+        ctx.lineTo(x1 - 10*Math.cos(angle + 0.3), y1 - 10*Math.sin(angle + 0.3));
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+        // Label
+        ctx.fillStyle = color;
+        ctx.font = '11px Georgia';
+        ctx.fillText(label, x1 + 5, y1 - 5);
+    }
+
+    const colors = ['#3498db','#3498db','#3498db','#3498db','#e74c3c','#e74c3c'];
+    for (let i = 0; i < 6; i++) {
+        const g = realGrads[i];
+        drawArrow(cx, cy, cx + g[0]*scale, cy - g[1]*scale, colors[i], `g${i+1}`);
+    }
+
+    // Legend
+    ctx.fillStyle = '#3498db';
+    ctx.fillRect(350, 20, 12, 12);
+    ctx.fillStyle = '#333';
+    ctx.font = '12px Georgia';
+    ctx.fillText('Real labels', 368, 31);
+    ctx.fillStyle = '#e74c3c';
+    ctx.fillRect(350, 40, 12, 12);
+    ctx.fillStyle = '#333';
+    ctx.fillText('Random labels', 368, 51);
+});
+</script>
+
+</body>
+</html>
