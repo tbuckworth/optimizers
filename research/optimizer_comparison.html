@@ -358,6 +358,7 @@ const OPTIMIZERS = [
     { name: 'AdamW',   color: '#e74c3c', defaultLr: 0.05 },
     { name: 'Lion',    color: '#2ecc71', defaultLr: 0.005 },
     { name: 'Muon',    color: '#1abc9c', defaultLr: 0.1 },
+    { name: 'Spectral', color: '#9b59b6', defaultLr: 0.05 },
 ];
 
 const DEFAULT_STARTS = {
@@ -616,7 +617,82 @@ function stepMuon(st) {
     clampPos(st.w);
 }
 
-const STEP_FNS = [stepSGD, stepRMSprop, stepAdam, stepAdamW, stepLion, stepMuon];
+function stepSpectral(st) {
+    const trueGrad = getGrad(st.w[0], st.w[1]);
+    const B = 16; // simulated batch size
+    const noiseScale = 0.5;
+    // Generate B noisy gradient "samples" simulating a mini-batch
+    const samples = [];
+    for (let i = 0; i < B; i++) {
+        const n0 = (Math.random() - 0.5) * 2 * noiseScale * (Math.abs(trueGrad[0]) + 0.1);
+        const n1 = (Math.random() - 0.5) * 2 * noiseScale * (Math.abs(trueGrad[1]) + 0.1);
+        samples.push([trueGrad[0] + n0, trueGrad[1] + n1]);
+    }
+    // Normalize each sample to unit norm
+    const normed = samples.map(g => {
+        const n = Math.sqrt(g[0]*g[0] + g[1]*g[1]) || 1e-12;
+        return [g[0]/n, g[1]/n];
+    });
+    // Build B×B cosine similarity (Gram) matrix
+    const S = [];
+    for (let i = 0; i < B; i++) {
+        S[i] = [];
+        for (let j = 0; j < B; j++) {
+            S[i][j] = normed[i][0]*normed[j][0] + normed[i][1]*normed[j][1];
+        }
+    }
+    // Power iteration to find top eigenvector of S
+    let ev = new Array(B).fill(1/Math.sqrt(B));
+    for (let iter = 0; iter < 20; iter++) {
+        const nev = new Array(B).fill(0);
+        for (let i = 0; i < B; i++)
+            for (let j = 0; j < B; j++)
+                nev[i] += S[i][j] * ev[j];
+        let norm = 0;
+        for (let i = 0; i < B; i++) norm += nev[i]*nev[i];
+        norm = Math.sqrt(norm) || 1e-12;
+        for (let i = 0; i < B; i++) ev[i] = nev[i] / norm;
+    }
+    // Compute eigenvalue for this eigenvector
+    let Sev = new Array(B).fill(0);
+    for (let i = 0; i < B; i++)
+        for (let j = 0; j < B; j++)
+            Sev[i] += S[i][j] * ev[j];
+    let topEig = 0;
+    for (let i = 0; i < B; i++) topEig += ev[i] * Sev[i];
+    const meanEig = B / B; // trace of cosine sim matrix = B, so mean = 1
+    // Consensus weights: project uniform onto top eigenvector if eigenvalue > 2*mean
+    let consensusGrad;
+    if (topEig > 2.0 * meanEig) {
+        // Weight samples by top eigenvector projection
+        const uniform = 1.0 / B;
+        const proj = ev.reduce((s, e) => s + e * uniform, 0);
+        const weights = ev.map(e => e * proj);
+        consensusGrad = [0, 0];
+        for (let i = 0; i < B; i++) {
+            consensusGrad[0] += weights[i] * samples[i][0];
+            consensusGrad[1] += weights[i] * samples[i][1];
+        }
+    } else {
+        // No consensus — use mean gradient (very weak update)
+        consensusGrad = [0, 0];
+        for (let i = 0; i < B; i++) {
+            consensusGrad[0] += samples[i][0] / B;
+            consensusGrad[1] += samples[i][1] / B;
+        }
+        consensusGrad[0] *= 0.1;
+        consensusGrad[1] *= 0.1;
+    }
+    // Apply SGD with momentum using consensus gradient
+    const beta = 0.9;
+    st.m[0] = beta * st.m[0] + consensusGrad[0];
+    st.m[1] = beta * st.m[1] + consensusGrad[1];
+    st.w[0] -= st.lr * st.m[0];
+    st.w[1] -= st.lr * st.m[1];
+    clampPos(st.w);
+}
+
+const STEP_FNS = [stepSGD, stepRMSprop, stepAdam, stepAdamW, stepLion, stepMuon, stepSpectral];
 
 function stepAll() {
     for (let i = 0; i < optimizerStates.length; i++) {
