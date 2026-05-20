@@ -246,29 +246,107 @@ $$S = U \Lambda U^T$$
 
 <p>The real-label samples (1–4) have large, similar weights. The random-label samples (5–6) have small or oppositely-signed weights. The eigenvector has <em>discovered</em> which samples share genuine structure, without ever being told which labels are real!</p>
 
-<h2>6. Step 4: Filter the Gradient</h2>
+<h2>6. Step 4: Decide Which Eigenvalues Represent Real Agreement</h2>
 
-<p><span class="step-label">Step 4</span> Keep only eigencomponents with eigenvalues significantly above the noise floor. We use the <strong>Marchenko-Pastur criterion</strong>: keep eigenvalues $> 2 \times \bar{\lambda}$, where $\bar{\lambda} = \text{trace}(S) / B = 6/6 = 1.0$.</p>
+<p><span class="step-label">Step 4a</span> Not all eigenvalues represent genuine consensus. Even with completely random gradients, you'll get <em>some</em> eigenvalue spread just by chance. We need a threshold to distinguish "real agreement" from "random noise."</p>
 
-<p>So we keep eigenvalues $> 2.0$.</p>
+<p>We use a simple rule called the <strong>Marchenko-Pastur criterion</strong>: compute the average eigenvalue, and keep only eigenvalues larger than $2\times$ the average.</p>
+
+<p>The average eigenvalue is easy: since our similarity matrix $S$ has 1s on the diagonal (every vector has cosine similarity 1.0 with itself), the trace is $B = 6$, so:</p>
+
+$$\bar{\lambda} = \frac{\text{trace}(S)}{B} = \frac{6}{6} = 1.0$$
+
+$$\text{threshold} = 2 \times \bar{\lambda} = 2.0$$
+
+<p><strong>Why 2×?</strong> If all gradients were random unit vectors, the eigenvalues would cluster around 1.0 with some random spread. An eigenvalue needs to be well above this noise floor to represent genuine inter-sample agreement. The factor of 2 is a conservative choice — "at least twice the random expectation."</p>
 
 <table id="filterTable">
-<tr><th>$\lambda_i$</th><th>$> 2.0$?</th><th>Action</th></tr>
+<tr><th>Eigenvalue $\lambda_i$</th><th>$> 2.0$?</th><th>Action</th></tr>
 </table>
 
-<p>Project the uniform weight vector onto the top-$k$ eigenspace to get <strong>consensus weights</strong>:</p>
+<p id="filterSummary"></p>
 
-$$w_{\text{consensus}} = U_k U_k^T \cdot \frac{\mathbf{1}}{B}$$
+<h2>7. Step 5: Reweight Samples Based on Consensus</h2>
 
-<p>Then the <strong>consensus gradient</strong> is:</p>
+<p>This is the core step, and it has three parts. Let's go through each one carefully.</p>
 
-$$g_{\text{consensus}} = \sum_{i=1}^{B} w_{\text{consensus},i} \cdot g_i$$
+<h3>7a. The Problem: Standard SGD Gives Equal Weight to Every Sample</h3>
+
+<p>In normal SGD, we average all 6 gradients with equal weight:</p>
+
+$$g_{\text{mean}} = \frac{1}{6}(g_1 + g_2 + g_3 + g_4 + g_5 + g_6)$$
+
+<p>This is equivalent to using a <strong>uniform weight vector</strong>:</p>
+
+$$w_{\text{uniform}} = \left[\frac{1}{6},\ \frac{1}{6},\ \frac{1}{6},\ \frac{1}{6},\ \frac{1}{6},\ \frac{1}{6}\right]$$
+
+<p>The problem: samples 5 and 6 (random labels) get just as much say as samples 1–4 (real labels). Their noisy gradients pollute the update.</p>
+
+<h3>7b. The Idea: Adjust Weights Using the Eigenvectors</h3>
+
+<p>We want to <strong>adjust those weights</strong> so that samples in the consensus group (1–4) get more weight, and outsider samples (5–6) get less. The eigenvectors from step 3 tell us exactly how to do this.</p>
+
+<p>Recall the top eigenvector $u_1$ (the one with the dominant eigenvalue):</p>
+
+<table id="eigvecDetailTable">
+<tr><th>Component</th><th>Value</th><th>Meaning</th></tr>
+</table>
+
+<p>This vector acts like a "membership score" — it tells us how much each sample participates in the dominant agreement pattern. Samples 1–4 have large, same-sign values (they're all in the consensus). Samples 5–6 have different values (they're not part of it).</p>
+
+<h3>7c. The Mechanics: Projection Onto the Consensus Direction</h3>
+
+<p>We want to take our uniform weights $w_{\text{uniform}} = [1/6, 1/6, \ldots, 1/6]$ and <strong>adjust them to only reflect the consensus direction</strong>. Mathematically, this is a <strong>projection</strong>.</p>
+
+<p>"Projection" just means: take the part of the uniform weights that lines up with the top eigenvector(s), and throw away the rest.</p>
+
+<p>With $k$ kept eigenvectors (let's say $k=1$ for now, just the top one), the projection works in two sub-steps:</p>
+
+<p><strong>Sub-step 1:</strong> How much does the uniform vector align with $u_1$? Compute their dot product:</p>
+
+$$\alpha_1 = u_1 \cdot w_{\text{uniform}} = \sum_{i=1}^{6} u_{1,i} \times \frac{1}{6}$$
+
+<div class="scenario" id="dotProductCalc">
+Computing...
+</div>
+
+<p><strong>Sub-step 2:</strong> Scale the eigenvector by this alignment to get the new weights:</p>
+
+$$w_{\text{consensus}} = \alpha_1 \times u_1$$
+
+<p>This gives us a weight for each sample:</p>
+
+<table id="consensusWeightsTable">
+<tr><th>Sample $i$</th><th>Uniform weight $\frac{1}{6}$</th><th>$u_{1,i}$</th><th>$w_{\text{consensus},i} = \alpha_1 \times u_{1,i}$</th><th>Effect</th></tr>
+</table>
+
+<div class="key-insight">
+<strong>What just happened:</strong> We started with equal weights for all 6 samples. By projecting onto the consensus eigenvector, we've automatically <strong>upweighted samples that agree with each other</strong> (1–4) and <strong>downweighted samples that don't</strong> (5–6). Nobody told the algorithm which labels were real — it figured this out purely from gradient agreement.
+</div>
+
+<p><em>If $k > 1$</em> (multiple eigenvalues above threshold), we'd repeat this for each kept eigenvector and add up the contributions: $w_{\text{consensus}} = \sum_{j=1}^{k} (u_j \cdot w_{\text{uniform}}) \times u_j$. This is what the compact formula $U_k U_k^T \frac{\mathbf{1}}{B}$ means — it does all $k$ projections at once using matrix multiplication.</p>
+
+<h3>7d. Compute the Consensus Gradient</h3>
+
+<p>Now we simply take the weighted sum of the <strong>original</strong> (un-normalized) gradients using our new consensus weights:</p>
+
+$$g_{\text{consensus}} = \sum_{i=1}^{6} w_{\text{consensus},i} \times g_i$$
+
+<p>Let's compute this term by term:</p>
+
+<table id="gradientContribTable">
+<tr><th>Sample</th><th>Weight $w_i$</th><th>Gradient $g_i$</th><th>Contribution $w_i \times g_i$</th></tr>
+</table>
 
 <div class="result" id="consensusResult">
 Computing...
 </div>
 
-<h2>7. Comparison: What If ALL Labels Were Random?</h2>
+<div class="key-insight">
+<strong>Summing up Step 5:</strong> We started with the question "how should we weight these 6 samples?" Standard SGD says "equally." We used the eigendecomposition to discover which samples agree, and reweighted accordingly. The consensus gradient points in the direction that the <em>agreeing</em> samples want — which, if the agreement comes from real features, is the direction of genuine learning.
+</div>
+
+<h2>8. Comparison: What If ALL Labels Were Random?</h2>
 
 <p>Now imagine the same 6 images, but <strong>all labels are random</strong>. Each sample's gradient points in an essentially arbitrary direction:</p>
 
@@ -298,7 +376,7 @@ Computing...
 Computing...
 </div>
 
-<h2>8. Side-by-Side Comparison</h2>
+<h2>9. Side-by-Side Comparison</h2>
 
 <div class="comparison">
 <div class="real-side">
@@ -311,7 +389,7 @@ Computing...
 </div>
 </div>
 
-<h2>9. Why This Matters</h2>
+<h2>10. Why This Matters</h2>
 
 <p>This is the core mechanism:</p>
 
@@ -328,6 +406,70 @@ Computing...
 <div class="key-insight">
 <strong>The punchline:</strong> An optimizer that only learns what the data agrees on cannot learn from noise — because noise, by definition, is what the data doesn't agree on.
 </div>
+
+<h2>11. From Toy Example to Practical Implementation</h2>
+
+<p>The worked example above shows the clean, idealized version of the idea. The actual code implementation makes several choices and modifications worth understanding.</p>
+
+<h3>11a. This Is a Gradient Filter, Not an Optimizer</h3>
+
+<p>The spectral consensus mechanism is <strong>not a standalone optimizer</strong>. It's a <strong>gradient filter</strong> that wraps any existing optimizer. The workflow is:</p>
+
+<ol>
+<li>Compute per-sample gradients (the expensive part)</li>
+<li>Run the spectral consensus filter to produce a single "consensus gradient"</li>
+<li>Inject that gradient into the model's <code>.grad</code> fields</li>
+<li>Call the base optimizer's <code>.step()</code> — e.g. SGD with momentum</li>
+</ol>
+
+<p>So <strong>yes, momentum is used</strong> — by the base optimizer in step 4. The spectral filter only decides <em>what gradient to feed</em> to that optimizer. In our experiments, the base optimizer is SGD with momentum 0.9 and learning rate 0.05. The spectral filter replaces only the gradient computation; everything else (momentum tracking, learning rate, weight updates) is handled by SGD as normal.</p>
+
+<p>In principle, you could wrap Adam, Lion, or any other optimizer as the base — the filter is agnostic.</p>
+
+<h3>11b. Per-Sample Gradients via vmap</h3>
+
+<p>The biggest practical challenge is computing a separate gradient for each sample in the batch. Standard PyTorch's <code>loss.backward()</code> only gives you the <em>average</em> gradient over the batch. We need individual gradients.</p>
+
+<p>We use PyTorch's <code>torch.func.vmap</code> and <code>grad_and_value</code> to efficiently compute per-sample gradients in parallel on the GPU. For a batch of $B$ samples and $p$ parameters, this gives us the full $B \times p$ gradient matrix $G$ — the raw material for everything above. This is the main computational overhead: roughly $B\times$ the cost of a single backward pass (though vmap makes it more efficient than literally doing $B$ separate passes).</p>
+
+<h3>11c. Normalization: Cosine Similarity</h3>
+
+<p>In step 1 of the worked example, we normalized each gradient to unit length before building the similarity matrix. This means we're using <strong>cosine similarity</strong> (direction only) rather than raw dot products (direction × magnitude).</p>
+
+<p>Why? Because we care about whether samples agree on <em>which direction</em> to move the parameters, not about how much each sample's loss changed. A sample with a large gradient (high loss) shouldn't dominate the consensus just because it has large magnitude — it should be listened to if and only if other samples agree with its direction.</p>
+
+<p>The un-normalized gradients are used later when computing the final consensus gradient (step 7d) — we only normalize for the purpose of measuring agreement.</p>
+
+<h3>11d. Hard vs Soft Thresholding</h3>
+
+<p>The worked example uses a <strong>hard cutoff</strong>: eigenvalues above $2\times$ the mean are kept, everything below is completely discarded. In practice, this can be too aggressive — it throws away signal from eigenvalues that are above the noise floor but below the threshold.</p>
+
+<p>In our experiments, the hard cutoff ($k=1$ or $k=2$ on MNIST) dropped real-label accuracy from 99.7% to 93.8% — the filter was too strict and threw away some genuine signal.</p>
+
+<p>The <strong>soft thresholding</strong> variant addresses this by using a smooth sigmoid function instead of a hard cutoff:</p>
+
+$$\alpha_i = \sigma\!\left(\frac{\lambda_i - \text{threshold}}{\text{temperature}}\right)$$
+
+<p>where $\sigma$ is the sigmoid function and temperature controls the sharpness of the transition. Each eigenvector's contribution is then scaled by $\alpha_i$ instead of being binary keep/discard. Eigenvalues well above the threshold get $\alpha \approx 1$, those well below get $\alpha \approx 0$, and those near the boundary get partial weight.</p>
+
+<h3>11e. What We Learned from Experiments</h3>
+
+<p>We ran all experiments on MNIST (digit classification) and a 2D spiral dataset, comparing SGD, Adam, AdamW, Lion, Muon, and the spectral consensus optimizer:</p>
+
+<ul>
+<li><strong>Real labels:</strong> All standard optimizers reach ~99%+ on MNIST. Spectral with hard threshold reaches 93.8% — good but degraded by aggressive filtering.</li>
+<li><strong>Random labels (the key test):</strong> After 50 epochs, Adam/AdamW memorize to ~40-50% train accuracy. SGD reaches ~30%. Spectral stays near chance (~14%) — <strong>it genuinely cannot memorize</strong>.</li>
+<li><strong>Surprise finding:</strong> The eigenvalue spectrum isn't as clean as this toy example suggests. Even with random labels, there's some eigenvalue structure because the <em>input images</em> (MNIST digits) share visual features regardless of labels. The gradients depend on both inputs AND labels, so random labels don't produce a perfectly flat spectrum. The consensus filter still works (can't memorize), but the mechanism is subtler than "flat = noise, peaked = signal."</li>
+</ul>
+
+<h3>11f. Open Questions</h3>
+
+<ul>
+<li><strong>Cost:</strong> Per-sample gradients are expensive. For large models and large batches, the $B \times p$ gradient matrix becomes enormous. Is there a way to approximate the spectral filter without computing full per-sample gradients?</li>
+<li><strong>Soft threshold tuning:</strong> The sigmoid temperature is a hyperparameter. Can it be set adaptively?</li>
+<li><strong>Interaction with real memorization:</strong> Real-world training involves <em>some</em> memorization (specific training examples are partially memorized). The spectral filter suppresses this — is that always desirable?</li>
+<li><strong>Label-conditioned filtering:</strong> Instead of one big similarity matrix, could we build separate matrices per predicted class? This might capture more nuanced consensus structure.</li>
+</ul>
 
 <hr>
 
@@ -540,8 +682,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Filter table
     const filterTable = document.getElementById('filterTable');
+    let keptCount = 0;
     for (let i = 0; i < 6; i++) {
         const keep = eig_real.values[i] > 2.0;
+        if (keep) keptCount++;
         const row = document.createElement('tr');
         row.innerHTML = `<td>${eig_real.values[i].toFixed(3)}</td>` +
             `<td>${keep ? '<strong>Yes</strong>' : 'No'}</td>` +
@@ -549,21 +693,86 @@ window.addEventListener('DOMContentLoaded', () => {
         row.style.background = keep ? '#d5f5e3' : '#f5f5f0';
         filterTable.appendChild(row);
     }
+    document.getElementById('filterSummary').innerHTML =
+        `<strong>Result:</strong> $k = ${keptCount}$ eigenvalue(s) exceed the threshold. We keep the corresponding eigenvector(s) and discard the rest. These $k$ eigenvectors define our "consensus directions" — the patterns of inter-sample agreement that are strong enough to be real.`;
 
-    // Consensus result
+    // Consensus computation — step by step
     const filt_real = spectralFilter(realGrads, S_real, eig_real);
+
+    // 7b: Eigenvector detail table
+    const eigvecDetailTable = document.getElementById('eigvecDetailTable');
+    for (let i = 0; i < 6; i++) {
+        const row = document.createElement('tr');
+        const meaning = i < 4
+            ? 'Large positive — strong consensus member'
+            : (u1[i] > 0 ? 'Small/different sign — not part of the consensus' : 'Negative — opposes the consensus');
+        row.innerHTML = `<td>$u_{1,${i+1}}$</td><td><strong>${u1[i].toFixed(4)}</strong></td>` +
+            `<td style="text-align:left; font-size:0.9em;">${meaning}</td>`;
+        row.style.background = i < 4 ? '#d5f5e3' : '#fce4ec';
+        eigvecDetailTable.appendChild(row);
+    }
+
+    // 7c: Dot product calculation
+    const uniform = 1.0 / 6;
+    const alpha1 = u1.reduce((s, v) => s + v * uniform, 0);
+    const dotTerms = u1.map((v, i) => `(${v.toFixed(4)} \\times \\frac{1}{6})`).join(' + ');
+    document.getElementById('dotProductCalc').innerHTML =
+        `$$\\alpha_1 = ${dotTerms}$$` +
+        `$$\\alpha_1 = ${u1.map(v => (v / 6).toFixed(5)).join(' + ')} = \\mathbf{${alpha1.toFixed(5)}}$$` +
+        `<p>This number tells us: the uniform weight vector has a component of size ${Math.abs(alpha1).toFixed(4)} in the direction of the consensus eigenvector.</p>`;
+
+    // 7c: Consensus weights table
+    const consensusWeightsTable = document.getElementById('consensusWeightsTable');
+    const cWeights = u1.map(v => alpha1 * v);
+    for (let i = 0; i < 6; i++) {
+        const row = document.createElement('tr');
+        const effect = cWeights[i] > uniform * 0.8 ? 'Upweighted (consensus member)' :
+                       cWeights[i] > 0 ? 'Downweighted' : 'Negative weight (opposed)';
+        row.innerHTML = `<td>${i+1}</td><td>${uniform.toFixed(4)}</td>` +
+            `<td>${u1[i].toFixed(4)}</td>` +
+            `<td><strong>${cWeights[i].toFixed(4)}</strong></td>` +
+            `<td style="text-align:left; font-size:0.9em;">${effect}</td>`;
+        row.style.background = i < 4 ? '#d5f5e3' : '#fce4ec';
+        consensusWeightsTable.appendChild(row);
+    }
+
+    // 7d: Gradient contribution table
+    const gradContribTable = document.getElementById('gradientContribTable');
+    const actualWeights = filt_real.weights;
+    for (let i = 0; i < 6; i++) {
+        const contrib = realGrads[i].map(v => actualWeights[i] * v);
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${i+1} ${i < 4 ? '(real)' : '(random)'}</td>` +
+            `<td>${actualWeights[i].toFixed(4)}</td>` +
+            `<td>$[${realGrads[i].map(v => v.toFixed(1)).join(',\\ ')}]$</td>` +
+            `<td>$[${contrib.map(v => v.toFixed(4)).join(',\\ ')}]$</td>`;
+        row.style.background = i < 4 ? '#d5f5e3' : '#fce4ec';
+        gradContribTable.appendChild(row);
+    }
+
+    // Final consensus result
     const consensusResult = document.getElementById('consensusResult');
-    consensusResult.innerHTML = `<strong>Result (k = ${filt_real.k}):</strong><br>` +
-        `<strong>Consensus gradient:</strong> $[${filt_real.consensus.map(v => v.toFixed(3)).join(',\\ ')}]$<br>` +
-        `<strong>Mean gradient:</strong> $[${filt_real.mean.map(v => v.toFixed(3)).join(',\\ ')}]$<br>` +
-        `<strong>Consensus ratio:</strong> ${(norm(filt_real.consensus) / norm(filt_real.mean)).toFixed(3)} ` +
-        `(consensus gradient is ${(norm(filt_real.consensus) / norm(filt_real.mean) * 100).toFixed(0)}% the magnitude of the mean)<br>` +
-        `<br>The consensus gradient is dominated by the real-label samples. ` +
-        `The random-label samples (5 and 6) are effectively <strong>filtered out</strong>.` +
-        `<br><br><strong>Sample weights:</strong> ${filt_real.weights.map((w,i) => `s${i+1}=${w.toFixed(3)}`).join(', ')}`;
-    renderMathInElement(consensusResult, {
-        delimiters: [{left: '$', right: '$', display: false}],
-        throwOnError: false
+    const meanGrad = filt_real.mean;
+    const consGrad = filt_real.consensus;
+    const consNorm = norm(consGrad);
+    const meanNorm = norm(meanGrad);
+    consensusResult.innerHTML =
+        `<strong>Final consensus gradient:</strong> $[${consGrad.map(v => v.toFixed(4)).join(',\\ ')}]$<br><br>` +
+        `<strong>For comparison, the standard mean gradient (what SGD would use):</strong> $[${meanGrad.map(v => v.toFixed(4)).join(',\\ ')}]$<br><br>` +
+        `<strong>Consensus gradient magnitude:</strong> ${consNorm.toFixed(4)}<br>` +
+        `<strong>Mean gradient magnitude:</strong> ${meanNorm.toFixed(4)}<br>` +
+        `<strong>Ratio:</strong> ${(consNorm / meanNorm).toFixed(3)} — the consensus gradient is ${(consNorm / meanNorm * 100).toFixed(0)}% the size of the mean gradient.<br><br>` +
+        `Notice the consensus gradient points more strongly in the $[+w_1, +w_2, -w_3]$ direction — the direction samples 1–4 agree on — while the mean gradient is diluted by the noise from samples 5 and 6.`;
+
+    // Render math in dynamically generated content
+    [consensusResult, document.getElementById('dotProductCalc'),
+     document.getElementById('filterSummary'),
+     gradContribTable, consensusWeightsTable, eigvecDetailTable].forEach(el => {
+        renderMathInElement(el, {
+            delimiters: [{left: '$$', right: '$$', display: true},
+                         {left: '$', right: '$', display: false}],
+            throwOnError: false
+        });
     });
 
     // Random eigenvalues
