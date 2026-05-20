@@ -14,12 +14,15 @@ class SpectralConsensusFilter:
     """
 
     def __init__(self, model, base_optimizer, loss_fn=None,
-                 variance_threshold=None, mp_factor=2.0):
+                 variance_threshold=None, mp_factor=2.0,
+                 soft=False, soft_temp=0.5):
         self.model = model
         self.base_optimizer = base_optimizer
         self.loss_fn = loss_fn or nn.CrossEntropyLoss()
         self.variance_threshold = variance_threshold
         self.mp_factor = mp_factor
+        self.soft = soft
+        self.soft_temp = soft_temp
 
         self.params = {k: v for k, v in model.named_parameters()}
         self.buffers = {k: v for k, v in model.named_buffers()}
@@ -85,21 +88,26 @@ class SpectralConsensusFilter:
                 "consensus_ratio": 0.0,
             }
 
+        mean_eig = total_var / batch_size
+        threshold = self.mp_factor * mean_eig
+        uniform = torch.ones(batch_size, device=G.device) / batch_size
+
         if self.variance_threshold is not None:
             cumvar = eigenvalues.cumsum(0) / total_var
             k = int((cumvar < self.variance_threshold).sum().item()) + 1
+            k = max(1, min(k, batch_size))
+            U_k = U[:, :k]
+            weights = U_k @ (U_k.T @ uniform)
+        elif self.soft:
+            temperature = max(self.soft_temp * mean_eig, 1e-12)
+            alpha = torch.sigmoid((eigenvalues - threshold) / temperature)
+            weights = U @ (alpha * (U.T @ uniform))
+            k = int((eigenvalues > threshold).sum().item())
         else:
-            # Marchenko-Pastur calibration: keep eigenvalues significantly
-            # above the null expectation. For a B×B cosine similarity matrix
-            # of random unit vectors, eigenvalues cluster around trace/B = 1.
-            # Keep only eigenvalues > mp_factor * mean_eigenvalue.
-            mean_eig = total_var / batch_size
-            k = int((eigenvalues > self.mp_factor * mean_eig).sum().item())
-        k = max(1, min(k, batch_size))
-
-        U_k = U[:, :k]
-        uniform = torch.ones(batch_size, device=G.device) / batch_size
-        weights = U_k @ (U_k.T @ uniform)
+            k = int((eigenvalues > threshold).sum().item())
+            k = max(1, min(k, batch_size))
+            U_k = U[:, :k]
+            weights = U_k @ (U_k.T @ uniform)
 
         consensus_grad = weights @ G
 

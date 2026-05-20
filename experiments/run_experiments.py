@@ -24,6 +24,7 @@ OPTIMIZER_CONFIGS = {
     "lion":   {"cls": Lion, "kwargs": {"lr": 3e-4, "weight_decay": 0.01}},
     "muon":   {"cls": Muon, "kwargs": {"lr": 0.02, "momentum": 0.9}},
     "spectral": {"cls": None, "kwargs": {"lr": 0.05, "momentum": 0.9}},
+    "spectral_soft": {"cls": None, "kwargs": {"lr": 0.05, "momentum": 0.9}},
 }
 
 
@@ -32,6 +33,9 @@ def make_optimizer(name, model, device):
     if name == "spectral":
         base_opt = torch.optim.SGD(model.parameters(), **cfg["kwargs"])
         return SpectralConsensusFilter(model, base_opt, mp_factor=2.0)
+    if name == "spectral_soft":
+        base_opt = torch.optim.SGD(model.parameters(), **cfg["kwargs"])
+        return SpectralConsensusFilter(model, base_opt, mp_factor=2.0, soft=True, soft_temp=0.5)
     return cfg["cls"](model.parameters(), **cfg["kwargs"])
 
 
@@ -112,11 +116,11 @@ def main():
         ("spiral", False): 30,
         ("spiral", True): 30,
     }
-    all_optimizers = ["sgd", "adam", "adamw", "lion", "muon", "spectral"]
+    all_optimizers = ["sgd", "adam", "adamw", "lion", "muon", "spectral", "spectral_soft"]
 
     results = {"device": str(device), "experiments": {}}
     save_path = os.path.join(os.path.dirname(__file__), "..", "results",
-                             "spectral_experiment_results_v2.json")
+                             "spectral_experiment_results_v3.json")
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
     total = len(all_optimizers) * 2 * 2  # 6 opts x 2 datasets x 2 label modes
