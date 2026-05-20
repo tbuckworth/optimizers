@@ -24,19 +24,18 @@ OPTIMIZER_CONFIGS = {
     "sgd":           {"cls": torch.optim.SGD,  "kwargs": {"lr": 0.05, "momentum": 0.9}},
     "adam":          {"cls": torch.optim.Adam,  "kwargs": {"lr": 0.001}},
     "adamw":         {"cls": torch.optim.AdamW, "kwargs": {"lr": 0.001, "weight_decay": 0.01}},
-    "spectral":      {"cls": None, "kwargs": {"lr": 0.05, "momentum": 0.9}},
-    "spectral_soft": {"cls": None, "kwargs": {"lr": 0.05, "momentum": 0.9}},
+    "spectral":      {"cls": None, "kwargs": {"lr": 0.05, "momentum": 0.9},
+                      "spectral_kwargs": {"mp_factor": 3.0}},
+    "spectral_soft": {"cls": None, "kwargs": {"lr": 0.02, "momentum": 0.9},
+                      "spectral_kwargs": {"mp_factor": 1.5, "soft": True, "soft_temp": 1.0}},
 }
 
 
 def make_optimizer(name, model):
     cfg = OPTIMIZER_CONFIGS[name]
-    if name == "spectral":
+    if "spectral_kwargs" in cfg:
         base = torch.optim.SGD(model.parameters(), **cfg["kwargs"])
-        return SpectralConsensusFilter(model, base, mp_factor=2.0)
-    if name == "spectral_soft":
-        base = torch.optim.SGD(model.parameters(), **cfg["kwargs"])
-        return SpectralConsensusFilter(model, base, mp_factor=2.0, soft=True, soft_temp=0.5)
+        return SpectralConsensusFilter(model, base, **cfg["spectral_kwargs"])
     return cfg["cls"](model.parameters(), **cfg["kwargs"])
 
 
@@ -87,7 +86,7 @@ def main():
     all_opts = list(OPTIMIZER_CONFIGS.keys())
     all_results = {"device": str(device), "experiments": {}}
     save_path = os.path.join(os.path.dirname(__file__), "..", "results",
-                             "ood_experiment_results.json")
+                             "ood_experiment_results_v2.json")
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
     # === Setup 1: Small MNIST ===

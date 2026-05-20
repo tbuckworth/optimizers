@@ -543,7 +543,9 @@ document.getElementById('fileInput').addEventListener('change', e => {
 });
 
 // Try auto-load
-fetch('ood_experiment_results.json')
+fetch('ood_experiment_results_v2.json')
+  .catch(() => fetch('../results/ood_experiment_results_v2.json'))
+  .catch(() => fetch('ood_experiment_results.json'))
   .catch(() => fetch('../results/ood_experiment_results.json'))
   .then(r => r.ok ? r.json() : null)
   .catch(() => null)
