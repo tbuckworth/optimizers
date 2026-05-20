@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OOD Generalization — Spectral Consensus vs Standard Optimizers</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #0f1117; color: #e0e0e0; }
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    padding: 20px 30px;
+    border-bottom: 2px solid #0f3460;
+  }
+  .header h1 { font-size: 1.5em; font-weight: 600; color: #e0e0e0; }
+  .header p { font-size: 0.9em; color: #8892a0; margin-top: 4px; }
+  .controls {
+    display: flex;
+    gap: 20px;
+    padding: 16px 30px;
+    background: #161822;
+    border-bottom: 1px solid #2a2d3a;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .controls label {
+    font-size: 0.85em;
+    color: #aab0c0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .dataset-tabs {
+    display: flex;
+    gap: 4px;
+  }
+  .dataset-tabs button {
+    padding: 6px 16px;
+    border: 1px solid #3a3d4a;
+    background: #1e2030;
+    color: #8892a0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: all 0.15s;
+  }
+  .dataset-tabs button.active {
+    background: #0f3460;
+    color: #e0e0e0;
+    border-color: #1a5fb4;
+  }
+  .opt-toggles {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .opt-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+  }
+  .opt-toggle:hover { background: #1e2030; }
+  .opt-toggle input { display: none; }
+  .opt-toggle .swatch {
+    width: 14px; height: 14px;
+    border-radius: 3px;
+    border: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .opt-toggle input:checked + .swatch { border-color: #fff; }
+  .opt-toggle input:not(:checked) + .swatch { opacity: 0.3; }
+  .opt-toggle span { font-size: 0.85em; color: #c0c4d0; }
+  .charts-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px 30px;
+  }
+  .chart-box {
+    background: #161822;
+    border: 1px solid #2a2d3a;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .chart-box h3 {
+    font-size: 0.95em;
+    color: #8892a0;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .chart-box canvas {
+    width: 100%;
+    background: #0f1117;
+    border-radius: 4px;
+  }
+  .legend-bar {
+    display: flex;
+    gap: 20px;
+    padding: 10px 30px;
+    justify-content: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8em;
+    color: #8892a0;
+  }
+  .legend-line {
+    width: 30px;
+    height: 0;
+    border-top: 2px solid #888;
+  }
+  .legend-line.dashed { border-top-style: dashed; }
+  .legend-line.dotted { border-top-style: dotted; border-top-width: 3px; }
+  .summary-table {
+    margin: 0 30px 30px;
+    background: #161822;
+    border: 1px solid #2a2d3a;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .summary-table h3 {
+    padding: 12px 16px;
+    font-size: 0.95em;
+    color: #8892a0;
+    border-bottom: 1px solid #2a2d3a;
+  }
+  .summary-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85em;
+  }
+  .summary-table th, .summary-table td {
+    padding: 8px 14px;
+    text-align: center;
+    border-bottom: 1px solid #1e2030;
+  }
+  .summary-table th {
+    background: #1a1c2e;
+    color: #8892a0;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    letter-spacing: 0.5px;
+  }
+  .summary-table td { color: #c0c4d0; }
+  .summary-table tr:hover td { background: #1e2030; }
+  .best-cell { color: #4ade80 !important; font-weight: 700; }
+  .file-picker {
+    padding: 12px 30px;
+    text-align: center;
+  }
+  .file-picker input {
+    background: #1e2030;
+    border: 1px solid #3a3d4a;
+    color: #c0c4d0;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .no-data {
+    text-align: center;
+    padding: 60px;
+    color: #555;
+    font-size: 1.1em;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>OOD Generalization: Spectral Consensus vs Standard Optimizers</h1>
+  <p>Train / Test / OOD accuracy curves — does filtering by inter-sample consensus prevent overfitting?</p>
+</div>
+
+<div class="controls">
+  <div>
+    <label>Dataset</label>
+    <div class="dataset-tabs" id="datasetTabs"></div>
+  </div>
+  <div>
+    <label>Optimizers</label>
+    <div class="opt-toggles" id="optToggles"></div>
+  </div>
+</div>
+
+<div class="legend-bar">
+  <div class="legend-item"><div class="legend-line" style="border-color:#aaa"></div> Train</div>
+  <div class="legend-item"><div class="legend-line dashed" style="border-color:#aaa"></div> Test</div>
+  <div class="legend-item"><div class="legend-line dotted" style="border-color:#aaa"></div> OOD</div>
+</div>
+
+<div class="charts-container">
+  <div class="chart-box">
+    <h3>Accuracy</h3>
+    <canvas id="accChart" width="600" height="380"></canvas>
+  </div>
+  <div class="chart-box">
+    <h3>Loss</h3>
+    <canvas id="lossChart" width="600" height="380"></canvas>
+  </div>
+  <div class="chart-box" style="grid-column: 1 / -1;">
+    <h3>Generalization Gap (Train Acc − Test Acc)</h3>
+    <canvas id="gapChart" width="1240" height="300"></canvas>
+  </div>
+</div>
+
+<div class="summary-table" id="summarySection">
+  <h3>Final Metrics</h3>
+  <table id="summaryTable">
+    <thead>
+      <tr><th>Optimizer</th><th>Train Acc</th><th>Test Acc</th><th>OOD Acc</th><th>Gen. Gap</th><th>OOD Gap</th></tr>
+    </thead>
+    <tbody id="summaryBody"></tbody>
+  </table>
+</div>
+
+<div class="file-picker">
+  <input type="file" id="fileInput" accept=".json">
+  <span style="color:#555; font-size:0.85em; margin-left:10px;">Load ood_experiment_results.json</span>
+</div>
+
+<script>
+const OPT_COLORS = {
+  sgd:           '#3b82f6',
+  adam:          '#22c55e',
+  adamw:         '#a855f7',
+  lion:          '#f97316',
+  muon:          '#06b6d4',
+  spectral:      '#ef4444',
+  spectral_soft: '#eab308',
+};
+const OPT_LABELS = {
+  sgd: 'SGD', adam: 'Adam', adamw: 'AdamW', lion: 'Lion', muon: 'Muon',
+  spectral: 'Spectral (hard)', spectral_soft: 'Spectral (soft)',
+};
+
+let DATA = null;
+let activeDataset = null;
+let activeOpts = new Set();
+
+function getDatasets(data) {
+  const datasets = new Set();
+  for (const key of Object.keys(data.experiments)) {
+    const parts = key.split('_');
+    const opt = parts[0] === 'spectral' && parts[1] === 'soft' ? 'spectral_soft' : parts[0];
+    const ds = key.replace(opt + '_', '');
+    datasets.add(ds);
+  }
+  return [...datasets];
+}
+
+function getOptimizers(data, dataset) {
+  const opts = [];
+  for (const key of Object.keys(data.experiments)) {
+    for (const optName of Object.keys(OPT_COLORS)) {
+      if (key === optName + '_' + dataset && !data.experiments[key].error) {
+        opts.push(optName);
+      }
+    }
+  }
+  return opts;
+}
+
+function getExperiment(data, opt, dataset) {
+  return data.experiments[opt + '_' + dataset];
+}
+
+function buildControls() {
+  const datasets = getDatasets(DATA);
+  const tabsEl = document.getElementById('datasetTabs');
+  tabsEl.innerHTML = '';
+  datasets.forEach((ds, i) => {
+    const btn = document.createElement('button');
+    btn.textContent = ds.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase());
+    btn.onclick = () => selectDataset(ds);
+    if (i === 0) btn.classList.add('active');
+    tabsEl.appendChild(btn);
+  });
+
+  activeDataset = datasets[0];
+  buildOptToggles();
+}
+
+function buildOptToggles() {
+  const opts = getOptimizers(DATA, activeDataset);
+  activeOpts = new Set(opts);
+  const el = document.getElementById('optToggles');
+  el.innerHTML = '';
+  opts.forEach(opt => {
+    const label = document.createElement('label');
+    label.className = 'opt-toggle';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = true;
+    cb.onchange = () => { toggleOpt(opt, cb.checked); };
+    const swatch = document.createElement('div');
+    swatch.className = 'swatch';
+    swatch.style.background = OPT_COLORS[opt] || '#888';
+    const span = document.createElement('span');
+    span.textContent = OPT_LABELS[opt] || opt;
+    label.appendChild(cb);
+    label.appendChild(swatch);
+    label.appendChild(span);
+    el.appendChild(label);
+  });
+}
+
+function selectDataset(ds) {
+  activeDataset = ds;
+  document.querySelectorAll('.dataset-tabs button').forEach(b => b.classList.remove('active'));
+  [...document.querySelectorAll('.dataset-tabs button')].find(b =>
+    b.textContent.toLowerCase().replace(/\s/g, '_') === ds ||
+    b.textContent === ds.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())
+  )?.classList.add('active');
+  buildOptToggles();
+  render();
+}
+
+function toggleOpt(opt, on) {
+  if (on) activeOpts.add(opt); else activeOpts.delete(opt);
+  render();
+}
+
+function render() {
+  drawChart('accChart', 'acc');
+  drawChart('lossChart', 'loss');
+  drawGapChart();
+  fillSummary();
+}
+
+function drawChart(canvasId, mode) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const pad = { l: 55, r: 20, t: 20, b: 35 };
+  const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+
+  ctx.fillStyle = '#0f1117';
+  ctx.fillRect(0, 0, W, H);
+
+  let maxEpochs = 0;
+  let minVal = Infinity, maxVal = -Infinity;
+  const series = [];
+
+  for (const opt of activeOpts) {
+    const exp = getExperiment(DATA, opt, activeDataset);
+    if (!exp || exp.error) continue;
+    const epochs = exp.epochs;
+    maxEpochs = Math.max(maxEpochs, epochs.length);
+    const trainKey = mode === 'acc' ? 'train_acc' : 'train_loss';
+    const testKey = mode === 'acc' ? 'test_acc' : 'test_loss';
+    const oodKey = mode === 'acc' ? 'ood_acc' : 'ood_loss';
+    const train = epochs.map(e => e[trainKey]);
+    const test = epochs.map(e => e[testKey]);
+    const ood = epochs.map(e => e[oodKey]);
+    [train, test, ood].forEach(arr => arr.forEach(v => {
+      if (v !== undefined) { minVal = Math.min(minVal, v); maxVal = Math.max(maxVal, v); }
+    }));
+    series.push({ opt, train, test, ood });
+  }
+
+  if (series.length === 0) return;
+
+  if (mode === 'acc') { minVal = Math.max(0, minVal - 0.05); maxVal = Math.min(1.05, maxVal + 0.02); }
+  else { minVal = Math.max(0, minVal - 0.1); maxVal = maxVal * 1.1; }
+  const range = maxVal - minVal || 1;
+
+  function toX(epoch) { return pad.l + (epoch / (maxEpochs - 1)) * pw; }
+  function toY(val) { return pad.t + ph - ((val - minVal) / range) * ph; }
+
+  // Grid
+  ctx.strokeStyle = '#1e2030';
+  ctx.lineWidth = 1;
+  const nGridY = 5;
+  for (let i = 0; i <= nGridY; i++) {
+    const val = minVal + (range * i / nGridY);
+    const y = toY(val);
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+    ctx.fillStyle = '#555';
+    ctx.font = '11px Menlo, monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(val.toFixed(mode === 'acc' ? 2 : 1), pad.l - 8, y + 4);
+  }
+  // X axis labels
+  ctx.textAlign = 'center';
+  const step = Math.ceil(maxEpochs / 8);
+  for (let e = 0; e < maxEpochs; e += step) {
+    ctx.fillText(e, toX(e), H - pad.b + 18);
+  }
+  ctx.fillText('Epoch', pad.l + pw / 2, H - 4);
+
+  // Draw curves
+  for (const s of series) {
+    const color = OPT_COLORS[s.opt] || '#888';
+    drawLine(ctx, s.train, toX, toY, color, []);
+    drawLine(ctx, s.test, toX, toY, color, [8, 4]);
+    drawLine(ctx, s.ood, toX, toY, color, [3, 3]);
+  }
+}
+
+function drawLine(ctx, values, toX, toY, color, dash) {
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.setLineDash(dash);
+  ctx.beginPath();
+  let started = false;
+  for (let i = 0; i < values.length; i++) {
+    if (values[i] === undefined) continue;
+    const x = toX(i), y = toY(values[i]);
+    if (!started) { ctx.moveTo(x, y); started = true; }
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function drawGapChart() {
+  const canvas = document.getElementById('gapChart');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const pad = { l: 55, r: 20, t: 15, b: 35 };
+  const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+
+  ctx.fillStyle = '#0f1117';
+  ctx.fillRect(0, 0, W, H);
+
+  let maxEpochs = 0;
+  let minGap = 0, maxGap = 0;
+  const series = [];
+
+  for (const opt of activeOpts) {
+    const exp = getExperiment(DATA, opt, activeDataset);
+    if (!exp || exp.error) continue;
+    const epochs = exp.epochs;
+    maxEpochs = Math.max(maxEpochs, epochs.length);
+    const trainTestGap = epochs.map(e => e.train_acc - e.test_acc);
+    const trainOodGap = epochs.map(e => e.train_acc - e.ood_acc);
+    trainTestGap.forEach(v => { minGap = Math.min(minGap, v); maxGap = Math.max(maxGap, v); });
+    trainOodGap.forEach(v => { minGap = Math.min(minGap, v); maxGap = Math.max(maxGap, v); });
+    series.push({ opt, trainTestGap, trainOodGap });
+  }
+
+  if (series.length === 0) return;
+  minGap = Math.min(-0.02, minGap - 0.02);
+  maxGap = Math.max(0.02, maxGap + 0.02);
+  const range = maxGap - minGap || 1;
+
+  function toX(e) { return pad.l + (e / (maxEpochs - 1)) * pw; }
+  function toY(v) { return pad.t + ph - ((v - minGap) / range) * ph; }
+
+  // Zero line
+  ctx.strokeStyle = '#3a3d4a';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad.l, toY(0)); ctx.lineTo(W - pad.r, toY(0)); ctx.stroke();
+
+  // Grid
+  ctx.strokeStyle = '#1e2030';
+  const nGridY = 4;
+  for (let i = 0; i <= nGridY; i++) {
+    const val = minGap + (range * i / nGridY);
+    const y = toY(val);
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+    ctx.fillStyle = '#555';
+    ctx.font = '11px Menlo, monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(val.toFixed(2), pad.l - 8, y + 4);
+  }
+  ctx.textAlign = 'center';
+  const step = Math.ceil(maxEpochs / 12);
+  for (let e = 0; e < maxEpochs; e += step) {
+    ctx.fillText(e, toX(e), H - pad.b + 18);
+  }
+
+  for (const s of series) {
+    const color = OPT_COLORS[s.opt] || '#888';
+    drawLine(ctx, s.trainTestGap, toX, toY, color, [8, 4]);
+    drawLine(ctx, s.trainOodGap, toX, toY, color, [3, 3]);
+  }
+}
+
+function fillSummary() {
+  const tbody = document.getElementById('summaryBody');
+  tbody.innerHTML = '';
+  const rows = [];
+  for (const opt of Object.keys(OPT_COLORS)) {
+    const exp = getExperiment(DATA, opt, activeDataset);
+    if (!exp || exp.error) continue;
+    const last = exp.epochs[exp.epochs.length - 1];
+    rows.push({
+      opt,
+      train: last.train_acc,
+      test: last.test_acc,
+      ood: last.ood_acc,
+      genGap: last.train_acc - last.test_acc,
+      oodGap: last.train_acc - last.ood_acc,
+    });
+  }
+
+  const bestTest = Math.max(...rows.map(r => r.test));
+  const bestOod = Math.max(...rows.map(r => r.ood));
+  const bestGenGap = Math.min(...rows.map(r => r.genGap));
+  const bestOodGap = Math.min(...rows.map(r => r.oodGap));
+
+  for (const r of rows) {
+    const tr = document.createElement('tr');
+    const optTd = document.createElement('td');
+    optTd.innerHTML = `<span style="color:${OPT_COLORS[r.opt]}">●</span> ${OPT_LABELS[r.opt] || r.opt}`;
+    optTd.style.textAlign = 'left';
+    tr.appendChild(optTd);
+
+    function addCell(val, fmt, isBest) {
+      const td = document.createElement('td');
+      td.textContent = val.toFixed(fmt);
+      if (isBest) td.className = 'best-cell';
+      tr.appendChild(td);
+    }
+    addCell(r.train, 3, false);
+    addCell(r.test, 3, r.test === bestTest);
+    addCell(r.ood, 3, r.ood === bestOod);
+    addCell(r.genGap, 3, r.genGap === bestGenGap);
+    addCell(r.oodGap, 3, r.oodGap === bestOodGap);
+    tbody.appendChild(tr);
+  }
+}
+
+// File loading
+document.getElementById('fileInput').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    DATA = JSON.parse(ev.target.result);
+    buildControls();
+    render();
+  };
+  reader.readAsText(file);
+});
+
+// Try auto-load
+fetch('ood_experiment_results.json')
+  .catch(() => fetch('../results/ood_experiment_results.json'))
+  .then(r => r.ok ? r.json() : null)
+  .catch(() => null)
+  .then(data => {
+    if (data) {
+      DATA = data;
+      buildControls();
+      render();
+    }
+  });
+</script>
+
+</body>
+</html>

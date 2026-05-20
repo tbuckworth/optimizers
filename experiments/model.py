@@ -30,3 +30,21 @@ class TinyNet(nn.Module):
 
     def forward(self, x):
         return self.net(x)
+
+
+class BigTinyNet(nn.Module):
+    """Overparameterized 2D classifier for overfitting experiments."""
+    def __init__(self, n_classes=2):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(2, 256),
+            nn.ReLU(),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Linear(64, n_classes),
+        )
+
+    def forward(self, x):
+        return self.net(x)
