@@ -29,7 +29,7 @@ OPTIMIZER_CONFIGS = {
 }
 
 
-def make_optimizer(name, model, device):
+def make_optimizer(name, model):
     cfg = OPTIMIZER_CONFIGS[name]
     if name == "spectral":
         base = torch.optim.SGD(model.parameters(), **cfg["kwargs"])
@@ -42,7 +42,7 @@ def make_optimizer(name, model, device):
 
 def run_one(opt_name, dataset, train_loader, test_loader, ood_loader, model, device, epochs, seed=42):
     torch.manual_seed(seed)
-    optimizer = make_optimizer(opt_name, model, device)
+    optimizer = make_optimizer(opt_name, model)
     is_spectral = isinstance(optimizer, SpectralConsensusFilter)
     results = {"epochs": [], "config": {"optimizer": opt_name, "dataset": dataset}}
 
@@ -97,8 +97,8 @@ def main():
     for opt_name in all_opts:
         key = f"{opt_name}_mnist_small"
         print(f"\n--- {key} ---")
-        model = MNISTNet().to(device)
         torch.manual_seed(42)
+        model = MNISTNet().to(device)
         t0 = time.time()
         try:
             res = run_one(opt_name, "mnist_small", mnist_train, mnist_test,
@@ -120,8 +120,8 @@ def main():
     for opt_name in all_opts:
         key = f"{opt_name}_spiral_noisy"
         print(f"\n--- {key} ---")
-        model = BigTinyNet().to(device)
         torch.manual_seed(42)
+        model = BigTinyNet().to(device)
         t0 = time.time()
         try:
             res = run_one(opt_name, "spiral_noisy", spiral_train, spiral_test,
