@@ -471,6 +471,75 @@ $$\alpha_i = \sigma\!\left(\frac{\lambda_i - \text{threshold}}{\text{temperature
 <li><strong>Label-conditioned filtering:</strong> Instead of one big similarity matrix, could we build separate matrices per predicted class? This might capture more nuanced consensus structure.</li>
 </ul>
 
+<h2>12. Variant 3D: Running Covariance in Weight Space — And Why It Doesn't Work</h2>
+
+<p>The spectral consensus filter (variant 3C, described above) has an obvious cost problem: per-sample gradients are expensive. A natural question is whether we can get the same anti-memorization property more cheaply by working in <strong>parameter space</strong> instead of sample space, and accumulating information <strong>across batches</strong> instead of recomputing each step.</p>
+
+<h3>12a. The Idea</h3>
+
+<p>Instead of building the $B \times B$ sample-similarity matrix each batch, we could maintain a running estimate of the $p \times p$ <strong>gradient covariance matrix in parameter space</strong>:</p>
+
+$$C_t = \beta \, C_{t-1} + (1 - \beta) \, \bar{g}_t \, \bar{g}_t^T$$
+
+<p>where $\bar{g}_t$ is the batch mean gradient at step $t$, and $\beta$ is a decay factor (like momentum). This is a rank-1 update — cheap, no per-sample gradients needed.</p>
+
+<p>Over many batches, $C$ accumulates information about which directions in weight space consistently receive gradient signal. Its top eigenvectors become the "principal gradient directions." We could then project each new gradient onto these top-$k$ directions, keeping only the historically stable signal and discarding the rest.</p>
+
+<p>This is appealing because:</p>
+<ul>
+<li><strong>No per-sample gradients.</strong> Just use the normal batch mean gradient ($B\times$ cheaper).</li>
+<li><strong>Temporal smoothing.</strong> Accumulating across batches gives a more stable estimate than a single-batch snapshot.</li>
+<li><strong>Never materialise the $p \times p$ matrix.</strong> We only need the top-$k$ eigenvectors, which can be maintained via streaming power iteration — just $k$ vectors of size $p$.</li>
+</ul>
+
+<h3>12b. Why It Fails for Anti-Memorization</h3>
+
+<p>Despite the appeal, this approach does <strong>not</strong> prevent memorization. The reason comes down to what each matrix is actually measuring.</p>
+
+<div class="comparison">
+<div class="real-side" style="background: #eaf0fa; border-color: #3498db;">
+<h4>3C: $B \times B$ matrix (sample space)</h4>
+<p><strong>Question asked:</strong> "Do these samples agree with each other <em>right now</em>?"</p>
+<p><strong>What it measures:</strong> Inter-sample consensus within this batch.</p>
+<p><strong>Random labels:</strong> Samples disagree → flat eigenvalue spectrum → gradient suppressed <em>every single step</em>.</p>
+</div>
+<div class="random-side" style="background: #fef5e7; border-color: #f39c12;">
+<h4>3D: $p \times p$ matrix (weight space)</h4>
+<p><strong>Question asked:</strong> "Which weight directions have had strong gradient signal <em>over time</em>?"</p>
+<p><strong>What it measures:</strong> Historical gradient energy per parameter direction.</p>
+<p><strong>Random labels:</strong> Memorization directions accumulate over time → top eigenvectors <em>become</em> the memorization directions → filter <em>helps</em> memorization.</p>
+</div>
+</div>
+
+<p>Here's the concrete failure mode. Suppose sample #347 has a randomly assigned label. Every time it appears in a batch, it pushes the weights in some specific direction $d_{347}$ to memorize its label. With variant 3D:</p>
+
+<ol>
+<li>Each batch containing sample #347 contributes a gradient component along $d_{347}$.</li>
+<li>Over many epochs, the running covariance $C$ accumulates $d_{347} \, d_{347}^T$ contributions.</li>
+<li>Eventually, $d_{347}$ becomes a top eigenvector of $C$ — it's a "historically stable gradient direction."</li>
+<li>The filter now <strong>preserves</strong> gradient components along $d_{347}$, actively helping memorization.</li>
+</ol>
+
+<p>With variant 3C, this can't happen because the filter checks <em>within each batch</em> whether other samples also want $d_{347}$. They don't (random labels), so $d_{347}$ is suppressed every single step, regardless of how often sample #347 appears.</p>
+
+<div class="key-insight">
+<strong>The core asymmetry:</strong> Consensus is a relationship <em>between samples</em>. The $B \times B$ matrix directly measures this relationship. The $p \times p$ matrix collapses the sample dimension away, losing exactly the inter-sample structure that makes the filter work. No matter how cleverly you track gradient statistics in parameter space, you cannot recover "do these samples agree?" from "how big is the gradient in this direction?" — the latter conflates consensus with memorization.
+</div>
+
+<h3>12c. What 3D <em>Is</em> Good For</h3>
+
+<p>Variant 3D is not useless — it's just solving a different problem. Tracking the principal gradient subspace over time is essentially what methods like <strong>K-FAC</strong>, <strong>Shampoo</strong>, and <strong>natural gradient</strong> do (with various approximations). These are valuable for:</p>
+
+<ul>
+<li><strong>Preconditioning:</strong> Rescaling gradient components so the optimizer moves at the same rate in all relevant directions (fixing ill-conditioning).</li>
+<li><strong>Noise reduction:</strong> Projecting out gradient components in directions that are small and noisy, focusing compute on the dominant gradient subspace.</li>
+<li><strong>Efficiency:</strong> Faster convergence by adapting to the loss landscape curvature.</li>
+</ul>
+
+<p>But none of these prevent memorization. They make optimization <em>more efficient</em>, which — if anything — makes memorization <em>faster</em>.</p>
+
+<p>The lesson: the anti-memorization property of spectral consensus is fundamentally tied to the <strong>within-batch, inter-sample</strong> structure of the $B \times B$ matrix. There is no shortcut that avoids per-sample gradients while preserving this property, because the property <em>is</em> the per-sample structure.</p>
+
 <hr>
 
 <p style="font-size:0.85em; color:#888;">Titus Buckworth, May 2025. Part of the Optimizers &amp; Generalization research project.</p>
