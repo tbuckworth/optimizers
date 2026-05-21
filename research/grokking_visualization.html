@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Grokking Experiment: Spectral Consensus on Modular Addition</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #1a1a2e; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; }
+.header { background: #16213e; padding: 20px 30px; border-bottom: 2px solid #0f3460; }
+.header h1 { font-size: 1.4em; color: #e94560; }
+.header p { color: #888; margin-top: 4px; font-size: 0.9em; }
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+.controls { display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap; align-items: center; }
+.toggle { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px;
+  border-radius: 6px; cursor: pointer; font-size: 0.85em; user-select: none;
+  border: 2px solid transparent; transition: all 0.15s; }
+.toggle.active { border-color: var(--color); }
+.toggle .swatch { width: 14px; height: 14px; border-radius: 3px; }
+.charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px; }
+.chart-box { background: #16213e; border-radius: 8px; padding: 16px; }
+.chart-box h3 { font-size: 0.95em; color: #aaa; margin-bottom: 8px; }
+canvas { width: 100%; height: 350px; }
+.summary { background: #16213e; border-radius: 8px; padding: 20px; margin-top: 20px; }
+.summary h2 { color: #e94560; font-size: 1.1em; margin-bottom: 12px; }
+.summary table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+.summary th, .summary td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #333; }
+.summary th { color: #888; }
+.grok { color: #4ade80; font-weight: bold; }
+.no-grok { color: #f87171; }
+.note { background: #1e2a45; border-left: 3px solid #e94560; padding: 12px 16px;
+  margin-top: 16px; border-radius: 0 6px 6px 0; font-size: 0.9em; color: #bbb; }
+.x-controls { display: flex; gap: 12px; align-items: center; margin: 12px 0; }
+.x-controls label { font-size: 0.85em; color: #888; }
+.x-controls input { width: 100px; background: #0f1a30; border: 1px solid #333;
+  color: #e0e0e0; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Grokking Experiment: Spectral Consensus on Modular Addition (a + b mod 113)</h1>
+  <p>Does spectral consensus filter cause grokking without weight decay?</p>
+</div>
+<div class="container">
+  <div class="controls" id="toggles"></div>
+  <div class="x-controls">
+    <label>X-axis max epoch:</label>
+    <input type="number" id="xmax" value="100000" step="1000">
+    <label>Log scale loss:</label>
+    <input type="checkbox" id="logscale" checked>
+  </div>
+  <div class="charts">
+    <div class="chart-box"><h3>Train Accuracy</h3><canvas id="trainAcc"></canvas></div>
+    <div class="chart-box"><h3>Test Accuracy</h3><canvas id="testAcc"></canvas></div>
+    <div class="chart-box"><h3>Train Loss</h3><canvas id="trainLoss"></canvas></div>
+    <div class="chart-box"><h3>Test Loss</h3><canvas id="testLoss"></canvas></div>
+  </div>
+  <div class="summary">
+    <h2>Results Summary</h2>
+    <table id="summaryTable">
+      <tr><th>Optimizer</th><th>Weight Decay</th><th>Final Train Acc</th><th>Final Test Acc</th><th>Grokked?</th><th>Epochs</th></tr>
+    </table>
+  </div>
+  <div class="note" id="noteBox"></div>
+</div>
+
+<script>
+const COLORS = {
+  adamw_wd1: '#4ade80',
+  adam_nowd: '#f87171',
+  spectral_soft_sgd: '#60a5fa',
+  spectral_soft_adam: '#c084fc',
+  sgd_nowd: '#fbbf24',
+  sgd_wd1: '#fb923c',
+  spectral_hard_sgd: '#22d3ee',
+  spectral_hard_mild: '#f472b6',
+};
+
+const LABELS = {
+  adamw_wd1: 'AdamW (wd=1.0)',
+  adam_nowd: 'Adam (no wd)',
+  spectral_soft_sgd: 'Spectral Soft + SGD',
+  spectral_soft_adam: 'Spectral Soft + Adam',
+  sgd_nowd: 'SGD (no wd)',
+  sgd_wd1: 'SGD (wd=1.0)',
+  spectral_hard_sgd: 'Spectral Hard + SGD',
+  spectral_hard_mild: 'Spectral Hard (mp=1.2)',
+};
+
+let allData = {};
+let activeOpts = new Set();
+let charts = {};
+
+async function loadData() {
+  const paths = ['grokking_results.json', '../results/grokking_results.json'];
+  for (const p of paths) {
+    try {
+      const r = await fetch(p);
+      if (r.ok) { allData = await r.json(); return true; }
+    } catch(e) {}
+  }
+  return false;
+}
+
+function buildToggles() {
+  const container = document.getElementById('toggles');
+  for (const key of Object.keys(allData)) {
+    activeOpts.add(key);
+    const div = document.createElement('div');
+    div.className = 'toggle active';
+    div.style.setProperty('--color', COLORS[key] || '#888');
+    div.innerHTML = `<span class="swatch" style="background:${COLORS[key] || '#888'}"></span>${LABELS[key] || key}`;
+    div.onclick = () => {
+      if (activeOpts.has(key)) { activeOpts.delete(key); div.classList.remove('active'); }
+      else { activeOpts.add(key); div.classList.add('active'); }
+      drawAll();
+    };
+    container.appendChild(div);
+  }
+}
+
+function buildSummary() {
+  const table = document.getElementById('summaryTable');
+  for (const [key, d] of Object.entries(allData)) {
+    const m = d.metrics;
+    if (!m || !m.length) continue;
+    const last = m[m.length - 1];
+    const cfg = d.config || {};
+    const wd = cfg.wd || 0;
+    const grokked = last.test_acc > 0.9;
+    const grokEpoch = grokked ? m.find(e => e.test_acc > 0.9)?.epoch || '?' : '-';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td style="color:${COLORS[key]}">${LABELS[key] || key}</td>
+      <td>${wd}</td>
+      <td>${(last.train_acc * 100).toFixed(1)}%</td>
+      <td>${(last.test_acc * 100).toFixed(1)}%</td>
+      <td class="${grokked ? 'grok' : 'no-grok'}">${grokked ? 'Yes (ep ' + grokEpoch + ')' : 'No'}</td>
+      <td>${last.epoch.toLocaleString()}</td>`;
+    table.appendChild(tr);
+  }
+}
+
+function setupCanvas(id) {
+  const canvas = document.getElementById(id);
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return { canvas, ctx, w: rect.width, h: rect.height };
+}
+
+function drawChart(id, field, yLabel, useLog) {
+  const { ctx, w, h } = setupCanvas(id);
+  const pad = { l: 60, r: 20, t: 10, b: 30 };
+  const pw = w - pad.l - pad.r;
+  const ph = h - pad.t - pad.b;
+  const xMax = parseInt(document.getElementById('xmax').value) || 100000;
+
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#0f1a30';
+  ctx.fillRect(pad.l, pad.t, pw, ph);
+
+  let yMin = Infinity, yMax = -Infinity;
+  const series = [];
+  for (const key of activeOpts) {
+    const m = allData[key]?.metrics;
+    if (!m) continue;
+    const pts = m.filter(e => e.epoch <= xMax).map(e => {
+      let v = e[field];
+      if (useLog && v > 0) v = Math.log10(v);
+      else if (useLog && v <= 0) v = -5;
+      return { x: e.epoch, y: v };
+    });
+    if (pts.length === 0) continue;
+    for (const p of pts) { yMin = Math.min(yMin, p.y); yMax = Math.max(yMax, p.y); }
+    series.push({ key, pts });
+  }
+
+  if (series.length === 0) return;
+  if (yMin === yMax) { yMin -= 0.1; yMax += 0.1; }
+  const yPad = (yMax - yMin) * 0.05;
+  yMin -= yPad; yMax += yPad;
+
+  // Grid
+  ctx.strokeStyle = '#1e2a45';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 5; i++) {
+    const y = pad.t + ph - (i / 5) * ph;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + pw, y); ctx.stroke();
+    const val = yMin + (i / 5) * (yMax - yMin);
+    ctx.fillStyle = '#666'; ctx.font = '11px monospace'; ctx.textAlign = 'right';
+    if (useLog) ctx.fillText('1e' + val.toFixed(1), pad.l - 5, y + 4);
+    else ctx.fillText(val.toFixed(2), pad.l - 5, y + 4);
+  }
+  for (let i = 0; i <= 5; i++) {
+    const x = pad.l + (i / 5) * pw;
+    ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, pad.t + ph); ctx.stroke();
+    ctx.fillStyle = '#666'; ctx.textAlign = 'center';
+    ctx.fillText(Math.round(xMax * i / 5).toLocaleString(), x, h - 5);
+  }
+
+  // Lines — subsample for performance
+  for (const { key, pts } of series) {
+    ctx.strokeStyle = COLORS[key] || '#888';
+    ctx.lineWidth = 2;
+    ctx.globalAlpha = 0.9;
+    ctx.beginPath();
+    const step = Math.max(1, Math.floor(pts.length / 2000));
+    for (let i = 0; i < pts.length; i += step) {
+      const px = pad.l + (pts[i].x / xMax) * pw;
+      const py = pad.t + ph - ((pts[i].y - yMin) / (yMax - yMin)) * ph;
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+}
+
+function drawAll() {
+  const logChecked = document.getElementById('logscale').checked;
+  drawChart('trainAcc', 'train_acc', 'Accuracy', false);
+  drawChart('testAcc', 'test_acc', 'Accuracy', false);
+  drawChart('trainLoss', 'train_loss', 'Loss', logChecked);
+  drawChart('testLoss', 'test_loss', 'Loss', logChecked);
+}
+
+async function init() {
+  const ok = await loadData();
+  if (!ok) {
+    document.getElementById('noteBox').textContent = 'Failed to load grokking_results.json';
+    return;
+  }
+  const n = Object.keys(allData).length;
+  document.getElementById('noteBox').innerHTML =
+    `<b>Setup:</b> a + b mod 113, 30% train (3,830 samples), 1-layer transformer (128d, 4 heads, 227K params), full-batch training.<br>` +
+    `<b>Key question:</b> Does spectral consensus filter cause grokking without weight decay? ` +
+    `<b>Answer so far:</b> No — spectral soft memorizes perfectly but test accuracy stays near 0%. ` +
+    `Only AdamW with weight decay groks.`;
+  buildToggles();
+  buildSummary();
+  drawAll();
+  document.getElementById('xmax').addEventListener('input', drawAll);
+  document.getElementById('logscale').addEventListener('change', drawAll);
+  window.addEventListener('resize', drawAll);
+}
+
+init();
+</script>
+</body>
+</html>
