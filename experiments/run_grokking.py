@@ -30,7 +30,10 @@ def make_optimizer(name, model, args):
                                momentum=0.9, weight_decay=args.wd), False
     elif name.startswith("spectral"):
         is_soft = "soft" in name
-        if "adam" in name:
+        if "adamw" in name:
+            base = torch.optim.AdamW(model.parameters(), lr=args.lr,
+                                     weight_decay=args.wd, betas=(0.9, 0.98))
+        elif "adam" in name:
             base = torch.optim.Adam(model.parameters(), lr=args.lr,
                                     betas=(0.9, 0.98))
         else:
@@ -136,7 +139,8 @@ if __name__ == "__main__":
     parser.add_argument("--optimizer", required=True,
                         choices=["adamw", "adam", "sgd",
                                  "spectral_hard", "spectral_soft",
-                                 "spectral_soft_adam", "spectral_hard_adam"])
+                                 "spectral_soft_adam", "spectral_hard_adam",
+                                 "spectral_soft_adamw", "spectral_hard_adamw"])
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--wd", type=float, default=0.0)
     parser.add_argument("--epochs", type=int, default=100000)
