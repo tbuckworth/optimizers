@@ -1,0 +1,56 @@
+{
+  "config": {
+    "mode": "ours",
+    "dataset": "standard",
+    "lr": 0.0005,
+    "epochs": 5,
+    "rank": 10,
+    "decay": 0.9,
+    "warmup": 10,
+    "update_every": 50,
+    "seed": 42,
+    "name": "sweep_r10_d0.9_lr0.0005",
+    "save_dir": "../results/weight_covariance",
+    "data_dir": "./data"
+  },
+  "metrics": [
+    {
+      "epoch": 0,
+      "train_acc": 0.93718,
+      "test_acc": 0.933,
+      "train_loss": 0.21774,
+      "test_loss": 0.21948
+    },
+    {
+      "epoch": 1,
+      "train_acc": 0.92743,
+      "test_acc": 0.9256,
+      "train_loss": 0.23846,
+      "test_loss": 0.23677
+    },
+    {
+      "epoch": 2,
+      "train_acc": 0.93287,
+      "test_acc": 0.9329,
+      "train_loss": 0.23597,
+      "test_loss": 0.2314
+    },
+    {
+      "epoch": 3,
+      "train_acc": 0.93398,
+      "test_acc": 0.934,
+      "train_loss": 0.22959,
+      "test_loss": 0.22511
+    },
+    {
+      "epoch": 4,
+      "train_acc": 0.93612,
+      "test_acc": 0.9373,
+      "train_loss": 0.22265,
+      "test_loss": 0.21648
+    }
+  ],
+  "time_s": 123.9,
+  "n_params": 235146,
+  "input_dim": 784
+}
