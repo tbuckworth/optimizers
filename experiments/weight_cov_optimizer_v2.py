@@ -51,41 +51,89 @@ class WeightCovarianceFilterV2:
         """Rank-1 update to the streaming covariance SVD.
 
         g: (p,) batch-mean gradient vector on the compute device.
-        SVD math done on CPU to avoid GPU memory pressure for large p.
+        All heavy ops stay on GPU. Only the small (k+1 × k+1) eigh goes to CPU.
         """
         device = g.device
-        g_cpu = g.detach().cpu().unsqueeze(0)  # (1, p)
 
         # Update running mean with same decay
         if self.grad_mean is None:
-            self.grad_mean = g_cpu.squeeze(0)
+            self.grad_mean = g.detach().clone()
         else:
-            self.grad_mean = self.decay * self.grad_mean + (1 - self.decay) * g_cpu.squeeze(0)
+            self.grad_mean.mul_(self.decay).add_(g.detach(), alpha=1 - self.decay)
 
-        g_centered = g_cpu - self.grad_mean.unsqueeze(0)  # (1, p)
+        g_centered = g.detach() - self.grad_mean  # (p,)
 
         if self.V is None:
-            # First update — just store the direction
             norm = g_centered.norm()
             if norm > 1e-12:
-                self.V = (g_centered / norm).T.contiguous().to(device)  # (p, 1)
-                self.S = norm.unsqueeze(0)  # (1,)
+                self.V = (g_centered / norm).unsqueeze(1).contiguous()  # (p, 1)
+                self.S = norm.unsqueeze(0).cpu()  # keep S on CPU for eigh
             return
 
-        # Combine old sketch (decayed) with new observation
-        # old_rows: (k, p), new_row: (1, p)
-        old_rows = (self.S * math.sqrt(self.decay)).unsqueeze(1) * self.V.T.cpu()
-        new_scale = math.sqrt(1 - self.decay)
-        new_row = g_centered * new_scale
+        k = self.V.shape[1]
+        sd = math.sqrt(self.decay)
+        sn = math.sqrt(1 - self.decay)
 
-        combined = torch.cat([old_rows, new_row], dim=0)  # (k+1, p)
-        del old_rows, new_row, g_centered
+        # Project new gradient onto existing basis: c = V^T @ g_centered (k,)
+        c = self.V.T @ g_centered  # (k,) on GPU
+        # Residual component orthogonal to V
+        g_perp = g_centered - self.V @ c  # (p,) on GPU
+        g_perp_norm = g_perp.norm()
+        has_perp = g_perp_norm > 1e-12
 
-        # SVD of (k+1, p) — since k+1 << p, this is cheap: O(k^2 * p)
-        _, s, Vt = torch.linalg.svd(combined, full_matrices=False)
-        k = min(self.rank, len(s))
-        self.V = Vt[:k].T.contiguous().to(device)  # (p, k)
-        self.S = s[:k].clone()
+        # Build (k+1 × k+1) Gram matrix on CPU — never materialize (k+1 × p)
+        # Row i of "combined" is: sd * S[i] * V[:,i]  for i < k
+        # Row k is: sn * g_centered
+        # Gram[i,j] = row_i . row_j
+        # For i,j < k: sd² * S[i] * S[j] * (V[:,i] . V[:,j]) = sd² * S[i]*S[j] * delta_ij
+        # For i < k, j=k: sd * S[i] * sn * (V[:,i] . g_centered) = sd*sn * S[i] * c[i]
+        # For i=k, j=k: sn² * (g_centered . g_centered) = sn² * ||g_centered||²
+
+        S_cpu = self.S  # already on CPU
+        c_cpu = c.cpu()
+        g_norm_sq = g_centered.dot(g_centered).item()
+
+        gram = torch.zeros(k + 1, k + 1)
+        # Diagonal block: sd² * S²
+        gram[:k, :k] = torch.diag(sd * sd * S_cpu * S_cpu)
+        # Off-diagonal: sd * sn * S * c
+        cross = sd * sn * S_cpu * c_cpu
+        gram[:k, k] = cross
+        gram[k, :k] = cross
+        # Bottom-right
+        gram[k, k] = sn * sn * g_norm_sq
+
+        eigvals, eigvecs = torch.linalg.eigh(gram)
+        eigvals = eigvals.flip(0)
+        eigvecs = eigvecs.flip(1)
+        pos = eigvals > 1e-12
+        eigvals = eigvals[pos]
+        eigvecs = eigvecs[:, pos]
+        new_k = min(self.rank, len(eigvals))
+        eigvals = eigvals[:new_k]
+        eigvecs = eigvecs[:, :new_k]  # (k+1, new_k)
+        s_new = eigvals.sqrt()
+
+        # Recover V_new = [V | q] @ eigvecs @ diag(1/s_new)
+        # where q = g_perp / ||g_perp|| (the new basis vector)
+        # [V | q] is (p, k+1), but we compute V_new without materializing it:
+        # V_new[:,j] = sum_i eigvecs[i,j]/s_new[j] * (row_i_direction)
+        # For i < k: direction = V[:,i]
+        # For i = k: direction = q (or g_centered if no perp component)
+
+        coeffs = eigvecs / s_new.unsqueeze(0)  # (k+1, new_k)
+        # V_new = V @ (sd * diag(S_cpu) @ coeffs[:k]) + q @ (sn * coeffs[k:k+1])
+        # The "combined" rows are sd*S[i]*V[:,i] and sn*g_centered
+        # So V_new = V @ diag(sd*S) @ coeffs[:k] + (sn * g_centered) * coeffs[k]
+        #          = V @ (sd * S.unsqueeze(1) * coeffs[:k]).to(device) + ...
+
+        top_coeffs = (sd * S_cpu.unsqueeze(1) * coeffs[:k]).to(device)  # (k, new_k)
+        bot_coeffs = (sn * coeffs[k]).to(device)  # (new_k,)
+
+        V_new = self.V @ top_coeffs + g_centered.unsqueeze(1) * bot_coeffs.unsqueeze(0)
+
+        self.V = V_new.contiguous()
+        self.S = s_new
 
     def _project_gradient(self, g):
         if self.V is None:
