@@ -1,0 +1,188 @@
+{
+  "config": {
+    "mode": "ours",
+    "dataset": "random_labels",
+    "lr": 0.001,
+    "epochs": 20,
+    "rank": 500,
+    "decay": 0.99,
+    "warmup": 100,
+    "filter_strength": 1.0,
+    "seed": 42,
+    "name": "v2_compare_ours_random_labels",
+    "save_dir": "../results/weight_covariance_v2",
+    "data_dir": "./data"
+  },
+  "metrics": [
+    {
+      "epoch": -1,
+      "train_acc": 0.10195,
+      "test_acc": 0.053,
+      "train_loss": 2.30748,
+      "test_loss": 2.30408
+    },
+    {
+      "epoch": 0,
+      "train_acc": 0.10223,
+      "test_acc": 0.1086,
+      "train_loss": 2.30267,
+      "test_loss": 2.30078,
+      "effective_rank": 55.55
+    },
+    {
+      "epoch": 1,
+      "train_acc": 0.10208,
+      "test_acc": 0.1016,
+      "train_loss": 2.30267,
+      "test_loss": 2.30318,
+      "effective_rank": 19.38
+    },
+    {
+      "epoch": 2,
+      "train_acc": 0.102,
+      "test_acc": 0.0956,
+      "train_loss": 2.3025,
+      "test_loss": 2.30325,
+      "effective_rank": 12.97
+    },
+    {
+      "epoch": 3,
+      "train_acc": 0.1021,
+      "test_acc": 0.0914,
+      "train_loss": 2.30244,
+      "test_loss": 2.30376,
+      "effective_rank": 40.08
+    },
+    {
+      "epoch": 4,
+      "train_acc": 0.1024,
+      "test_acc": 0.0848,
+      "train_loss": 2.30233,
+      "test_loss": 2.30453,
+      "effective_rank": 11.18
+    },
+    {
+      "epoch": 5,
+      "train_acc": 0.1026,
+      "test_acc": 0.1043,
+      "train_loss": 2.3021,
+      "test_loss": 2.3038,
+      "effective_rank": 26.6
+    },
+    {
+      "epoch": 6,
+      "train_acc": 0.10315,
+      "test_acc": 0.1211,
+      "train_loss": 2.30194,
+      "test_loss": 2.30093,
+      "effective_rank": 26.95
+    },
+    {
+      "epoch": 7,
+      "train_acc": 0.10298,
+      "test_acc": 0.1052,
+      "train_loss": 2.30149,
+      "test_loss": 2.30467,
+      "effective_rank": 17.49
+    },
+    {
+      "epoch": 8,
+      "train_acc": 0.10315,
+      "test_acc": 0.0965,
+      "train_loss": 2.30155,
+      "test_loss": 2.30424,
+      "effective_rank": 22.66
+    },
+    {
+      "epoch": 9,
+      "train_acc": 0.10308,
+      "test_acc": 0.1071,
+      "train_loss": 2.30041,
+      "test_loss": 2.3092,
+      "effective_rank": 22.12
+    },
+    {
+      "epoch": 10,
+      "train_acc": 0.10412,
+      "test_acc": 0.0967,
+      "train_loss": 2.30071,
+      "test_loss": 2.306,
+      "effective_rank": 24.53
+    },
+    {
+      "epoch": 11,
+      "train_acc": 0.10407,
+      "test_acc": 0.0894,
+      "train_loss": 2.30162,
+      "test_loss": 2.31227,
+      "effective_rank": 26.46
+    },
+    {
+      "epoch": 12,
+      "train_acc": 0.10333,
+      "test_acc": 0.1097,
+      "train_loss": 2.29958,
+      "test_loss": 2.30508,
+      "effective_rank": 30.79
+    },
+    {
+      "epoch": 13,
+      "train_acc": 0.10365,
+      "test_acc": 0.1117,
+      "train_loss": 2.29893,
+      "test_loss": 2.3069,
+      "effective_rank": 33.64
+    },
+    {
+      "epoch": 14,
+      "train_acc": 0.10373,
+      "test_acc": 0.1089,
+      "train_loss": 2.29798,
+      "test_loss": 2.31188,
+      "effective_rank": 32.75
+    },
+    {
+      "epoch": 15,
+      "train_acc": 0.10438,
+      "test_acc": 0.1063,
+      "train_loss": 2.29694,
+      "test_loss": 2.31409,
+      "effective_rank": 43.07
+    },
+    {
+      "epoch": 16,
+      "train_acc": 0.10607,
+      "test_acc": 0.0925,
+      "train_loss": 2.29559,
+      "test_loss": 2.31883,
+      "effective_rank": 37.81
+    },
+    {
+      "epoch": 17,
+      "train_acc": 0.10517,
+      "test_acc": 0.1067,
+      "train_loss": 2.2953,
+      "test_loss": 2.31111,
+      "effective_rank": 40.69
+    },
+    {
+      "epoch": 18,
+      "train_acc": 0.10535,
+      "test_acc": 0.1064,
+      "train_loss": 2.29279,
+      "test_loss": 2.32416,
+      "effective_rank": 47.48
+    },
+    {
+      "epoch": 19,
+      "train_acc": 0.10718,
+      "test_acc": 0.0923,
+      "train_loss": 2.29204,
+      "test_loss": 2.32592,
+      "effective_rank": 33.13
+    }
+  ],
+  "time_s": 347.6,
+  "n_params": 235146,
+  "input_dim": 784
+}
