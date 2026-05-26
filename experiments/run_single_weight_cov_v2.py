@@ -36,7 +36,7 @@ class FlexMNISTNet(nn.Module):
         return self.net(x.view(x.size(0), -1))
 
 
-def get_mnist_data(random_labels=False, noise_features=0, seed=42, data_dir="./data"):
+def get_mnist_data(random_labels=False, noise_features=0, label_noise=0.0, seed=42, data_dir="./data"):
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,)),
@@ -54,6 +54,11 @@ def get_mnist_data(random_labels=False, noise_features=0, seed=42, data_dir="./d
     if random_labels:
         rng = np.random.RandomState(seed)
         train_y = torch.tensor(rng.randint(0, 10, len(train_y)))
+    elif label_noise > 0:
+        rng = np.random.RandomState(seed)
+        mask = torch.tensor(rng.random(len(train_y)) < label_noise)
+        random_y = torch.tensor(rng.randint(0, 10, len(train_y)))
+        train_y[mask] = random_y[mask]
 
     if noise_features > 0:
         rng = np.random.RandomState(seed + 1000)
@@ -93,7 +98,7 @@ def run(args):
     noise_features = 784 if args.dataset == "noisy_mnist" else 0
     train_loader, test_loader, input_dim = get_mnist_data(
         random_labels=random_labels, noise_features=noise_features,
-        seed=args.seed, data_dir=args.data_dir)
+        label_noise=args.label_noise, seed=args.seed, data_dir=args.data_dir)
 
     model = FlexMNISTNet(input_dim).to(device)
     n_params = sum(p.numel() for p in model.parameters())
@@ -185,6 +190,7 @@ if __name__ == "__main__":
     parser.add_argument("--decay", type=float, default=0.99)
     parser.add_argument("--warmup", type=int, default=100)
     parser.add_argument("--filter_strength", type=float, default=1.0)
+    parser.add_argument("--label_noise", type=float, default=0.0)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--name", type=str, required=True)
     parser.add_argument("--save_dir", type=str, default="../results/weight_covariance_v2")
