@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gradient Covariance Spectral Filtering — Methodology</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface2: #1a2744;
+    --text: #e0e0e0;
+    --text-muted: #8899aa;
+    --accent: #4fc3f7;
+    --accent2: #81c784;
+    --border: #2a3a5e;
+    --code-bg: #0d1a2d;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    padding: 0;
+  }
+  .header {
+    background: linear-gradient(135deg, #0f3460, #16213e);
+    border-bottom: 2px solid var(--accent);
+    padding: 50px 40px 40px;
+    text-align: center;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 16px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+  .content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 30px 80px;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 40px 0 16px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--accent2);
+    margin: 28px 0 12px;
+  }
+  p {
+    margin-bottom: 14px;
+    text-align: justify;
+  }
+  .math {
+    font-family: 'Cambria Math', 'STIX Two Math', 'Latin Modern Math', Georgia, serif;
+    font-style: italic;
+    white-space: nowrap;
+  }
+  .math-block {
+    display: block;
+    text-align: center;
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: var(--code-bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    font-family: 'Cambria Math', 'STIX Two Math', Georgia, serif;
+    font-size: 16px;
+    line-height: 2.0;
+    overflow-x: auto;
+  }
+  .algo {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin: 24px 0;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    line-height: 1.9;
+    overflow-x: auto;
+  }
+  .algo .title {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--accent);
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .algo .line {
+    padding-left: 20px;
+    position: relative;
+  }
+  .algo .line-num {
+    color: var(--text-muted);
+    display: inline-block;
+    width: 28px;
+    text-align: right;
+    margin-right: 12px;
+    font-size: 12px;
+  }
+  .algo .comment {
+    color: #6a9;
+    font-style: italic;
+  }
+  .algo .keyword {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .algo .section-label {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 6px;
+    display: block;
+  }
+  ol, ul {
+    margin: 12px 0 14px 28px;
+  }
+  li {
+    margin-bottom: 6px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:hover td { background: rgba(79, 195, 247, 0.04); }
+  .note {
+    background: rgba(79, 195, 247, 0.08);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    margin: 18px 0;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  .note strong { color: var(--accent); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  sup { font-size: 11px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Gradient Covariance Spectral Filtering</h1>
+  <div class="subtitle">A gradient-filtering wrapper for neural network optimizers</div>
+</div>
+
+<div class="content">
+
+<h2>1. Overview</h2>
+
+<p>
+We describe a gradient-filtering method that wraps any base optimizer (e.g. Adam). The method maintains a low-rank estimate of the covariance matrix of gradient updates across training steps. At each step, the current gradient is projected onto the top eigenspace of this running covariance before being passed to the base optimizer. The effect is that only gradient directions which recur persistently across many batches are retained; transient directions are discarded.
+</p>
+
+<p>
+The method has a single forward/backward pass per step and uses batch-mean gradients (not per-sample gradients). The computational overhead comes from a rank-1 SVD update and a matrix-vector projection, both operating on a low-rank factored representation that never materialises the full <span class="math">p &times; p</span> covariance matrix.
+</p>
+
+<h2>2. Notation</h2>
+
+<table>
+  <tr><th>Symbol</th><th>Meaning</th></tr>
+  <tr><td><span class="math">p</span></td><td>Total number of scalar parameters in the network</td></tr>
+  <tr><td><span class="math">g<sub>t</sub> &isin; &Ropf;<sup>p</sup></span></td><td>Batch-mean gradient at step <span class="math">t</span> (the standard gradient from <code>loss.backward()</code>, flattened into a single vector by concatenating all parameter gradients in parameter-list order)</td></tr>
+  <tr><td><span class="math">k</span></td><td>Maximum rank of the covariance estimate (hyperparameter, denoted <code>rank</code>)</td></tr>
+  <tr><td><span class="math">&lambda; &isin; (0, 1)</span></td><td>Exponential decay factor for the running covariance (hyperparameter, denoted <code>decay</code>)</td></tr>
+  <tr><td><span class="math">W &isin; &Ropf;<sup>p&times;k</sup></span></td><td>Running warmup count threshold (hyperparameter, denoted <code>warmup</code>)</td></tr>
+  <tr><td><span class="math">V<sub>t</sub> &isin; &Ropf;<sup>p&times;k<sub>t</sub></sup></span></td><td>Orthonormal columns: top eigenvectors of the running covariance at step <span class="math">t</span>, where <span class="math">k<sub>t</sub> &le; k</span></td></tr>
+  <tr><td><span class="math">S<sub>t</sub> &isin; &Ropf;<sup>k<sub>t</sub></sup></span></td><td>Singular values (square roots of eigenvalues) of the running covariance at step <span class="math">t</span></td></tr>
+  <tr><td><span class="math">&mu;<sub>t</sub> &isin; &Ropf;<sup>p</sup></span></td><td>Running mean of gradients at step <span class="math">t</span></td></tr>
+</table>
+
+<h2>3. Method</h2>
+
+<h3>3.1 Running Mean</h3>
+
+<p>
+The gradient stream is centred using an exponential moving average with the same decay factor <span class="math">&lambda;</span> used for the covariance:
+</p>
+
+<div class="math-block">
+  &mu;<sub>t</sub> = &lambda; &middot; &mu;<sub>t&minus;1</sub> + (1 &minus; &lambda;) &middot; g<sub>t</sub>
+</div>
+
+<p>
+Initialised as <span class="math">&mu;<sub>1</sub> = g<sub>1</sub></span> (the first gradient). The centred gradient is:
+</p>
+
+<div class="math-block">
+  g&#x0303;<sub>t</sub> = g<sub>t</sub> &minus; &mu;<sub>t</sub>
+</div>
+
+<h3>3.2 Streaming Rank-1 Covariance Update</h3>
+
+<p>
+We maintain the covariance in factored form. Conceptually, the running covariance at step <span class="math">t</span> is:
+</p>
+
+<div class="math-block">
+  C<sub>t</sub> = &lambda; &middot; C<sub>t&minus;1</sub> + (1 &minus; &lambda;) &middot; g&#x0303;<sub>t</sub> g&#x0303;<sub>t</sub><sup>&top;</sup>
+</div>
+
+<p>
+We never form <span class="math">C<sub>t</sub></span> explicitly. Instead, we store its top-<span class="math">k</span> eigendecomposition as <span class="math">V<sub>t</sub></span> (eigenvectors) and <span class="math">S<sub>t</sub></span> (singular values, i.e. square roots of eigenvalues). Each step updates this factored representation as follows.
+</p>
+
+<p>
+Define scaling constants <span class="math">s<sub>d</sub> = &radic;&lambda;</span> and <span class="math">s<sub>n</sub> = &radic;(1 &minus; &lambda;)</span>. Consider the <span class="math">(k<sub>t&minus;1</sub> + 1) &times; p</span> matrix whose rows are the weighted basis vectors of the new covariance:
+</p>
+
+<div class="math-block">
+  rows 1 &hellip; k<sub>t&minus;1</sub>: &ensp; s<sub>d</sub> &middot; S<sub>t&minus;1</sub>[i] &middot; V<sub>t&minus;1</sub>[:, i] &ensp; for each <span class="math">i</span><br>
+  row k<sub>t&minus;1</sub> + 1: &ensp; s<sub>n</sub> &middot; g&#x0303;<sub>t</sub>
+</div>
+
+<p>
+The covariance <span class="math">C<sub>t</sub></span> equals this matrix's Gram matrix (i.e. rows<sup>&top;</sup> &middot; rows). Instead of forming the <span class="math">(k<sub>t&minus;1</sub> + 1) &times; p</span> matrix, we compute its <span class="math">(k<sub>t&minus;1</sub> + 1) &times; (k<sub>t&minus;1</sub> + 1)</span> inner-product matrix analytically:
+</p>
+
+<div class="math-block">
+  G[i, j] = s<sub>d</sub><sup>2</sup> &middot; S[i] &middot; S[j] &middot; &delta;<sub>ij</sub> &emsp; for <span class="math">i, j &le; k<sub>t&minus;1</sub></span><br>
+  G[i, k<sub>t&minus;1</sub>+1] = G[k<sub>t&minus;1</sub>+1, i] = s<sub>d</sub> &middot; s<sub>n</sub> &middot; S[i] &middot; c[i] &emsp; where <span class="math">c = V<sub>t&minus;1</sub><sup>&top;</sup> g&#x0303;<sub>t</sub></span><br>
+  G[k<sub>t&minus;1</sub>+1, k<sub>t&minus;1</sub>+1] = s<sub>n</sub><sup>2</sup> &middot; &Vert;g&#x0303;<sub>t</sub>&Vert;<sup>2</sup>
+</div>
+
+<p>
+This small matrix is eigendecomposed:
+</p>
+
+<div class="math-block">
+  G = Q &middot; diag(&Lambda;) &middot; Q<sup>&top;</sup>
+</div>
+
+<p>
+where <span class="math">&Lambda;</span> are eigenvalues (descending) and <span class="math">Q</span> are eigenvectors. We discard eigenvalues below <span class="math">10<sup>&minus;12</sup></span> and keep at most <span class="math">k</span> components. The new singular values are:
+</p>
+
+<div class="math-block">
+  S<sub>t</sub> = &radic;&Lambda; &emsp; (element-wise square root of kept eigenvalues)
+</div>
+
+<p>
+The new eigenvectors are recovered without materialising any <span class="math">p</span>-wide matrices beyond <span class="math">V<sub>t&minus;1</sub></span> itself:
+</p>
+
+<div class="math-block">
+  &alpha; = s<sub>d</sub> &middot; diag(S<sub>t&minus;1</sub>) &middot; Q[1:k<sub>t&minus;1</sub>, :] &middot; diag(1/S<sub>t</sub>) &emsp; &isin; &Ropf;<sup>k<sub>t&minus;1</sub> &times; k<sub>t</sub></sup><br>
+  &beta; = s<sub>n</sub> &middot; Q[k<sub>t&minus;1</sub>+1, :] &middot; diag(1/S<sub>t</sub>) &emsp; &isin; &Ropf;<sup>k<sub>t</sub></sup><br><br>
+  V<sub>t</sub> = V<sub>t&minus;1</sub> &middot; &alpha; + g&#x0303;<sub>t</sub> &middot; &beta;<sup>&top;</sup>
+</div>
+
+<p>
+Here <span class="math">g&#x0303;<sub>t</sub> &middot; &beta;<sup>&top;</sup></span> is the outer product of the centred gradient <span class="math">(p &times; 1)</span> with the coefficient vector <span class="math">(1 &times; k<sub>t</sub>)</span>, giving a <span class="math">p &times; k<sub>t</sub></span> contribution. The full <span class="math">V<sub>t</sub></span> update is a weighted combination of the old basis and the new gradient direction. All arithmetic on the <span class="math">p</span>-dimensional vectors is performed on GPU; only the small <span class="math">(k+1) &times; (k+1)</span> eigendecomposition is performed on CPU.
+</p>
+
+<div class="note">
+<strong>Note on orthonormality.</strong> The columns of <span class="math">V<sub>t</sub></span> are approximately orthonormal by construction (they are the top eigenvectors of the Gram matrix, which encodes the geometry of the combined basis). In practice, numerical drift is small and we do not re-orthogonalise.
+</div>
+
+<h3>3.3 Gradient Projection</h3>
+
+<p>
+After the warmup period (<span class="math">t &gt; warmup</span>), the gradient passed to the base optimizer is replaced by its projection onto the current eigenspace:
+</p>
+
+<div class="math-block">
+  g<sub>t</sub><sup>filtered</sup> = V<sub>t</sub> (V<sub>t</sub><sup>&top;</sup> g<sub>t</sub>)
+</div>
+
+<p>
+This retains only the component of the gradient lying in the span of the top <span class="math">k<sub>t</sub></span> eigenvectors of the running covariance. An optional <span class="math">filter\_strength &isin; [0, 1]</span> parameter interpolates between the original and projected gradients:
+</p>
+
+<div class="math-block">
+  g<sub>t</sub><sup>filtered</sup> = (1 &minus; &phi;) &middot; g<sub>t</sub> + &phi; &middot; V<sub>t</sub> (V<sub>t</sub><sup>&top;</sup> g<sub>t</sub>)
+</div>
+
+<p>
+In all experiments reported here, <span class="math">&phi; = 1</span> (full projection).
+</p>
+
+<h3>3.4 Warmup</h3>
+
+<p>
+During the first <span class="math">warmup</span> steps, the covariance estimate is updated but the gradient is not filtered. This allows the eigenspace to accumulate enough signal before filtering begins. During warmup, training proceeds identically to the base optimizer.
+</p>
+
+<h3>3.5 Complete Algorithm</h3>
+
+<div class="algo">
+  <div class="title">Algorithm 1: Gradient Covariance Spectral Filtering</div>
+  <div class="line"><span class="keyword">Input:</span> model <span class="math">f<sub>&theta;</sub></span>, base optimizer (e.g. Adam), rank <span class="math">k</span>, decay <span class="math">&lambda;</span>, warmup <span class="math">w</span></div>
+  <div class="line"><span class="keyword">State:</span> <span class="math">V = None, S = None, &mu; = None, t = 0</span></div>
+  <br>
+  <div class="line"><span class="keyword">for each</span> mini-batch <span class="math">(x, y)</span>:</div>
+  <div class="line">&emsp; <span class="line-num">1</span> <span class="math">t &larr; t + 1</span></div>
+  <div class="line">&emsp; <span class="line-num">2</span> <span class="math">loss = L(f<sub>&theta;</sub>(x), y)</span> &emsp;&emsp; <span class="comment">// standard forward pass</span></div>
+  <div class="line">&emsp; <span class="line-num">3</span> <span class="math">g<sub>t</sub> = &nabla;<sub>&theta;</sub> loss</span> &emsp;&emsp;&emsp;&emsp;&nbsp; <span class="comment">// standard backward pass (batch-mean gradient)</span></div>
+  <div class="line">&emsp; <span class="line-num">4</span> flatten <span class="math">g<sub>t</sub></span> into a single vector <span class="math">&isin; &Ropf;<sup>p</sup></span></div>
+  <br>
+  <div class="line">&emsp;&emsp; <span class="section-label">// Update running covariance estimate</span></div>
+  <div class="line">&emsp; <span class="line-num">5</span> <span class="math">&mu;<sub>t</sub> = &lambda; &middot; &mu;<sub>t&minus;1</sub> + (1 &minus; &lambda;) &middot; g<sub>t</sub></span> &emsp; <span class="comment">// or &mu;<sub>1</sub> = g<sub>1</sub> at first step</span></div>
+  <div class="line">&emsp; <span class="line-num">6</span> <span class="math">g&#x0303;<sub>t</sub> = g<sub>t</sub> &minus; &mu;<sub>t</sub></span></div>
+  <div class="line">&emsp; <span class="line-num">7</span> update <span class="math">(V, S)</span> with rank-1 observation <span class="math">g&#x0303;<sub>t</sub></span> <span class="comment">// Section 3.2</span></div>
+  <br>
+  <div class="line">&emsp;&emsp; <span class="section-label">// Apply spectral filter (after warmup)</span></div>
+  <div class="line">&emsp; <span class="line-num">8</span> <span class="keyword">if</span> <span class="math">t > w</span>:</div>
+  <div class="line">&emsp;&emsp;&emsp; <span class="line-num">9</span> <span class="math">g<sub>t</sub> &larr; V (V<sup>&top;</sup> g<sub>t</sub>)</span> &emsp;&emsp;&emsp; <span class="comment">// project onto top eigenspace</span></div>
+  <div class="line">&emsp;&emsp;&emsp; <span class="line-num">10</span> write <span class="math">g<sub>t</sub></span> back into <span class="math">&theta;.grad</span></div>
+  <br>
+  <div class="line">&emsp; <span class="line-num">11</span> base_optimizer.step() &emsp;&emsp; <span class="comment">// Adam (or any optimizer) uses the filtered gradient</span></div>
+</div>
+
+<h2>4. Intuition</h2>
+
+<p>
+The gradient covariance matrix <span class="math">C<sub>t</sub></span> captures which parameter-space directions receive consistent gradient signal across training steps. Its top eigenvectors span the subspace of directions that are pushed by many different mini-batches. Its bottom eigenvectors (or the null space) correspond to directions driven by individual batches or individual samples — the directions used for memorisation.
+</p>
+
+<p>
+When training labels are correct, the true decision boundary produces gradients that align across batches, dominating the top eigenspace. When labels are corrupted, the corrupted examples produce idiosyncratic gradients that do not persist in the covariance spectrum. By projecting onto the top eigenspace, we retain the structured signal and discard the noise.
+</p>
+
+<p>
+In the limiting case of fully random labels, no gradient direction is more persistent than any other — the covariance spectrum is flat. The projection retains an arbitrary <span class="math">k</span>-dimensional slice, effectively destroying the gradient signal. The network cannot learn.
+</p>
+
+<h2>5. Computational Cost</h2>
+
+<p>
+Per training step, the additional operations beyond standard training are:
+</p>
+
+<ol>
+  <li><strong>Flatten gradient</strong>: <span class="math">O(p)</span> — concatenate parameter gradients.</li>
+  <li><strong>Running mean update</strong>: <span class="math">O(p)</span> — elementwise EMA.</li>
+  <li><strong>Compute <span class="math">c = V<sup>&top;</sup> g&#x0303;</span></strong>: one matrix-vector product, <span class="math">O(pk)</span>.</li>
+  <li><strong>Build Gram matrix <span class="math">G</span></strong>: <span class="math">O(k<sup>2</sup>)</span> — analytic construction from <span class="math">S</span>, <span class="math">c</span>, and <span class="math">&Vert;g&#x0303;&Vert;<sup>2</sup></span>.</li>
+  <li><strong>Eigendecompose <span class="math">G</span></strong>: <span class="math">O(k<sup>3</sup>)</span> — small matrix, done on CPU.</li>
+  <li><strong>Recover <span class="math">V<sub>t</sub></span></strong>: one <span class="math">(p &times; k) &middot; (k &times; k')</span> matmul plus one outer product update, <span class="math">O(pk')</span>.</li>
+  <li><strong>Project gradient</strong>: two matrix-vector products, <span class="math">O(pk)</span>.</li>
+</ol>
+
+<p>
+Total additional cost per step is <span class="math">O(pk)</span>, dominated by the matrix-vector products with the <span class="math">p &times; k</span> eigenvector matrix. For the experiments reported here (<span class="math">p = 235,146</span>, <span class="math">k = 200</span>), the overhead is approximately 2&times; wall-clock time compared to Adam alone.
+</p>
+
+<p>
+Critically, the full <span class="math">p &times; p</span> covariance matrix is never formed. The <span class="math">p &times; k</span> factor <span class="math">V</span> and the <span class="math">k</span>-vector <span class="math">S</span> are the only large data structures. Memory overhead is <span class="math">O(pk)</span>.
+</p>
+
+<h2>6. Hyperparameters</h2>
+
+<table>
+  <tr><th>Parameter</th><th>Symbol</th><th>Default</th><th>Role</th></tr>
+  <tr>
+    <td>Rank</td><td><span class="math">k</span></td><td>200</td>
+    <td>Maximum dimension of the eigenspace retained. Controls the signal/noise tradeoff: lower rank = more aggressive filtering. Too low causes underfitting on clean data; too high allows memorisation of corrupted labels.</td>
+  </tr>
+  <tr>
+    <td>Decay</td><td><span class="math">&lambda;</span></td><td>0.99</td>
+    <td>EMA coefficient for both the running mean and the covariance estimate. Higher values give longer memory. The effective window is approximately <span class="math">1/(1 &minus; &lambda;)</span> steps (100 steps at &lambda; = 0.99).</td>
+  </tr>
+  <tr>
+    <td>Warmup</td><td><span class="math">w</span></td><td>100</td>
+    <td>Number of steps before filtering activates. During warmup, the covariance is updated but gradients pass through unmodified to the base optimizer.</td>
+  </tr>
+  <tr>
+    <td>Filter strength</td><td><span class="math">&phi;</span></td><td>1.0</td>
+    <td>Interpolation between original (<span class="math">&phi;</span>=0) and fully projected (<span class="math">&phi;</span>=1) gradient. All experiments use <span class="math">&phi;</span>=1.</td>
+  </tr>
+</table>
+
+<h2>7. Diagnostics</h2>
+
+<p>
+The method exposes the following diagnostics at each step:
+</p>
+
+<ul>
+  <li><strong>Singular value spectrum</strong> (<span class="math">S<sub>t</sub></span>): The singular values of the running covariance, in descending order. A steep falloff indicates the gradient signal is concentrated in few directions; a flat spectrum indicates diffuse or random gradient structure.</li>
+  <li><strong>Effective rank</strong>: The exponential of the Shannon entropy of the normalised squared singular values: <span class="math">exp(&minus;&sum; p<sub>i</sub> log p<sub>i</sub>)</span> where <span class="math">p<sub>i</sub> = S<sub>i</sub><sup>2</sup> / &sum; S<sub>j</sub><sup>2</sup></span>. Ranges from 1 (all variance in one direction) to <span class="math">k</span> (uniform). In experiments, effective rank typically lies between 30 and 85, well below the maximum rank of 200.</li>
+  <li><strong>Variance in top-5</strong>: Fraction of total variance captured by the five largest singular values. Provides a quick summary of spectral concentration.</li>
+</ul>
+
+<h2>8. Implementation Details</h2>
+
+<ul>
+  <li>All parameters of the network are concatenated into a single flat vector for the covariance computation. The ordering is determined by iterating <code>model.parameters()</code>.</li>
+  <li>The gradient vector <span class="math">g<sub>t</sub></span> used for both the covariance update and the projection is the <em>unfiltered</em> batch-mean gradient from <code>loss.backward()</code>. The projection is applied after the covariance update, so the covariance always sees the true gradient.</li>
+  <li>The singular values <span class="math">S</span> are stored on CPU (for compatibility with <code>torch.linalg.eigh</code>). The eigenvectors <span class="math">V</span> and all <span class="math">p</span>-dimensional operations remain on GPU.</li>
+  <li>Eigenvalues below <span class="math">10<sup>&minus;12</sup></span> are discarded to avoid numerical instability in the eigenvector recovery (which divides by singular values).</li>
+  <li>The method wraps the training loop rather than subclassing <code>torch.optim.Optimizer</code>, because it needs access to inputs and targets for the forward pass. Its <code>step(inputs, targets)</code> method performs the full forward/backward/filter/update cycle.</li>
+</ul>
+
+</div>
+</body>
+</html>
