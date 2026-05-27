@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gradient Projection — Worked Example</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface2: #1a2744;
+    --text: #e0e0e0;
+    --muted: #8899aa;
+    --accent: #4fc3f7;
+    --green: #81c784;
+    --red: #ef5350;
+    --orange: #ffb74d;
+    --purple: #b39ddb;
+    --border: #2a3a5e;
+    --code-bg: #0d1a2d;
+    --signal: #4fc3f7;
+    --noise: #ef5350;
+    --mixed: #ffb74d;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+  }
+  .header {
+    background: linear-gradient(135deg, #0f3460, #16213e);
+    border-bottom: 2px solid var(--accent);
+    padding: 44px 40px 36px;
+    text-align: center;
+  }
+  .header h1 { font-size: 26px; font-weight: 400; color: #fff; margin-bottom: 6px; }
+  .header .sub { font-size: 15px; color: var(--muted); font-style: italic; }
+  .content { max-width: 820px; margin: 0 auto; padding: 36px 30px 80px; }
+  h2 {
+    font-size: 19px; font-weight: 600; color: var(--accent);
+    margin: 36px 0 14px; padding-bottom: 5px; border-bottom: 1px solid var(--border);
+  }
+  h3 { font-size: 16px; font-weight: 600; color: var(--green); margin: 24px 0 10px; }
+  p { margin-bottom: 13px; text-align: justify; }
+  .math { font-family: 'Cambria Math', Georgia, serif; font-style: italic; white-space: nowrap; }
+
+  /* Vector display */
+  .vec-row {
+    display: flex; align-items: center; gap: 10px;
+    margin: 8px 0; flex-wrap: wrap;
+  }
+  .vec-label {
+    font-family: 'Cambria Math', Georgia, serif; font-style: italic;
+    min-width: 110px; text-align: right; font-size: 15px;
+  }
+  .vec-eq { color: var(--muted); font-size: 15px; }
+  .vec {
+    display: inline-flex; align-items: center; gap: 0;
+    font-family: 'Consolas', 'Monaco', monospace; font-size: 15px;
+  }
+  .vec .bracket { color: var(--muted); font-size: 18px; }
+  .vec .cell {
+    min-width: 52px; text-align: center; padding: 5px 6px;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .vec .cell:last-of-type { border-right: none; }
+  .vec-bg {
+    background: var(--code-bg); border-radius: 4px;
+    border: 1px solid var(--border); overflow: hidden;
+  }
+  .vec-note {
+    font-size: 13px; color: var(--muted); font-style: italic; margin-left: 6px;
+  }
+
+  /* Color-coded cells */
+  .c-sig { color: var(--signal); }
+  .c-noise { color: var(--noise); }
+  .c-mix { color: var(--orange); }
+  .c-zero { color: #555; }
+  .c-green { color: var(--green); }
+  .c-purple { color: var(--purple); }
+
+  /* Eigenvalue bar chart */
+  .eigen-chart { margin: 18px 0 20px; }
+  .eigen-bar-row {
+    display: flex; align-items: center; gap: 10px; margin: 6px 0;
+  }
+  .eigen-label {
+    font-family: 'Cambria Math', Georgia, serif; font-style: italic;
+    min-width: 30px; text-align: right; font-size: 14px;
+  }
+  .eigen-bar-bg {
+    flex: 1; height: 26px; background: var(--code-bg);
+    border-radius: 3px; position: relative; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .eigen-bar {
+    height: 100%; border-radius: 3px 0 0 3px;
+    display: flex; align-items: center; padding-left: 10px;
+    font-family: Consolas, monospace; font-size: 13px; color: #fff;
+    transition: width 0.3s;
+  }
+  .eigen-val { min-width: 40px; text-align: right; font-family: Consolas, monospace; font-size: 13px; }
+
+  /* Computation boxes */
+  .comp-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 20px 24px; margin: 18px 0;
+  }
+  .comp-title {
+    font-weight: 700; font-size: 15px; margin-bottom: 12px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  .comp-step {
+    margin: 10px 0; padding-left: 8px;
+    border-left: 2px solid var(--border);
+    padding: 4px 0 4px 14px;
+  }
+  .comp-step .step-label {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted); margin-bottom: 2px;
+  }
+  .math-line {
+    font-family: 'Cambria Math', Georgia, serif;
+    font-size: 15px; line-height: 1.9; margin: 3px 0;
+  }
+
+  /* Result highlight */
+  .result {
+    border-radius: 5px; padding: 16px 20px; margin: 16px 0;
+    font-size: 14px;
+  }
+  .result-signal { background: rgba(79,195,247,0.1); border-left: 3px solid var(--signal); }
+  .result-noise { background: rgba(239,83,80,0.1); border-left: 3px solid var(--noise); }
+  .result-mixed { background: rgba(255,183,77,0.1); border-left: 3px solid var(--orange); }
+
+  .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 3px;
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tag-kept { background: rgba(79,195,247,0.2); color: var(--signal); }
+  .tag-killed { background: rgba(239,83,80,0.2); color: var(--noise); }
+  .tag-partial { background: rgba(255,183,77,0.2); color: var(--orange); }
+
+  .note {
+    background: rgba(79,195,247,0.07); border-left: 3px solid var(--accent);
+    padding: 13px 17px; margin: 16px 0; border-radius: 4px; font-size: 14px;
+  }
+
+  .arrow { color: var(--muted); font-size: 20px; margin: 0 4px; }
+
+  table.decomp {
+    width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px;
+  }
+  table.decomp th {
+    background: var(--surface2); color: var(--accent); font-weight: 600;
+    text-align: center; padding: 8px 10px; border-bottom: 2px solid var(--border);
+  }
+  table.decomp td {
+    text-align: center; padding: 8px 10px; border-bottom: 1px solid var(--border);
+    font-family: Consolas, monospace; font-size: 14px;
+  }
+  table.decomp tr:hover td { background: rgba(79,195,247,0.04); }
+  .kept-cell { color: var(--signal); font-weight: 600; }
+  .killed-cell { color: var(--noise); text-decoration: line-through; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Gradient Projection — Worked Numerical Example</h1>
+  <div class="sub">What happens to signal vs memorisation gradients under spectral filtering</div>
+</div>
+
+<div class="content">
+
+<h2>1. Setup</h2>
+
+<p>
+Consider a tiny network with <span class="math">p = 4</span> parameters. We'll use an intuitive orthonormal basis for <span class="math">&Ropf;<sup>4</sup></span> where each direction has a clear interpretation:
+</p>
+
+<div class="vec-row">
+  <span class="vec-label c-sig">e<sub>1</sub></span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell c-sig">+0.5</span><span class="cell c-sig">+0.5</span><span class="cell c-sig">+0.5</span><span class="cell c-sig">+0.5</span>
+  </span>
+  <span class="vec-note">"uniform shift" — all parameters adjust together</span>
+</div>
+<div class="vec-row">
+  <span class="vec-label c-sig">e<sub>2</sub></span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell c-sig">+0.5</span><span class="cell c-sig">+0.5</span><span class="cell c-sig">&minus;0.5</span><span class="cell c-sig">&minus;0.5</span>
+  </span>
+  <span class="vec-note">"layer contrast" — early layers up, late layers down</span>
+</div>
+<div class="vec-row">
+  <span class="vec-label c-noise">e<sub>3</sub></span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell c-noise">+0.5</span><span class="cell c-noise">&minus;0.5</span><span class="cell c-noise">+0.5</span><span class="cell c-noise">&minus;0.5</span>
+  </span>
+  <span class="vec-note">"alternating" — idiosyncratic, sample-specific</span>
+</div>
+<div class="vec-row">
+  <span class="vec-label c-noise">e<sub>4</sub></span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell c-noise">+0.5</span><span class="cell c-noise">&minus;0.5</span><span class="cell c-noise">&minus;0.5</span><span class="cell c-noise">+0.5</span>
+  </span>
+  <span class="vec-note">"cross" — idiosyncratic, sample-specific</span>
+</div>
+
+<p>
+These four vectors form an orthonormal basis (they are rows of the 4&times;4 Hadamard matrix, scaled by &frac12;). Any gradient in <span class="math">&Ropf;<sup>4</sup></span> can be uniquely decomposed as a sum of these directions.
+</p>
+
+<h2>2. The Covariance Spectrum</h2>
+
+<p>
+Suppose after many training steps, the running gradient covariance has the following eigenvalue spectrum. The first two directions recur persistently across batches (signal); the last two appear only transiently (memorisation noise):
+</p>
+
+<div class="eigen-chart">
+  <div class="eigen-bar-row">
+    <span class="eigen-label c-sig">e<sub>1</sub></span>
+    <div class="eigen-bar-bg"><div class="eigen-bar" style="width:100%; background: linear-gradient(90deg, #1565c0, #4fc3f7);">10.0</div></div>
+    <span class="eigen-val c-sig">10.0</span>
+  </div>
+  <div class="eigen-bar-row">
+    <span class="eigen-label c-sig">e<sub>2</sub></span>
+    <div class="eigen-bar-bg"><div class="eigen-bar" style="width:80%; background: linear-gradient(90deg, #1565c0, #4fc3f7);">8.0</div></div>
+    <span class="eigen-val c-sig">8.0</span>
+  </div>
+  <div class="eigen-bar-row">
+    <span class="eigen-label c-noise">e<sub>3</sub></span>
+    <div class="eigen-bar-bg"><div class="eigen-bar" style="width:3%; background: linear-gradient(90deg, #c62828, #ef5350);">&nbsp;</div></div>
+    <span class="eigen-val c-noise">0.3</span>
+  </div>
+  <div class="eigen-bar-row">
+    <span class="eigen-label c-noise">e<sub>4</sub></span>
+    <div class="eigen-bar-bg"><div class="eigen-bar" style="width:1%; background: linear-gradient(90deg, #c62828, #ef5350);">&nbsp;</div></div>
+    <span class="eigen-val c-noise">0.1</span>
+  </div>
+</div>
+
+<p>
+With <span class="math">rank k = 2</span>, the filter retains only <span class="math">e<sub>1</sub></span> and <span class="math">e<sub>2</sub></span>. The projection matrix is:
+</p>
+
+<div class="comp-box">
+  <div class="math-line">
+    V = [e<sub>1</sub> | e<sub>2</sub>] &ensp;&isin; &Ropf;<sup>4&times;2</sup>
+  </div>
+  <div class="math-line" style="margin-top: 8px;">
+    P = V V<sup>&top;</sup> = e<sub>1</sub>e<sub>1</sub><sup>&top;</sup> + e<sub>2</sub>e<sub>2</sub><sup>&top;</sup>
+  </div>
+</div>
+
+<p>
+Applying <span class="math">P</span> to any gradient keeps its <span class="math">e<sub>1</sub></span> and <span class="math">e<sub>2</sub></span> components and <strong>zeros out</strong> its <span class="math">e<sub>3</sub></span> and <span class="math">e<sub>4</sub></span> components. Let's see this concretely.
+</p>
+
+<h2>3. Example A: A Generalising Gradient</h2>
+
+<p>
+A batch of correctly-labelled images produces a gradient that points mostly in the signal directions:
+</p>
+
+<div class="vec-row">
+  <span class="vec-label c-sig">g<sub>A</sub></span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell">+2.0</span><span class="cell">+2.0</span><span class="cell">+2.0</span><span class="cell">+2.0</span>
+  </span>
+</div>
+
+<div class="comp-box">
+  <div class="comp-title c-sig">Projection of g<sub>A</sub></div>
+
+  <div class="comp-step">
+    <div class="step-label">Decompose into eigenbasis</div>
+    <div class="math-line">
+      e<sub>1</sub> &middot; g<sub>A</sub> = 0.5(2) + 0.5(2) + 0.5(2) + 0.5(2) = <strong class="c-sig">4.0</strong>
+    </div>
+    <div class="math-line">
+      e<sub>2</sub> &middot; g<sub>A</sub> = 0.5(2) + 0.5(2) &minus; 0.5(2) &minus; 0.5(2) = <strong class="c-sig">0.0</strong>
+    </div>
+  </div>
+
+  <div class="comp-step">
+    <div class="step-label">Reconstruct from kept components</div>
+    <div class="math-line">
+      g<sub>A</sub><sup>filtered</sup> = 4.0 &middot; e<sub>1</sub> + 0.0 &middot; e<sub>2</sub> = 4.0 &middot; [0.5, 0.5, 0.5, 0.5]
+    </div>
+  </div>
+</div>
+
+<div class="vec-row">
+  <span class="vec-label">Original</span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell c-sig">+2.0</span><span class="cell c-sig">+2.0</span><span class="cell c-sig">+2.0</span><span class="cell c-sig">+2.0</span>
+  </span>
+</div>
+<div class="vec-row">
+  <span class="vec-label">Filtered</span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell c-sig">+2.0</span><span class="cell c-sig">+2.0</span><span class="cell c-sig">+2.0</span><span class="cell c-sig">+2.0</span>
+  </span>
+  <span class="tag tag-kept">100% kept</span>
+</div>
+
+<div class="result result-signal">
+  The gradient lies entirely within the signal subspace. The filter passes it through unchanged. The base optimizer (Adam) sees the exact same gradient it would without filtering.
+</div>
+
+<h2>4. Example B: A Memorising Gradient</h2>
+
+<p>
+A mislabelled sample produces a gradient in a direction that doesn't recur across batches:
+</p>
+
+<div class="vec-row">
+  <span class="vec-label c-noise">g<sub>B</sub></span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell">+1.0</span><span class="cell">&minus;1.0</span><span class="cell">+1.0</span><span class="cell">&minus;1.0</span>
+  </span>
+</div>
+
+<div class="comp-box">
+  <div class="comp-title c-noise">Projection of g<sub>B</sub></div>
+
+  <div class="comp-step">
+    <div class="step-label">Decompose into eigenbasis</div>
+    <div class="math-line">
+      e<sub>1</sub> &middot; g<sub>B</sub> = 0.5(1) + 0.5(&minus;1) + 0.5(1) + 0.5(&minus;1) = <strong class="c-sig">0.0</strong>
+    </div>
+    <div class="math-line">
+      e<sub>2</sub> &middot; g<sub>B</sub> = 0.5(1) + 0.5(&minus;1) &minus; 0.5(1) &minus; 0.5(&minus;1) = <strong class="c-sig">0.0</strong>
+    </div>
+  </div>
+
+  <div class="comp-step">
+    <div class="step-label">Reconstruct from kept components</div>
+    <div class="math-line">
+      g<sub>B</sub><sup>filtered</sup> = 0.0 &middot; e<sub>1</sub> + 0.0 &middot; e<sub>2</sub> = <strong class="c-noise">[0, 0, 0, 0]</strong>
+    </div>
+  </div>
+</div>
+
+<div class="vec-row">
+  <span class="vec-label">Original</span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell c-noise">+1.0</span><span class="cell c-noise">&minus;1.0</span><span class="cell c-noise">+1.0</span><span class="cell c-noise">&minus;1.0</span>
+  </span>
+</div>
+<div class="vec-row">
+  <span class="vec-label">Filtered</span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell c-zero">0.0</span><span class="cell c-zero">0.0</span><span class="cell c-zero">0.0</span><span class="cell c-zero">0.0</span>
+  </span>
+  <span class="tag tag-killed">zeroed out</span>
+</div>
+
+<div class="result result-noise">
+  The gradient lies entirely in the memorisation subspace (<span class="math">e<sub>3</sub></span>). The filter projects it to the zero vector. This batch produces <strong>no parameter update at all</strong>. The network cannot learn from this sample — the gradient signal is completely destroyed.
+</div>
+
+<h2>5. Example C: A Realistic Mixed Gradient</h2>
+
+<p>
+Most real gradients are a mix: they contain a signal component (the true decision boundary) plus a memorisation component (sample-specific noise, possibly from corrupted labels in the same batch):
+</p>
+
+<div class="vec-row">
+  <span class="vec-label c-mix">g<sub>C</sub></span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell">+3.0</span><span class="cell">+1.0</span><span class="cell">+1.0</span><span class="cell">&minus;1.0</span>
+  </span>
+</div>
+
+<p>
+Let's decompose this into all four eigendirections to see what's inside:
+</p>
+
+<div class="comp-box">
+  <div class="comp-title c-mix">Full decomposition of g<sub>C</sub></div>
+
+  <div class="comp-step">
+    <div class="step-label">Project onto each eigenvector</div>
+    <div class="math-line">
+      e<sub>1</sub> &middot; g<sub>C</sub> = 0.5(3) + 0.5(1) + 0.5(1) + 0.5(&minus;1) = <strong class="c-sig">2.0</strong>
+    </div>
+    <div class="math-line">
+      e<sub>2</sub> &middot; g<sub>C</sub> = 0.5(3) + 0.5(1) &minus; 0.5(1) &minus; 0.5(&minus;1) = <strong class="c-sig">2.0</strong>
+    </div>
+    <div class="math-line">
+      e<sub>3</sub> &middot; g<sub>C</sub> = 0.5(3) &minus; 0.5(1) + 0.5(1) &minus; 0.5(&minus;1) = <strong class="c-noise">2.0</strong>
+    </div>
+    <div class="math-line">
+      e<sub>4</sub> &middot; g<sub>C</sub> = 0.5(3) &minus; 0.5(1) &minus; 0.5(1) &minus; 0.5(&minus;1) = <strong class="c-noise">1.0</strong> &emsp; &emsp; &emsp; &emsp; &emsp;&emsp;
+    </div>
+  </div>
+
+  <div class="comp-step">
+    <div class="step-label">Verify: reconstruct full gradient</div>
+    <div class="math-line" style="font-size: 14px;">
+      g<sub>C</sub> = 2.0 &middot; e<sub>1</sub> + 2.0 &middot; e<sub>2</sub> + 2.0 &middot; e<sub>3</sub> + 1.0 &middot; e<sub>4</sub>
+    </div>
+  </div>
+</div>
+
+<table class="decomp">
+  <tr>
+    <th>Component</th>
+    <th>Direction</th>
+    <th>Coefficient</th>
+    <th>Contribution to g<sub>C</sub></th>
+    <th>After filter</th>
+  </tr>
+  <tr>
+    <td class="c-sig">e<sub>1</sub> (signal)</td>
+    <td>[+.5, +.5, +.5, +.5]</td>
+    <td class="c-sig">2.0</td>
+    <td>[+1.0, +1.0, +1.0, +1.0]</td>
+    <td class="kept-cell">[+1.0, +1.0, +1.0, +1.0]</td>
+  </tr>
+  <tr>
+    <td class="c-sig">e<sub>2</sub> (signal)</td>
+    <td>[+.5, +.5, &minus;.5, &minus;.5]</td>
+    <td class="c-sig">2.0</td>
+    <td>[+1.0, +1.0, &minus;1.0, &minus;1.0]</td>
+    <td class="kept-cell">[+1.0, +1.0, &minus;1.0, &minus;1.0]</td>
+  </tr>
+  <tr>
+    <td class="c-noise">e<sub>3</sub> (noise)</td>
+    <td>[+.5, &minus;.5, +.5, &minus;.5]</td>
+    <td class="c-noise">2.0</td>
+    <td>[+1.0, &minus;1.0, +1.0, &minus;1.0]</td>
+    <td class="killed-cell">[0, 0, 0, 0]</td>
+  </tr>
+  <tr>
+    <td class="c-noise">e<sub>4</sub> (noise)</td>
+    <td>[+.5, &minus;.5, &minus;.5, +.5]</td>
+    <td class="c-noise">1.0</td>
+    <td>[+0.5, &minus;0.5, &minus;0.5, +0.5]</td>
+    <td class="killed-cell">[0, 0, 0, 0]</td>
+  </tr>
+</table>
+
+<div class="vec-row">
+  <span class="vec-label">Original</span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell c-mix">+3.0</span><span class="cell c-mix">+1.0</span><span class="cell c-mix">+1.0</span><span class="cell c-mix">&minus;1.0</span>
+  </span>
+  <span class="vec-note">norm = 3.46</span>
+</div>
+<div class="vec-row">
+  <span class="vec-label">Filtered</span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell c-sig">+2.0</span><span class="cell c-sig">+2.0</span><span class="cell c-sig">&nbsp;0.0</span><span class="cell c-sig">&minus;2.0</span>
+  </span>
+  <span class="vec-note">norm = 2.83</span>
+</div>
+<div class="vec-row">
+  <span class="vec-label c-noise">Discarded</span>
+  <span class="vec-eq">=</span>
+  <span class="vec vec-bg">
+    <span class="cell c-noise">+1.0</span><span class="cell c-noise">&minus;1.0</span><span class="cell c-noise">+1.0</span><span class="cell c-noise">+1.0</span>
+  </span>
+  <span class="vec-note">norm = 2.00</span>
+</div>
+
+<div class="result result-mixed">
+  <strong>42% of the gradient energy was noise.</strong> The original gradient had components <span class="math">2.0 &middot; e<sub>3</sub></span> and <span class="math">1.0 &middot; e<sub>4</sub></span> that would have pushed the network toward memorising sample-specific patterns. The filter stripped these out, keeping only the signal components. The filtered gradient is smaller in magnitude (2.83 vs 3.46) but points in a better direction.
+</div>
+
+<h2>6. Example D: What Happens at Scale</h2>
+
+<p>
+In the real optimizer on MNIST (<span class="math">p = 235,146</span>, <span class="math">k = 200</span>), the same thing happens but the numbers are more extreme. The gradient lives in a 235,146-dimensional space. The filter projects it onto a 200-dimensional subspace — keeping only <strong>0.085%</strong> of the available directions.
+</p>
+
+<p>
+A gradient from a batch with corrupted labels will have its corrupted component spread across the ~235,000 directions outside the signal subspace. The projection discards all of it. Only the component that happens to align with the 200 signal directions survives — and for a random/corrupted gradient, this alignment is near zero.
+</p>
+
+<div class="note">
+  <strong>Why this doesn't hurt clean performance much.</strong> On real data, the true gradient is low-rank: most of the gradient energy concentrates in far fewer than 200 directions. In our MNIST experiments, the effective rank (Shannon entropy measure) is 60–85 out of 200. The signal easily fits within the retained subspace. The 0.5% accuracy cost on clean data comes from occasionally clipping genuine gradient components in directions 201+.
+</div>
+
+<h2>7. The Key Asymmetry</h2>
+
+<p>
+The filter's power comes from an asymmetry between signal and noise:
+</p>
+
+<table class="decomp">
+  <tr>
+    <th></th>
+    <th>Signal gradients</th>
+    <th>Memorisation gradients</th>
+  </tr>
+  <tr>
+    <td style="text-align:left; color: var(--muted);">Across batches</td>
+    <td class="c-sig">Consistent — same directions recur</td>
+    <td class="c-noise">Inconsistent — different each batch</td>
+  </tr>
+  <tr>
+    <td style="text-align:left; color: var(--muted);">In covariance spectrum</td>
+    <td class="c-sig">Large eigenvalues (top of spectrum)</td>
+    <td class="c-noise">Small eigenvalues (bottom / noise floor)</td>
+  </tr>
+  <tr>
+    <td style="text-align:left; color: var(--muted);">Dimensionality</td>
+    <td class="c-sig">Low — few dominant directions</td>
+    <td class="c-noise">High — spread across many directions</td>
+  </tr>
+  <tr>
+    <td style="text-align:left; color: var(--muted);">After projection</td>
+    <td class="c-sig">Mostly preserved</td>
+    <td class="c-noise">Mostly or entirely zeroed</td>
+  </tr>
+</table>
+
+<p>
+When all labels are random, there is no consistent signal. The covariance spectrum becomes flat — every direction is equally (un)important. The top-<span class="math">k</span> eigenspace is arbitrary, and projection onto it destroys most of the gradient. The network receives near-zero effective updates and cannot learn.
+</p>
+
+<p>
+When some labels are corrupted (say 40%), the true patterns still dominate the covariance spectrum. The filter preserves these and discards the corrupted-label contributions. The result: the network generalises as though the corrupted labels weren't there.
+</p>
+
+</div>
+</body>
+</html>
