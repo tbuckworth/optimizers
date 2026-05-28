@@ -1,0 +1,65 @@
+{
+  "config": {
+    "mode": "baseline",
+    "base_optimizer": "sgdm",
+    "dataset": "standard",
+    "lr": 0.005,
+    "epochs": 5,
+    "rank": 200,
+    "decay": 0.99,
+    "warmup": 100,
+    "filter_strength": 1.0,
+    "label_noise": 0.0,
+    "seed": 42,
+    "name": "lr_sgdm_0.005",
+    "save_dir": "/tmp/tmp65lys47i",
+    "data_dir": "/tmp/data"
+  },
+  "metrics": [
+    {
+      "epoch": -1,
+      "train_acc": 0.05775,
+      "test_acc": 0.053,
+      "train_loss": 2.30352,
+      "test_loss": 2.30408
+    },
+    {
+      "epoch": 0,
+      "train_acc": 0.94627,
+      "test_acc": 0.9434,
+      "train_loss": 0.18726,
+      "test_loss": 0.19011
+    },
+    {
+      "epoch": 1,
+      "train_acc": 0.96807,
+      "test_acc": 0.9644,
+      "train_loss": 0.11046,
+      "test_loss": 0.11863
+    },
+    {
+      "epoch": 2,
+      "train_acc": 0.9773,
+      "test_acc": 0.9702,
+      "train_loss": 0.07861,
+      "test_loss": 0.09723
+    },
+    {
+      "epoch": 3,
+      "train_acc": 0.98315,
+      "test_acc": 0.9749,
+      "train_loss": 0.05836,
+      "test_loss": 0.08127
+    },
+    {
+      "epoch": 4,
+      "train_acc": 0.98795,
+      "test_acc": 0.9761,
+      "train_loss": 0.04294,
+      "test_loss": 0.07199
+    }
+  ],
+  "time_s": 12.9,
+  "n_params": 235146,
+  "input_dim": 784
+}
