@@ -58,6 +58,24 @@ Randomly corrupt a fraction of training labels to uniform random classes. With 1
 
 r=50 is too restrictive — it hurts even clean performance. r=200 is the sweet spot for this problem.
 
+### Experiment 3: Base Optimizer Ablation
+
+Both our filter and Adam's momentum favor persistent gradient directions over transient ones — are they redundant? We tested the filter on top of three base optimizers: plain SGD (no momentum), SGD with momentum (0.9), and Adam. SGD variants used lr=0.05 (tuned via sweep); Adam used lr=0.001.
+
+| Noise | SGD | SGDm | Adam | Filter+SGD | Filter+SGDm | Filter+Adam |
+|-------|------|------|------|------------|-------------|-------------|
+| 0% | **98.24%** | 97.33% | 97.91% | 95.59% | 97.70% | 97.37% |
+| 20% | 93.88% | 92.81% | 92.43% | 93.55% | 93.25% | **95.12%** |
+| 40% | 91.92% | 89.61% | 89.08% | 92.24% | 90.98% | **93.04%** |
+
+**Adam's momentum does not interfere with the filter — it complements it.** Filter+Adam outperforms Filter+SGD and Filter+SGDm at every noise level except 0%. The combination works because they address different things: our filter selects gradient *direction* (which subspace), while Adam's adaptive learning rates handle per-parameter *scale*.
+
+**The filter helps Adam far more than it helps SGD.** At 40% noise, the filter gives Adam +3.96% but gives SGD only +0.32%. This makes sense: Adam's momentum aggressively accumulates memorization gradients, and our filter corrects for that. SGD without momentum doesn't accumulate as aggressively, so there's less to correct.
+
+**Plain SGD is surprisingly noise-resistant.** Without any filter, SGD (91.92%) already beats Adam (89.08%) at 40% noise. Without momentum to accumulate memorization signal, SGD naturally resists overfitting to corrupted labels — but it lacks the structured filtering that gives our method its edge.
+
+**Filter+SGD hurts on clean data.** At 0% noise, Filter+SGD drops to 95.59% (vs 98.24% for plain SGD). Without Adam's adaptive rates, the filter's gradient modification causes underfitting. The filter needs a capable base optimizer to be effective.
+
 ### Why It Works: The Gradient Covariance Story
 
 When labels are correct, many training examples push the gradient in similar directions (the true decision boundary). These consistent directions dominate the top eigenspace of the gradient covariance. Corrupted labels push in idiosyncratic directions that don't persist across batches.
