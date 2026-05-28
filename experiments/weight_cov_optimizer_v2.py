@@ -1,0 +1,202 @@
+#!/usr/bin/env python3
+"""Weight-covariance spectral optimizer (v2 — batch-mean streaming).
+
+Tracks a running low-rank estimate of the p×p weight-gradient covariance
+using streaming rank-1 SVD updates from batch-mean gradients. Every step:
+1. Normal forward/backward → batch-mean gradient g ∈ R^p
+2. Rank-1 SVD update with g (trivially cheap)
+3. Project g onto top-k eigenspace
+4. Pass projected gradient to base optimizer
+
+No per-sample gradients needed. Barely slower than standard Adam.
+"""
+
+import math
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+
+class WeightCovarianceFilterV2:
+    def __init__(self, model, base_optimizer, rank=200, decay=0.99,
+                 warmup=100, filter_strength=1.0):
+        self.model = model
+        self.base_optimizer = base_optimizer
+        self.rank = rank
+        self.decay = decay
+        self.warmup = warmup
+        self.filter_strength = filter_strength
+
+        self.param_list = list(model.parameters())
+        self.n_params = sum(p.numel() for p in self.param_list)
+
+        self.V = None  # (p, k) top eigenvectors
+        self.S = None  # (k,) singular values
+        self.step_count = 0
+
+        # Running mean for centering
+        self.grad_mean = None
+
+    def _get_flat_grad(self):
+        return torch.cat([p.grad.reshape(-1) for p in self.param_list])
+
+    def _set_flat_grad(self, flat_grad):
+        offset = 0
+        for p in self.param_list:
+            numel = p.numel()
+            p.grad = flat_grad[offset:offset + numel].reshape(p.shape)
+            offset += numel
+
+    def _update_svd(self, g):
+        """Rank-1 update to the streaming covariance SVD.
+
+        g: (p,) batch-mean gradient vector on the compute device.
+        All heavy ops stay on GPU. Only the small (k+1 × k+1) eigh goes to CPU.
+        """
+        device = g.device
+
+        # Update running mean with same decay
+        if self.grad_mean is None:
+            self.grad_mean = g.detach().clone()
+        else:
+            self.grad_mean.mul_(self.decay).add_(g.detach(), alpha=1 - self.decay)
+
+        g_centered = g.detach() - self.grad_mean  # (p,)
+
+        if self.V is None:
+            norm = g_centered.norm()
+            if norm > 1e-12:
+                self.V = (g_centered / norm).unsqueeze(1).contiguous()  # (p, 1)
+                self.S = norm.unsqueeze(0).cpu()  # keep S on CPU for eigh
+            return
+
+        k = self.V.shape[1]
+        sd = math.sqrt(self.decay)
+        sn = math.sqrt(1 - self.decay)
+
+        # Project new gradient onto existing basis: c = V^T @ g_centered (k,)
+        c = self.V.T @ g_centered  # (k,) on GPU
+        # Residual component orthogonal to V
+        g_perp = g_centered - self.V @ c  # (p,) on GPU
+        g_perp_norm = g_perp.norm()
+        has_perp = g_perp_norm > 1e-12
+
+        # Build (k+1 × k+1) Gram matrix on CPU — never materialize (k+1 × p)
+        # Row i of "combined" is: sd * S[i] * V[:,i]  for i < k
+        # Row k is: sn * g_centered
+        # Gram[i,j] = row_i . row_j
+        # For i,j < k: sd² * S[i] * S[j] * (V[:,i] . V[:,j]) = sd² * S[i]*S[j] * delta_ij
+        # For i < k, j=k: sd * S[i] * sn * (V[:,i] . g_centered) = sd*sn * S[i] * c[i]
+        # For i=k, j=k: sn² * (g_centered . g_centered) = sn² * ||g_centered||²
+
+        S_cpu = self.S  # already on CPU
+        c_cpu = c.cpu()
+        g_norm_sq = g_centered.dot(g_centered).item()
+
+        gram = torch.zeros(k + 1, k + 1)
+        # Diagonal block: sd² * S²
+        gram[:k, :k] = torch.diag(sd * sd * S_cpu * S_cpu)
+        # Off-diagonal: sd * sn * S * c
+        cross = sd * sn * S_cpu * c_cpu
+        gram[:k, k] = cross
+        gram[k, :k] = cross
+        # Bottom-right
+        gram[k, k] = sn * sn * g_norm_sq
+
+        eigvals, eigvecs = torch.linalg.eigh(gram)
+        eigvals = eigvals.flip(0)
+        eigvecs = eigvecs.flip(1)
+        pos = eigvals > 1e-12
+        eigvals = eigvals[pos]
+        eigvecs = eigvecs[:, pos]
+        new_k = min(self.rank, len(eigvals))
+        eigvals = eigvals[:new_k]
+        eigvecs = eigvecs[:, :new_k]  # (k+1, new_k)
+        s_new = eigvals.sqrt()
+
+        # Recover V_new = [V | q] @ eigvecs @ diag(1/s_new)
+        # where q = g_perp / ||g_perp|| (the new basis vector)
+        # [V | q] is (p, k+1), but we compute V_new without materializing it:
+        # V_new[:,j] = sum_i eigvecs[i,j]/s_new[j] * (row_i_direction)
+        # For i < k: direction = V[:,i]
+        # For i = k: direction = q (or g_centered if no perp component)
+
+        coeffs = eigvecs / s_new.unsqueeze(0)  # (k+1, new_k)
+        # V_new = V @ (sd * diag(S_cpu) @ coeffs[:k]) + q @ (sn * coeffs[k:k+1])
+        # The "combined" rows are sd*S[i]*V[:,i] and sn*g_centered
+        # So V_new = V @ diag(sd*S) @ coeffs[:k] + (sn * g_centered) * coeffs[k]
+        #          = V @ (sd * S.unsqueeze(1) * coeffs[:k]).to(device) + ...
+
+        top_coeffs = (sd * S_cpu.unsqueeze(1) * coeffs[:k]).to(device)  # (k, new_k)
+        bot_coeffs = (sn * coeffs[k]).to(device)  # (new_k,)
+
+        V_new = self.V @ top_coeffs + g_centered.unsqueeze(1) * bot_coeffs.unsqueeze(0)
+
+        self.V = V_new.contiguous()
+        self.S = s_new
+
+    def _project_gradient(self, g):
+        if self.V is None:
+            return g
+        g_projected = self.V @ (self.V.T @ g)
+        if self.filter_strength < 1.0:
+            return (1 - self.filter_strength) * g + self.filter_strength * g_projected
+        return g_projected
+
+    def step(self, inputs, targets):
+        """One optimization step. Returns (loss_value, diagnostics_dict)."""
+        self.step_count += 1
+
+        # Standard forward/backward
+        self.base_optimizer.zero_grad()
+        logits = self.model(inputs)
+        loss = F.cross_entropy(logits, targets)
+        loss.backward()
+        loss_val = loss.item()
+
+        flat_grad = self._get_flat_grad()
+
+        # Update covariance estimate every step
+        self._update_svd(flat_grad)
+
+        # Apply filter after warmup
+        if self.step_count > self.warmup:
+            filtered_grad = self._project_gradient(flat_grad)
+            self._set_flat_grad(filtered_grad)
+
+        self.base_optimizer.step()
+        self.base_optimizer.zero_grad()
+
+        diagnostics = {
+            "loss": loss_val,
+            "step": self.step_count,
+            "filtering_active": self.step_count > self.warmup,
+        }
+        if self.S is not None:
+            diagnostics["top_singular_values"] = self.S[:5].tolist()
+            total = (self.S ** 2).sum().item()
+            if total > 1e-12:
+                diagnostics["variance_in_top5"] = (self.S[:5] ** 2).sum().item() / total
+            diagnostics["effective_rank"] = self._effective_rank()
+
+        return loss_val, diagnostics
+
+    def _effective_rank(self):
+        if self.S is None:
+            return 0.0
+        s2 = self.S ** 2
+        s2 = s2[s2 > 1e-12]
+        if len(s2) == 0:
+            return 0.0
+        p = s2 / s2.sum()
+        entropy = -(p * p.log()).sum().item()
+        return math.exp(entropy)
+
+    def reset(self):
+        self.V = None
+        self.S = None
+        self.step_count = 0
+        self.grad_mean = None
+
+    def zero_grad(self):
+        self.base_optimizer.zero_grad()

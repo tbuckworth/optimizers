@@ -1,0 +1,181 @@
+#!/usr/bin/env python3
+"""Run a single weight-covariance optimizer training run.
+
+Usage:
+  python3 run_single_weight_cov.py --mode ours --lr 1e-3 --rank 20 --decay 0.95
+  python3 run_single_weight_cov.py --mode adam --lr 1e-3
+  python3 run_single_weight_cov.py --mode ours --dataset noisy_mnist --lr 1e-3
+"""
+
+import argparse
+import json
+import time
+import os
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import numpy as np
+from torch.utils.data import DataLoader, TensorDataset
+from torchvision import datasets, transforms
+
+from weight_cov_optimizer import WeightCovarianceFilter
+
+
+class FlexMNISTNet(nn.Module):
+    def __init__(self, input_dim=784):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(input_dim, 256),
+            nn.ReLU(),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, 10),
+        )
+
+    def forward(self, x):
+        return self.net(x.view(x.size(0), -1))
+
+
+def get_mnist_data(random_labels=False, noise_features=0, seed=42, data_dir="./data"):
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,)),
+    ])
+    train_ds = datasets.MNIST(data_dir, train=True, download=True, transform=transform)
+    test_ds = datasets.MNIST(data_dir, train=False, download=True, transform=transform)
+
+    train_X = train_ds.data.float().view(-1, 784) / 255.0
+    train_X = (train_X - 0.1307) / 0.3081
+    train_y = train_ds.targets.clone()
+    test_X = test_ds.data.float().view(-1, 784) / 255.0
+    test_X = (test_X - 0.1307) / 0.3081
+    test_y = test_ds.targets.clone()
+
+    if random_labels:
+        rng = np.random.RandomState(seed)
+        train_y = torch.tensor(rng.randint(0, 10, len(train_y)))
+
+    if noise_features > 0:
+        rng = np.random.RandomState(seed + 1000)
+        train_noise = torch.tensor(
+            rng.randn(len(train_X), noise_features).astype(np.float32))
+        test_noise = torch.tensor(
+            rng.randn(len(test_X), noise_features).astype(np.float32))
+        train_X = torch.cat([train_X, train_noise], dim=1)
+        test_X = torch.cat([test_X, test_noise], dim=1)
+
+    train_loader = DataLoader(TensorDataset(train_X, train_y),
+                              batch_size=64, shuffle=True, pin_memory=True)
+    test_loader = DataLoader(TensorDataset(test_X, test_y),
+                             batch_size=256, shuffle=False, pin_memory=True)
+    return train_loader, test_loader, train_X.shape[1]
+
+
+def evaluate(model, loader, device):
+    model.eval()
+    correct, total, total_loss = 0, 0, 0.0
+    with torch.no_grad():
+        for x, y in loader:
+            x, y = x.to(device), y.to(device)
+            logits = model(x)
+            total_loss += F.cross_entropy(logits, y, reduction='sum').item()
+            correct += (logits.argmax(1) == y).sum().item()
+            total += len(y)
+    return correct / total, total_loss / total
+
+
+def run(args):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    torch.manual_seed(args.seed)
+    np.random.seed(args.seed)
+
+    random_labels = (args.dataset == "random_labels")
+    noise_features = 784 if args.dataset == "noisy_mnist" else 0
+    train_loader, test_loader, input_dim = get_mnist_data(
+        random_labels=random_labels, noise_features=noise_features,
+        seed=args.seed, data_dir=args.data_dir)
+
+    model = FlexMNISTNet(input_dim).to(device)
+    n_params = sum(p.numel() for p in model.parameters())
+    print(f"Dataset: {args.dataset}, Input: {input_dim}, Params: {n_params:,}, "
+          f"Mode: {args.mode}, Device: {device}")
+
+    metrics = []
+    t_start = time.time()
+
+    if args.mode == "adam":
+        optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+        for epoch in range(args.epochs):
+            model.train()
+            for x, y in train_loader:
+                x, y = x.to(device), y.to(device)
+                optimizer.zero_grad()
+                loss = F.cross_entropy(model(x), y)
+                loss.backward()
+                optimizer.step()
+
+            train_acc, train_loss = evaluate(model, train_loader, device)
+            test_acc, test_loss = evaluate(model, test_loader, device)
+            metrics.append({
+                "epoch": epoch, "train_acc": round(train_acc, 5),
+                "test_acc": round(test_acc, 5), "train_loss": round(train_loss, 5),
+                "test_loss": round(test_loss, 5),
+            })
+            print(f"  Epoch {epoch:3d}: train={train_acc:.4f} test={test_acc:.4f} "
+                  f"loss={train_loss:.4f} ({time.time()-t_start:.0f}s)")
+
+    elif args.mode == "ours":
+        base_opt = torch.optim.Adam(model.parameters(), lr=args.lr)
+        optimizer = WeightCovarianceFilter(
+            model, base_opt, rank=args.rank, decay=args.decay,
+            warmup=args.warmup, update_every=args.update_every)
+
+        for epoch in range(args.epochs):
+            model.train()
+            for x, y in train_loader:
+                x, y = x.to(device), y.to(device)
+                optimizer.step(x, y)
+
+            train_acc, train_loss = evaluate(model, train_loader, device)
+            test_acc, test_loss = evaluate(model, test_loader, device)
+            entry = {
+                "epoch": epoch, "train_acc": round(train_acc, 5),
+                "test_acc": round(test_acc, 5), "train_loss": round(train_loss, 5),
+                "test_loss": round(test_loss, 5),
+            }
+            metrics.append(entry)
+            print(f"  Epoch {epoch:3d}: train={train_acc:.4f} test={test_acc:.4f} "
+                  f"loss={train_loss:.4f} ({time.time()-t_start:.0f}s)")
+
+    dt = time.time() - t_start
+    result = {
+        "config": vars(args), "metrics": metrics, "time_s": round(dt, 1),
+        "n_params": n_params, "input_dim": input_dim,
+    }
+
+    os.makedirs(args.save_dir, exist_ok=True)
+    save_path = os.path.join(args.save_dir, args.name + ".json")
+    with open(save_path, "w") as f:
+        json.dump(result, f, indent=2)
+    print(f"\nDone: {dt:.0f}s. Saved to {save_path}")
+    final = metrics[-1]
+    print(f"Final: train={final['train_acc']:.4f} test={final['test_acc']:.4f}")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", choices=["adam", "ours"], required=True)
+    parser.add_argument("--dataset", choices=["standard", "noisy_mnist", "random_labels"],
+                        default="standard")
+    parser.add_argument("--lr", type=float, default=1e-3)
+    parser.add_argument("--epochs", type=int, default=20)
+    parser.add_argument("--rank", type=int, default=20)
+    parser.add_argument("--decay", type=float, default=0.95)
+    parser.add_argument("--warmup", type=int, default=10)
+    parser.add_argument("--update_every", type=int, default=50)
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--name", type=str, required=True)
+    parser.add_argument("--save_dir", type=str, default="../results/weight_covariance")
+    parser.add_argument("--data_dir", type=str, default="./data")
+    args = parser.parse_args()
+    run(args)

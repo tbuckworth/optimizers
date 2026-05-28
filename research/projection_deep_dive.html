@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gradient Projection — Deep Dive</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface2: #1a2744;
+    --text: #e0e0e0;
+    --muted: #8899aa;
+    --accent: #4fc3f7;
+    --green: #81c784;
+    --red: #ef5350;
+    --orange: #ffb74d;
+    --purple: #b39ddb;
+    --border: #2a3a5e;
+    --code-bg: #0d1a2d;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Georgia, serif; background: var(--bg); color: var(--text); line-height: 1.75; }
+  .header {
+    background: linear-gradient(135deg, #0f3460, #16213e);
+    border-bottom: 2px solid var(--accent);
+    padding: 44px 40px 36px; text-align: center;
+  }
+  .header h1 { font-size: 26px; font-weight: 400; color: #fff; margin-bottom: 6px; }
+  .header .sub { font-size: 15px; color: var(--muted); font-style: italic; }
+  .content { max-width: 850px; margin: 0 auto; padding: 36px 30px 80px; }
+  h2 {
+    font-size: 19px; font-weight: 600; color: var(--accent);
+    margin: 40px 0 14px; padding-bottom: 5px; border-bottom: 1px solid var(--border);
+  }
+  h3 { font-size: 16px; font-weight: 600; color: var(--green); margin: 26px 0 10px; }
+  p { margin-bottom: 13px; text-align: justify; }
+  .math { font-family: 'Cambria Math', Georgia, serif; font-style: italic; white-space: nowrap; }
+  .math-block {
+    display: block; text-align: center; margin: 18px 0; padding: 14px 18px;
+    background: var(--code-bg); border-left: 3px solid var(--accent);
+    border-radius: 4px; font-family: 'Cambria Math', Georgia, serif;
+    font-size: 15px; line-height: 2.0; overflow-x: auto;
+  }
+  .note {
+    border-left: 3px solid var(--accent); padding: 13px 17px;
+    margin: 16px 0; border-radius: 4px; font-size: 14px;
+  }
+  .note-blue { background: rgba(79,195,247,0.07); border-color: var(--accent); }
+  .note-orange { background: rgba(255,183,77,0.07); border-color: var(--orange); }
+  .note-red { background: rgba(239,83,80,0.07); border-color: var(--red); }
+  .note strong { color: inherit; }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+  th {
+    background: var(--surface2); color: var(--accent); font-weight: 600;
+    text-align: center; padding: 8px 8px; border-bottom: 2px solid var(--border);
+    font-size: 13px;
+  }
+  td {
+    text-align: center; padding: 6px 8px; border-bottom: 1px solid var(--border);
+    font-family: Consolas, monospace; font-size: 13px;
+  }
+  td.left { text-align: left; font-family: Georgia, serif; }
+  tr:hover td { background: rgba(79,195,247,0.04); }
+  .c-sig { color: var(--accent); }
+  .c-noise { color: var(--red); }
+  .c-mix { color: var(--orange); }
+  .c-green { color: var(--green); }
+  .c-muted { color: var(--muted); }
+  .c-purple { color: var(--purple); }
+
+  .matrix-scroll { overflow-x: auto; margin: 14px 0; }
+  .matrix {
+    font-family: Consolas, monospace; font-size: 12.5px;
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 4px; padding: 12px 16px; white-space: pre;
+    line-height: 1.6;
+  }
+
+  .weight-row {
+    display: flex; align-items: center; gap: 8px; margin: 4px 0;
+    font-family: Consolas, monospace; font-size: 13px;
+  }
+  .weight-label { min-width: 30px; color: var(--muted); }
+  .bar-container { flex: 1; height: 20px; position: relative; display: flex; align-items: center; }
+  .bar-bg { position: absolute; left: 50%; height: 100%; width: 50%; background: var(--code-bg); border-radius: 0 3px 3px 0; }
+  .bar-bg-neg { position: absolute; right: 50%; height: 100%; width: 50%; background: var(--code-bg); border-radius: 3px 0 0 3px; }
+  .bar {
+    position: absolute; height: 14px; top: 3px; border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .bar-pos { left: 50%; background: var(--accent); }
+  .bar-neg { right: 50%; background: var(--red); }
+  .bar-pos-dim { left: 50%; background: rgba(79,195,247,0.3); }
+  .bar-neg-dim { right: 50%; background: rgba(239,83,80,0.3); }
+  .center-line { position: absolute; left: 50%; width: 1px; height: 100%; background: var(--border); }
+  .bar-val { min-width: 55px; text-align: right; }
+
+  .side-by-side { display: flex; gap: 20px; flex-wrap: wrap; }
+  .side-by-side > div { flex: 1; min-width: 280px; }
+
+  ol, ul { margin: 10px 0 14px 28px; }
+  li { margin-bottom: 5px; }
+  .highlight { background: rgba(79,195,247,0.15); padding: 1px 4px; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Gradient Projection — Deep Dive</h1>
+  <div class="sub">A 10-parameter worked example with intuition about what the eigenvectors actually mean</div>
+</div>
+
+<div class="content">
+
+<h2>1. First: Why Exactly p Eigenvectors?</h2>
+
+<p>
+This is not a coincidence — it's a basic fact from linear algebra. The gradient covariance matrix is <span class="math">p &times; p</span> (one row and column per parameter). Any real symmetric <span class="math">p &times; p</span> matrix has exactly <span class="math">p</span> eigenvectors forming an orthonormal basis for <span class="math">&Ropf;<sup>p</sup></span>. Every vector in the space can be uniquely decomposed as a weighted sum of these <span class="math">p</span> eigenvectors.
+</p>
+
+<p>
+With 4 parameters, the covariance is 4&times;4 and you get 4 eigenvectors. With 235,146 parameters (our MNIST network), you get 235,146 eigenvectors. We keep the top <span class="math">k</span> (e.g. 200) and discard the rest. The "discarding" is the filtering.
+</p>
+
+<h2>2. What Does an Eigenvector of the Gradient Covariance Mean?</h2>
+
+<p>
+The covariance matrix <span class="math">C</span> tracks: <em>across many training steps, when weight <span class="math">i</span>'s gradient is large, is weight <span class="math">j</span>'s gradient also consistently large (or consistently negative)?</em>
+</p>
+
+<p>
+Entry <span class="math">C[i,j]</span> is the covariance of the gradient of weight <span class="math">i</span> with the gradient of weight <span class="math">j</span>, measured over time (across batches). Positive means they tend to both go up or both go down together. Negative means when one goes up, the other goes down. Near-zero means they're independent.
+</p>
+
+<p>
+An <strong>eigenvector</strong> of this matrix identifies a <em>group of weights whose gradients move together as a coherent unit</em>. The eigenvector's entries tell you the relative participation of each weight in that pattern:
+</p>
+
+<ul>
+  <li>A <strong>large positive</strong> entry means that weight participates strongly, moving in the same direction as others with positive entries</li>
+  <li>A <strong>large negative</strong> entry means that weight participates strongly but in the <em>opposite</em> direction — it goes down when the positives go up. This is still part of the pattern. Anti-correlation is signal, not noise.</li>
+  <li>A <strong>near-zero</strong> entry means that weight doesn't participate in this particular co-movement pattern</li>
+</ul>
+
+<p>
+The <strong>eigenvalue</strong> tells you how much total gradient variance is explained by that pattern — how strongly and consistently it recurs across training steps.
+</p>
+
+<div class="note note-orange">
+  <strong>The key point:</strong> this is about correlations <em>between weights</em>, measured <em>over time</em>. A top eigenvector says: "across many different batches, these weights' gradients consistently co-vary in this pattern." It's not about any single batch — it's about what patterns repeat.
+</div>
+
+<h2>3. A 10-Parameter Example</h2>
+
+<p>
+Consider a network with 10 weights. We'll call them <span class="math">w<sub>1</sub></span> through <span class="math">w<sub>10</sub></span>. After observing many training steps, the gradient covariance matrix is:
+</p>
+
+<div class="matrix-scroll">
+<div class="matrix">          w1      w2      w3      w4      w5      w6      w7      w8      w9      w10
+w1   [ <span class="c-sig">+2.71</span>  +2.31  +1.86  +2.05  <span class="c-noise">-1.82</span>  -1.99  -1.73  +0.01  -0.36  -0.01]
+w2   [ +2.31  <span class="c-sig">+2.35</span>  +1.41  +1.61  -1.72  -1.86  -1.73  -0.64  -0.84  -0.54]
+w3   [ +1.86  +1.41  <span class="c-sig">+2.07</span>  +2.04  -1.21  -1.53  -1.00  +1.27  +0.94  +1.08]
+w4   [ +2.05  +1.61  +2.04  <span class="c-sig">+2.36</span>  -1.29  -1.64  -1.07  +1.10  +0.79  +0.98]
+w5   [ -1.82  -1.72  -1.21  -1.29  <span class="c-sig">+1.54</span>  +1.50  +1.35  +0.35  +0.67  +0.44]
+w6   [ -1.99  -1.86  -1.53  -1.64  +1.50  <span class="c-sig">+1.72</span>  +1.37  -0.06  +0.23  -0.02]
+w7   [ -1.73  -1.73  -1.00  -1.07  +1.35  +1.37  <span class="c-sig">+1.57</span>  +0.56  +0.64  +0.49]
+w8   [ +0.01  -0.64  +1.27  +1.10  +0.35  -0.06  +0.56  <span class="c-sig">+2.75</span>  +2.49  +2.27]
+w9   [ -0.36  -0.84  +0.94  +0.79  +0.67  +0.23  +0.64  +2.49  <span class="c-sig">+2.62</span>  +2.19]
+w10  [ -0.01  -0.54  +1.08  +0.98  +0.44  -0.02  +0.49  +2.27  +2.19  <span class="c-sig">+2.11</span>]</div>
+</div>
+
+<p>
+Reading this matrix: <span class="math">C[w<sub>1</sub>, w<sub>5</sub>] = &minus;1.82</span> means that across training steps, when <span class="math">w<sub>1</sub></span>'s gradient is positive, <span class="math">w<sub>5</sub></span>'s gradient tends to be negative, and vice versa. They anti-correlate. Meanwhile <span class="math">C[w<sub>8</sub>, w<sub>9</sub>] = +2.49</span> means <span class="math">w<sub>8</sub></span> and <span class="math">w<sub>9</sub></span> strongly co-vary — they move together.
+</p>
+
+<h3>3.1 The Eigendecomposition</h3>
+
+<p>
+This 10&times;10 matrix has exactly 10 eigenvectors, with these eigenvalues:
+</p>
+
+<table>
+  <tr>
+    <th>#</th><th>Eigenvalue</th><th>% of total</th>
+    <th>w<sub>1</sub></th><th>w<sub>2</sub></th><th>w<sub>3</sub></th><th>w<sub>4</sub></th><th>w<sub>5</sub></th>
+    <th>w<sub>6</sub></th><th>w<sub>7</sub></th><th>w<sub>8</sub></th><th>w<sub>9</sub></th><th>w<sub>10</sub></th>
+    <th style="text-align:left; padding-left:12px;">Interpretation</th>
+  </tr>
+  <tr>
+    <td class="c-sig">e<sub>1</sub></td><td class="c-sig"><strong>12.0</strong></td><td class="c-sig">55.1%</td>
+    <td class="c-sig">+.46</td><td class="c-sig">+.41</td><td class="c-sig">+.36</td><td class="c-sig">+.39</td>
+    <td class="c-sig">&minus;.33</td><td class="c-sig">&minus;.37</td><td class="c-sig">&minus;.31</td>
+    <td class="c-muted">+.04</td><td class="c-muted">&minus;.02</td><td class="c-muted">+.03</td>
+    <td class="left" style="font-size:12px;">w1–4 up, w5–7 down (anti-correlated), w8–10 uninvolved</td>
+  </tr>
+  <tr>
+    <td class="c-sig">e<sub>2</sub></td><td class="c-sig"><strong>8.5</strong></td><td class="c-sig">39.1%</td>
+    <td class="c-muted">&minus;.05</td><td class="c-muted">&minus;.17</td><td class="c-sig">+.23</td><td class="c-sig">+.20</td>
+    <td class="c-muted">+.12</td><td class="c-muted">+.03</td><td class="c-muted">+.15</td>
+    <td class="c-sig">+.56</td><td class="c-sig">+.54</td><td class="c-sig">+.49</td>
+    <td class="left" style="font-size:12px;">w8–10 move together, w3–4 join weakly</td>
+  </tr>
+  <tr style="background: rgba(239,83,80,0.04);">
+    <td class="c-noise">e<sub>3</sub></td><td class="c-noise">0.4</td><td class="c-noise">1.8%</td>
+    <td>+.10</td><td>&minus;.11</td><td>+.06</td><td>+.46</td><td>&minus;.06</td>
+    <td>+.00</td><td>+.74</td><td>+.06</td><td>&minus;.47</td><td>&minus;.01</td>
+    <td class="left c-muted" style="font-size:12px;">Weak, inconsistent</td>
+  </tr>
+  <tr style="background: rgba(239,83,80,0.04);">
+    <td class="c-noise">e<sub>4</sub></td><td class="c-noise">0.3</td><td class="c-noise">1.4%</td>
+    <td>&minus;.16</td><td>&minus;.31</td><td>+.24</td><td>&minus;.40</td><td>&minus;.57</td>
+    <td>&minus;.18</td><td>&minus;.00</td><td>+.46</td><td>&minus;.19</td><td>&minus;.23</td>
+    <td class="left c-muted" style="font-size:12px;">Weak, inconsistent</td>
+  </tr>
+  <tr style="background: rgba(239,83,80,0.04);">
+    <td class="c-noise">e<sub>5–10</sub></td><td class="c-noise">0.02–0.2</td><td class="c-noise">2.6%</td>
+    <td colspan="10" class="c-muted">...</td>
+    <td class="left c-muted" style="font-size:12px;">Noise floor</td>
+  </tr>
+</table>
+
+<p>
+<strong>94.2%</strong> of the total gradient variance is explained by just 2 directions out of 10. The remaining 8 directions share the last 5.8%. With <span class="math">rank k = 2</span>, we keep only <span class="math">e<sub>1</sub></span> and <span class="math">e<sub>2</sub></span>.
+</p>
+
+<div class="note note-blue">
+  <strong>What e<sub>1</sub> is saying:</strong> "Across many training steps, weights 1–4 tend to get positive gradients at the same time as weights 5–7 get negative gradients. This is a pattern that keeps recurring." The anti-correlation (w1–4 vs w5–7) is part of the signal — these weights are locked in an opposing relationship that recurs consistently. Weights 8–10 don't participate in this pattern (near-zero entries).
+  <br><br>
+  <strong>What e<sub>2</sub> is saying:</strong> "Independently of the first pattern, weights 8–10 tend to all get positive gradients together, sometimes with w3–4 joining in."
+  <br><br>
+  <strong>What e<sub>3</sub>–e<sub>10</sub> are saying:</strong> "There are also these other co-movement patterns, but they're weak and inconsistent — they explain very little variance." Our hypothesis is that these correspond to sample-specific memorisation or noise.
+</div>
+
+<h2>4. The Projection Matrix, Spelled Out</h2>
+
+<p>
+The filter keeps the top 2 eigenvectors. The matrix <span class="math">V</span> is 10&times;2, with <span class="math">e<sub>1</sub></span> and <span class="math">e<sub>2</sub></span> as columns:
+</p>
+
+<div class="matrix-scroll">
+<div class="matrix">V = [ e1       e2    ]       what it means for each weight:
+w1  [<span class="c-sig">+0.461</span>  <span class="c-muted">-0.048</span>]       w1 participates strongly in pattern 1 (positive), barely in pattern 2
+w2  [<span class="c-sig">+0.410</span>  <span class="c-muted">-0.171</span>]       w2 participates strongly in pattern 1 (positive), weakly opposes pattern 2
+w3  [<span class="c-sig">+0.358</span>  <span class="c-sig">+0.231</span>]       w3 participates in both patterns (positive in both)
+w4  [<span class="c-sig">+0.389</span>  <span class="c-sig">+0.203</span>]       w4 similar to w3
+w5  [<span class="c-sig">-0.328</span>  <span class="c-muted">+0.122</span>]       w5 opposes pattern 1 (negative), weakly joins pattern 2
+w6  [<span class="c-sig">-0.369</span>  <span class="c-muted">+0.028</span>]       w6 opposes pattern 1, barely in pattern 2
+w7  [<span class="c-sig">-0.307</span>  <span class="c-muted">+0.149</span>]       w7 opposes pattern 1, weakly joins pattern 2
+w8  [<span class="c-muted">+0.041</span>  <span class="c-sig">+0.556</span>]       w8 barely in pattern 1, strongly in pattern 2
+w9  [<span class="c-muted">-0.020</span>  <span class="c-sig">+0.539</span>]       w9 barely in pattern 1, strongly in pattern 2
+w10 [<span class="c-muted">+0.031</span>  <span class="c-sig">+0.486</span>]       w10 barely in pattern 1, strongly in pattern 2</div>
+</div>
+
+<h3>4.1 What VV<sup>T</sup> Actually Is</h3>
+
+<p>
+The projection matrix <span class="math">P = VV<sup>T</sup></span> is what gets multiplied with the gradient. Let me spell out exactly what <span class="math">VV<sup>T</sup></span> means, because the notation can be confusing.
+</p>
+
+<p>
+<span class="math">V</span> is 10&times;2 (ten rows, two columns). <span class="math">V<sup>T</sup></span> is 2&times;10. Their product <span class="math">VV<sup>T</sup></span> is 10&times;10.
+</p>
+
+<p>
+It equals <span class="math">e<sub>1</sub>e<sub>1</sub><sup>T</sup> + e<sub>2</sub>e<sub>2</sub><sup>T</sup></span>. Each <span class="math">e<sub>i</sub>e<sub>i</sub><sup>T</sup></span> is an <strong>outer product</strong>: a column vector times a row vector, giving a matrix. Let me show this for the first 3 weights:
+</p>
+
+<div class="math-block" style="text-align: left; font-size: 14px; line-height: 2.2;">
+e<sub>1</sub> for w1,w2,w3 = [+0.461, +0.410, +0.358]<br><br>
+
+e<sub>1</sub> &middot; e<sub>1</sub><sup>T</sup> = <span style="font-size:22px;">[</span> +0.461 <span style="font-size:22px;">]</span> &times; [ +0.461 &ensp; +0.410 &ensp; +0.358 ]<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; <span style="font-size:22px;">[</span> +0.410 <span style="font-size:22px;">]</span><br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; <span style="font-size:22px;">[</span> +0.358 <span style="font-size:22px;">]</span><br><br>
+
+&emsp;&emsp;&emsp;&emsp;&ensp; = <span style="font-size:22px;">[</span> 0.461&times;0.461 &ensp; 0.461&times;0.410 &ensp; 0.461&times;0.358 <span style="font-size:22px;">]</span><br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; <span style="font-size:22px;">[</span> 0.410&times;0.461 &ensp; 0.410&times;0.410 &ensp; 0.410&times;0.358 <span style="font-size:22px;">]</span><br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; <span style="font-size:22px;">[</span> 0.358&times;0.461 &ensp; 0.358&times;0.410 &ensp; 0.358&times;0.358 <span style="font-size:22px;">]</span><br><br>
+
+&emsp;&emsp;&emsp;&emsp;&ensp; = <span style="font-size:22px;">[</span> +0.212 &ensp; +0.189 &ensp; +0.165 <span style="font-size:22px;">]</span><br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; <span style="font-size:22px;">[</span> +0.189 &ensp; +0.168 &ensp; +0.147 <span style="font-size:22px;">]</span><br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; <span style="font-size:22px;">[</span> +0.165 &ensp; +0.147 &ensp; +0.128 <span style="font-size:22px;">]</span>
+</div>
+
+<p>
+Then you do the same for <span class="math">e<sub>2</sub></span> and add them together. The result is the projection matrix <span class="math">P</span>. When you multiply <span class="math">P &middot; g</span>, each entry of the output is a weighted combination of all 10 gradient values — but the weights are determined by the eigenvectors, so only the "patterned" parts of the gradient survive.
+</p>
+
+<h2>5. What Happens to Each Weight</h2>
+
+<p>
+This is the key question. Let's take a realistic mixed gradient and trace what happens to every single weight.
+</p>
+
+<p>
+Suppose at some training step, the gradient is:
+</p>
+
+<div class="matrix-scroll">
+<div class="matrix">g = [+1.52, +0.67, +0.71, +1.16, -0.43, -0.76, <span class="highlight">+0.49</span>, +1.01, <span class="highlight">+0.17</span>, +0.29]</div>
+</div>
+
+<p>
+This gradient decomposes as: <span class="math">2.0 &middot; e<sub>1</sub> + 1.0 &middot; e<sub>2</sub></span> (signal) + <span class="math">1.0 &middot; e<sub>3</sub> + 0.5 &middot; e<sub>5</sub> + 0.7 &middot; e<sub>7</sub></span> (noise).
+</p>
+
+<h3>5.1 Step-by-step projection</h3>
+
+<p>
+<strong>Step 1:</strong> Compute <span class="math">V<sup>T</sup>g</span> — how much of <span class="math">g</span> lies along each kept eigenvector:
+</p>
+
+<div class="math-block" style="text-align: left; font-size: 14px;">
+e<sub>1</sub> &middot; g = 0.461(1.52) + 0.410(0.67) + 0.358(0.71) + 0.389(1.16) &minus; 0.328(0.43) &minus; 0.369(0.76) &minus; 0.307(0.49) + ... = <strong class="c-sig">2.0</strong><br>
+e<sub>2</sub> &middot; g = &minus;0.048(1.52) &minus; 0.171(0.67) + 0.231(0.71) + 0.203(1.16) + 0.122(0.43) + ... + 0.486(0.29) = <strong class="c-sig">1.0</strong>
+</div>
+
+<p>
+<strong>Step 2:</strong> Reconstruct: <span class="math">g<sup>filtered</sup> = 2.0 &middot; e<sub>1</sub> + 1.0 &middot; e<sub>2</sub></span>
+</p>
+
+<h3>5.2 Per-weight results</h3>
+
+<table>
+  <tr>
+    <th>Weight</th>
+    <th>Original gradient</th>
+    <th>Filtered gradient</th>
+    <th>Discarded</th>
+    <th>What happened</th>
+  </tr>
+  <tr>
+    <td>w<sub>1</sub></td>
+    <td>+1.52</td>
+    <td class="c-sig">+0.87</td>
+    <td class="c-noise">+0.65</td>
+    <td class="left" style="font-size:12px;">Reduced. 43% was noise — w1's gradient was partly driven by non-recurring patterns.</td>
+  </tr>
+  <tr>
+    <td>w<sub>2</sub></td>
+    <td>+0.67</td>
+    <td class="c-sig">+0.65</td>
+    <td class="c-noise">+0.02</td>
+    <td class="left" style="font-size:12px;">Almost unchanged. w2's gradient was almost entirely consistent with the recurring patterns.</td>
+  </tr>
+  <tr>
+    <td>w<sub>3</sub></td>
+    <td>+0.71</td>
+    <td class="c-sig">+0.95</td>
+    <td class="c-noise">&minus;0.24</td>
+    <td class="left" style="font-size:12px;"><strong class="c-green">Increased.</strong> The recurring patterns say w3 should get a bigger update than its raw gradient suggested. The filter <em>amplified</em> it.</td>
+  </tr>
+  <tr>
+    <td>w<sub>4</sub></td>
+    <td>+1.16</td>
+    <td class="c-sig">+0.98</td>
+    <td class="c-noise">+0.18</td>
+    <td class="left" style="font-size:12px;">Slightly reduced. Mostly signal, small noise component stripped.</td>
+  </tr>
+  <tr>
+    <td>w<sub>5</sub></td>
+    <td>&minus;0.43</td>
+    <td class="c-sig">&minus;0.53</td>
+    <td class="c-noise">+0.10</td>
+    <td class="left" style="font-size:12px;"><strong class="c-green">Made more negative.</strong> Pattern 1 says w5 should oppose w1–4. The filter strengthened this.</td>
+  </tr>
+  <tr>
+    <td>w<sub>6</sub></td>
+    <td>&minus;0.76</td>
+    <td class="c-sig">&minus;0.71</td>
+    <td class="c-noise">&minus;0.05</td>
+    <td class="left" style="font-size:12px;">Nearly unchanged. Already well-aligned with the patterns.</td>
+  </tr>
+  <tr style="background: rgba(255,183,77,0.08);">
+    <td><strong>w<sub>7</sub></strong></td>
+    <td><strong>+0.49</strong></td>
+    <td class="c-sig"><strong>&minus;0.47</strong></td>
+    <td class="c-noise"><strong>+0.95</strong></td>
+    <td class="left" style="font-size:12px;"><strong class="c-mix">Direction flipped!</strong> The raw gradient says "increase w7," but the recurring patterns say w7 should decrease (it's in the w5–7 group that opposes w1–4). The filter overrides the raw gradient entirely.</td>
+  </tr>
+  <tr>
+    <td>w<sub>8</sub></td>
+    <td>+1.01</td>
+    <td class="c-sig">+0.64</td>
+    <td class="c-noise">+0.37</td>
+    <td class="left" style="font-size:12px;">Reduced. Some of w8's gradient was non-recurring noise.</td>
+  </tr>
+  <tr style="background: rgba(255,183,77,0.08);">
+    <td><strong>w<sub>9</sub></strong></td>
+    <td><strong>+0.17</strong></td>
+    <td class="c-sig"><strong>+0.50</strong></td>
+    <td class="c-noise"><strong>&minus;0.33</strong></td>
+    <td class="left" style="font-size:12px;"><strong class="c-green">Tripled!</strong> w9's raw gradient was small, but pattern 2 says w9 should move with w8 and w10. The filter fills in what the raw gradient "missed."</td>
+  </tr>
+  <tr>
+    <td>w<sub>10</sub></td>
+    <td>+0.29</td>
+    <td class="c-sig">+0.55</td>
+    <td class="c-noise">&minus;0.26</td>
+    <td class="left" style="font-size:12px;"><strong class="c-green">Nearly doubled.</strong> Same story as w9 — pattern 2 says it should move more.</td>
+  </tr>
+</table>
+
+<h3>5.3 Visualised</h3>
+
+<div id="bar-chart"></div>
+<script>
+const data = [
+  {w:'w1',  orig:+1.52, filt:+0.87},
+  {w:'w2',  orig:+0.67, filt:+0.65},
+  {w:'w3',  orig:+0.71, filt:+0.95},
+  {w:'w4',  orig:+1.16, filt:+0.98},
+  {w:'w5',  orig:-0.43, filt:-0.53},
+  {w:'w6',  orig:-0.76, filt:-0.71},
+  {w:'w7',  orig:+0.49, filt:-0.47},
+  {w:'w8',  orig:+1.01, filt:+0.64},
+  {w:'w9',  orig:+0.17, filt:+0.50},
+  {w:'w10', orig:+0.29, filt:+0.55},
+];
+const maxAbs = 1.6;
+const container = document.getElementById('bar-chart');
+const table = document.createElement('div');
+table.style.cssText = 'margin:16px 0;';
+
+// Legend
+const legend = document.createElement('div');
+legend.style.cssText = 'font-size:13px; margin-bottom:12px; display:flex; gap:20px; color:#8899aa;';
+legend.innerHTML = '<span><span style="display:inline-block;width:12px;height:12px;background:#4fc3f7;border-radius:2px;vertical-align:middle;margin-right:4px;"></span> Original</span>'
+  + '<span><span style="display:inline-block;width:12px;height:12px;background:#ffb74d;border-radius:2px;vertical-align:middle;margin-right:4px;"></span> After filter</span>';
+table.appendChild(legend);
+
+data.forEach(d => {
+  const row = document.createElement('div');
+  row.style.cssText = 'display:flex; align-items:center; gap:6px; margin:5px 0; font-family:Consolas,monospace; font-size:13px;';
+
+  const label = document.createElement('div');
+  label.style.cssText = 'min-width:30px; text-align:right; color:#8899aa;';
+  label.textContent = d.w;
+
+  const barArea = document.createElement('div');
+  barArea.style.cssText = 'flex:1; height:28px; position:relative; background:#0d1a2d; border-radius:3px; border:1px solid #2a3a5e;';
+
+  // center line
+  const cl = document.createElement('div');
+  cl.style.cssText = 'position:absolute;left:50%;width:1px;height:100%;background:#2a3a5e;';
+  barArea.appendChild(cl);
+
+  // original bar
+  const ob = document.createElement('div');
+  const origPct = Math.abs(d.orig)/maxAbs * 50;
+  ob.style.cssText = `position:absolute; height:10px; top:4px; border-radius:2px; background:#4fc3f7; opacity:0.7;`
+    + (d.orig >= 0 ? `left:50%; width:${origPct}%;` : `right:50%; width:${origPct}%;`);
+  barArea.appendChild(ob);
+
+  // filtered bar
+  const fb = document.createElement('div');
+  const filtPct = Math.abs(d.filt)/maxAbs * 50;
+  fb.style.cssText = `position:absolute; height:10px; top:14px; border-radius:2px; background:#ffb74d;`
+    + (d.filt >= 0 ? `left:50%; width:${filtPct}%;` : `right:50%; width:${filtPct}%;`);
+  barArea.appendChild(fb);
+
+  const vals = document.createElement('div');
+  vals.style.cssText = 'min-width:110px; font-size:12px; color:#8899aa;';
+  const color = (d.orig > 0 && d.filt < 0) || (d.orig < 0 && d.filt > 0) ? '#ffb74d' :
+    Math.abs(d.filt) > Math.abs(d.orig) * 1.15 ? '#81c784' : '#8899aa';
+  vals.innerHTML = `<span style="color:#4fc3f7">${d.orig >= 0 ? '+' : ''}${d.orig.toFixed(2)}</span> → <span style="color:${color}">${d.filt >= 0 ? '+' : ''}${d.filt.toFixed(2)}</span>`;
+
+  row.appendChild(label);
+  row.appendChild(barArea);
+  row.appendChild(vals);
+  table.appendChild(row);
+});
+container.appendChild(table);
+</script>
+
+<h2>6. Three Things the Filter Can Do to a Weight</h2>
+
+<p>
+The examples above show that the filter doesn't simply "keep or zero" individual weights. It can do three different things:
+</p>
+
+<ol>
+  <li><strong>Preserve</strong> (w2, w6): The weight's gradient was already aligned with the recurring patterns. The filter barely changes it.</li>
+  <li><strong>Amplify</strong> (w3, w9, w10): The weight participates in a strong recurring pattern, but this particular batch under-represented it. The filter "fills in" what the pattern predicts, increasing the update.</li>
+  <li><strong>Override</strong> (w7): The weight's raw gradient pointed in the <em>wrong</em> direction relative to the recurring patterns. The filter flips the direction entirely. This is the strongest intervention — it's saying "I don't care what this batch said about w7, the persistent pattern says w7 should go down."</li>
+</ol>
+
+<div class="note note-orange">
+  <strong>So no, the memorising weights don't just get zero.</strong> Individual weights don't get "zeroed" — the filter operates on the gradient <em>as a whole vector</em>. It projects the entire gradient onto the signal subspace. Each weight ends up with whatever update the signal patterns prescribe for it, regardless of what the raw gradient said. A weight could get its update increased, decreased, flipped, or (if it doesn't participate in any signal pattern) effectively zeroed.
+</div>
+
+<h2>7. A Mostly-Noise Gradient</h2>
+
+<p>
+For comparison, here's a gradient that lies mostly in the noise directions (<span class="math">e<sub>3</sub></span>–<span class="math">e<sub>10</sub></span>):
+</p>
+
+<div class="matrix-scroll">
+<div class="matrix">g_noise   = [<span class="c-noise">-0.51, +0.47, +0.79, -1.14, -0.48, -0.36, +0.15, +0.93, -0.81, +0.05</span>]
+g_filtered = [<span class="c-muted">+0.05, +0.05, +0.02, +0.03, -0.04, -0.04, -0.04, -0.02, -0.03, -0.02</span>]</div>
+</div>
+
+<p>
+Only <strong>0.3%</strong> of the gradient energy survives. The 10 weights each get an update around &plusmn;0.04 instead of their original &plusmn;0.5 to &plusmn;1.1. The gradient is effectively destroyed — not because each weight was zeroed individually, but because the overall direction didn't match any recurring pattern.
+</p>
+
+<h2>8. What "Recurring Across Batches" Actually Means</h2>
+
+<p>
+To be precise about what the covariance captures: it's about <strong>which weights tend to have correlated gradients, measured over many training steps</strong>.
+</p>
+
+<p>
+It is <em>not</em> about each weight being consistent with itself across batches (that would be the mean, which we subtract out). It's about the <em>relationships between weights</em>: when w1's gradient is unusually large this step, is w2's also unusually large? Is w5's unusually negative? These cross-weight patterns, measured across time, are what the covariance captures.
+</p>
+
+<p>
+An eigenvector with large eigenvalue says: "There is a particular pattern of relative weight movements that keeps recurring across many different batches." The entries of the eigenvector give the relative participation — positive entries move together, negative entries move opposite. Both positive and negative correlations are part of the signal. An eigenvector like <span class="math">e<sub>1</sub></span> with entries <span class="math">[+.46, +.41, ..., &minus;.33, &minus;.37, ...]</span> captures a consistent <em>anti-correlation</em> between the two groups.
+</p>
+
+<h2>9. Honest Uncertainty</h2>
+
+<div class="note note-red">
+  <p>
+    The mechanism described above — "top eigenvectors = signal, bottom = memorisation noise" — is our <strong>hypothesis</strong> for why the filter works. The experimental results are consistent with it: the filter demonstrably resists memorising corrupted labels on MNIST (+4% test accuracy over Adam at 40% label noise). But we should be clear about what we don't know:
+  </p>
+  <ul style="margin-top:8px;">
+    <li><strong>We haven't proven the eigenvector decomposition separates signal from noise.</strong> It's plausible and the experiments support it, but we don't have a theorem. Other explanations could exist.</li>
+    <li><strong>We've only tested on MNIST with a 235K-parameter MLP.</strong> We don't know if the effect holds for larger models, harder datasets, or different architectures.</li>
+    <li><strong>The 0.5% accuracy cost on clean data might grow.</strong> On harder tasks, the filtering might be too aggressive and hurt performance more.</li>
+    <li><strong>"Noise directions are transient" is an assumption.</strong> If corrupted-label gradients happen to align with the signal eigenspace (perhaps because they share low-level features), the filter wouldn't catch them.</li>
+    <li><strong>The examples above use a made-up covariance.</strong> We chose it to be illustrative. The real covariance matrix of a 235K-parameter network might have different structure — we haven't inspected it in detail.</li>
+  </ul>
+</div>
+
+</div>
+</body>
+</html>

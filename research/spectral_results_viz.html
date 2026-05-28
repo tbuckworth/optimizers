@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spectral Consensus Optimizer — Experiment Results</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: #f5f5f0;
+    color: #2c2c2c;
+}
+
+.header {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: #ecf0f1;
+    padding: 20px 30px;
+    border-bottom: 3px solid #e67e22;
+}
+
+.header h1 {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.header p {
+    font-size: 0.9em;
+    opacity: 0.8;
+    max-width: 800px;
+    line-height: 1.4;
+}
+
+.main-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.controls-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.controls-row label {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #555;
+}
+
+.btn-group {
+    display: flex;
+    gap: 0;
+}
+
+.btn-group button {
+    padding: 6px 14px;
+    font-size: 0.85em;
+    font-weight: 600;
+    border: 1px solid #bdc3c7;
+    background: #ecf0f1;
+    color: #2c3e50;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.btn-group button:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.btn-group button:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+.btn-group button:not(:first-child) {
+    border-left: none;
+}
+
+.btn-group button.active {
+    background: #2c3e50;
+    color: #ecf0f1;
+    border-color: #2c3e50;
+}
+
+.btn-group button:hover:not(.active) {
+    background: #d5dbdb;
+}
+
+.file-picker {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.file-picker input[type="file"] {
+    font-size: 0.82em;
+    max-width: 220px;
+}
+
+.file-picker .status {
+    font-size: 0.8em;
+    color: #888;
+}
+
+.panel {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.panel h3 {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.panel-subtitle {
+    font-size: 0.8em;
+    color: #999;
+    margin-top: -8px;
+    margin-bottom: 12px;
+}
+
+.chart-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.chart-cell {
+    flex: 1;
+    min-width: 300px;
+}
+
+.chart-cell h4 {
+    font-size: 0.82em;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.toggle-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.toggle-row label {
+    font-size: 0.82em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.toggle-row .color-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.label-mode-group {
+    margin-left: auto;
+}
+
+.no-data-msg {
+    text-align: center;
+    color: #999;
+    font-size: 0.95em;
+    padding: 60px 20px;
+}
+
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.slider-row label {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #555;
+}
+
+.slider-row input[type="range"] {
+    flex: 1;
+    max-width: 400px;
+}
+
+.slider-row .slider-value {
+    font-size: 0.85em;
+    font-weight: 600;
+    min-width: 40px;
+}
+
+.slider-row select {
+    padding: 4px 8px;
+    font-size: 0.85em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+}
+
+/* Summary table */
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85em;
+}
+
+.summary-table th {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 8px 10px;
+    text-align: left;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.summary-table th:hover {
+    background: #34495e;
+}
+
+.summary-table th .sort-arrow {
+    margin-left: 4px;
+    font-size: 0.75em;
+}
+
+.summary-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.summary-table tr:hover td {
+    background: #f9f9f6;
+}
+
+.summary-table tr.spectral-row td {
+    background: rgba(155, 89, 182, 0.08);
+}
+
+.summary-table tr.spectral-row:hover td {
+    background: rgba(155, 89, 182, 0.15);
+}
+
+canvas {
+    display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Spectral Consensus Optimizer — Experiment Results</h1>
+    <p>Comparing generalization across optimizers: does spectral consensus filtering separate real structure from noise? Real labels test generalization; random labels test memorization capacity.</p>
+</div>
+
+<div class="main-container">
+
+    <!-- Controls -->
+    <div class="controls-row">
+        <label>Dataset:</label>
+        <div class="btn-group" id="datasetBtns">
+            <button class="active" data-val="mnist">MNIST</button>
+            <button data-val="spiral">Spiral</button>
+        </div>
+        <div class="file-picker">
+            <label>Load JSON:</label>
+            <input type="file" id="filePicker" accept=".json">
+            <span class="status" id="loadStatus">No data loaded</span>
+        </div>
+    </div>
+
+    <!-- Panel 1: Training Curves -->
+    <div class="panel" id="panel-curves">
+        <h3>Training Curves</h3>
+        <div class="toggle-row" id="optimizerToggles"></div>
+        <div class="toggle-row">
+            <div class="label-mode-group">
+                <label style="font-size:0.82em; font-weight:600; color:#555; margin-right:4px;">Labels:</label>
+                <div class="btn-group" id="labelModeBtns">
+                    <button class="active" data-val="real">Real</button>
+                    <button data-val="random">Random</button>
+                    <button data-val="both">Both</button>
+                </div>
+            </div>
+        </div>
+        <div class="chart-row">
+            <div class="chart-cell">
+                <h4>Loss vs Epoch (log scale)</h4>
+                <canvas id="lossCanvas"></canvas>
+            </div>
+            <div class="chart-cell">
+                <h4>Accuracy vs Epoch</h4>
+                <canvas id="accCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel 2: Key Result Bar Charts -->
+    <div class="panel" id="panel-bars">
+        <h3>The Key Result — Real vs Random</h3>
+        <p class="panel-subtitle">Left: can the optimizer generalize on real data? Right: can it memorize random labels?</p>
+        <div class="chart-row">
+            <div class="chart-cell">
+                <h4>Final Test Accuracy (Real Labels)</h4>
+                <canvas id="barRealCanvas"></canvas>
+            </div>
+            <div class="chart-cell">
+                <h4>Final Training Accuracy (Random Labels)</h4>
+                <canvas id="barRandomCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel 3: Eigenvalue Spectrum -->
+    <div class="panel" id="panel-eigen">
+        <h3>Eigenvalue Spectrum Evolution</h3>
+        <div class="slider-row">
+            <label>Epoch:</label>
+            <input type="range" id="eigenEpochSlider" min="0" max="0" value="0">
+            <span class="slider-value" id="eigenEpochValue">0</span>
+            <label style="margin-left:16px;">Optimizer:</label>
+            <select id="eigenOptSelect"></select>
+        </div>
+        <div class="chart-row">
+            <div class="chart-cell">
+                <h4>Real Labels</h4>
+                <canvas id="eigenRealCanvas"></canvas>
+            </div>
+            <div class="chart-cell">
+                <h4>Random Labels</h4>
+                <canvas id="eigenRandomCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel 4: Spectral Diagnostics -->
+    <div class="panel" id="panel-spectral">
+        <h3>SpectralConsensus Diagnostics</h3>
+        <p class="panel-subtitle">Consensus ratio and retained components (k) over training steps — spectral optimizer only.</p>
+        <div class="chart-row">
+            <div class="chart-cell">
+                <h4>Real Labels</h4>
+                <canvas id="diagRealCanvas"></canvas>
+            </div>
+            <div class="chart-cell">
+                <h4>Random Labels</h4>
+                <canvas id="diagRandomCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel 5: Summary Table -->
+    <div class="panel" id="panel-table">
+        <h3>Summary Table</h3>
+        <div id="tableContainer"></div>
+    </div>
+
+</div>
+
+<script>
+// ===== CONFIGURATION =====
+const DPR = window.devicePixelRatio || 1;
+
+const OPT_COLORS = {
+    sgd:      '#3498db',
+    adam:     '#e67e22',
+    adamw:   '#e74c3c',
+    lion:    '#2ecc71',
+    muon:    '#1abc9c',
+    spectral:'#9b59b6'
+};
+
+const OPT_NAMES = {
+    sgd: 'SGD',
+    adam: 'Adam',
+    adamw: 'AdamW',
+    lion: 'Lion',
+    muon: 'Muon',
+    spectral: 'SpectralConsensus'
+};
+
+const OPT_ORDER = ['sgd', 'adam', 'adamw', 'lion', 'muon', 'spectral'];
+
+let DATA = null;
+let selectedDataset = 'mnist';
+let labelMode = 'real'; // 'real', 'random', 'both'
+let activeOptimizers = {};
+OPT_ORDER.forEach(o => activeOptimizers[o] = true);
+
+// ===== CANVAS HELPERS =====
+function setupCanvas(canvas, w, h) {
+    canvas.width = w * DPR;
+    canvas.height = h * DPR;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    return ctx;
+}
+
+function clearCanvas(canvas, ctx, w, h) {
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+}
+
+// ===== DATA ACCESS =====
+function getExpKey(opt, dataset, labelType) {
+    return opt + '_' + dataset + '_' + labelType;
+}
+
+function getExperiment(opt, dataset, labelType) {
+    if (!DATA || !DATA.experiments) return null;
+    const key = getExpKey(opt, dataset, labelType);
+    return DATA.experiments[key] || null;
+}
+
+function getMaxEpoch() {
+    if (!DATA) return 0;
+    let maxE = 0;
+    for (const key in DATA.experiments) {
+        const exp = DATA.experiments[key];
+        if (exp && exp.epochs) {
+            for (const ep of exp.epochs) {
+                if (ep.epoch > maxE) maxE = ep.epoch;
+            }
+        }
+    }
+    return maxE;
+}
+
+function getMaxEpochForDataset(dataset) {
+    if (!DATA) return 0;
+    let maxE = 0;
+    for (const opt of OPT_ORDER) {
+        for (const lt of ['real', 'random']) {
+            const exp = getExperiment(opt, dataset, lt);
+            if (exp && exp.epochs) {
+                for (const ep of exp.epochs) {
+                    if (ep.epoch > maxE) maxE = ep.epoch;
+                }
+            }
+        }
+    }
+    return maxE;
+}
+
+// ===== DRAW HELPERS =====
+function niceTickStep(range, maxTicks) {
+    if (range <= 0) return 1;
+    const rough = range / maxTicks;
+    const mag = Math.pow(10, Math.floor(Math.log10(rough)));
+    const norm = rough / mag;
+    let step;
+    if (norm <= 1.5) step = 1;
+    else if (norm <= 3.5) step = 2;
+    else if (norm <= 7.5) step = 5;
+    else step = 10;
+    return step * mag;
+}
+
+function drawGridAndAxes(ctx, area, xMin, xMax, yMin, yMax, xLabel, yLabel, opts) {
+    opts = opts || {};
+    const logY = opts.logY || false;
+
+    ctx.save();
+
+    // Background
+    ctx.fillStyle = '#fafafa';
+    ctx.fillRect(area.l, area.t, area.w, area.h);
+
+    // Grid lines
+    ctx.strokeStyle = '#eee';
+    ctx.lineWidth = 1;
+
+    // Y grid
+    if (logY) {
+        for (let lg = Math.ceil(yMin); lg <= Math.floor(yMax); lg++) {
+            const frac = (lg - yMin) / (yMax - yMin);
+            const y = area.t + area.h - frac * area.h;
+            ctx.beginPath();
+            ctx.moveTo(area.l, y);
+            ctx.lineTo(area.l + area.w, y);
+            ctx.stroke();
+        }
+    } else {
+        const yStep = niceTickStep(yMax - yMin, 6);
+        const yStart = Math.ceil(yMin / yStep) * yStep;
+        for (let v = yStart; v <= yMax + yStep * 0.01; v += yStep) {
+            const frac = (v - yMin) / (yMax - yMin);
+            const y = area.t + area.h - frac * area.h;
+            ctx.beginPath();
+            ctx.moveTo(area.l, y);
+            ctx.lineTo(area.l + area.w, y);
+            ctx.stroke();
+        }
+    }
+
+    // Border
+    ctx.strokeStyle = '#aaa';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(area.l, area.t, area.w, area.h);
+
+    // X axis ticks & labels
+    ctx.fillStyle = '#555';
+    ctx.font = '10px Helvetica Neue, Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    const xStep = niceTickStep(xMax - xMin, 6);
+    const xStart = Math.ceil(xMin / xStep) * xStep;
+    for (let v = xStart; v <= xMax + xStep * 0.01; v += xStep) {
+        const frac = (v - xMin) / (xMax - xMin);
+        const x = area.l + frac * area.w;
+        ctx.beginPath();
+        ctx.moveTo(x, area.t + area.h);
+        ctx.lineTo(x, area.t + area.h + 3);
+        ctx.strokeStyle = '#aaa';
+        ctx.stroke();
+        let label = v;
+        if (Math.abs(v) < 1e-10) label = 0;
+        ctx.fillText(Number.isInteger(label) ? label.toString() : label.toFixed(1), x, area.t + area.h + 5);
+    }
+
+    // Y axis ticks & labels
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    if (logY) {
+        for (let lg = Math.ceil(yMin); lg <= Math.floor(yMax); lg++) {
+            const frac = (lg - yMin) / (yMax - yMin);
+            const y = area.t + area.h - frac * area.h;
+            ctx.fillText('10' + superscript(lg), area.l - 5, y);
+        }
+    } else {
+        const yStep2 = niceTickStep(yMax - yMin, 6);
+        const yStart2 = Math.ceil(yMin / yStep2) * yStep2;
+        for (let v = yStart2; v <= yMax + yStep2 * 0.01; v += yStep2) {
+            const frac = (v - yMin) / (yMax - yMin);
+            const y = area.t + area.h - frac * area.h;
+            let label = v;
+            if (Math.abs(v) < 1e-10) label = 0;
+            if (v <= 1 && v >= 0) {
+                ctx.fillText(label.toFixed(2), area.l - 5, y);
+            } else {
+                ctx.fillText(Number.isInteger(label) ? label.toString() : label.toFixed(1), area.l - 5, y);
+            }
+        }
+    }
+
+    // Axis labels
+    ctx.fillStyle = '#333';
+    ctx.font = '11px Helvetica Neue, Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(xLabel, area.l + area.w / 2, area.t + area.h + 18);
+
+    ctx.save();
+    ctx.translate(area.l - 38, area.t + area.h / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(yLabel, 0, 0);
+    ctx.restore();
+
+    ctx.restore();
+}
+
+function superscript(n) {
+    const sups = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³',
+        '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+    return String(n).split('').map(c => sups[c] || c).join('');
+}
+
+function worldToPixel(val, vMin, vMax, pMin, pLen) {
+    if (vMax === vMin) return pMin + pLen / 2;
+    return pMin + ((val - vMin) / (vMax - vMin)) * pLen;
+}
+
+function worldToPixelY(val, vMin, vMax, area) {
+    // Y is inverted
+    if (vMax === vMin) return area.t + area.h / 2;
+    return area.t + area.h - ((val - vMin) / (vMax - vMin)) * area.h;
+}
+
+// ===== LEGEND DRAWING =====
+function drawLegend(ctx, area, items) {
+    // items: [{name, color, dashed}]
+    const fontSize = 10;
+    ctx.font = fontSize + 'px Helvetica Neue, Arial, sans-serif';
+    const lineLen = 18;
+    const gap = 6;
+    const itemPad = 14;
+    let totalW = 0;
+    for (const it of items) {
+        totalW += lineLen + gap + ctx.measureText(it.name).width + itemPad;
+    }
+    totalW -= itemPad; // no trailing pad
+
+    let x = area.l + (area.w - totalW) / 2;
+    const y = area.t - 10;
+
+    for (const it of items) {
+        // Line sample
+        ctx.strokeStyle = it.color;
+        ctx.lineWidth = 2;
+        if (it.dashed) {
+            ctx.setLineDash([4, 3]);
+        } else {
+            ctx.setLineDash([]);
+        }
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + lineLen, y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Name
+        ctx.fillStyle = '#555';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(it.name, x + lineLen + gap, y);
+
+        x += lineLen + gap + ctx.measureText(it.name).width + itemPad;
+    }
+}
+
+// ===== PANEL 1: TRAINING CURVES =====
+function drawTrainingCurves() {
+    const lossCanvas = document.getElementById('lossCanvas');
+    const accCanvas = document.getElementById('accCanvas');
+    const cw = 460, ch = 300;
+    const lossCtx = setupCanvas(lossCanvas, cw, ch);
+    const accCtx = setupCanvas(accCanvas, cw, ch);
+
+    clearCanvas(lossCanvas, lossCtx, cw, ch);
+    clearCanvas(accCanvas, accCtx, cw, ch);
+
+    if (!DATA) {
+        lossCtx.fillStyle = '#999';
+        lossCtx.font = '13px Helvetica Neue, Arial, sans-serif';
+        lossCtx.textAlign = 'center';
+        lossCtx.fillText('Load your results JSON to see charts', cw / 2, ch / 2);
+        accCtx.fillStyle = '#999';
+        accCtx.font = '13px Helvetica Neue, Arial, sans-serif';
+        accCtx.textAlign = 'center';
+        accCtx.fillText('Load your results JSON to see charts', cw / 2, ch / 2);
+        return;
+    }
+
+    const area = { l: 52, t: 24, w: cw - 72, h: ch - 58 };
+    const maxEpoch = getMaxEpochForDataset(selectedDataset);
+    if (maxEpoch === 0) return;
+
+    // Collect series: [{opt, lt, epochs}]
+    const labelTypes = labelMode === 'both' ? ['real', 'random'] : [labelMode];
+    const series = [];
+    for (const opt of OPT_ORDER) {
+        if (!activeOptimizers[opt]) continue;
+        for (const lt of labelTypes) {
+            const exp = getExperiment(opt, selectedDataset, lt);
+            if (!exp || !exp.epochs || exp.epochs.length === 0) continue;
+            series.push({ opt, lt, epochs: exp.epochs });
+        }
+    }
+
+    // --- Loss chart ---
+    let logMin = Infinity, logMax = -Infinity;
+    for (const s of series) {
+        for (const ep of s.epochs) {
+            if (ep.train_loss != null && ep.train_loss > 0) {
+                const lg = Math.log10(ep.train_loss);
+                if (lg < logMin) logMin = lg;
+                if (lg > logMax) logMax = lg;
+            }
+            if (ep.test_loss != null && ep.test_loss > 0) {
+                const lg = Math.log10(ep.test_loss);
+                if (lg < logMin) logMin = lg;
+                if (lg > logMax) logMax = lg;
+            }
+        }
+    }
+    if (!isFinite(logMin)) { logMin = -4; logMax = 1; }
+    logMin = Math.floor(logMin) - 0.3;
+    logMax = Math.ceil(logMax) + 0.3;
+
+    drawGridAndAxes(lossCtx, area, 0, maxEpoch, logMin, logMax, 'Epoch', 'Loss (log)', { logY: true });
+
+    // Draw lines
+    for (const s of series) {
+        const isDashed = s.lt === 'random';
+        const color = OPT_COLORS[s.opt];
+
+        // Train loss
+        lossCtx.strokeStyle = color;
+        lossCtx.lineWidth = 2;
+        lossCtx.setLineDash(isDashed ? [6, 4] : []);
+        lossCtx.beginPath();
+        let started = false;
+        for (const ep of s.epochs) {
+            if (ep.train_loss == null || ep.train_loss <= 0) continue;
+            const x = worldToPixel(ep.epoch, 0, maxEpoch, area.l, area.w);
+            const y = worldToPixelY(Math.log10(ep.train_loss), logMin, logMax, area);
+            if (!started) { lossCtx.moveTo(x, y); started = true; }
+            else lossCtx.lineTo(x, y);
+        }
+        lossCtx.stroke();
+        lossCtx.setLineDash([]);
+    }
+
+    // Legend for loss
+    const legendItems = [];
+    for (const opt of OPT_ORDER) {
+        if (!activeOptimizers[opt]) continue;
+        legendItems.push({ name: OPT_NAMES[opt], color: OPT_COLORS[opt], dashed: false });
+    }
+    drawLegend(lossCtx, area, legendItems);
+
+    // --- Accuracy chart ---
+    drawGridAndAxes(accCtx, area, 0, maxEpoch, 0, 1, 'Epoch', 'Accuracy', {});
+
+    for (const s of series) {
+        const isDashed = s.lt === 'random';
+        const color = OPT_COLORS[s.opt];
+
+        // Train acc (thin line)
+        accCtx.strokeStyle = color;
+        accCtx.lineWidth = 1.5;
+        accCtx.globalAlpha = 0.5;
+        accCtx.setLineDash(isDashed ? [6, 4] : []);
+        accCtx.beginPath();
+        let started = false;
+        for (const ep of s.epochs) {
+            if (ep.train_acc == null) continue;
+            const x = worldToPixel(ep.epoch, 0, maxEpoch, area.l, area.w);
+            const y = worldToPixelY(ep.train_acc, 0, 1, area);
+            if (!started) { accCtx.moveTo(x, y); started = true; }
+            else accCtx.lineTo(x, y);
+        }
+        accCtx.stroke();
+        accCtx.globalAlpha = 1;
+
+        // Test acc (thick line)
+        accCtx.strokeStyle = color;
+        accCtx.lineWidth = 2.5;
+        accCtx.setLineDash(isDashed ? [6, 4] : []);
+        accCtx.beginPath();
+        started = false;
+        for (const ep of s.epochs) {
+            if (ep.test_acc == null) continue;
+            const x = worldToPixel(ep.epoch, 0, maxEpoch, area.l, area.w);
+            const y = worldToPixelY(ep.test_acc, 0, 1, area);
+            if (!started) { accCtx.moveTo(x, y); started = true; }
+            else accCtx.lineTo(x, y);
+        }
+        accCtx.stroke();
+        accCtx.setLineDash([]);
+    }
+
+    drawLegend(accCtx, area, legendItems);
+}
+
+// ===== PANEL 2: BAR CHARTS =====
+function drawBarCharts() {
+    const realCanvas = document.getElementById('barRealCanvas');
+    const randomCanvas = document.getElementById('barRandomCanvas');
+    const cw = 460, ch = 260;
+    const realCtx = setupCanvas(realCanvas, cw, ch);
+    const randomCtx = setupCanvas(randomCanvas, cw, ch);
+
+    clearCanvas(realCanvas, realCtx, cw, ch);
+    clearCanvas(randomCanvas, randomCtx, cw, ch);
+
+    if (!DATA) {
+        for (const ctx of [realCtx, randomCtx]) {
+            ctx.fillStyle = '#999';
+            ctx.font = '13px Helvetica Neue, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('No data', cw / 2, ch / 2);
+        }
+        return;
+    }
+
+    const pad = { l: 52, t: 20, r: 16, b: 50 };
+    const area = { l: pad.l, t: pad.t, w: cw - pad.l - pad.r, h: ch - pad.t - pad.b };
+
+    function drawBars(ctx, labelType, metric) {
+        const values = [];
+        const labels = [];
+        const colors = [];
+        for (const opt of OPT_ORDER) {
+            const exp = getExperiment(opt, selectedDataset, labelType);
+            let val = null;
+            if (exp) {
+                if (metric === 'final_test_acc') val = exp.final_test_acc;
+                else if (metric === 'final_train_acc') val = exp.final_train_acc;
+            }
+            values.push(val);
+            labels.push(OPT_NAMES[opt]);
+            colors.push(OPT_COLORS[opt]);
+        }
+
+        const yMax = 1.05;
+        const yMin = 0;
+
+        drawGridAndAxes(ctx, area, 0, values.length, yMin, yMax, '', metric === 'final_test_acc' ? 'Test Accuracy' : 'Train Accuracy', {});
+
+        const n = values.length;
+        const barW = area.w / n * 0.65;
+        const gap = area.w / n;
+
+        for (let i = 0; i < n; i++) {
+            const val = values[i];
+            if (val == null) continue;
+            const x = area.l + gap * i + (gap - barW) / 2;
+            const barH = (val / yMax) * area.h;
+            const y = area.t + area.h - barH;
+
+            ctx.fillStyle = colors[i];
+            ctx.fillRect(x, y, barW, barH);
+
+            // Value label on top
+            ctx.fillStyle = '#333';
+            ctx.font = '10px Helvetica Neue, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(val.toFixed(3), x + barW / 2, y - 3);
+
+            // Name label at bottom
+            ctx.fillStyle = '#555';
+            ctx.font = '9px Helvetica Neue, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            ctx.save();
+            ctx.translate(x + barW / 2, area.t + area.h + 6);
+            ctx.rotate(-Math.PI / 6);
+            ctx.fillText(labels[i], 0, 0);
+            ctx.restore();
+        }
+
+        // Chance level line for random labels
+        if (labelType === 'random') {
+            // MNIST chance = 0.1, spiral chance = 0.5
+            const chance = selectedDataset === 'mnist' ? 0.1 : 0.5;
+            const cy = area.t + area.h - (chance / yMax) * area.h;
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 3]);
+            ctx.beginPath();
+            ctx.moveTo(area.l, cy);
+            ctx.lineTo(area.l + area.w, cy);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = '9px Helvetica Neue, Arial, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText('chance', area.l + area.w - 36, cy - 2);
+        }
+    }
+
+    drawBars(realCtx, 'real', 'final_test_acc');
+    drawBars(randomCtx, 'random', 'final_train_acc');
+}
+
+// ===== PANEL 3: EIGENVALUE SPECTRUM =====
+function drawEigenvalueSpectrum() {
+    const realCanvas = document.getElementById('eigenRealCanvas');
+    const randomCanvas = document.getElementById('eigenRandomCanvas');
+    const cw = 460, ch = 240;
+    const realCtx = setupCanvas(realCanvas, cw, ch);
+    const randomCtx = setupCanvas(randomCanvas, cw, ch);
+
+    clearCanvas(realCanvas, realCtx, cw, ch);
+    clearCanvas(randomCanvas, randomCtx, cw, ch);
+
+    if (!DATA) {
+        for (const ctx of [realCtx, randomCtx]) {
+            ctx.fillStyle = '#999';
+            ctx.font = '13px Helvetica Neue, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('No data', cw / 2, ch / 2);
+        }
+        return;
+    }
+
+    const selectedOpt = document.getElementById('eigenOptSelect').value;
+    const epoch = parseInt(document.getElementById('eigenEpochSlider').value);
+
+    const pad = { l: 52, t: 20, r: 16, b: 44 };
+    const area = { l: pad.l, t: pad.t, w: cw - pad.l - pad.r, h: ch - pad.t - pad.b };
+
+    function drawEigenBars(ctx, labelType) {
+        const exp = getExperiment(selectedOpt, selectedDataset, labelType);
+        if (!exp || !exp.epochs) {
+            ctx.fillStyle = '#999';
+            ctx.font = '12px Helvetica Neue, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('No data for ' + OPT_NAMES[selectedOpt], cw / 2, ch / 2);
+            return;
+        }
+
+        // Find closest epoch with eigenvalue_spectrum
+        let bestEp = null;
+        let bestDist = Infinity;
+        for (const ep of exp.epochs) {
+            if (ep.eigenvalue_spectrum && ep.eigenvalue_spectrum.length > 0) {
+                const dist = Math.abs(ep.epoch - epoch);
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    bestEp = ep;
+                }
+            }
+        }
+
+        if (!bestEp || !bestEp.eigenvalue_spectrum) {
+            ctx.fillStyle = '#999';
+            ctx.font = '12px Helvetica Neue, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('No eigenvalue data at epoch ' + epoch, cw / 2, ch / 2);
+            return;
+        }
+
+        const eigenvals = bestEp.eigenvalue_spectrum;
+        const n = eigenvals.length;
+        const maxVal = Math.max(...eigenvals, 0.01);
+
+        drawGridAndAxes(ctx, area, 0, n, 0, maxVal * 1.1, 'Component', 'Eigenvalue', {});
+
+        const barW = area.w / n * 0.7;
+        const gap = area.w / n;
+        const color = OPT_COLORS[selectedOpt];
+
+        for (let i = 0; i < n; i++) {
+            const val = eigenvals[i];
+            const x = area.l + gap * i + (gap - barW) / 2;
+            const barH = (val / (maxVal * 1.1)) * area.h;
+            const y = area.t + area.h - barH;
+
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.8;
+            ctx.fillRect(x, y, barW, barH);
+            ctx.globalAlpha = 1;
+
+            // Value label
+            if (n <= 15) {
+                ctx.fillStyle = '#333';
+                ctx.font = '8px Helvetica Neue, Arial, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(val.toFixed(1), x + barW / 2, y - 2);
+            }
+        }
+
+        // Epoch indicator
+        ctx.fillStyle = '#888';
+        ctx.font = '9px Helvetica Neue, Arial, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+        ctx.fillText('Epoch ' + bestEp.epoch, area.l + area.w, area.t + 4);
+    }
+
+    drawEigenBars(realCtx, 'real');
+    drawEigenBars(randomCtx, 'random');
+}
+
+// ===== PANEL 4: SPECTRAL DIAGNOSTICS =====
+function drawSpectralDiagnostics() {
+    const realCanvas = document.getElementById('diagRealCanvas');
+    const randomCanvas = document.getElementById('diagRandomCanvas');
+    const cw = 460, ch = 260;
+    const realCtx = setupCanvas(realCanvas, cw, ch);
+    const randomCtx = setupCanvas(randomCanvas, cw, ch);
+
+    clearCanvas(realCanvas, realCtx, cw, ch);
+    clearCanvas(randomCanvas, randomCtx, cw, ch);
+
+    if (!DATA) {
+        for (const ctx of [realCtx, randomCtx]) {
+            ctx.fillStyle = '#999';
+            ctx.font = '13px Helvetica Neue, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('No data', cw / 2, ch / 2);
+        }
+        return;
+    }
+
+    const pad = { l: 52, t: 28, r: 50, b: 38 };
+    const area = { l: pad.l, t: pad.t, w: cw - pad.l - pad.r, h: ch - pad.t - pad.b };
+
+    function drawDiag(ctx, labelType) {
+        const exp = getExperiment('spectral', selectedDataset, labelType);
+        if (!exp || !exp.epochs) {
+            ctx.fillStyle = '#999';
+            ctx.font = '12px Helvetica Neue, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('No spectral diagnostics available', cw / 2, ch / 2);
+            return;
+        }
+
+        // Collect all spectral_diagnostics from all epochs
+        const allDiag = [];
+        for (const ep of exp.epochs) {
+            if (ep.spectral_diagnostics) {
+                for (const d of ep.spectral_diagnostics) {
+                    allDiag.push(d);
+                }
+            }
+        }
+
+        if (allDiag.length === 0) {
+            ctx.fillStyle = '#999';
+            ctx.font = '12px Helvetica Neue, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('No spectral diagnostics available', cw / 2, ch / 2);
+            return;
+        }
+
+        // Sort by step
+        allDiag.sort((a, b) => a.step - b.step);
+
+        const maxStep = allDiag[allDiag.length - 1].step;
+        let maxK = 0;
+        for (const d of allDiag) {
+            if (d.k > maxK) maxK = d.k;
+        }
+
+        // Draw axes for consensus_ratio (left, 0-1) and k (right)
+        drawGridAndAxes(ctx, area, 0, maxStep, 0, 1, 'Step', 'Consensus Ratio', {});
+
+        // Consensus ratio line (purple)
+        ctx.strokeStyle = '#9b59b6';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        let started = false;
+        for (const d of allDiag) {
+            if (d.consensus_ratio == null) continue;
+            const x = worldToPixel(d.step, 0, maxStep, area.l, area.w);
+            const y = worldToPixelY(d.consensus_ratio, 0, 1, area);
+            if (!started) { ctx.moveTo(x, y); started = true; }
+            else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // k line (teal, right axis)
+        if (maxK > 0) {
+            ctx.strokeStyle = '#1abc9c';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 3]);
+            ctx.beginPath();
+            started = false;
+            for (const d of allDiag) {
+                if (d.k == null) continue;
+                const x = worldToPixel(d.step, 0, maxStep, area.l, area.w);
+                const y = worldToPixelY(d.k, 0, maxK * 1.2, area);
+                if (!started) { ctx.moveTo(x, y); started = true; }
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Right axis label for k
+            ctx.fillStyle = '#1abc9c';
+            ctx.font = '10px Helvetica Neue, Arial, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            const kTicks = [0, Math.round(maxK / 2), maxK];
+            for (const kv of kTicks) {
+                const y = worldToPixelY(kv, 0, maxK * 1.2, area);
+                ctx.fillText('k=' + kv, area.l + area.w + 5, y);
+            }
+        }
+
+        // Legend
+        const legendItems = [
+            { name: 'Consensus Ratio', color: '#9b59b6', dashed: false },
+            { name: 'k (retained)', color: '#1abc9c', dashed: true }
+        ];
+        drawLegend(ctx, area, legendItems);
+    }
+
+    drawDiag(realCtx, 'real');
+    drawDiag(randomCtx, 'random');
+}
+
+// ===== PANEL 5: SUMMARY TABLE =====
+let tableSortCol = null;
+let tableSortAsc = true;
+
+function buildSummaryTable() {
+    const container = document.getElementById('tableContainer');
+    if (!DATA) {
+        container.innerHTML = '<p class="no-data-msg">Load your results JSON to see the summary table.</p>';
+        return;
+    }
+
+    const rows = [];
+    for (const key in DATA.experiments) {
+        const exp = DATA.experiments[key];
+        if (!exp) continue;
+        // Parse key
+        const parts = key.split('_');
+        if (parts.length < 3) continue;
+        const labelType = parts[parts.length - 1];
+        const dataset = parts[parts.length - 2];
+        const opt = parts.slice(0, parts.length - 2).join('_');
+
+        rows.push({
+            optimizer: OPT_NAMES[opt] || opt,
+            optKey: opt,
+            dataset: dataset.toUpperCase(),
+            labels: labelType,
+            trainAcc: exp.final_train_acc,
+            testAcc: exp.final_test_acc,
+            time: exp.total_time_s
+        });
+    }
+
+    // Sort
+    if (tableSortCol != null) {
+        rows.sort((a, b) => {
+            let va = a[tableSortCol], vb = b[tableSortCol];
+            if (va == null) va = -Infinity;
+            if (vb == null) vb = -Infinity;
+            if (typeof va === 'string') va = va.toLowerCase();
+            if (typeof vb === 'string') vb = vb.toLowerCase();
+            if (va < vb) return tableSortAsc ? -1 : 1;
+            if (va > vb) return tableSortAsc ? 1 : -1;
+            return 0;
+        });
+    }
+
+    const cols = [
+        { key: 'optimizer', label: 'Optimizer' },
+        { key: 'dataset', label: 'Dataset' },
+        { key: 'labels', label: 'Labels' },
+        { key: 'trainAcc', label: 'Final Train Acc' },
+        { key: 'testAcc', label: 'Final Test Acc' },
+        { key: 'time', label: 'Time (s)' }
+    ];
+
+    let html = '<table class="summary-table"><thead><tr>';
+    for (const col of cols) {
+        const arrow = tableSortCol === col.key ? (tableSortAsc ? '▲' : '▼') : '';
+        html += '<th data-col="' + col.key + '">' + col.label + '<span class="sort-arrow">' + arrow + '</span></th>';
+    }
+    html += '</tr></thead><tbody>';
+
+    for (const row of rows) {
+        const isSpectral = row.optKey === 'spectral';
+        html += '<tr class="' + (isSpectral ? 'spectral-row' : '') + '">';
+        html += '<td>' + (row.optimizer || '--') + '</td>';
+        html += '<td>' + (row.dataset || '--') + '</td>';
+        html += '<td>' + (row.labels || '--') + '</td>';
+        html += '<td>' + (row.trainAcc != null ? row.trainAcc.toFixed(4) : '--') + '</td>';
+        html += '<td>' + (row.testAcc != null ? row.testAcc.toFixed(4) : '--') + '</td>';
+        html += '<td>' + (row.time != null ? row.time.toFixed(1) : '--') + '</td>';
+        html += '</tr>';
+    }
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+
+    // Add sort handlers
+    container.querySelectorAll('th').forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.getAttribute('data-col');
+            if (tableSortCol === col) {
+                tableSortAsc = !tableSortAsc;
+            } else {
+                tableSortCol = col;
+                tableSortAsc = true;
+            }
+            buildSummaryTable();
+        });
+    });
+}
+
+// ===== BUILD OPTIMIZER TOGGLES =====
+function buildOptimizerToggles() {
+    const container = document.getElementById('optimizerToggles');
+    container.innerHTML = '';
+    for (const opt of OPT_ORDER) {
+        const label = document.createElement('label');
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = activeOptimizers[opt];
+        cb.addEventListener('change', () => {
+            activeOptimizers[opt] = cb.checked;
+            redrawAll();
+        });
+        const dot = document.createElement('span');
+        dot.className = 'color-dot';
+        dot.style.background = OPT_COLORS[opt];
+        label.appendChild(cb);
+        label.appendChild(dot);
+        label.appendChild(document.createTextNode(' ' + OPT_NAMES[opt]));
+        container.appendChild(label);
+    }
+}
+
+// ===== BUILD EIGENVALUE OPTIMIZER SELECT =====
+function buildEigenOptSelect() {
+    const sel = document.getElementById('eigenOptSelect');
+    sel.innerHTML = '';
+    for (const opt of OPT_ORDER) {
+        const option = document.createElement('option');
+        option.value = opt;
+        option.textContent = OPT_NAMES[opt];
+        if (opt === 'spectral') option.selected = true;
+        sel.appendChild(option);
+    }
+}
+
+// ===== REDRAW ALL =====
+function redrawAll() {
+    drawTrainingCurves();
+    drawBarCharts();
+    drawEigenvalueSpectrum();
+    drawSpectralDiagnostics();
+    buildSummaryTable();
+}
+
+// ===== EVENT HANDLERS =====
+
+// Dataset buttons
+document.querySelectorAll('#datasetBtns button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('#datasetBtns button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedDataset = btn.getAttribute('data-val');
+        // Update eigen slider max
+        const maxEp = getMaxEpochForDataset(selectedDataset);
+        const slider = document.getElementById('eigenEpochSlider');
+        slider.max = maxEp;
+        if (parseInt(slider.value) > maxEp) slider.value = 0;
+        document.getElementById('eigenEpochValue').textContent = slider.value;
+        redrawAll();
+    });
+});
+
+// Label mode buttons
+document.querySelectorAll('#labelModeBtns button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('#labelModeBtns button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        labelMode = btn.getAttribute('data-val');
+        drawTrainingCurves();
+    });
+});
+
+// File picker
+document.getElementById('filePicker').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        try {
+            DATA = JSON.parse(ev.target.result);
+            document.getElementById('loadStatus').textContent = 'Loaded: ' + file.name;
+            document.getElementById('loadStatus').style.color = '#27ae60';
+            onDataLoaded();
+        } catch (err) {
+            document.getElementById('loadStatus').textContent = 'Parse error';
+            document.getElementById('loadStatus').style.color = '#e74c3c';
+        }
+    };
+    reader.readAsText(file);
+});
+
+// Eigen epoch slider
+document.getElementById('eigenEpochSlider').addEventListener('input', (e) => {
+    document.getElementById('eigenEpochValue').textContent = e.target.value;
+    drawEigenvalueSpectrum();
+});
+
+// Eigen optimizer select
+document.getElementById('eigenOptSelect').addEventListener('change', () => {
+    drawEigenvalueSpectrum();
+});
+
+function onDataLoaded() {
+    const maxEp = getMaxEpochForDataset(selectedDataset);
+    const slider = document.getElementById('eigenEpochSlider');
+    slider.max = maxEp;
+    slider.value = 0;
+    document.getElementById('eigenEpochValue').textContent = '0';
+    redrawAll();
+}
+
+// ===== AUTO-LOAD =====
+function tryAutoLoad() {
+    fetch('../results/spectral_experiment_results.json')
+        .then(res => {
+            if (!res.ok) throw new Error('Not found');
+            return res.json();
+        })
+        .then(data => {
+            DATA = data;
+            document.getElementById('loadStatus').textContent = 'Auto-loaded results';
+            document.getElementById('loadStatus').style.color = '#27ae60';
+            onDataLoaded();
+        })
+        .catch(() => {
+            // Silent fail — user will use file picker
+        });
+}
+
+// ===== INIT =====
+buildOptimizerToggles();
+buildEigenOptSelect();
+redrawAll();
+tryAutoLoad();
+</script>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Weight-Covariance Optimizer: Comparison Results</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace; }
+header { background: #161b22; border-bottom: 1px solid #30363d; padding: 20px 32px; }
+header h1 { font-size: 20px; color: #f0f6fc; }
+header p { font-size: 13px; color: #8b949e; margin-top: 4px; }
+.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+.panel { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; }
+.panel h2 { font-size: 15px; color: #f0f6fc; margin-bottom: 12px; }
+.panel h3 { font-size: 13px; color: #8b949e; margin-bottom: 8px; font-weight: normal; }
+canvas { width: 100%; background: #0d1117; border-radius: 4px; }
+.full-width { grid-column: 1 / -1; }
+.summary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.summary-table th, .summary-table td { padding: 8px 12px; text-align: right; border-bottom: 1px solid #21262d; }
+.summary-table th { color: #8b949e; font-weight: normal; text-align: right; }
+.summary-table th:first-child, .summary-table td:first-child { text-align: left; }
+.summary-table tr:hover { background: #1c2128; }
+.adam { color: #58a6ff; }
+.ours { color: #7ee787; }
+.legend { display: flex; gap: 16px; margin-bottom: 8px; font-size: 12px; }
+.legend span { display: flex; align-items: center; gap: 4px; }
+.legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.finding { background: #1c2128; border-left: 3px solid #f97583; padding: 12px 16px; margin: 16px 0; font-size: 13px; line-height: 1.6; }
+.finding.positive { border-left-color: #7ee787; }
+.finding.neutral { border-left-color: #58a6ff; }
+.finding strong { color: #f0f6fc; }
+.section-title { font-size: 17px; color: #f0f6fc; margin: 32px 0 16px 0; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+.sweep-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.sweep-table th, .sweep-table td { padding: 5px 8px; text-align: right; border-bottom: 1px solid #21262d; }
+.sweep-table th { color: #8b949e; font-weight: normal; }
+.sweep-table th:first-child, .sweep-table td:first-child { text-align: left; }
+.sweep-table tr:hover { background: #1c2128; }
+.sweep-table .best { color: #7ee787; font-weight: bold; }
+.metric-card { text-align: center; padding: 16px; }
+.metric-card .value { font-size: 28px; font-weight: bold; margin: 8px 0; }
+.metric-card .label { font-size: 12px; color: #8b949e; }
+.gap-bar { height: 24px; border-radius: 4px; margin: 4px 0; position: relative; }
+.gap-bar .bar-label { position: absolute; right: 8px; top: 3px; font-size: 11px; color: #0d1117; font-weight: bold; }
+</style>
+</head>
+<body>
+<header>
+<h1>Weight-Covariance Spectral Optimizer — Experiment Results</h1>
+<p>Comparison of our p×p weight-covariance spectral filter vs Adam on three MNIST variants. Best HP from sweep: rank=50, decay=0.9, lr=5e-4, update_every=50.</p>
+</header>
+<div class="container">
+
+<div class="finding">
+<strong>Summary:</strong> The optimizer successfully blocks random-label memorization (loss stays at ln(10) ≈ 2.303, exactly chance). However, it also hurts real-label learning — Adam outperforms by 2-5% across datasets. The spectral projection (rank 50 out of 235K params) is too aggressive, discarding useful gradient signal. The generalization gap (train−test) is much smaller for ours, but at the cost of underfitting.
+</div>
+
+<h2 class="section-title">Final Results Summary</h2>
+
+<div class="panel">
+<table class="summary-table">
+<thead>
+<tr><th>Dataset</th><th>Adam Train</th><th>Adam Test</th><th>Adam Gap</th><th>Ours Train</th><th>Ours Test</th><th>Ours Gap</th><th>Test Δ</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard MNIST</td>
+<td>99.1%</td><td>97.1%</td><td style="color:#f97583">2.0%</td>
+<td>94.4%</td><td>94.3%</td><td style="color:#7ee787">0.1%</td>
+<td style="color:#f97583">−2.9%</td>
+</tr>
+<tr>
+<td>Noisy MNIST (+784 noise)</td>
+<td>99.9%</td><td>96.9%</td><td style="color:#f97583">3.0%</td>
+<td>93.3%</td><td>92.4%</td><td style="color:#7ee787">0.9%</td>
+<td style="color:#f97583">−4.5%</td>
+</tr>
+<tr>
+<td>Random Labels</td>
+<td>14.5%</td><td>10.2%</td><td style="color:#f97583">4.3%</td>
+<td>10.2%</td><td>9.6%</td><td style="color:#7ee787">0.6%</td>
+<td style="color:#8b949e">−0.6%</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 class="section-title">Learning Curves — Three Datasets</h2>
+
+<div class="legend" style="margin-left: 4px;">
+<span><span class="dot" style="background:#58a6ff"></span> Adam</span>
+<span><span class="dot" style="background:#7ee787"></span> Ours (WeightCov)</span>
+<span style="color:#8b949e; margin-left: 16px;">Solid = test accuracy, Dashed = train accuracy</span>
+</div>
+
+<div class="grid3" id="accuracy-charts">
+<div class="panel">
+<h2>Standard MNIST</h2>
+<h3>784 input features, 235K params</h3>
+<canvas id="acc-standard" height="280"></canvas>
+</div>
+<div class="panel">
+<h2>Noisy MNIST (+784 noise features)</h2>
+<h3>1568 input features, 436K params</h3>
+<canvas id="acc-noisy" height="280"></canvas>
+</div>
+<div class="panel">
+<h2>Random Labels</h2>
+<h3>784 input features, 235K params</h3>
+<canvas id="acc-random" height="280"></canvas>
+</div>
+</div>
+
+<h2 class="section-title">Loss Curves</h2>
+
+<div class="grid3">
+<div class="panel">
+<h2>Standard MNIST — Loss</h2>
+<canvas id="loss-standard" height="280"></canvas>
+</div>
+<div class="panel">
+<h2>Noisy MNIST — Loss</h2>
+<canvas id="loss-noisy" height="280"></canvas>
+</div>
+<div class="panel">
+<h2>Random Labels — Loss</h2>
+<canvas id="loss-random" height="280"></canvas>
+</div>
+</div>
+
+<h2 class="section-title">Generalization Gap (Train − Test Accuracy)</h2>
+
+<div class="finding neutral">
+<strong>Observation:</strong> Our optimizer has near-zero generalization gap across all datasets — train and test accuracy track almost identically. Adam's gap grows steadily (2% on standard, 3% on noisy, 4.3% on random labels). Our optimizer isn't overfitting, but it's also not fitting enough. The projection acts as a very strong regularizer.
+</div>
+
+<div class="grid3">
+<div class="panel">
+<h2>Standard MNIST — Gap</h2>
+<canvas id="gap-standard" height="240"></canvas>
+</div>
+<div class="panel">
+<h2>Noisy MNIST — Gap</h2>
+<canvas id="gap-noisy" height="240"></canvas>
+</div>
+<div class="panel">
+<h2>Random Labels — Gap</h2>
+<canvas id="gap-random" height="240"></canvas>
+</div>
+</div>
+
+<h2 class="section-title">Key Observations</h2>
+
+<div class="grid">
+<div class="finding positive">
+<strong>Random labels — complete blocking:</strong> Our optimizer's loss stays at exactly 2.3025 (= ln(10), uniform over 10 classes) for all 20 epochs. The spectral filter correctly identifies that there's no consistent weight co-variation structure to exploit, and the gradients project to essentially zero. Adam slowly begins memorizing (14.5% train by epoch 20).
+</div>
+
+<div class="finding">
+<strong>Underfitting on real data:</strong> On standard MNIST, our optimizer plateaus at ~94.3% test accuracy by epoch 1 and doesn't improve over 20 epochs. Adam reaches 97.1%. The rank-50 projection out of 235K parameters keeps only 0.02% of the gradient space. This is likely too aggressive — legitimate learning signals are being discarded.
+</div>
+
+<div class="finding">
+<strong>Noisy features don't hurt Adam much:</strong> Adam's test accuracy drops only 0.2% (97.1% → 96.9%) when 784 noise features are added. The network learns to mostly ignore them. Our optimizer drops 1.9% (94.3% → 92.4%), possibly because the noise features add confusion to the covariance structure.
+</div>
+
+<div class="finding neutral">
+<strong>Near-zero generalization gap:</strong> Our optimizer maintains train ≈ test across all datasets. This is the regularization story working as intended — but the absolute performance cost is too high. The filter needs to be less aggressive: higher rank, softer projection (filter_strength < 1), or adaptive rank selection.
+</div>
+</div>
+
+<h2 class="section-title">HP Sweep Results (Phase 1)</h2>
+
+<div class="panel">
+<h3>12 configs, 5 epochs each on standard MNIST. Sorted by test accuracy.</h3>
+<table class="sweep-table">
+<thead><tr><th>Rank</th><th>Decay</th><th>LR</th><th>Train Acc</th><th>Test Acc</th><th>Time (s)</th></tr></thead>
+<tbody id="sweep-body"></tbody>
+</table>
+</div>
+
+<h2 class="section-title">Timing</h2>
+<div class="panel">
+<table class="summary-table">
+<thead><tr><th>Run</th><th>Time</th><th>Slowdown vs Adam</th></tr></thead>
+<tbody>
+<tr><td>Adam — Standard (20 ep)</td><td>43s</td><td>1×</td></tr>
+<tr><td>Ours — Standard (20 ep)</td><td>915s</td><td style="color:#f97583">21×</td></tr>
+<tr><td>Adam — Noisy (20 ep)</td><td>46s</td><td>1×</td></tr>
+<tr><td>Ours — Noisy (20 ep)</td><td>1655s</td><td style="color:#f97583">36×</td></tr>
+<tr><td>Adam — Random (20 ep)</td><td>43s</td><td>1×</td></tr>
+<tr><td>Ours — Random (20 ep)</td><td>980s</td><td style="color:#f97583">23×</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+<script>
+const DATA = {
+  standard: {
+    adam: [
+      {epoch:0,train_acc:0.97022,test_acc:0.9673,train_loss:0.09799,test_loss:0.10569},
+      {epoch:1,train_acc:0.98007,test_acc:0.9717,train_loss:0.06172,test_loss:0.09124},
+      {epoch:2,train_acc:0.9881,test_acc:0.9774,train_loss:0.03882,test_loss:0.07266},
+      {epoch:3,train_acc:0.9846,test_acc:0.9743,train_loss:0.04505,test_loss:0.09022},
+      {epoch:4,train_acc:0.99088,test_acc:0.9784,train_loss:0.02739,test_loss:0.07209},
+      {epoch:5,train_acc:0.99137,test_acc:0.9761,train_loss:0.02671,test_loss:0.08618},
+      {epoch:6,train_acc:0.99278,test_acc:0.9796,train_loss:0.02326,test_loss:0.08408},
+      {epoch:7,train_acc:0.99288,test_acc:0.9767,train_loss:0.02154,test_loss:0.09746},
+      {epoch:8,train_acc:0.99135,test_acc:0.9758,train_loss:0.02547,test_loss:0.11108},
+      {epoch:9,train_acc:0.9953,test_acc:0.9804,train_loss:0.01324,test_loss:0.08368},
+      {epoch:10,train_acc:0.99338,test_acc:0.9775,train_loss:0.01774,test_loss:0.10252},
+      {epoch:11,train_acc:0.99565,test_acc:0.9799,train_loss:0.01324,test_loss:0.09421},
+      {epoch:12,train_acc:0.99535,test_acc:0.9786,train_loss:0.01424,test_loss:0.11156},
+      {epoch:13,train_acc:0.99522,test_acc:0.9773,train_loss:0.01428,test_loss:0.10541},
+      {epoch:14,train_acc:0.9959,test_acc:0.9787,train_loss:0.0128,test_loss:0.11294},
+      {epoch:15,train_acc:0.99768,test_acc:0.9783,train_loss:0.00705,test_loss:0.11144},
+      {epoch:16,train_acc:0.99637,test_acc:0.9786,train_loss:0.01229,test_loss:0.11679},
+      {epoch:17,train_acc:0.99527,test_acc:0.9781,train_loss:0.01455,test_loss:0.12671},
+      {epoch:18,train_acc:0.99465,test_acc:0.9767,train_loss:0.01668,test_loss:0.13053},
+      {epoch:19,train_acc:0.99125,test_acc:0.9713,train_loss:0.03007,test_loss:0.1747}
+    ],
+    ours: [
+      {epoch:0,train_acc:0.94682,test_acc:0.9454,train_loss:0.18297,test_loss:0.18357},
+      {epoch:1,train_acc:0.94512,test_acc:0.9426,train_loss:0.18661,test_loss:0.1842},
+      {epoch:2,train_acc:0.94852,test_acc:0.9465,train_loss:0.175,test_loss:0.17396},
+      {epoch:3,train_acc:0.94305,test_acc:0.9419,train_loss:0.19568,test_loss:0.19252},
+      {epoch:4,train_acc:0.94342,test_acc:0.9446,train_loss:0.18917,test_loss:0.18504},
+      {epoch:5,train_acc:0.93583,test_acc:0.936,train_loss:0.209,test_loss:0.21072},
+      {epoch:6,train_acc:0.94407,test_acc:0.9453,train_loss:0.19324,test_loss:0.18928},
+      {epoch:7,train_acc:0.93765,test_acc:0.9351,train_loss:0.20764,test_loss:0.21544},
+      {epoch:8,train_acc:0.93205,test_acc:0.9292,train_loss:0.21579,test_loss:0.21305},
+      {epoch:9,train_acc:0.94293,test_acc:0.9405,train_loss:0.19109,test_loss:0.19473},
+      {epoch:10,train_acc:0.94292,test_acc:0.9403,train_loss:0.19821,test_loss:0.19917},
+      {epoch:11,train_acc:0.93828,test_acc:0.9367,train_loss:0.21068,test_loss:0.2118},
+      {epoch:12,train_acc:0.93325,test_acc:0.931,train_loss:0.21851,test_loss:0.21905},
+      {epoch:13,train_acc:0.94055,test_acc:0.9395,train_loss:0.19745,test_loss:0.20049},
+      {epoch:14,train_acc:0.9396,test_acc:0.939,train_loss:0.2027,test_loss:0.2058},
+      {epoch:15,train_acc:0.94477,test_acc:0.9421,train_loss:0.19006,test_loss:0.19061},
+      {epoch:16,train_acc:0.94442,test_acc:0.9435,train_loss:0.18857,test_loss:0.1883},
+      {epoch:17,train_acc:0.93892,test_acc:0.9357,train_loss:0.20657,test_loss:0.20858},
+      {epoch:18,train_acc:0.94358,test_acc:0.9443,train_loss:0.1907,test_loss:0.19091},
+      {epoch:19,train_acc:0.94368,test_acc:0.9427,train_loss:0.19121,test_loss:0.19346}
+    ]
+  },
+  noisy: {
+    adam: [
+      {epoch:0,train_acc:0.97763,test_acc:0.9586,train_loss:0.08083,test_loss:0.13344},
+      {epoch:1,train_acc:0.99187,test_acc:0.9663,train_loss:0.02934,test_loss:0.11677},
+      {epoch:2,train_acc:0.99002,test_acc:0.9613,train_loss:0.02935,test_loss:0.14228},
+      {epoch:3,train_acc:0.9946,test_acc:0.9663,train_loss:0.01622,test_loss:0.14046},
+      {epoch:4,train_acc:0.99727,test_acc:0.9665,train_loss:0.00952,test_loss:0.14838},
+      {epoch:5,train_acc:0.99323,test_acc:0.9611,train_loss:0.01833,test_loss:0.19004},
+      {epoch:6,train_acc:0.99422,test_acc:0.9637,train_loss:0.01869,test_loss:0.18983},
+      {epoch:7,train_acc:0.99477,test_acc:0.9661,train_loss:0.01541,test_loss:0.19694},
+      {epoch:8,train_acc:0.99283,test_acc:0.9613,train_loss:0.02273,test_loss:0.23113},
+      {epoch:9,train_acc:0.99792,test_acc:0.9684,train_loss:0.00676,test_loss:0.20061},
+      {epoch:10,train_acc:0.99647,test_acc:0.9666,train_loss:0.01107,test_loss:0.22013},
+      {epoch:11,train_acc:0.99822,test_acc:0.9668,train_loss:0.00523,test_loss:0.20117},
+      {epoch:12,train_acc:0.99375,test_acc:0.9593,train_loss:0.02063,test_loss:0.28569},
+      {epoch:13,train_acc:0.9962,test_acc:0.9631,train_loss:0.012,test_loss:0.26035},
+      {epoch:14,train_acc:0.99693,test_acc:0.9652,train_loss:0.01043,test_loss:0.26275},
+      {epoch:15,train_acc:0.99508,test_acc:0.9626,train_loss:0.0168,test_loss:0.29138},
+      {epoch:16,train_acc:0.99698,test_acc:0.9639,train_loss:0.01034,test_loss:0.25735},
+      {epoch:17,train_acc:0.99605,test_acc:0.9669,train_loss:0.01359,test_loss:0.25839},
+      {epoch:18,train_acc:0.9972,test_acc:0.9646,train_loss:0.00861,test_loss:0.26173},
+      {epoch:19,train_acc:0.99868,test_acc:0.969,train_loss:0.00386,test_loss:0.25849}
+    ],
+    ours: [
+      {epoch:0,train_acc:0.95242,test_acc:0.9378,train_loss:0.17194,test_loss:0.20554},
+      {epoch:1,train_acc:0.95175,test_acc:0.9365,train_loss:0.17023,test_loss:0.20157},
+      {epoch:2,train_acc:0.93775,test_acc:0.9259,train_loss:0.2025,test_loss:0.23251},
+      {epoch:3,train_acc:0.94118,test_acc:0.9299,train_loss:0.19783,test_loss:0.22525},
+      {epoch:4,train_acc:0.94018,test_acc:0.9269,train_loss:0.20567,test_loss:0.23496},
+      {epoch:5,train_acc:0.93983,test_acc:0.9281,train_loss:0.21312,test_loss:0.24065},
+      {epoch:6,train_acc:0.93702,test_acc:0.9215,train_loss:0.21532,test_loss:0.24445},
+      {epoch:7,train_acc:0.93508,test_acc:0.9199,train_loss:0.22303,test_loss:0.24705},
+      {epoch:8,train_acc:0.93875,test_acc:0.9252,train_loss:0.21289,test_loss:0.23341},
+      {epoch:9,train_acc:0.93017,test_acc:0.9204,train_loss:0.23607,test_loss:0.25905},
+      {epoch:10,train_acc:0.92482,test_acc:0.9161,train_loss:0.25229,test_loss:0.27455},
+      {epoch:11,train_acc:0.92853,test_acc:0.9157,train_loss:0.23998,test_loss:0.261},
+      {epoch:12,train_acc:0.93203,test_acc:0.9216,train_loss:0.23646,test_loss:0.25614},
+      {epoch:13,train_acc:0.9217,test_acc:0.9132,train_loss:0.25962,test_loss:0.27918},
+      {epoch:14,train_acc:0.92785,test_acc:0.9199,train_loss:0.24391,test_loss:0.25568},
+      {epoch:15,train_acc:0.9277,test_acc:0.9178,train_loss:0.24811,test_loss:0.25572},
+      {epoch:16,train_acc:0.93083,test_acc:0.9228,train_loss:0.23909,test_loss:0.2516},
+      {epoch:17,train_acc:0.92973,test_acc:0.9213,train_loss:0.24199,test_loss:0.25061},
+      {epoch:18,train_acc:0.92223,test_acc:0.9139,train_loss:0.26866,test_loss:0.28373},
+      {epoch:19,train_acc:0.93297,test_acc:0.9238,train_loss:0.23728,test_loss:0.24833}
+    ]
+  },
+  random: {
+    adam: [
+      {epoch:0,train_acc:0.1043,test_acc:0.1137,train_loss:2.30235,test_loss:2.29609},
+      {epoch:1,train_acc:0.10348,test_acc:0.1099,train_loss:2.30261,test_loss:2.29651},
+      {epoch:2,train_acc:0.10378,test_acc:0.0844,train_loss:2.30605,test_loss:2.30946},
+      {epoch:3,train_acc:0.1033,test_acc:0.1015,train_loss:2.30175,test_loss:2.30457},
+      {epoch:4,train_acc:0.10563,test_acc:0.0681,train_loss:2.30114,test_loss:2.30112},
+      {epoch:5,train_acc:0.10478,test_acc:0.149,train_loss:2.3015,test_loss:2.29401},
+      {epoch:6,train_acc:0.10635,test_acc:0.1053,train_loss:2.2989,test_loss:2.30119},
+      {epoch:7,train_acc:0.10987,test_acc:0.1612,train_loss:2.29748,test_loss:2.29135},
+      {epoch:8,train_acc:0.11227,test_acc:0.1558,train_loss:2.29468,test_loss:2.30026},
+      {epoch:9,train_acc:0.1142,test_acc:0.1256,train_loss:2.29245,test_loss:2.30634},
+      {epoch:10,train_acc:0.11575,test_acc:0.1214,train_loss:2.29039,test_loss:2.30385},
+      {epoch:11,train_acc:0.11993,test_acc:0.119,train_loss:2.28686,test_loss:2.30187},
+      {epoch:12,train_acc:0.12248,test_acc:0.127,train_loss:2.2816,test_loss:2.31672},
+      {epoch:13,train_acc:0.12548,test_acc:0.1016,train_loss:2.2759,test_loss:2.32629},
+      {epoch:14,train_acc:0.12998,test_acc:0.1014,train_loss:2.27094,test_loss:2.32477},
+      {epoch:15,train_acc:0.13407,test_acc:0.0958,train_loss:2.26299,test_loss:2.33664},
+      {epoch:16,train_acc:0.13485,test_acc:0.1207,train_loss:2.25935,test_loss:2.32952},
+      {epoch:17,train_acc:0.13863,test_acc:0.119,train_loss:2.25115,test_loss:2.34429},
+      {epoch:18,train_acc:0.14307,test_acc:0.0995,train_loss:2.24662,test_loss:2.35606},
+      {epoch:19,train_acc:0.1446,test_acc:0.102,train_loss:2.24113,test_loss:2.35399}
+    ],
+    ours: [
+      {epoch:0,train_acc:0.10423,test_acc:0.1807,train_loss:2.30214,test_loss:2.29036},
+      {epoch:1,train_acc:0.10323,test_acc:0.1233,train_loss:2.30287,test_loss:2.28877},
+      {epoch:2,train_acc:0.10467,test_acc:0.076,train_loss:2.30263,test_loss:2.29444},
+      {epoch:3,train_acc:0.10137,test_acc:0.1109,train_loss:2.30282,test_loss:2.30175},
+      {epoch:4,train_acc:0.10188,test_acc:0.107,train_loss:2.30258,test_loss:2.30351},
+      {epoch:5,train_acc:0.10173,test_acc:0.0953,train_loss:2.30251,test_loss:2.30315},
+      {epoch:6,train_acc:0.10157,test_acc:0.0959,train_loss:2.30249,test_loss:2.30293},
+      {epoch:7,train_acc:0.10197,test_acc:0.1009,train_loss:2.3025,test_loss:2.30307},
+      {epoch:8,train_acc:0.10197,test_acc:0.1009,train_loss:2.3025,test_loss:2.3032},
+      {epoch:9,train_acc:0.10197,test_acc:0.1009,train_loss:2.3025,test_loss:2.30318},
+      {epoch:10,train_acc:0.10197,test_acc:0.1009,train_loss:2.3025,test_loss:2.30318},
+      {epoch:11,train_acc:0.10178,test_acc:0.0958,train_loss:2.3025,test_loss:2.30319},
+      {epoch:12,train_acc:0.10178,test_acc:0.0958,train_loss:2.3025,test_loss:2.3032},
+      {epoch:13,train_acc:0.10178,test_acc:0.0892,train_loss:2.3025,test_loss:2.30322},
+      {epoch:14,train_acc:0.10178,test_acc:0.0958,train_loss:2.3025,test_loss:2.30329},
+      {epoch:15,train_acc:0.10197,test_acc:0.1009,train_loss:2.3025,test_loss:2.30313},
+      {epoch:16,train_acc:0.10178,test_acc:0.0958,train_loss:2.3025,test_loss:2.30315},
+      {epoch:17,train_acc:0.10178,test_acc:0.0958,train_loss:2.3025,test_loss:2.30323},
+      {epoch:18,train_acc:0.10197,test_acc:0.1009,train_loss:2.3025,test_loss:2.30316},
+      {epoch:19,train_acc:0.10178,test_acc:0.0958,train_loss:2.3025,test_loss:2.30311}
+    ]
+  }
+};
+
+const SWEEP = [
+  {rank:50,decay:0.9,lr:0.0005,train_acc:0.9434,test_acc:0.9446,time:222},
+  {rank:20,decay:0.9,lr:0.0005,train_acc:0.9423,test_acc:0.9430,time:144},
+  {rank:20,decay:0.95,lr:0.0005,train_acc:0.9441,test_acc:0.9429,time:139},
+  {rank:50,decay:0.95,lr:0.0005,train_acc:0.9425,test_acc:0.9408,time:228},
+  {rank:20,decay:0.95,lr:0.001,train_acc:0.9408,test_acc:0.9392,time:137},
+  {rank:10,decay:0.9,lr:0.0005,train_acc:0.9361,test_acc:0.9373,time:120},
+  {rank:20,decay:0.9,lr:0.001,train_acc:0.9386,test_acc:0.9359,time:140},
+  {rank:50,decay:0.95,lr:0.001,train_acc:0.9356,test_acc:0.9336,time:223},
+  {rank:10,decay:0.9,lr:0.001,train_acc:0.9291,test_acc:0.9266,time:120},
+  {rank:10,decay:0.95,lr:0.0005,train_acc:0.9258,test_acc:0.9260,time:130},
+  {rank:50,decay:0.9,lr:0.001,train_acc:0.9285,test_acc:0.9257,time:219},
+  {rank:10,decay:0.95,lr:0.001,train_acc:0.9219,test_acc:0.9208,time:121}
+];
+
+// Populate sweep table
+const sweepBody = document.getElementById('sweep-body');
+SWEEP.forEach((s, i) => {
+  const tr = document.createElement('tr');
+  const cls = i === 0 ? ' class="best"' : '';
+  tr.innerHTML = `<td${cls}>${s.rank}</td><td${cls}>${s.decay}</td><td${cls}>${s.lr}</td><td${cls}>${(s.train_acc*100).toFixed(2)}%</td><td${cls}>${(s.test_acc*100).toFixed(2)}%</td><td${cls}>${s.time}s</td>`;
+  sweepBody.appendChild(tr);
+});
+
+function drawLineChart(canvasId, datasets, yLabel, yMin, yMax, formatY) {
+  const canvas = document.getElementById(canvasId);
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+  const pad = {top: 12, right: 16, bottom: 32, left: 52};
+  const plotW = W - pad.left - pad.right;
+  const plotH = H - pad.top - pad.bottom;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid
+  ctx.strokeStyle = '#21262d';
+  ctx.lineWidth = 1;
+  const nTicks = 5;
+  for (let i = 0; i <= nTicks; i++) {
+    const y = pad.top + (i / nTicks) * plotH;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+    const val = yMax - (i / nTicks) * (yMax - yMin);
+    ctx.fillStyle = '#8b949e'; ctx.font = '11px monospace'; ctx.textAlign = 'right';
+    ctx.fillText(formatY(val), pad.left - 6, y + 4);
+  }
+
+  // X axis labels
+  const maxEpoch = 19;
+  for (let e = 0; e <= maxEpoch; e += 5) {
+    const x = pad.left + (e / maxEpoch) * plotW;
+    ctx.fillStyle = '#8b949e'; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+    ctx.fillText(e.toString(), x, H - pad.bottom + 16);
+  }
+  ctx.fillText('epoch', pad.left + plotW / 2, H - 2);
+
+  // Draw lines
+  datasets.forEach(ds => {
+    ctx.strokeStyle = ds.color;
+    ctx.lineWidth = ds.dashed ? 1.5 : 2;
+    if (ds.dashed) ctx.setLineDash([6, 4]); else ctx.setLineDash([]);
+    ctx.beginPath();
+    ds.data.forEach((d, i) => {
+      const x = pad.left + (d.epoch / maxEpoch) * plotW;
+      const y = pad.top + (1 - (d.value - yMin) / (yMax - yMin)) * plotH;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  });
+  ctx.setLineDash([]);
+}
+
+function accData(metrics, key) {
+  return metrics.map(m => ({epoch: m.epoch, value: m[key]}));
+}
+
+function lossData(metrics, key) {
+  return metrics.map(m => ({epoch: m.epoch, value: m[key]}));
+}
+
+function gapData(metrics) {
+  return metrics.map(m => ({epoch: m.epoch, value: m.train_acc - m.test_acc}));
+}
+
+function fmt_pct(v) { return (v * 100).toFixed(1) + '%'; }
+function fmt_loss(v) { return v.toFixed(3); }
+function fmt_gap(v) { return (v * 100).toFixed(1) + '%'; }
+
+function drawAll() {
+  // Accuracy charts
+  drawLineChart('acc-standard', [
+    {data: accData(DATA.standard.adam, 'test_acc'), color: '#58a6ff', dashed: false},
+    {data: accData(DATA.standard.adam, 'train_acc'), color: '#58a6ff', dashed: true},
+    {data: accData(DATA.standard.ours, 'test_acc'), color: '#7ee787', dashed: false},
+    {data: accData(DATA.standard.ours, 'train_acc'), color: '#7ee787', dashed: true},
+  ], 'accuracy', 0.88, 1.0, fmt_pct);
+
+  drawLineChart('acc-noisy', [
+    {data: accData(DATA.noisy.adam, 'test_acc'), color: '#58a6ff', dashed: false},
+    {data: accData(DATA.noisy.adam, 'train_acc'), color: '#58a6ff', dashed: true},
+    {data: accData(DATA.noisy.ours, 'test_acc'), color: '#7ee787', dashed: false},
+    {data: accData(DATA.noisy.ours, 'train_acc'), color: '#7ee787', dashed: true},
+  ], 'accuracy', 0.88, 1.0, fmt_pct);
+
+  drawLineChart('acc-random', [
+    {data: accData(DATA.random.adam, 'test_acc'), color: '#58a6ff', dashed: false},
+    {data: accData(DATA.random.adam, 'train_acc'), color: '#58a6ff', dashed: true},
+    {data: accData(DATA.random.ours, 'test_acc'), color: '#7ee787', dashed: false},
+    {data: accData(DATA.random.ours, 'train_acc'), color: '#7ee787', dashed: true},
+  ], 'accuracy', 0.0, 0.2, fmt_pct);
+
+  // Loss charts
+  drawLineChart('loss-standard', [
+    {data: lossData(DATA.standard.adam, 'test_loss'), color: '#58a6ff', dashed: false},
+    {data: lossData(DATA.standard.adam, 'train_loss'), color: '#58a6ff', dashed: true},
+    {data: lossData(DATA.standard.ours, 'test_loss'), color: '#7ee787', dashed: false},
+    {data: lossData(DATA.standard.ours, 'train_loss'), color: '#7ee787', dashed: true},
+  ], 'loss', 0, 0.25, fmt_loss);
+
+  drawLineChart('loss-noisy', [
+    {data: lossData(DATA.noisy.adam, 'test_loss'), color: '#58a6ff', dashed: false},
+    {data: lossData(DATA.noisy.adam, 'train_loss'), color: '#58a6ff', dashed: true},
+    {data: lossData(DATA.noisy.ours, 'test_loss'), color: '#7ee787', dashed: false},
+    {data: lossData(DATA.noisy.ours, 'train_loss'), color: '#7ee787', dashed: true},
+  ], 'loss', 0, 0.35, fmt_loss);
+
+  drawLineChart('loss-random', [
+    {data: lossData(DATA.random.adam, 'test_loss'), color: '#58a6ff', dashed: false},
+    {data: lossData(DATA.random.adam, 'train_loss'), color: '#58a6ff', dashed: true},
+    {data: lossData(DATA.random.ours, 'test_loss'), color: '#7ee787', dashed: false},
+    {data: lossData(DATA.random.ours, 'train_loss'), color: '#7ee787', dashed: true},
+  ], 'loss', 2.22, 2.36, fmt_loss);
+
+  // Gap charts
+  drawLineChart('gap-standard', [
+    {data: gapData(DATA.standard.adam), color: '#58a6ff', dashed: false},
+    {data: gapData(DATA.standard.ours), color: '#7ee787', dashed: false},
+  ], 'gap', -0.01, 0.04, fmt_gap);
+
+  drawLineChart('gap-noisy', [
+    {data: gapData(DATA.noisy.adam), color: '#58a6ff', dashed: false},
+    {data: gapData(DATA.noisy.ours), color: '#7ee787', dashed: false},
+  ], 'gap', -0.01, 0.04, fmt_gap);
+
+  drawLineChart('gap-random', [
+    {data: gapData(DATA.random.adam), color: '#58a6ff', dashed: false},
+    {data: gapData(DATA.random.ours), color: '#7ee787', dashed: false},
+  ], 'gap', -0.08, 0.06, fmt_gap);
+}
+
+drawAll();
+window.addEventListener('resize', drawAll);
+</script>
+</body>
+</html>
