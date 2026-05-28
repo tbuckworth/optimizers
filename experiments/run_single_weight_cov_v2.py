@@ -89,6 +89,16 @@ def evaluate(model, loader, device):
     return correct / total, total_loss / total
 
 
+def make_base_optimizer(name, params, lr):
+    if name == "adam":
+        return torch.optim.Adam(params, lr=lr)
+    elif name == "sgd":
+        return torch.optim.SGD(params, lr=lr)
+    elif name == "sgdm":
+        return torch.optim.SGD(params, lr=lr, momentum=0.9)
+    raise ValueError(f"Unknown base optimizer: {name}")
+
+
 def run(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.manual_seed(args.seed)
@@ -118,8 +128,12 @@ def run(args):
     }]
     t_start = time.time()
 
-    if args.mode == "adam":
-        optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+    if args.mode in ("adam", "baseline"):
+        if args.mode == "adam":
+            optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+        else:
+            optimizer = make_base_optimizer(args.base_optimizer,
+                                           model.parameters(), args.lr)
         for epoch in range(args.epochs):
             model.train()
             for x, y in train_loader:
@@ -140,7 +154,8 @@ def run(args):
                   f"loss={train_loss:.4f} ({time.time()-t_start:.0f}s)")
 
     elif args.mode == "ours":
-        base_opt = torch.optim.Adam(model.parameters(), lr=args.lr)
+        base_opt = make_base_optimizer(args.base_optimizer,
+                                       model.parameters(), args.lr)
         optimizer = WeightCovarianceFilterV2(
             model, base_opt, rank=args.rank, decay=args.decay,
             warmup=args.warmup, filter_strength=args.filter_strength)
@@ -181,7 +196,9 @@ def run(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["adam", "ours"], required=True)
+    parser.add_argument("--mode", choices=["adam", "ours", "baseline"], required=True)
+    parser.add_argument("--base_optimizer", choices=["adam", "sgd", "sgdm"],
+                        default="adam")
     parser.add_argument("--dataset", choices=["standard", "noisy_mnist", "random_labels"],
                         default="standard")
     parser.add_argument("--lr", type=float, default=1e-3)
