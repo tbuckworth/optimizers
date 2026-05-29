@@ -18,19 +18,31 @@ Filter: rank=200, decay=0.99, warmup=100. "Grok epoch" = first epoch with test_a
 
 ## Three findings
 
-### 1. The filter accelerates grokking when weight decay is present (positive, single-seed)
+### 1. The filter accelerates grokking when weight decay is present (CONFIRMED, 5 seeds)
 
-Filter+AdamW reaches test≥0.9 at epoch **2650** vs the AdamW baseline's **3700** — a ~28%
-speedup — and the transition is sharper:
+Filter+AdamW reaches test≥0.9 substantially earlier than the AdamW baseline, and the
+transition is sharper. Confirmed across 5 seeds with **non-overlapping** distributions:
 
+| Condition | Grok epoch (5 seeds) | Mean ± SD |
+|-----------|---------------------|-----------|
+| AdamW baseline | 3800, 3600, 3700, 3700, 3800 | **3720 ± 84** |
+| Filter + AdamW | 2500, 2600, 2650, 2450, 2550 | **2550 ± 79** |
+| Switch (AdamW→filter @ memorization) | 2300, 2700, 2500, 2450, 2650 | **2520 ± 160** |
+
+Baseline range [3600–3800] vs filter range [2450–2650] — **zero overlap**. Welch
+t = 22.7, Δ = 1170 epochs, **31% faster**. This is a large, robust effect, not seed noise.
+
+Transition shape (representative seed):
 ```
 baseline:     ep3000 test=0.04 → ep3250 0.18 → ep3500 0.50 → ep3750 0.95   (~750-epoch ramp)
 filter+adamw: ep2250 test=0.04 → ep2500 0.58 → ep2750 1.00                 (~500-epoch ramp)
 ```
 
-**Caveat: this is one seed.** Grokking timing has high seed-to-seed variance, so the
-~28% number needs 3–5 seeds before we trust the magnitude. The *direction* (filter doesn't
-hurt, plausibly helps) is the safe claim.
+**Switch ≡ filter-from-start (t = 0.4, indistinguishable).** Turning the filter on only
+*after* memorization (epoch ~130) gives the same speedup as running it the whole time. So
+the acceleration is **entirely a post-memorization effect** — the filter does nothing useful
+during the memorization phase; it speeds up the generalization transition that follows. (This
+also rules out "the filter just changes the memorization dynamics" as the explanation.)
 
 ### 2. The filter does NOT substitute for weight decay (clean negative)
 
@@ -79,4 +91,13 @@ set of Fourier features (Nanda et al.). The rank=200 cap is never close to bindi
 - The label-noise robustness story (transient vs persistent under *sampling noise*) is the
   real contribution. Grokking is a different phenomenon (norm pressure under full-batch),
   and we should not over-claim a connection.
-- Next: 3–5 seeds on baseline vs filter+adamw to confirm/kill the acceleration result.
+- The acceleration result is confirmed (5 seeds, t = 22.7). The switch≡from-start finding
+  localizes it to the post-memorization transition.
+
+## Update: multi-seed confirmation (5 seeds)
+
+The single-seed acceleration held up cleanly across 5 seeds (42–46), all with weight decay:
+filter+AdamW groks at 2550 ± 79 vs baseline 3720 ± 84 (31% faster, non-overlapping ranges,
+Welch t = 22.7). The switch variant (plain AdamW until train_acc≥0.99, then enable the
+filter) is statistically identical to filter-from-start (2520 ± 160, t = 0.4 vs filter),
+showing the speedup comes entirely from the generalization phase after memorization.
