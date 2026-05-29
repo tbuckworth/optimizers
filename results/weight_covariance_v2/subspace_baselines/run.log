@@ -745,3 +745,254 @@ Dataset: standard, Input: 784, Params: 235,146, Mode: adam, Device: cuda
   Epoch  11: train=0.2160 test=0.6871 loss=2.1809 (26s)
   Epoch  12: train=0.2175 test=0.6904 loss=2.1745 (28s)
   Epoch  13: train=0.2225 test=0.6413 loss=2.1587 (30s)
+  Epoch  14: train=0.2278 test=0.6419 loss=2.1453 (32s)
+  Epoch  15: train=0.2354 test=0.6073 loss=2.1227 (34s)
+  Epoch  16: train=0.2420 test=0.6262 loss=2.1089 (36s)
+  Epoch  17: train=0.2470 test=0.5774 loss=2.0956 (38s)
+  Epoch  18: train=0.2525 test=0.5535 loss=2.0788 (40s)
+  Epoch  19: train=0.2599 test=0.5343 loss=2.0668 (42s)
+
+Done: 42s. Saved to ../results/weight_covariance_v2/subspace_baselines/adam_n90_s43.json
+Final: train=0.2599 test=0.5343
+=== [30/48] ours_n90_s43 ===
+Dataset: standard, Input: 784, Params: 235,146, Mode: ours, Device: cuda
+  Epoch  -1: train=0.1020 test=0.1102 loss=2.3085 (0s)
+  Epoch   0: train=0.1424 test=0.5033 loss=2.2925 (6s)
+  Epoch   1: train=0.1500 test=0.6029 loss=2.2903 (12s)
+  Epoch   2: train=0.1499 test=0.5485 loss=2.2905 (19s)
+  Epoch   3: train=0.1518 test=0.6009 loss=2.2863 (25s)
+  Epoch   4: train=0.1593 test=0.6677 loss=2.2846 (31s)
+  Epoch   5: train=0.1684 test=0.7587 loss=2.2804 (37s)
+  Epoch   6: train=0.1646 test=0.7257 loss=2.2822 (44s)
+  Epoch   7: train=0.1671 test=0.7259 loss=2.2802 (50s)
+  Epoch   8: train=0.1703 test=0.7595 loss=2.2783 (56s)
+  Epoch   9: train=0.1627 test=0.7070 loss=2.2806 (62s)
+  Epoch  10: train=0.1723 test=0.7887 loss=2.2771 (69s)
+  Epoch  11: train=0.1667 test=0.7274 loss=2.2802 (75s)
+  Epoch  12: train=0.1714 test=0.7774 loss=2.2773 (82s)
+  Epoch  13: train=0.1680 test=0.7480 loss=2.2781 (88s)
+  Epoch  14: train=0.1709 test=0.7766 loss=2.2775 (94s)
+  Epoch  15: train=0.1720 test=0.7940 loss=2.2774 (100s)
+  Epoch  16: train=0.1750 test=0.8161 loss=2.2746 (106s)
+  Epoch  17: train=0.1715 test=0.7735 loss=2.2775 (113s)
+  Epoch  18: train=0.1704 test=0.7561 loss=2.2775 (119s)
+  Epoch  19: train=0.1746 test=0.7969 loss=2.2783 (125s)
+
+Done: 125s. Saved to ../results/weight_covariance_v2/subspace_baselines/ours_n90_s43.json
+Final: train=0.1746 test=0.7969
+=== [31/48] random_subspace_n90_s43 ===
+Dataset: standard, Input: 784, Params: 235,146, Mode: random_subspace, Device: cuda
+  Epoch  -1: train=0.1020 test=0.1102 loss=2.3085 (0s)
+  Epoch   0: train=0.1468 test=0.5479 loss=2.2915 (4s)
+  Epoch   1: train=0.1504 test=0.5798 loss=2.2897 (6s)
+  Epoch   2: train=0.1484 test=0.5638 loss=2.2896 (8s)
+  Epoch   3: train=0.1510 test=0.5743 loss=2.2894 (11s)
+  Epoch   4: train=0.1519 test=0.5965 loss=2.2884 (13s)
+  Epoch   5: train=0.1492 test=0.5594 loss=2.2890 (16s)
+  Epoch   6: train=0.1522 test=0.5676 loss=2.2876 (18s)
+  Epoch   7: train=0.1535 test=0.5947 loss=2.2878 (20s)
+  Epoch   8: train=0.1504 test=0.5740 loss=2.2891 (22s)
+  Epoch   9: train=0.1517 test=0.5837 loss=2.2883 (24s)
+  Epoch  10: train=0.1494 test=0.5607 loss=2.2879 (27s)
+  Epoch  11: train=0.1498 test=0.5815 loss=2.2878 (29s)
+  Epoch  12: train=0.1517 test=0.5698 loss=2.2873 (31s)
+  Epoch  13: train=0.1517 test=0.5707 loss=2.2870 (33s)
+  Epoch  14: train=0.1498 test=0.5469 loss=2.2883 (36s)
+  Epoch  15: train=0.1495 test=0.5589 loss=2.2887 (38s)
+  Epoch  16: train=0.1534 test=0.5904 loss=2.2869 (40s)
+  Epoch  17: train=0.1530 test=0.5902 loss=2.2878 (42s)
+  Epoch  18: train=0.1515 test=0.5760 loss=2.2874 (44s)
+  Epoch  19: train=0.1511 test=0.5735 loss=2.2876 (47s)
+
+Done: 47s. Saved to ../results/weight_covariance_v2/subspace_baselines/random_subspace_n90_s43.json
+Final: train=0.1511 test=0.5735
+=== [32/48] lora_n90_s43 ===
+Dataset: standard, Input: 784, Params: 282,094, Mode: lora, Device: cuda
+  Epoch  -1: train=0.1056 test=0.1230 loss=2.3055 (0s)
+  Epoch   0: train=0.1696 test=0.7696 loss=2.2771 (3s)
+  Epoch   1: train=0.1665 test=0.6953 loss=2.2763 (6s)
+  Epoch   2: train=0.1718 test=0.7389 loss=2.2718 (8s)
+  Epoch   3: train=0.1777 test=0.7752 loss=2.2669 (11s)
+  Epoch   4: train=0.1822 test=0.8075 loss=2.2624 (14s)
+  Epoch   5: train=0.1830 test=0.7994 loss=2.2568 (17s)
+  Epoch   6: train=0.1842 test=0.7694 loss=2.2556 (19s)
+  Epoch   7: train=0.1846 test=0.7445 loss=2.2546 (22s)
+  Epoch   8: train=0.1890 test=0.7906 loss=2.2434 (25s)
+  Epoch   9: train=0.1915 test=0.7677 loss=2.2385 (28s)
+  Epoch  10: train=0.1945 test=0.7599 loss=2.2289 (31s)
+  Epoch  11: train=0.1962 test=0.7509 loss=2.2285 (34s)
+  Epoch  12: train=0.1950 test=0.6956 loss=2.2215 (37s)
+  Epoch  13: train=0.2042 test=0.7229 loss=2.2053 (40s)
+  Epoch  14: train=0.2070 test=0.6954 loss=2.1973 (43s)
+  Epoch  15: train=0.2115 test=0.6733 loss=2.1923 (46s)
+  Epoch  16: train=0.2157 test=0.6208 loss=2.1815 (48s)
+  Epoch  17: train=0.2223 test=0.6366 loss=2.1658 (51s)
+  Epoch  18: train=0.2210 test=0.6145 loss=2.1663 (54s)
+  Epoch  19: train=0.2304 test=0.5807 loss=2.1494 (57s)
+
+Done: 57s. Saved to ../results/weight_covariance_v2/subspace_baselines/lora_n90_s43.json
+Final: train=0.2304 test=0.5807
+=== [33/48] adam_n0_s44 ===
+Dataset: standard, Input: 784, Params: 235,146, Mode: adam, Device: cuda
+  Epoch  -1: train=0.0857 test=0.0850 loss=2.3218 (0s)
+  Epoch   0: train=0.9675 test=0.9613 loss=0.1074 (2s)
+  Epoch   1: train=0.9798 test=0.9724 loss=0.0653 (4s)
+  Epoch   2: train=0.9859 test=0.9765 loss=0.0441 (6s)
+  Epoch   3: train=0.9863 test=0.9743 loss=0.0399 (8s)
+  Epoch   4: train=0.9872 test=0.9715 loss=0.0384 (10s)
+  Epoch   5: train=0.9925 test=0.9772 loss=0.0220 (12s)
+  Epoch   6: train=0.9946 test=0.9833 loss=0.0169 (14s)
+  Epoch   7: train=0.9929 test=0.9776 loss=0.0223 (16s)
+  Epoch   8: train=0.9943 test=0.9792 loss=0.0164 (18s)
+  Epoch   9: train=0.9952 test=0.9794 loss=0.0154 (20s)
+  Epoch  10: train=0.9943 test=0.9789 loss=0.0157 (22s)
+  Epoch  11: train=0.9948 test=0.9788 loss=0.0151 (24s)
+  Epoch  12: train=0.9963 test=0.9810 loss=0.0103 (26s)
+  Epoch  13: train=0.9976 test=0.9796 loss=0.0079 (28s)
+  Epoch  14: train=0.9887 test=0.9727 loss=0.0400 (31s)
+  Epoch  15: train=0.9962 test=0.9798 loss=0.0125 (33s)
+  Epoch  16: train=0.9977 test=0.9811 loss=0.0077 (35s)
+  Epoch  17: train=0.9963 test=0.9771 loss=0.0124 (37s)
+  Epoch  18: train=0.9977 test=0.9813 loss=0.0072 (39s)
+  Epoch  19: train=0.9964 test=0.9797 loss=0.0117 (41s)
+
+Done: 41s. Saved to ../results/weight_covariance_v2/subspace_baselines/adam_n0_s44.json
+Final: train=0.9964 test=0.9797
+=== [34/48] ours_n0_s44 ===
+Dataset: standard, Input: 784, Params: 235,146, Mode: ours, Device: cuda
+  Epoch  -1: train=0.0857 test=0.0850 loss=2.3218 (0s)
+  Epoch   0: train=0.9284 test=0.9302 loss=0.2349 (6s)
+  Epoch   1: train=0.9364 test=0.9346 loss=0.2163 (13s)
+  Epoch   2: train=0.9441 test=0.9423 loss=0.1855 (19s)
+  Epoch   3: train=0.9531 test=0.9535 loss=0.1571 (25s)
+  Epoch   4: train=0.9481 test=0.9413 loss=0.1718 (31s)
+  Epoch   5: train=0.9572 test=0.9534 loss=0.1419 (38s)
+  Epoch   6: train=0.9632 test=0.9590 loss=0.1298 (43s)
+  Epoch   7: train=0.9646 test=0.9603 loss=0.1241 (50s)
+  Epoch   8: train=0.9599 test=0.9568 loss=0.1359 (56s)
+  Epoch   9: train=0.9698 test=0.9660 loss=0.1075 (62s)
+  Epoch  10: train=0.9676 test=0.9598 loss=0.1152 (68s)
+  Epoch  11: train=0.9718 test=0.9664 loss=0.0999 (75s)
+  Epoch  12: train=0.9698 test=0.9623 loss=0.1016 (81s)
+  Epoch  13: train=0.9706 test=0.9645 loss=0.1030 (87s)
+  Epoch  14: train=0.9743 test=0.9662 loss=0.0920 (93s)
+  Epoch  15: train=0.9797 test=0.9711 loss=0.0763 (100s)
+  Epoch  16: train=0.9754 test=0.9692 loss=0.0837 (106s)
+  Epoch  17: train=0.9767 test=0.9696 loss=0.0815 (112s)
+  Epoch  18: train=0.9812 test=0.9719 loss=0.0706 (118s)
+  Epoch  19: train=0.9803 test=0.9749 loss=0.0689 (124s)
+
+Done: 124s. Saved to ../results/weight_covariance_v2/subspace_baselines/ours_n0_s44.json
+Final: train=0.9803 test=0.9749
+=== [35/48] random_subspace_n0_s44 ===
+Dataset: standard, Input: 784, Params: 235,146, Mode: random_subspace, Device: cuda
+  Epoch  -1: train=0.0857 test=0.0850 loss=2.3218 (0s)
+  Epoch   0: train=0.7464 test=0.7515 loss=0.7941 (3s)
+  Epoch   1: train=0.7516 test=0.7584 loss=0.7716 (6s)
+  Epoch   2: train=0.7577 test=0.7640 loss=0.7593 (8s)
+  Epoch   3: train=0.7605 test=0.7621 loss=0.7487 (11s)
+  Epoch   4: train=0.7569 test=0.7574 loss=0.7564 (13s)
+  Epoch   5: train=0.7589 test=0.7639 loss=0.7448 (16s)
+  Epoch   6: train=0.7636 test=0.7636 loss=0.7395 (18s)
+  Epoch   7: train=0.7639 test=0.7659 loss=0.7352 (21s)
+  Epoch   8: train=0.7664 test=0.7685 loss=0.7336 (23s)
+  Epoch   9: train=0.7688 test=0.7731 loss=0.7293 (25s)
+  Epoch  10: train=0.7719 test=0.7762 loss=0.7253 (28s)
+  Epoch  11: train=0.7728 test=0.7779 loss=0.7152 (30s)
+  Epoch  12: train=0.7728 test=0.7778 loss=0.7194 (32s)
+  Epoch  13: train=0.7725 test=0.7756 loss=0.7178 (34s)
+  Epoch  14: train=0.7724 test=0.7797 loss=0.7146 (37s)
+  Epoch  15: train=0.7728 test=0.7794 loss=0.7123 (39s)
+  Epoch  16: train=0.7769 test=0.7811 loss=0.7075 (42s)
+  Epoch  17: train=0.7746 test=0.7785 loss=0.7079 (44s)
+  Epoch  18: train=0.7764 test=0.7800 loss=0.7066 (46s)
+  Epoch  19: train=0.7755 test=0.7812 loss=0.7086 (49s)
+
+Done: 49s. Saved to ../results/weight_covariance_v2/subspace_baselines/random_subspace_n0_s44.json
+Final: train=0.7755 test=0.7812
+=== [36/48] lora_n0_s44 ===
+Dataset: standard, Input: 784, Params: 282,094, Mode: lora, Device: cuda
+  Epoch  -1: train=0.1213 test=0.1273 loss=2.3041 (0s)
+  Epoch   0: train=0.9362 test=0.9338 loss=0.2055 (3s)
+  Epoch   1: train=0.9607 test=0.9567 loss=0.1254 (6s)
+  Epoch   2: train=0.9663 test=0.9603 loss=0.1077 (9s)
+  Epoch   3: train=0.9734 test=0.9636 loss=0.0857 (11s)
+  Epoch   4: train=0.9752 test=0.9654 loss=0.0770 (14s)
+  Epoch   5: train=0.9813 test=0.9701 loss=0.0581 (17s)
+  Epoch   6: train=0.9767 test=0.9678 loss=0.0707 (20s)
+  Epoch   7: train=0.9822 test=0.9693 loss=0.0529 (22s)
+  Epoch   8: train=0.9866 test=0.9742 loss=0.0408 (25s)
+  Epoch   9: train=0.9842 test=0.9711 loss=0.0470 (28s)
+  Epoch  10: train=0.9837 test=0.9692 loss=0.0467 (31s)
+  Epoch  11: train=0.9870 test=0.9737 loss=0.0415 (34s)
+  Epoch  12: train=0.9861 test=0.9721 loss=0.0416 (36s)
+  Epoch  13: train=0.9919 test=0.9748 loss=0.0250 (39s)
+  Epoch  14: train=0.9924 test=0.9775 loss=0.0230 (42s)
+  Epoch  15: train=0.9925 test=0.9763 loss=0.0240 (44s)
+  Epoch  16: train=0.9908 test=0.9744 loss=0.0275 (47s)
+  Epoch  17: train=0.9929 test=0.9761 loss=0.0205 (50s)
+  Epoch  18: train=0.9916 test=0.9744 loss=0.0259 (52s)
+  Epoch  19: train=0.9949 test=0.9777 loss=0.0161 (55s)
+
+Done: 55s. Saved to ../results/weight_covariance_v2/subspace_baselines/lora_n0_s44.json
+Final: train=0.9949 test=0.9777
+=== [37/48] adam_n20_s44 ===
+Dataset: standard, Input: 784, Params: 235,146, Mode: adam, Device: cuda
+  Epoch  -1: train=0.0875 test=0.0850 loss=2.3201 (0s)
+  Epoch   0: train=0.7827 test=0.9535 loss=0.9992 (2s)
+  Epoch   1: train=0.7946 test=0.9676 loss=0.9505 (5s)
+  Epoch   2: train=0.7990 test=0.9699 loss=0.9188 (7s)
+  Epoch   3: train=0.8030 test=0.9723 loss=0.8987 (9s)
+  Epoch   4: train=0.8052 test=0.9717 loss=0.8773 (11s)
+  Epoch   5: train=0.8068 test=0.9716 loss=0.8657 (14s)
+  Epoch   6: train=0.8105 test=0.9717 loss=0.8364 (16s)
+  Epoch   7: train=0.8125 test=0.9702 loss=0.8117 (18s)
+  Epoch   8: train=0.8134 test=0.9683 loss=0.7894 (20s)
+  Epoch   9: train=0.8160 test=0.9676 loss=0.7646 (22s)
+  Epoch  10: train=0.8198 test=0.9658 loss=0.7374 (24s)
+  Epoch  11: train=0.8228 test=0.9581 loss=0.7135 (26s)
+  Epoch  12: train=0.8266 test=0.9620 loss=0.6841 (29s)
+  Epoch  13: train=0.8314 test=0.9540 loss=0.6512 (31s)
+  Epoch  14: train=0.8355 test=0.9547 loss=0.6281 (33s)
+  Epoch  15: train=0.8397 test=0.9462 loss=0.6026 (35s)
+  Epoch  16: train=0.8459 test=0.9371 loss=0.5861 (37s)
+  Epoch  17: train=0.8511 test=0.9390 loss=0.5554 (39s)
+  Epoch  18: train=0.8525 test=0.9384 loss=0.5368 (41s)
+  Epoch  19: train=0.8605 test=0.9255 loss=0.5115 (43s)
+
+Done: 43s. Saved to ../results/weight_covariance_v2/subspace_baselines/adam_n20_s44.json
+Final: train=0.8605 test=0.9255
+=== [38/48] ours_n20_s44 ===
+Dataset: standard, Input: 784, Params: 235,146, Mode: ours, Device: cuda
+  Epoch  -1: train=0.0875 test=0.0850 loss=2.3201 (0s)
+  Epoch   0: train=0.7482 test=0.9127 loss=1.1130 (6s)
+  Epoch   1: train=0.7560 test=0.9211 loss=1.1012 (13s)
+  Epoch   2: train=0.7600 test=0.9286 loss=1.0762 (19s)
+  Epoch   3: train=0.7602 test=0.9331 loss=1.0711 (25s)
+  Epoch   4: train=0.7495 test=0.9140 loss=1.0989 (32s)
+  Epoch   5: train=0.7635 test=0.9350 loss=1.0600 (38s)
+  Epoch   6: train=0.7737 test=0.9460 loss=1.0448 (44s)
+  Epoch   7: train=0.7643 test=0.9318 loss=1.0706 (51s)
+  Epoch   8: train=0.7663 test=0.9335 loss=1.0735 (57s)
+  Epoch   9: train=0.7722 test=0.9431 loss=1.0396 (63s)
+  Epoch  10: train=0.7699 test=0.9416 loss=1.0605 (70s)
+  Epoch  11: train=0.7778 test=0.9482 loss=1.0249 (76s)
+  Epoch  12: train=0.7712 test=0.9377 loss=1.0381 (82s)
+  Epoch  13: train=0.7735 test=0.9427 loss=1.0376 (89s)
+  Epoch  14: train=0.7780 test=0.9511 loss=1.0235 (95s)
+  Epoch  15: train=0.7755 test=0.9473 loss=1.0320 (102s)
+  Epoch  16: train=0.7774 test=0.9481 loss=1.0246 (108s)
+  Epoch  17: train=0.7792 test=0.9536 loss=1.0250 (115s)
+  Epoch  18: train=0.7763 test=0.9440 loss=1.0312 (121s)
+  Epoch  19: train=0.7774 test=0.9479 loss=1.0250 (127s)
+
+Done: 127s. Saved to ../results/weight_covariance_v2/subspace_baselines/ours_n20_s44.json
+Final: train=0.7774 test=0.9479
+=== [39/48] random_subspace_n20_s44 ===
+Dataset: standard, Input: 784, Params: 235,146, Mode: random_subspace, Device: cuda
+  Epoch  -1: train=0.0875 test=0.0850 loss=2.3201 (0s)
+  Epoch   0: train=0.6052 test=0.7330 loss=1.4509 (4s)
+  Epoch   1: train=0.6150 test=0.7480 loss=1.4269 (6s)
+  Epoch   2: train=0.6216 test=0.7597 loss=1.4186 (8s)
+  Epoch   3: train=0.6232 test=0.7618 loss=1.4153 (11s)
+  Epoch   4: train=0.6233 test=0.7663 loss=1.4138 (13s)
