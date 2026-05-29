@@ -94,10 +94,11 @@ set of Fourier features (Nanda et al.). The rank=200 cap is never close to bindi
 - The acceleration result is confirmed (5 seeds, t = 22.7). The switch≡from-start finding
   localizes it to the post-memorization transition.
 
-## Update: multi-seed confirmation (5 seeds)
+## Provenance
 
-The single-seed acceleration held up cleanly across 5 seeds (42–46), all with weight decay:
-filter+AdamW groks at 2550 ± 79 vs baseline 3720 ± 84 (31% faster, non-overlapping ranges,
-Welch t = 22.7). The switch variant (plain AdamW until train_acc≥0.99, then enable the
-filter) is statistically identical to filter-from-start (2520 ± 160, t = 0.4 vs filter),
-showing the speedup comes entirely from the generalization phase after memorization.
+- Single-seed exploratory matrix: `results/grokking_v2/` (5 conditions incl. no-wd controls).
+- Multi-seed confirmation: `results/grokking_v2_seeds/` (3 wd=1.0 conditions × 5 seeds).
+- Code: `experiments/run_grokking.py` (weightcov + `--switch_at`), launch scripts
+  `experiments/launch_grokking_v2.sh` and `launch_grokking_v2_seeds.sh`.
+- Visualizations: `research/grokking_v2_viz.html` (single-seed curves + effective rank),
+  `research/grokking_v2_seeds_viz.html` (strip plot + per-seed curves).
