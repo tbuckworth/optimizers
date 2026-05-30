@@ -1,0 +1,37 @@
+{
+  "baseline": {
+    "clean": 0.9232000112533569,
+    "asr": 0.9988913536071777
+  },
+  "ablate_init": {
+    "clean": 0.9039000272750854,
+    "asr": 0.08048780262470245
+  },
+  "ablate_online": {
+    "clean": 0.9097999930381775,
+    "asr": 0.16651885211467743
+  },
+  "ablate_eig": {
+    "clean": 0.7071999907493591,
+    "asr": 0.09800443798303604
+  },
+  "ablate_random": {
+    "clean": 0.92330002784729,
+    "asr": 0.9988913536071777
+  },
+  "cos(init_probe, known_trigger)": 0.0,
+  "frac_probe_energy_on_trigger_cols": 0.238,
+  "top_eig_index": 9,
+  "top_eig_alignment": 0.487,
+  "top5_eig_alignments": [
+    0.487,
+    0.487,
+    0.389,
+    0.354,
+    0.23
+  ],
+  "energy_in_top10_eig": 0.847,
+  "cos(v_eig, known_trigger)": 0.0,
+  "poison_frac": 0.10203333333333334,
+  "target": 0
+}

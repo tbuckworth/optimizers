@@ -1,0 +1,72 @@
+# Targeted Gradient-Direction Ablation: Preventing a Backdoor
+
+Tests the idea: *identify the "reward-hack" gradient direction from a labeled probe set
+and ablate it during training to stop the model learning the bad behavior — while keeping
+the good behavior.* Done on a controllable proxy where we know the ground truth.
+
+## Setup
+
+Linear softmax classifier on MNIST (so directions are visualizable). 10% of training images
+get a 3×3 corner **trigger** patch and their label flipped to **target class 0** — a backdoor
+(`trigger → 0`). Two metrics:
+- **clean accuracy** on untriggered test images (the legitimate task),
+- **attack success rate (ASR)**: fraction of triggered non-target test images classified as 0
+  (the backdoor strength).
+
+The backdoor direction is estimated as the **mean gradient over triggered images** (all labeled 0).
+Their digit content is random, so it averages out and the shared **trigger → 0** direction survives
+by consensus — exactly our mechanism. Crucially it must be estimated *while the gradient still points
+toward learning the backdoor* (at init / online), not at convergence where it vanishes.
+
+## Result
+
+| Condition | clean acc | ASR (backdoor) | clean drop |
+|-----------|----------:|---------------:|-----------:|
+| baseline (no ablation) | 92.3% | **99.9%** | — |
+| **ablate_init** (static probe direction) | 90.4% | **8.0%** | −1.9 |
+| **ablate_online** (re-estimate each epoch, EMA — the drift-tracking idea) | 91.0% | **16.7%** | −1.3 |
+| ablate_eig (project out top covariance eigenvector) | **70.7%** | 9.8% | **−21.6** |
+| ablate_random (control) | 92.3% | 99.9% | −0.0 |
+
+## Three findings
+
+**1. Targeted ablation works.** Projecting the supervised backdoor direction out of the gradient
+each step drops ASR from 99.9% to **8–17%** while costing only **1–2%** clean accuracy. The
+**online** version — re-estimating the direction every epoch and EMA-smoothing it, i.e. tracking
+the drifting target — works and best preserves clean accuracy. This validates the core proposal.
+
+**2. But NOT via the covariance eigenvector.** Ablating the single top eigenvector also kills the
+backdoor but **destroys clean accuracy (−21.6%)**. Why: the backdoor direction is only ~0.49 aligned
+with the top eigenvector and is **spread across ~3 top eigenvectors that are entangled with genuine
+class-structure signal**. Removing an eigenvector removes real capability with it. The right tool is
+the **supervised probe direction itself** (24% of its energy sits on 1.1% of weights — the trigger),
+not the nearest eigenvector. *This is the entanglement risk, confirmed empirically.*
+
+**3. The conceptual payoff — two regimes.** This cleanly separates what the gradient-covariance
+filter can and cannot do:
+
+- **Incoherent noise** (random label noise, sample-specific memorization) lives in the **low-eigenvalue
+  tail** → removed by "project onto top-k". This is our noise-robustness result.
+- **Coherent hacks** (backdoor, reward-hack, misaligned persona) are a **consensus** signal that lives
+  in the **top eigenvectors** → "project onto top-k" would **preserve or amplify** them, not remove them.
+  To remove a coherent hack you need a **supervised direction projected out**, regardless of its
+  eigenvalue rank.
+
+This is the "consensus amplifier" picture made precise: the filter amplifies whatever is coherent.
+A backdoor is coherent, so the filter alone can't defend against it — but a supervised, **online-tracked**
+direction-ablation can, cheaply and surgically. Directly informs the emergent-misalignment direction:
+expect the filter to *not* fix EM; expect targeted online ablation of the misalignment direction to.
+
+## Caveats / next
+
+- Linear model, single seed, single trigger, MNIST. The clean separation may blur in deep nets where
+  the trigger direction is less isolated.
+- The "known trigger" cosine metric was dropped — `known` as a class-uniform vector is orthogonal to the
+  (class-contrast) backdoor gradient by construction; energy-on-trigger-columns (0.24) + the visualization
+  (trigger patch clearly lit) are the right validations.
+- Next: (a) sweep poison fraction and ablate top-m directions; (b) deep CNN + image trigger;
+  (c) the real test — does online ablation of the *misalignment* direction prevent emergent misalignment
+  in an LLM fine-tune (deferred until supervised).
+
+Code: `experiments/backdoor_ablation.py`. Results: `results/weight_covariance_v2/backdoor_ablation/`.
+Related exploratory run (single-pixel shortcut, surfaced the entanglement): `experiments/shortcut_ablation.py`.
