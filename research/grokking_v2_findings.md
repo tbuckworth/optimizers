@@ -94,6 +94,37 @@ set of Fourier features (Nanda et al.). The rank=200 cap is never close to bindi
 - The acceleration result is confirmed (5 seeds, t = 22.7). The switch≡from-start finding
   localizes it to the post-memorization transition.
 
+## Sparse parity: the filter DELAYS grokking (the opposite result)
+
+Tested a second algorithmic task — (n=40, k=3) sparse parity (Barak 2022), train_size=2000,
+wd=1.0, 3 seeds. Grokking regime confirmed (train_size=1000 never generalizes; ≥2000 groks).
+
+| Condition | Grok epoch (3 seeds) | Mean ± SD |
+|-----------|---------------------:|----------:|
+| AdamW | 650, 750, 750 | **717 ± 58** |
+| Filter + AdamW | 2150, 2050, 2000 | **2067 ± 76** |
+
+The filter makes grokking **~3× slower** (Welch t = −24.4) — the *opposite* of the 31%
+acceleration on modular addition. It still groks (reaches test=1.0), just much later.
+
+**Why the opposite — and why it's consistent.** The filter amplifies the dominant *consensus*
+gradient direction. Whether that helps grokking depends on whether the generalizing solution
+*is* the consensus:
+- **Modular addition**: the generalizing Fourier circuit is a global structure many examples
+  agree on → it's the consensus → the filter amplifies it → grokking accelerates.
+- **Sparse parity**: generalization requires finding 3 specific bits among 40 — a **weak, sparse**
+  signal. Early on, the consensus is dominated by *memorizing* the 2000 training examples, not the
+  sparse feature. The filter projects onto that memorization consensus and **suppresses the weak
+  sparse signal** → grokking is delayed.
+
+So "the filter accelerates grokking" is **task-dependent, and the dependence is interpretable**:
+it accelerates when generalization aligns with the gradient consensus, and *delays* it when
+generalization needs a weak signal the consensus drowns out. This is the same consensus-amplifier
+mechanism as everywhere else — it cuts both ways. (Honest framing: the modular-addition acceleration
+is real but should not be over-generalized to "speeds up grokking" in the abstract.)
+
+Provenance: `experiments/sparse_parity.py`, `results/sparse_parity_grok/`, `parity_grok.png`.
+
 ## Provenance
 
 - Single-seed exploratory matrix: `results/grokking_v2/` (5 conditions incl. no-wd controls).
