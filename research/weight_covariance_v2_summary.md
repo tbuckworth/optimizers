@@ -143,6 +143,42 @@ variant **holds within ~5 points** and ours_r200 finishes **40+ points ahead**. 
 
 ---
 
+## 5b. Targeted ablation & the two regimes (see `targeted_ablation_findings.md`)
+
+Tested whether we can *find and remove* a specific "reward-hack" direction. Controllable proxy:
+a backdoor on linear MNIST (10% poisoned, trigger → class 0). The backdoor direction is the
+mean gradient over triggered images (their content averages out; the trigger→T mapping survives
+by consensus).
+
+| Condition | clean | ASR (backdoor) |
+|-----------|------:|---------------:|
+| baseline | 92.3% | 99.9% |
+| ablate_init (static supervised dir) | 90.4% | **8.0%** |
+| ablate_online (drift-tracked, EMA) | 91.0% | **16.7%** |
+| ablate_eig (top covariance eigenvector) | **70.7%** | 9.8% |
+| ablate_random | 92.3% | 99.9% |
+
+- **Targeted ablation works**: removing the supervised backdoor direction (best: online/EMA-tracked)
+  drops attack success 99.9%→8–17% at ~1–2% clean-accuracy cost.
+- **But NOT via the eigenvector**: the backdoor is only ~0.49 aligned with the top eigenvector and
+  smears across ~3 that also carry class signal → ablating an eigenvector costs −22% clean. Use the
+  supervised direction directly.
+- **The two regimes** (the key conceptual result): *incoherent* noise (label noise, sample-specific
+  memorization) lives in the **low-eigenvalue tail** → "project onto top-k" removes it. *Coherent*
+  hacks (backdoor, reward-hack, misaligned persona) are a **consensus** signal in the **top**
+  eigenvectors → the filter would **amplify** them; removal needs a supervised direction projected out.
+  This sharpens the EM prediction: the filter won't fix EM; online ablation of the misalignment
+  direction should.
+
+## 5c. In progress (autonomous)
+
+- **Sparse parity** (`sparse_parity.py`): does the filter accelerate grokking on a second algorithmic
+  task (Barak 2022) as it did on modular addition?
+- **CIFAR-10 label noise** (`run_cifar_noise.py`): first non-MNIST noise test; small CNN; modes
+  adam / ours / **switch** (Adam until train_acc≥0.6, then enable filter — the practical recipe).
+
+---
+
 ## 6. Honest assessment
 
 **What is solid:**
