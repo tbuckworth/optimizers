@@ -170,12 +170,27 @@ by consensus).
   This sharpens the EM prediction: the filter won't fix EM; online ablation of the misalignment
   direction should.
 
-## 5c. In progress (autonomous)
+## 5c. Generalization beyond MNIST (autonomous batch)
 
-- **Sparse parity** (`sparse_parity.py`): does the filter accelerate grokking on a second algorithmic
-  task (Barak 2022) as it did on modular addition?
-- **CIFAR-10 label noise** (`run_cifar_noise.py`): first non-MNIST noise test; small CNN; modes
-  adam / ours / **switch** (Adam until train_acc≥0.6, then enable filter — the practical recipe).
+**Sparse parity (grokking, second algorithmic task).** The filter **delays** grokking ~3×
+(adamw @717 vs ours @2067, t=−24.4) — the *opposite* of modular addition. Consistent with the
+consensus-amplifier mechanism: parity's generalizing solution is a weak sparse signal the
+*memorization* consensus drowns out, so amplifying consensus delays it. "Accelerates grokking" is
+therefore task-dependent. See `grokking_v2_findings.md`.
+
+**CIFAR-10 label noise (first non-MNIST noise test, small CNN, 2 seeds).** final% (best%):
+
+| Noise | adam | ours | switch |
+|------:|-----:|-----:|-------:|
+| 0% | **74.2** (75.6) | 68.1 (69.6) | 68.4 (69.4) |
+| 40% | 43.1 (66.6) | **61.6** (63.4) | 58.7 (67.4) |
+| 80% | 18.8 (44.5) | **42.7** (46.2) | 22.4 (45.7) |
+
+Same story as MNIST, now on a conv net: **adam peaks early then collapses** as it memorizes noise
+(40%: 66.6→43.1; 80%: 44.5→18.8), while **ours holds** (+18.5 at 40%, +24 at 80% final). Clean-data
+cost ~6% (filter slightly too aggressive, as on MNIST). The **switch** recipe gets the highest *peak*
+at 40% (67.4 — fast early Adam learning) but is unreliable at 80% (collapses with Adam — the
+train_acc≥0.6 trigger fires too late at extreme noise; needs tuning). See `results/cifar_noise/`.
 
 ---
 
