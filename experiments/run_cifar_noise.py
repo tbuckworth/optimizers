@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """CIFAR-10 label-noise robustness: first non-MNIST test of the filter.
 
-Small CNN (~1.1M params) on CIFAR-10 with symmetric label noise. Compares:
+Small CNN (~591K params) on CIFAR-10 with symmetric label noise. Compares:
   adam    full Adam (reference)
   ours    filter+Adam from the start
   switch  Adam until train_acc>=THRESH, then enable the filter (the recipe:
