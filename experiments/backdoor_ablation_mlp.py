@@ -25,7 +25,7 @@ import torch.nn.functional as F
 from torch.func import functional_call, vmap, grad
 from torchvision import datasets
 
-SEED = 0; EPOCHS = 15; BATCH = 128; LR = 1e-3; WARMUP_STEPS = 50
+SEED = 0; EPOCHS = 15; BATCH = 128; LR = 1e-3; WARMUP_STEPS = 50  # overridable via --warmup
 POISON_FRAC = 0.10; TARGET = 0; EMA_BETA = 0.5
 DATA_DIR = "./data"; MEAN, STD = 0.1307, 0.3081
 TRIG_IDX = [r * 28 + c for r in range(24, 27) for c in range(24, 27)]
@@ -137,8 +137,11 @@ def train(Xtr, ytr, Xtrig, ytrig, mode, device, persample_n=3, rand_dir=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--persample_n", type=int, default=3)
+    ap.add_argument("--warmup", type=int, default=WARMUP_STEPS)
     ap.add_argument("--save_dir", default="../results/weight_covariance_v2/backdoor_mlp")
     args = ap.parse_args()
+    global WARMUP_STEPS
+    WARMUP_STEPS = args.warmup
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.manual_seed(SEED); np.random.seed(SEED)
 
