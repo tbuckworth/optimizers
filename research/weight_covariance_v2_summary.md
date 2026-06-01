@@ -198,6 +198,32 @@ cost ~6% (filter slightly too aggressive, as on MNIST). The **switch** recipe ge
 at 40% (67.4 — fast early Adam learning) but is unreliable at 80% (collapses with Adam — the
 train_acc≥0.6 trigger fires too late at extreme noise; needs tuning). See `results/cifar_noise/`.
 
+**Effective-rank sweep (the clean-data cost is a rank dial, not a flaw).** The ~6% clean-data cost
+above is because rank 200 starves a 591K-param net (rank/params 0.034% vs 0.085% on the MNIST MLP).
+We swept *effective rank* — raising **rank and decay together**, since decay sets a ceiling on how
+many directions the EMA covariance can hold and rank caps below it. final test %:
+
+| Noise | adam | r200/d.99 (most filtering) | r500/d.997 | r1200/d.999 (least) |
+|------:|-----:|---------------------------:|-----------:|--------------------:|
+| 0% | 73.3 | 66.9 *(underfits)* | 73.2 | **74.2** *(= adam)* |
+| 40% | 44.6 | **59.6** | 64.8 | 46.7 |
+| 80% | 19.4 | **44.1** | 23.8 | 20.0 |
+
+- **Clean fit recovers with effective rank** (0%: 66.9 → 73.2 → 74.2, reaching adam) — confirms the
+  underfitting was a mis-set rank, not a defect.
+- **But it's a tradeoff, no free lunch:** the same capacity that fits clean data lets noise back in.
+  The strongest filter (r200) wins at 40/80% (it refuses to memorize — train stays ~0.2–0.4), while
+  the weakest (r1200/d999) matches adam on clean data but collapses under noise (train climbs to
+  0.88 at 80%). The sweet spot slides with noise level. **Rank and decay are one knob: how many
+  gradient directions are kept.**
+- **Ceiling control (decay 0.99 fixed, rank 200/1000/4000 @ 80% noise):** r1000 ≈ r4000 (both
+  memorize noise, train 0.75/0.59, test ~0.21–0.23) while **r200 differs** (train 0.21, test 0.44).
+  So raising rank *above the decay-set ceiling* is degenerate (r1000=r4000) — but the ceiling in real
+  training sits between 200 and 1000, **higher** than a fixed-batch micro-probe suggested (~100; a
+  repeated batch is rank-deficient and underestimates it). r200 is below the ceiling, so it still
+  filters. See `results/cifar_noise/ranksweep/`, `research/cifar_ranksweep.png`,
+  `experiments/launch_cifar_ranksweep.sh`.
+
 ---
 
 ## 6. Honest assessment
