@@ -196,8 +196,47 @@ grokking — the reverse of the batch-mean filter, which projecting *onto* the t
 directions delays it. Testing this (both project-onto and project-out variants) is the next
 experiment; the rank-B SVD machinery is already derived (`research/rank1_svd_explainer.html` §10).
 
-Provenance: `experiments/sparse_parity.py`, `experiments/modal_sparse_parity.py` (rank
-sweep on Modal A10G), `results/sparse_parity_grok/`, `results/sparse_parity_ranksweep/`,
+### Per-sample (rank-B, uncentered) filter and adaptive rank: also never accelerate
+
+We tested the per-sample decomposition directly (Titus's rank-B idea), in the **uncentered,
+project-onto-top-k** form he specified — track the EMA of the *uncentered second moment of the
+per-sample gradients across examples*, `C = EMA[(1/B)Σ gᵢgᵢᵀ]`, and descend on the batch-mean
+gradient projected onto its top-k. (`experiments/persample_cov_optimizer.py`, rank-B streaming
+SVD validated against brute force to 7e-7.)
+
+| Condition | Grok epoch (3 seeds) | Final test |
+|-----------|---------------------:|-----------:|
+| AdamW | 650/750/750 | 1.00 |
+| per-sample r3 | never ×3 | ~0.49 |
+| per-sample r10 | never ×3 | ~0.49 |
+| per-sample r50 | never ×3 | ~0.50 |
+| per-sample adaptive (99% energy) | never ×3 | ~0.49 |
+| batch-mean adaptive (99% energy) | 2300 / never / never | ~0.50 |
+
+**The per-sample filter never groks at any rank.** Its train/test trace is the same
+memorize-then-destabilize collapse as low-rank batch-mean (r10: train 1.00 → 0.53, test stuck at
+chance). The reason is consistent with everything else: the top eigenvector of the *uncentered*
+per-sample second moment is dominated by the **shared bulk-fitting direction ≈ the mean gradient**
+(confirmed elsewhere: for a direction shared across samples, cos(mean, top-uncentered-eigvec)=0.999),
+which early in training is memorization, not the slow parity feature. Projecting onto the top-k of
+*either* decomposition therefore keeps the bulk-fitting direction and starves the weak generalizing
+signal — and, as the rank sweep showed, also chokes the high-dimensional exploration the network needs.
+
+**Adaptive rank (keep 99% of eigenvalue energy)** is trivially cheap to add (the eigenvalues are
+already computed each step) and works mechanically, but on parity it selects **~4–5 directions**
+(the spectrum is so top-heavy that 99% of the energy sits in ~4 dims) — squarely in the
+grokking-killing regime. So a naive energy rule *under*-shoots here: the network needs exploration
+dimensions *beyond* the high-energy ones, which the energy criterion can't see.
+
+**Unifying conclusion for parity:** *any* "keep only the top-k gradient directions" filter
+(batch-mean or per-sample, fixed or adaptive) suppresses parity grokking. The generalizing signal is
+a weak, slowly-emerging component that is **not** among the top gradient directions in any of these
+decompositions, and aggressive projection additionally chokes the exploration phase. Only un-filtered
+AdamW groks fast. This is a clean negative result that bounds where the method helps.
+
+Provenance: `experiments/sparse_parity.py`, `experiments/modal_sparse_parity.py`,
+`experiments/persample_cov_optimizer.py`, `experiments/modal_parity_persample.py`,
+`results/sparse_parity_ranksweep/`, `results/parity_persample/`,
 `research/sparse_parity_ranksweep.png`, `parity_grok.png`.
 
 ## Provenance
