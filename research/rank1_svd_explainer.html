@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Streaming top-k eigenvectors via rank-1 updates</title>
+<script>
+MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$']] } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root{ --ink:#1a202c; --muted:#5a6b7b; --line:#e3e8ee; --accent:#2b6cb0; --code-bg:#f6f8fa; --warn-bg:#fff8e6; --warn-ink:#7a5b00; --good-bg:#eafaf1; --good-ink:#1e7e44; --note-bg:#eef4fb; }
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.65;max-width:860px;margin:0 auto;padding:40px 24px 120px;font-size:16.5px;}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px;}
+  h2{font-size:23px;margin:46px 0 10px;padding-top:14px;border-top:1px solid var(--line);}
+  h3{font-size:18px;margin:28px 0 6px;color:#243240;}
+  .sub{color:var(--muted);font-size:16px;margin:0 0 26px;}
+  p{margin:12px 0;}
+  code{font-family:'SF Mono',Menlo,Consolas,monospace;background:var(--code-bg);padding:1.5px 5px;border-radius:4px;font-size:14px;}
+  pre{background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:16px 18px;overflow-x:auto;font-size:13.5px;line-height:1.5;}
+  pre code{background:none;padding:0;font-size:13.5px;}
+  .box{border-radius:8px;padding:14px 18px;margin:18px 0;font-size:15.5px;}
+  .warn{background:var(--warn-bg);color:var(--warn-ink);}
+  .good{background:var(--good-bg);color:var(--good-ink);}
+  .note{background:var(--note-bg);}
+  table{border-collapse:collapse;width:100%;margin:18px 0;font-size:15px;}
+  th,td{border-bottom:1px solid var(--line);padding:8px 11px;text-align:left;}
+  th{color:var(--muted);font-weight:600;}
+  td.r,th.r{text-align:right;}
+  .dim{color:var(--muted);}
+  .step{font-weight:600;color:var(--accent);}
+  hr{border:none;border-top:1px solid var(--line);margin:40px 0;}
+  .toc{background:#fafbfc;border:1px solid var(--line);border-radius:8px;padding:12px 18px 14px;font-size:15px;}
+  .toc a{color:var(--accent);text-decoration:none;}
+  .toc a:hover{text-decoration:underline;}
+  .toc ol{margin:6px 0 0;padding-left:22px;}
+  .toc li{margin:3px 0;}
+  kbd{font-family:'SF Mono',Menlo,monospace;font-size:13px;background:#eef1f4;border:1px solid #d6dce2;border-bottom-width:2px;border-radius:4px;padding:1px 5px;}
+</style>
+</head>
+<body>
+
+<h1>Estimating the top-\(k\) eigenvectors of the gradient covariance — without ever building it</h1>
+<p class="sub">A worked explainer of the streaming rank-1 SVD update used by <code>WeightCovarianceFilterV2</code>. Formulas, the actual code, a hand-checkable numeric example, complexity, and how it changes if we feed it per-sample gradients instead of the batch mean.</p>
+
+<div class="toc">
+<b>Contents</b>
+<ol>
+<li><a href="#why">Why we can't just build the covariance</a></li>
+<li><a href="#want">What we actually want to maintain</a></li>
+<li><a href="#trick">The key trick: an EMA covariance is a thin stacked matrix</a></li>
+<li><a href="#gram">The small \((k{+}1)\times(k{+}1)\) Gram matrix (derived block by block)</a></li>
+<li><a href="#recover">Recovering the new eigenvectors without materializing anything big</a></li>
+<li><a href="#algo">The full algorithm + the real code</a></li>
+<li><a href="#example">A small worked example you can check by hand</a></li>
+<li><a href="#centering">A note on centering (the running mean)</a></li>
+<li><a href="#complexity">Complexity: time and memory</a></li>
+<li><a href="#sample">Extension: updating with per-sample gradients (rank-\(B\))</a></li>
+</ol>
+</div>
+
+<h2 id="why">1. Why we can't just build the covariance</h2>
+
+<p>We train a network with \(p\) parameters. Flatten every gradient into a vector \(g\in\mathbb{R}^p\). We are interested in the <b>covariance of that gradient over training</b>,</p>
+
+$$ C \;=\; \mathbb{E}\big[(g-\bar g)(g-\bar g)^\top\big] \;\in\; \mathbb{R}^{p\times p}. $$
+
+<p>Its top eigenvectors are the directions in weight-space along which the gradient consistently points — the "consensus" directions. That is the object the whole filter is built around.</p>
+
+<p>The trouble is size. \(C\) is \(p\times p\). For the small CNN in this project \(p = 591{,}274\), so</p>
+
+$$ p^2 \;=\; 591{,}274^2 \;\approx\; 3.5\times 10^{11}\ \text{entries} \;\approx\; 1.4\ \text{TB in float32}. $$
+
+<p>We cannot store it, let alone run a \(p^3\) eigendecomposition on it. And we don't need to: we only ever use the <b>top \(k\)</b> eigenvectors (here \(k\) up to a few hundred). So the goal is to track a running, low-rank estimate of \(C\)'s leading eigenspace, updating it one cheap step at a time. That is exactly what a <b>streaming (incremental) rank-1 SVD</b> does.</p>
+
+<h2 id="want">2. What we actually want to maintain</h2>
+
+<p>We keep a thin factorisation of the current covariance estimate:</p>
+
+$$ C \;\approx\; V\,\operatorname{diag}(s^2)\,V^\top, \qquad V\in\mathbb{R}^{p\times k}\ \text{(orthonormal columns)},\quad s\in\mathbb{R}^{k}_{\ge 0}. $$
+
+<ul>
+<li>\(V\) — the current top-\(k\) eigenvectors (each a unit vector in weight-space). This is the only big object, and it is \(p\times k\), <b>not</b> \(p\times p\).</li>
+<li>\(s\) — the corresponding singular values; \(s_i^2\) is the eigenvalue (the variance captured along \(V_{:,i}\)).</li>
+</ul>
+
+<p>Every training step gives us one new (centred) gradient vector \(w\in\mathbb{R}^p\). We want to fold it into the estimate with an exponential moving average (decay \(\lambda\), close to 1),</p>
+
+$$ C' \;=\; \lambda\,C \;+\; (1-\lambda)\,w\,w^\top, $$
+
+<p>and read off the new top-\(k\) eigenvectors \(V'\), \(s'\). The point of everything below is that this update touches only \(O(pk)\) numbers, never \(p^2\).</p>
+
+<div class="note box"><b>Intuition for the EMA.</b> \(\lambda\) sets the memory. A direction has to keep showing up over roughly \(\tfrac{1}{1-\lambda}\) steps to stay in the top eigenspace; transient one-off directions decay away. With \(\lambda=0.99\) that window is \(\sim 100\) steps — which, as we'll see in §10, also <i>caps</i> how many directions the estimate can really hold.</div>
+
+<h2 id="trick">3. The key trick: an EMA covariance is a thin stacked matrix</h2>
+
+<p>Here is the move that makes it all cheap. A matrix of the form "\(M^\top M\)" is automatically symmetric positive-semidefinite, and its eigenvectors are the right singular vectors of \(M\). So let's write our current estimate as exactly such a product. Define the \(k\times p\) "factor"</p>
+
+$$ M \;=\; \operatorname{diag}(s)\,V^\top \quad\Longrightarrow\quad M^\top M \;=\; V\operatorname{diag}(s^2)V^\top \;=\; C. $$
+
+<p>Row \(i\) of \(M\) is just \(s_i\,V_{:,i}^\top\). Now do the EMA update. Because \(\lambda C = (\sqrt\lambda M)^\top(\sqrt\lambda M)\) and \((1-\lambda)ww^\top = \big(\sqrt{1-\lambda}\,w^\top\big)^\top\big(\sqrt{1-\lambda}\,w^\top\big)\), we can write the <i>updated</i> covariance as one stacked product:</p>
+
+$$ C' \;=\; \lambda C + (1-\lambda)ww^\top \;=\; M'^\top M', \qquad
+M' \;=\; \begin{bmatrix} \sqrt{\lambda}\,M \\[2pt] \sqrt{1-\lambda}\,w^\top \end{bmatrix}\ \in\ \mathbb{R}^{(k+1)\times p}. $$
+
+<p>So \(M'\) is the old factor scaled by \(\sqrt\lambda\), with one extra row — the new gradient scaled by \(\sqrt{1-\lambda}\) — stapled to the bottom. \(C'\) has rank at most \(k+1\). We've turned "update a \(p\times p\) matrix" into "append a row to a \((k{+}1)\times p\) factor." We still won't form even that \((k{+}1)\times p\) factor explicitly — but conceptually it's the whole story.</p>
+
+<h2 id="gram">4. The small \((k{+}1)\times(k{+}1)\) Gram matrix</h2>
+
+<p>The nonzero eigenvalues of \(C' = M'^\top M'\) (a huge \(p\times p\) matrix) are <b>identical</b> to the eigenvalues of the tiny <b>Gram matrix</b></p>
+
+$$ G \;=\; M' M'^\top \ \in\ \mathbb{R}^{(k+1)\times(k+1)}. $$
+
+<p>(This is the standard SVD fact: \(M'^\top M'\) and \(M'M'^\top\) share nonzero eigenvalues; one is \(p\times p\), the other \((k{+}1)\times(k{+}1)\).) And \(G\) has a clean closed form. Let</p>
+
+$$ c \;=\; V^\top w \ \in\ \mathbb{R}^k \quad(\text{the new gradient's coordinates in the current basis}). $$
+
+<p>Write the rows of \(M'\) explicitly: row \(i<k\) is \(\sqrt\lambda\, s_i V_{:,i}^\top\); the last row is \(\sqrt{1-\lambda}\,w^\top\). Then \(G_{ab}=(\text{row }a)\cdot(\text{row }b)\) splits into three blocks, using \(V_{:,i}^\top V_{:,j}=\delta_{ij}\) and \(V_{:,i}^\top w = c_i\):</p>
+
+<table>
+<thead><tr><th>Block</th><th>Entry</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>top-left \(k\times k\)</td><td>\(G_{ij}=\sqrt\lambda s_i V_{:,i}^\top \cdot \sqrt\lambda s_j V_{:,j}\)</td><td>\(\lambda\, s_i s_j\,\delta_{ij} = \lambda\,\operatorname{diag}(s^2)\)</td></tr>
+<tr><td>last column / row</td><td>\(G_{ik}=\sqrt\lambda s_i V_{:,i}^\top\cdot\sqrt{1-\lambda}\,w\)</td><td>\(\sqrt{\lambda(1-\lambda)}\; s_i\, c_i\)</td></tr>
+<tr><td>bottom-right \(1\times 1\)</td><td>\(G_{kk}=(1-\lambda)\,w^\top w\)</td><td>\((1-\lambda)\,\lVert w\rVert^2\)</td></tr>
+</tbody>
+</table>
+
+<p>So, with \(\sqrt\lambda\) and \(\sqrt{1-\lambda}\) abbreviated <code>sd</code>, <code>sn</code>:</p>
+
+$$ G \;=\;
+\begin{bmatrix}
+\lambda\,\operatorname{diag}(s^2) & \sqrt{\lambda(1-\lambda)}\,(s\odot c)\\[4pt]
+\sqrt{\lambda(1-\lambda)}\,(s\odot c)^\top & (1-\lambda)\,\lVert w\rVert^2
+\end{bmatrix}. $$
+
+<p>Every quantity here is cheap: \(c=V^\top w\) costs \(O(pk)\), \(\lVert w\rVert^2\) costs \(O(p)\), and the rest is \(O(k)\). We never touched a \(p\times p\) object. Now eigendecompose the little matrix:</p>
+
+$$ G \;=\; U\,\Lambda\,U^\top, \qquad U\in\mathbb{R}^{(k+1)\times(k+1)},\ \ \Lambda=\operatorname{diag}(\lambda_1\ge\dots\ge\lambda_{k+1}). $$
+
+<p>The new singular values are \(s' = \sqrt{\Lambda}\) (keep the top \(k\), drop any that are numerically zero). What remains is to turn \(U\) — eigenvectors of the <i>small</i> matrix — back into eigenvectors of the <i>big</i> one.</p>
+
+<h2 id="recover">5. Recovering the new eigenvectors without materializing anything big</h2>
+
+<p>If \(M' = W\Sigma Z^\top\) is the SVD of the factor, then \(G=M'M'^\top = W\Sigma^2W^\top\) (so \(U=W\), \(\Lambda=\Sigma^2\)) and the eigenvectors we want are the right singular vectors \(Z\). Rearranging \(M'=W\Sigma Z^\top\) gives</p>
+
+$$ V' \;=\; Z \;=\; M'^\top\,U\,\Lambda^{-1/2}. $$
+
+<p>Now expand \(M'^\top\). Its columns are the rows of \(M'\), i.e. \(M'^\top = \big[\;\sqrt\lambda\,V\operatorname{diag}(s)\ \big|\ \sqrt{1-\lambda}\,w\;\big]\) — a \(p\times(k+1)\) matrix that is just our existing \(V\) and the single new vector \(w\). Let \(\text{coeffs} = U\,\Lambda^{-1/2}\) (shape \((k{+}1)\times k\)). Splitting it into its first \(k\) rows and its last row:</p>
+
+$$ \boxed{\;V' \;=\; \underbrace{V\,\big(\sqrt\lambda\, s \odot \text{coeffs}_{[:k]}\big)}_{\text{rotate the old basis}} \;+\; \underbrace{w\,\big(\sqrt{1-\lambda}\,\text{coeffs}_{[k]}\big)}_{\text{inject the new direction}}\;} $$
+
+<p>That's the whole update. The first term is a \((p\times k)\cdot(k\times k)\) matmul — it <b>rotates and reweights</b> the existing eigenvectors. The second is an outer product of the new gradient \(w\) with a length-\(k\) row — it <b>folds in</b> whatever part of \(w\) was new. Notice we never orthogonalised \(w\) by hand and never built the residual explicitly: the small eigendecomposition does the orthogonalisation for us, and \(w\) appears directly in the reconstruction. (The component of \(w\) already inside \(\operatorname{span}(V)\) is handled automatically through \(c\); the component orthogonal to it enters through the same \(w\) term.)</p>
+
+<div class="good box"><b>The payoff in one line.</b> One new gradient → one tiny \((k{+}1)\times(k{+}1)\) eigendecomposition → a rotation of the old eigenvectors plus a rank-1 injection. No \(p\times p\) matrix, no \(p^3\) eig, ever.</div>
+
+<h2 id="algo">6. The full algorithm + the real code</h2>
+
+<p>Pseudocode for one step (given the new centred gradient \(w\)):</p>
+
+<pre><code>1.  c       = Vᵀ w                      # (k,)      coordinates of w in current basis     O(pk)
+2.  build G = [[ λ·diag(s²),       √(λ(1−λ))·(s⊙c) ],
+               [ √(λ(1−λ))·(s⊙c)ᵀ, (1−λ)·‖w‖²       ]]     # (k+1, k+1)                   O(k)
+3.  Λ, U    = eigh(G);  sort desc;  drop Λ ≤ ε;  keep top k            # small eig         O(k³)
+4.  s'      = sqrt(Λ)
+5.  coeffs  = U / s'                    # (k+1, k')  =  U · Λ^(−1/2)
+6.  V'      = V · (√λ · s ⊙ coeffs[:k]) + w · (√(1−λ) · coeffs[k])     # rotate + inject   O(pk²)
+7.  V, s    = V', s'</code></pre>
+
+<p>And the actual implementation (<code>experiments/weight_cov_optimizer_v2.py</code>, <code>_update_svd</code>), lightly trimmed. The variable <code>g_centered</code> is our \(w\); <code>sd</code>=\(\sqrt\lambda\), <code>sn</code>=\(\sqrt{1-\lambda}\):</p>
+
+<pre><code class="language-python">def _update_svd(self, g):
+    # --- EMA running mean, then centre: w = g - mean ---
+    if self.grad_mean is None:
+        self.grad_mean = g.detach().clone()
+    else:
+        self.grad_mean.mul_(self.decay).add_(g.detach(), alpha=1 - self.decay)
+    g_centered = g.detach() - self.grad_mean                      # w  (p,)
+
+    if self.V is None:                                            # bootstrap: first vector
+        norm = g_centered.norm()
+        if norm > 1e-12:
+            self.V = (g_centered / norm).unsqueeze(1)             # (p, 1)
+            self.S = norm.unsqueeze(0).cpu()
+        return
+
+    k  = self.V.shape[1]
+    sd = math.sqrt(self.decay)                                    # √λ
+    sn = math.sqrt(1 - self.decay)                                # √(1−λ)
+
+    c          = self.V.T @ g_centered                            # (k,)   = Vᵀw          O(pk)
+    g_norm_sq  = g_centered.dot(g_centered).item()                # ‖w‖²
+    S_cpu, c_cpu = self.S, c.cpu()
+
+    # --- assemble the (k+1)×(k+1) Gram matrix ---
+    gram = torch.zeros(k + 1, k + 1)
+    gram[:k, :k] = torch.diag(sd * sd * S_cpu * S_cpu)            # λ·diag(s²)
+    cross        = sd * sn * S_cpu * c_cpu                        # √(λ(1−λ))·(s⊙c)
+    gram[:k, k]  = cross
+    gram[k, :k]  = cross
+    gram[k, k]   = sn * sn * g_norm_sq                            # (1−λ)·‖w‖²
+
+    # --- tiny eigendecomposition, sort desc, prune ---
+    eigvals, eigvecs = torch.linalg.eigh(gram)
+    eigvals = eigvals.flip(0);  eigvecs = eigvecs.flip(1)
+    pos = eigvals > 1e-12
+    eigvals, eigvecs = eigvals[pos], eigvecs[:, pos]
+    new_k   = min(self.rank, len(eigvals))
+    eigvals = eigvals[:new_k];  eigvecs = eigvecs[:, :new_k]      # (k+1, new_k)
+    s_new   = eigvals.sqrt()
+
+    # --- reconstruct V' = rotate(old V) + inject(w),  no (k+1)×p matrix built ---
+    coeffs     = eigvecs / s_new.unsqueeze(0)                     # U·Λ^(−1/2)   (k+1, new_k)
+    top_coeffs = (sd * S_cpu.unsqueeze(1) * coeffs[:k]).to(g.device)   # (k, new_k)
+    bot_coeffs = (sn * coeffs[k]).to(g.device)                        # (new_k,)
+    V_new = self.V @ top_coeffs + g_centered.unsqueeze(1) * bot_coeffs.unsqueeze(0)
+
+    self.V = V_new.contiguous()
+    self.S = s_new</code></pre>
+
+<p>The only object that ever has a \(p\) in its shape is \(V\) (and the single vector \(w\)). The eigendecomposition is on a matrix whose size is set by \(k\), not \(p\).</p>
+
+<h2 id="example">7. A small worked example you can check by hand</h2>
+
+<p>Take \(p=3\), decay \(\lambda=0.5\) (so \(\sqrt\lambda=\sqrt{0.5}\)), and suppose centring is already done (mean \(=0\)) so we can focus on the SVD mechanics. Start with a rank-1 estimate pointing along \(e_1\) with singular value \(s=2\):</p>
+
+$$ V=\begin{bmatrix}1\\0\\0\end{bmatrix},\quad s=[\,2\,],\qquad\text{so } C = V\,s^2\,V^\top = 4\,e_1e_1^\top. $$
+
+<p>A new centred gradient arrives, orthogonal to the current basis: \(w=[0,3,0]^\top\). Then the true updated covariance is</p>
+
+$$ C' = \lambda C + (1-\lambda)ww^\top = 0.5\cdot 4\,e_1e_1^\top + 0.5\cdot 9\,e_2e_2^\top = 2\,e_1e_1^\top + 4.5\,e_2e_2^\top. $$
+
+<p>So by eye the answer must be: eigenvalues \(\{4.5, 2\}\), eigenvectors \(\{e_2, e_1\}\) — the new direction \(e_2\) is now dominant. Let's confirm the algorithm reproduces it.</p>
+
+<p><span class="step">Step 1.</span> \(c = V^\top w = [\,0\,]\) (orthogonal), \(\lVert w\rVert^2 = 9\).</p>
+
+<p><span class="step">Step 2.</span> Gram matrix (\(k=1\), so \(2\times 2\)):</p>
+$$ G=\begin{bmatrix}\lambda s^2 & \sqrt{\lambda(1-\lambda)}\,s\,c\\ \cdot & (1-\lambda)\lVert w\rVert^2\end{bmatrix}
+=\begin{bmatrix}0.5\cdot 4 & 0\\ 0 & 0.5\cdot 9\end{bmatrix}=\begin{bmatrix}2 & 0\\ 0 & 4.5\end{bmatrix}. $$
+
+<p><span class="step">Step 3.</span> Eigenvalues of \(G\), sorted descending: \(\Lambda=\{4.5,\,2\}\), with eigenvectors \(U=\big[\,[0,1]^\top,\ [1,0]^\top\,\big]\) (the column \([0,1]^\top\) goes with \(4.5\)). So \(s' = \sqrt{\{4.5,2\}} = \{2.121,\,1.414\}\). ✓ eigenvalues already match.</p>
+
+<p><span class="step">Step 5–6.</span> \(\text{coeffs}=U/s'\): column 0 \(=[0,1]^\top/2.121=[0,\,0.4714]^\top\); column 1 \(=[1,0]^\top/1.414=[0.7071,\,0]^\top\). Reconstruct, with \(\sqrt\lambda=0.7071\), old \(s=2\):</p>
+
+<ul>
+<li><b>Column 0</b> (new dominant): old-basis term \(=0.7071\cdot V\cdot 2\cdot \text{coeffs}_{[:1],0}=0.7071\cdot 2\cdot 0\cdot e_1 = 0\); inject term \(=0.7071\cdot w\cdot \text{coeffs}_{[1],0}=0.7071\cdot[0,3,0]^\top\cdot 0.4714=[0,1,0]^\top\). Sum \(=e_2\). ✓</li>
+<li><b>Column 1</b>: old-basis term \(=0.7071\cdot 2\cdot 0.7071\cdot e_1 = e_1\); inject term \(=0.7071\cdot[0,3,0]^\top\cdot 0 = 0\). Sum \(=e_1\). ✓</li>
+</ul>
+
+<p>So \(V'=[\,e_2\ |\ e_1\,]\), \(s'=\{2.121,1.414\}\) — exactly the covariance we wrote down by inspection, and the basis grew from rank 1 to rank 2 and reordered itself, all from the \(2\times 2\) Gram. If \(w\) had <i>not</i> been orthogonal (\(c\neq 0\)), the only change is that \(G\) gets nonzero off-diagonals and \(V'\) comes out as a genuine rotation mixing \(e_1\) and the new direction — same machinery.</p>
+
+<h2 id="centering">8. A note on centering (the running mean)</h2>
+
+<p>We track the covariance of \(g\) about its <i>mean</i>, so we keep an EMA mean \(\mu \leftarrow \lambda\mu+(1-\lambda)g\) and feed the algorithm \(w = g-\mu\). One quirk worth knowing: on the very first step \(\mu\) is initialised to \(g\), so \(w=0\) and nothing is added — the first step just seeds the mean. From the second step on, \(w\) is the deviation of the current gradient from the recent average, which is what we want: a direction is "signal" only if it persists <i>relative to the running average</i>, not just because the average itself is large.</p>
+
+<h2 id="complexity">9. Complexity: time and memory</h2>
+
+<table>
+<thead><tr><th>Quantity</th><th>This method (per step)</th><th>Naive (build \(C\), eig)</th></tr></thead>
+<tbody>
+<tr><td>Memory</td><td>\(O(pk)\) — just \(V\)</td><td>\(O(p^2)\) — the full \(C\)</td></tr>
+<tr><td>Project \(c=V^\top w\)</td><td>\(O(pk)\)</td><td>—</td></tr>
+<tr><td>Small eigendecomp of \(G\)</td><td>\(O(k^3)\)</td><td>\(O(p^3)\)</td></tr>
+<tr><td>Reconstruct \(V'\)</td><td>\(O(pk^2)\) <span class="dim">(the \(V\!\cdot\!\text{coeffs}\) matmul dominates)</span></td><td>—</td></tr>
+<tr><td><b>Total / step</b></td><td>\(\mathbf{O(pk^2 + k^3)}\)</td><td>\(O(p^2)\) store + \(O(p^3)\) eig</td></tr>
+</tbody></table>
+
+<p>Plug in \(p=591{,}274\) and a realistic working rank \(k\approx 100\): the reconstruction is \(\sim pk^2 \approx 6\times 10^{9}\) flops — a few milliseconds on a GPU — and the eig is on a \(101\times 101\) matrix. Measured cost on the project's CNN is <b>\(\approx 7\) ms/step</b>, roughly \(2\times\) plain Adam. The naive route would need 1.4 TB and a \(p^3\sim 2\times 10^{17}\)-flop eigendecomposition: not happening.</p>
+
+<div class="warn box"><b>The decay caps the usable rank — raising \(k\) alone does nothing.</b> Because the estimate only remembers \(\sim\tfrac{1}{1-\lambda}\) steps, it can populate at most about that many independent directions. With \(\lambda=0.99\) (window \(\approx100\)) the basis saturates near \(\sim100\) columns <i>no matter how large you set</i> \(k\): the extra eigenvalues fall below the \(10^{-12}\) prune threshold and are dropped. Empirically on the CNN, \(k=200,\,1000,\,4000\) all converge to \(\sim100\) live columns. To genuinely use a higher rank you must also lengthen the memory (raise \(\lambda\)): \(\lambda=0.999\) opens up \(\sim1000\) dimensions, etc. <b>So "more parameters need more rank" must be implemented as "raise \(\lambda\) <i>and</i> \(k\) together," not \(k\) alone.</b></div>
+
+<h2 id="sample">10. Extension: updating with per-sample gradients (a rank-\(B\) update)</h2>
+
+<p>Everything above used one vector per step: the <b>batch-mean</b> gradient \(w\). That makes the covariance a <i>temporal</i> one — it measures how the mean gradient varies from step to step. An alternative (and the thing worth trying for finding a backdoor / reward-hack direction) is to feed the \(B\) <b>per-sample</b> gradients of the batch, \(w_1,\dots,w_B\), and track how the gradient varies <i>across examples</i>. This is entirely possible — it just turns the rank-1 update into a <b>rank-\(B\)</b> one.</p>
+
+<h3>The math change</h3>
+<p>The EMA update now folds in \(B\) outer products at once:</p>
+
+$$ C' \;=\; \lambda\,C \;+\; \frac{1-\lambda}{B}\sum_{b=1}^{B} w_b w_b^\top. $$
+
+<p>Stack the per-sample (centred) gradients as columns of \(W_s=[\,w_1\,\cdots\,w_B\,]\in\mathbb{R}^{p\times B}\). The factor gains \(B\) extra rows instead of one:</p>
+
+$$ M' = \begin{bmatrix}\sqrt\lambda\,\operatorname{diag}(s)V^\top\\[2pt] \sqrt{\tfrac{1-\lambda}{B}}\;W_s^\top\end{bmatrix}\in\mathbb{R}^{(k+B)\times p},\qquad G=M'M'^\top\in\mathbb{R}^{(k+B)\times(k+B)}. $$
+
+<p>The Gram matrix keeps the same three-block shape, with the scalar bottom-right corner now a \(B\times B\) block. Writing \(P = V^\top W_s\in\mathbb{R}^{k\times B}\) (the projections of all \(B\) samples) :</p>
+
+$$ G=\begin{bmatrix}
+\lambda\,\operatorname{diag}(s^2) & \sqrt{\tfrac{\lambda(1-\lambda)}{B}}\,\operatorname{diag}(s)\,P\\[6pt]
+\sqrt{\tfrac{\lambda(1-\lambda)}{B}}\,P^\top\!\operatorname{diag}(s) & \tfrac{1-\lambda}{B}\,W_s^\top W_s
+\end{bmatrix}. $$
+
+<p>The bottom-right \(W_s^\top W_s\) is the \(B\times B\) Gram of the per-sample gradients — cheap because \(B\) (batch size, ~128) is small. Eigendecompose this \((k+B)\times(k+B)\) matrix, prune, and reconstruct exactly as before:</p>
+
+$$ V' = V\big(\sqrt\lambda\,s\odot \text{coeffs}_{[:k]}\big) + W_s\big(\sqrt{\tfrac{1-\lambda}{B}}\,\text{coeffs}_{[k:]}\big), $$
+
+<p>where now \(\text{coeffs}_{[k:]}\) is a \(B\times k'\) block and the second term is a \((p\times B)\cdot(B\times k')\) matmul. <b>Same algorithm, "1" replaced by "\(B\)" throughout.</b></p>
+
+<h3>Why you'd want it</h3>
+<p>The batch-mean covariance can only see a direction if the <i>average</i> gradient moves along it. A signal shared by a <i>subset</i> of examples — e.g. the trigger→target direction carried by exactly the poisoned samples — partly averages out in the mean, but stands out strongly in the <b>across-sample</b> covariance, because those samples all push the same way while the rest cancel. Taking the top eigenvector(s) of the per-sample covariance is therefore a principled way to recover such a direction, and the eigenvalue spectrum tells you how many directions dominate (you expect a sharp drop after a few). This is exactly the "estimate \(d\) from the sample-level gradient covariance" idea, and it drops straight into the same rank-update machinery.</p>
+
+<h3>Complexity</h3>
+<table>
+<thead><tr><th>Quantity</th><th>Batch-mean (rank-1)</th><th>Per-sample (rank-\(B\))</th></tr></thead>
+<tbody>
+<tr><td>Get the gradient(s)</td><td>1 backward, \(O(p)\)</td><td>\(B\) per-sample grads, \(O(pB)\) <span class="dim">(via vmap/functorch or a loop)</span></td></tr>
+<tr><td>Projection \(V^\top W_s\)</td><td>\(O(pk)\)</td><td>\(O(pkB)\)</td></tr>
+<tr><td>Sample Gram \(W_s^\top W_s\)</td><td>—</td><td>\(O(pB^2)\)</td></tr>
+<tr><td>Small eig</td><td>\(O(k^3)\)</td><td>\(O((k+B)^3)\)</td></tr>
+<tr><td>Reconstruct \(V'\)</td><td>\(O(pk^2)\)</td><td>\(O\!\big(p(k+B)k'\big)\)</td></tr>
+</tbody></table>
+
+<p>The real extra cost is usually <b>step 1</b> — materialising \(B\) per-sample gradients is \(B\times\) the memory of one backward and needs <code>torch.func.vmap(torch.func.grad(...))</code> (or <code>functorch</code>/BackPACK) rather than a plain <code>.backward()</code>. Everything downstream just grows the small matrix from \(k+1\) to \(k+B\), which is still tiny. So: <b>yes, it's possible and it's the same derivation</b>; the only price is computing per-sample gradients, and the reward is a covariance that resolves directions shared by subsets of examples rather than only those visible in the batch average.</p>
+
+<hr/>
+<p class="dim" style="text-align:center;font-size:13px;">Source: <code>experiments/weight_cov_optimizer_v2.py</code> · gradient-covariance spectral filtering · optimizers project</p>
+
+</body>
+</html>
