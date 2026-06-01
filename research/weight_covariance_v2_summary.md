@@ -176,7 +176,13 @@ by consensus).
 (adamw @717 vs ours @2067, t=−24.4) — the *opposite* of modular addition. Consistent with the
 consensus-amplifier mechanism: parity's generalizing solution is a weak sparse signal the
 *memorization* consensus drowns out, so amplifying consensus delays it. "Accelerates grokking" is
-therefore task-dependent. See `grokking_v2_findings.md`.
+therefore task-dependent. A **rank sweep** (1/3/10/50/200 at fixed λ=0.99) confirms the mechanism
+directly: rank 1–3 *prevent* grokking (they destabilize even the memorized fit — showing the top
+*temporal*-covariance directions do not span the parity feature; note these are step-to-step
+directions of the full-batch gradient, not a cross-example "consensus"); grokking needs rank ≳10
+to reach below them; lower rank groks faster *among filtered runs* but no rank beats AdamW. The
+eigenvalue spectrum has a soft elbow at ~7–8 (not 3), broadens through the transition, and collapses
+to ~2–6 after. See `grokking_v2_findings.md`, `research/sparse_parity_ranksweep.png`.
 
 **CIFAR-10 label noise (first non-MNIST noise test, small CNN, 2 seeds).** final% (best%):
 

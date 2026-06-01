@@ -123,7 +123,82 @@ generalization needs a weak signal the consensus drowns out. This is the same co
 mechanism as everywhere else — it cuts both ways. (Honest framing: the modular-addition acceleration
 is real but should not be over-generalized to "speeds up grokking" in the abstract.)
 
-Provenance: `experiments/sparse_parity.py`, `results/sparse_parity_grok/`, `parity_grok.png`.
+### Rank sweep: low rank does NOT help — the top eigenvectors are memorization
+
+Titus's hypothesis: with (n=40, k=3) parity there are ~37 noise dims and 3 signal dims,
+so a *low*-rank focus should isolate the signal and **help** grokking. We swept the
+filter rank over {1, 3, 10, 50, 200} at **fixed decay 0.99** (all below the ~100
+effective-rank ceiling, so no decay change is needed or warranted), 3 seeds, vs an
+AdamW baseline. The hypothesis is **refuted at the low end**, but rank turns out to be a
+sharp, non-monotonic dial.
+
+| Rank | Grok epoch (3 seeds) | Final test | Behavior |
+|------|---------------------:|-----------:|----------|
+| **AdamW** | 650 / 750 / 750 | 1.00 | baseline |
+| ours r1 | never / never / never | ~0.50 | memorizes then **destabilizes** |
+| ours r3 | never / never / never | ~0.52 | same — collapses to chance |
+| ours r10 | 1250 / 1300 / 1200 | 1.00 (1 seed later lost it) | **fastest among ours** |
+| ours r50 | 2200 / never / 1900 | 1.00 (1 failed) | slower, unstable |
+| ours r200 | 2050 / 2100 / 3400 | 1.00 | slowest |
+
+**Three findings:**
+
+1. **Rank 1–3 prevent grokking by destabilizing even the memorized fit.** All ranks
+   memorize train to 100% by ep~100. But at rank 1–3 the train fit then *decays*
+   (rank-1: train 1.00 → 0.55 → 0.71 over epochs 1k→6k, test stuck at chance), because
+   with only 1–3 allowed gradient directions *and* weight decay 1.0 pulling weights down,
+   the optimizer cannot even hold the solution, let alone find the sparse circuit. This
+   shows the top 1–3 eigendirections **do not span the generalizing solution**.
+   *Caveat on the label (Titus's objection):* these are eigenvectors of the **temporal**
+   covariance of the *full-batch* gradient (centred by an EMA over steps). Their top
+   direction is the dominant direction the optimizer is currently moving in — bulk
+   loss-reduction (fitting the train set) plus weight-decay/norm pressure — which is
+   coherent *across steps*, **not** a "consensus across examples." The 37 distractor bits
+   are random and carry no shared signal, so "memorization consensus" is the wrong phrase:
+   there is no coherent cross-example signal there. The defensible claim is only that these
+   top *temporal* directions are not the slowly-emerging parity feature, and restricting
+   updates to them under wd=1.0 cannot even sustain the memorised fit.
+
+2. **Among ranks that grok, lower is faster — but none beat AdamW.** r10 (~1250) ≪ r200
+   (~2500). There is a sweet spot near the *effective* dimension (~10), with catastrophe
+   below it and slowdown above. But every rank is slower than the 717-epoch baseline: the
+   filter **delays grokking at all ranks**, just least near rank 10. So Titus's "rank is
+   load-bearing" intuition holds (the dial matters and has a low-rank optimum), while the
+   stronger claim "low rank beats baseline" does not.
+
+3. **Eigenvalue spectrum has no clean drop at 3.** Normalized top eigenvalues (rank-200
+   run): before grok (ep 100–500) the spectrum has a soft elbow at **~7–8** directions
+   (`1.0, 0.6, 0.2, 0.07, 0.05, 0.02, 0.01…`), not 3. *During* the transition (ep 1000–2000)
+   it **broadens** (active dims 7 → 38); *after* grok it **collapses to ~2–6** dims. The
+   generalizing circuit is genuinely low-dim (matches modular addition's eff-rank 2–8), but
+   the 3-bit signal does not appear as a top-spectrum signature — it is buried *below* the
+   dominant memorization directions, which is why ≳10 dims must be kept to retain it.
+
+This sharpens (does not overturn) the picture: the filter rides the dominant *temporal*
+gradient subspace, and only retains the slowly-emerging generalizing signal if the rank is
+wide enough to reach below those directions.
+
+**Open question raised by Titus — the per-sample (rank-B) decomposition.** The current
+filter tracks the covariance of the *batch-mean* gradient over *steps*. A different, arguably
+more meaningful object is the covariance of the *per-sample* gradients *within* a step (across
+the 2000 training examples). These decompose the gradient differently:
+- the **shared structural signal** (grow weights on the 3 relevant input dims, shrink the 37
+  distractors) is common to all examples → it sits near the **mean** gradient → it has *low*
+  cross-sample variance and is **not** a top eigenvector of the per-sample covariance;
+- **per-example memorisation** (a bespoke feature for example *i*) is where examples *disagree*
+  → it is the **high-variance** part → it dominates the **top** eigenvectors of the per-sample
+  covariance.
+
+This is exactly Chatterjee's *Coherent Gradients* distinction (gradients that agree across
+examples generalise; idiosyncratic ones memorise). Prediction: a rank-B filter that **projects
+out** (ablates) the top per-sample directions should *suppress* memorisation and **accelerate**
+grokking — the reverse of the batch-mean filter, which projecting *onto* the top temporal
+directions delays it. Testing this (both project-onto and project-out variants) is the next
+experiment; the rank-B SVD machinery is already derived (`research/rank1_svd_explainer.html` §10).
+
+Provenance: `experiments/sparse_parity.py`, `experiments/modal_sparse_parity.py` (rank
+sweep on Modal A10G), `results/sparse_parity_grok/`, `results/sparse_parity_ranksweep/`,
+`research/sparse_parity_ranksweep.png`, `parity_grok.png`.
 
 ## Provenance
 
