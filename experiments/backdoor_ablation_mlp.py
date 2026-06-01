@@ -135,12 +135,12 @@ def train(Xtr, ytr, Xtrig, ytrig, mode, device, persample_n=3, rand_dir=None):
 
 
 def main():
+    global WARMUP_STEPS
     ap = argparse.ArgumentParser()
     ap.add_argument("--persample_n", type=int, default=3)
     ap.add_argument("--warmup", type=int, default=WARMUP_STEPS)
     ap.add_argument("--save_dir", default="../results/weight_covariance_v2/backdoor_mlp")
     args = ap.parse_args()
-    global WARMUP_STEPS
     WARMUP_STEPS = args.warmup
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.manual_seed(SEED); np.random.seed(SEED)
