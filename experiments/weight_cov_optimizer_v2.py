@@ -19,13 +19,17 @@ import torch.nn.functional as F
 
 class WeightCovarianceFilterV2:
     def __init__(self, model, base_optimizer, rank=200, decay=0.99,
-                 warmup=100, filter_strength=1.0):
+                 warmup=100, filter_strength=1.0, energy_threshold=None):
         self.model = model
         self.base_optimizer = base_optimizer
-        self.rank = rank
+        self.rank = rank            # hard cap on kept directions
         self.decay = decay
         self.warmup = warmup
         self.filter_strength = filter_strength
+        # If set (e.g. 0.99), keep the smallest number of top eigenvectors that
+        # capture this fraction of the spectral energy, capped at `rank`. The
+        # eigenvalues are already computed each step, so this is ~free.
+        self.energy_threshold = energy_threshold
 
         self.param_list = list(model.parameters())
         self.n_params = sum(p.numel() for p in self.param_list)
@@ -110,6 +114,11 @@ class WeightCovarianceFilterV2:
         eigvals = eigvals[pos]
         eigvecs = eigvecs[:, pos]
         new_k = min(self.rank, len(eigvals))
+        if self.energy_threshold is not None and len(eigvals) > 0:
+            # smallest #components capturing `energy_threshold` of the energy
+            frac = torch.cumsum(eigvals, 0) / eigvals.sum()
+            k_energy = int(torch.searchsorted(frac, self.energy_threshold).item()) + 1
+            new_k = max(1, min(self.rank, k_energy, len(eigvals)))
         eigvals = eigvals[:new_k]
         eigvecs = eigvecs[:, :new_k]  # (k+1, new_k)
         s_new = eigvals.sqrt()
