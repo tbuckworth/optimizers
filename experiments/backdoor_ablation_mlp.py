@@ -71,7 +71,7 @@ def clean_acc(model, X, y):
 
 @torch.no_grad()
 def attack_success(model, Xte01, yte, device):
-    mask = yte != TARGET
+    mask = (yte != TARGET).to(Xte01.device)
     Xt = _norm(add_trigger(Xte01[mask])).to(device)
     return (model(Xt).argmax(1) == TARGET).float().mean().item()
 
