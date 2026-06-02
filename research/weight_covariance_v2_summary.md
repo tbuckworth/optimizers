@@ -282,6 +282,34 @@ each step, tracking a *broad* basis but narrowing only the projection (decoupled
   solution is genuinely low-dimensional** — the algorithmic regime, not the perceptual one. See
   `results/cifar_noise/effrank/`, `research/cifar_adaptive_compare.png`, `experiments/launch_cifar_effrank.sh`.
 
+## 5d. Which basis to project onto? covariance vs correlation vs spectral (matched A/B/C)
+
+A natural question (Titus): the raw covariance ranks directions by *variance*, so it's dominated by
+high-magnitude weights. Would normalizing that away — projecting onto the **correlation** matrix
+(`D^{-1/2} C D^{-1/2}`, `D=diag(C)` = per-weight variance) or the **spectral / normalized-affinity**
+basis (`D=` row-sums of `C` = degree) — keep *structure* over *magnitude* and help? All three are the same
+machinery (reweight `V` by a diagonal, re-orthogonalize, project onto the top-k eigenspace), so it's **one
+categorical knob**. Fair test: MNIST @ 50% label noise, everything else fixed (MLP, Adam, lr, rank 200,
+decay 0.99, warmup 100, 30 epochs), 3 seeds. final test % (mean ± std):
+
+| basis | final test | best test |
+|-------|-----------:|----------:|
+| Adam (no filter) | 78.8 ± 0.5 | 96.0 *(then collapses)* |
+| **covariance (current)** | **92.1 ± 0.4** | 93.6 |
+| correlation (var-normalized) | 86.6 ± 0.1 | 90.7 |
+| spectral (degree-normalized\*) | 86.0 ± 1.0 | 89.1 |
+
+**Result: the raw covariance basis wins; normalizing it *hurts*.** Both normalized variants still beat
+Adam's collapsed final (78.8) — any of these subspaces resists memorization better than none — but
+removing the per-weight-variance weighting costs ~5–6 points. So in the noise-robustness regime the
+**variance magnitude is informative, not a nuisance**: the high-variance directions/weights are the ones
+carrying the recurring signal, and putting low-variance weights on equal footing (correlation) or
+degree-normalizing (spectral) lets more noise back in. This **refutes the "structure over magnitude"
+hypothesis** here — at least for label-noise robustness. (\*degree = row-sum of a *signed* covariance, so
+`D^{-1/2}` is clamped; treat the spectral row as approximate.) Cluster-then-project-largest-groups was left
+unbuilt since the cheaper normalization knob already shows variance-weighting is the thing to keep. See
+`research/normalize_test.png`, `results/mnist_normalize/`, `experiments/launch_normalize_test.sh`.
+
 ---
 
 ## 6. Honest assessment
