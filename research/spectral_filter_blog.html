@@ -257,10 +257,19 @@ solution is genuinely low-dimensional</b> — the algorithmic regime, not the pe
 
 <h3>H6 — Supervised direction ablation: works on a linear model, fails on an MLP <span class="verdict v-mix">SCOPE-LIMITED</span></h3>
 <p>If coherent structure can be <i>amplified</i>, can a known-bad direction be <i>removed</i>? As a proxy
-for reward-hacking / emergent misalignment, we plant a backdoor (trigger patch → target class) and ablate
-the trigger gradient direction during training. On a <b>linear</b> model this works: attack success drops
-99.9% → 8% at ~1% clean-accuracy cost. On an <b>MLP</b> it fails completely — and ablating a larger
-subspace doesn't rescue it.</p>
+for reward-hacking / emergent misalignment, we plant a backdoor (3×3 trigger patch → target class 0, 10%
+of training images) and ablate the trigger gradient direction during training — estimated either once at
+init (<code>ablate_init</code>) or re-estimated online (<code>ablate_online</code>), with a random
+direction as control. The same intervention, run on a linear model and on an MLP:</p>
+<figure>
+<img src="backdoor_compare.png" alt="Backdoor ablation: linear vs MLP">
+<figcaption>Same backdoor, same ablation. <b>Left:</b> on the <i>linear</i> model ablation drops attack
+success 99.9% → 8–17%; on the <i>MLP</i> it stays ~100%. <b>Right:</b> clean accuracy barely moves on
+either — so the MLP failure isn't a broken model, it's that the backdoor is routed through many redundant
+paths the ablation doesn't touch.</figcaption>
+</figure>
+<p>So on the linear model the backdoor genuinely lives in a single removable weight-space direction; on the
+MLP it's distributed. And <b>ablating a larger subspace doesn't rescue it</b>:</p>
 <figure>
 <img src="subspace_sweep.png" alt="Backdoor subspace sweep on MLP">
 <figcaption>MLP backdoor: attack success stays ~100% as we ablate up to 30 directions, and only dents at
