@@ -91,9 +91,22 @@ The effective rank (Shannon entropy of the eigenvalue distribution) provides a d
 - **Only tested on MNIST**: The 235K-parameter MLP is small. Unclear if the approach scales to larger networks (the p×p covariance becomes expensive to track).
 - **Hyperparameter sensitivity**: Rank needs tuning per problem. Too low = underfitting, too high = memorization leaks through.
 
+## Done since first writeup
+
+- **Grokking** (see `grokking_v2_findings.md`): the filter does **not** replace weight decay
+  and cannot trigger grokking on its own, but with weight decay present it **accelerates
+  grokking by 31%** (2550±79 vs 3720±84 epochs, 5 seeds, Welch t = 22.7). Switching the
+  filter on only after memorization works just as well — the speedup is a post-memorization
+  effect. Mechanistic upshot: the filter amplifies the persistent gradient direction but
+  doesn't create the force (label consistency / weight decay) that makes the *generalizing*
+  direction the persistent one.
+
 ## What's Missing
 
-- **Grokking**: Does the optimizer affect the transition from memorization to generalization? Can it accelerate or prevent grokking?
+- **Subspace baselines** (in progress): random fixed subspace at matched k (Version A) and
+  LoRA-on-random-init (Version B), across 0/20/40/90% label noise × 3 seeds. Tests whether
+  the *learned* subspace beats a random one at matched dimension — i.e. whether the adaptivity
+  is load-bearing or the method is "LoRA in a trenchcoat". See `launch_subspace_baselines.sh`.
 - **Larger models / datasets**: CIFAR-10, ResNets, transformers.
 - **Comparison with other regularizers**: How does this compare to dropout, weight decay, label smoothing, or mixup for noise robustness?
 - **Theoretical analysis**: Can we formalize when the gradient covariance eigenspace separates signal from noise?

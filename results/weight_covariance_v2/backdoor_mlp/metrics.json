@@ -1,0 +1,25 @@
+{
+  "baseline": {
+    "clean": 0.9776,
+    "asr": 1.0
+  },
+  "ablate_init": {
+    "clean": 0.9773,
+    "asr": 1.0
+  },
+  "ablate_online": {
+    "clean": 0.9737,
+    "asr": 1.0
+  },
+  "ablate_persample": {
+    "clean": 0.9764,
+    "asr": 1.0
+  },
+  "ablate_random": {
+    "clean": 0.977,
+    "asr": 1.0
+  },
+  "persample_n": 3,
+  "persample_energy_top1": 0.2669597566127777,
+  "persample_energy_top3": 0.3312186598777771
+}

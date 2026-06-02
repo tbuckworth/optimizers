@@ -19,6 +19,8 @@ from torch.utils.data import DataLoader, TensorDataset
 from torchvision import datasets, transforms
 
 from weight_cov_optimizer_v2 import WeightCovarianceFilterV2
+from random_subspace_optimizer import RandomSubspaceFilter
+from lora_mlp import LoRAMLP
 
 
 class FlexMNISTNet(nn.Module):
@@ -110,7 +112,10 @@ def run(args):
         random_labels=random_labels, noise_features=noise_features,
         label_noise=args.label_noise, seed=args.seed, data_dir=args.data_dir)
 
-    model = FlexMNISTNet(input_dim).to(device)
+    if args.mode == "lora":
+        model = LoRAMLP(input_dim, r=args.lora_rank, alpha=args.lora_alpha).to(device)
+    else:
+        model = FlexMNISTNet(input_dim).to(device)
     n_params = sum(p.numel() for p in model.parameters())
     print(f"Dataset: {args.dataset}, Input: {input_dim}, Params: {n_params:,}, "
           f"Mode: {args.mode}, Device: {device}")
@@ -128,9 +133,11 @@ def run(args):
     }]
     t_start = time.time()
 
-    if args.mode in ("adam", "baseline"):
+    if args.mode in ("adam", "baseline", "lora"):
         if args.mode == "adam":
             optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+        elif args.mode == "lora":
+            optimizer = torch.optim.Adam(model.trainable_parameters(), lr=args.lr)
         else:
             optimizer = make_base_optimizer(args.base_optimizer,
                                            model.parameters(), args.lr)
@@ -153,12 +160,17 @@ def run(args):
             print(f"  Epoch {epoch:3d}: train={train_acc:.4f} test={test_acc:.4f} "
                   f"loss={train_loss:.4f} ({time.time()-t_start:.0f}s)")
 
-    elif args.mode == "ours":
+    elif args.mode in ("ours", "random_subspace"):
         base_opt = make_base_optimizer(args.base_optimizer,
                                        model.parameters(), args.lr)
-        optimizer = WeightCovarianceFilterV2(
-            model, base_opt, rank=args.rank, decay=args.decay,
-            warmup=args.warmup, filter_strength=args.filter_strength)
+        if args.mode == "ours":
+            optimizer = WeightCovarianceFilterV2(
+                model, base_opt, rank=args.rank, decay=args.decay,
+                warmup=args.warmup, filter_strength=args.filter_strength,
+                normalize=args.normalize)
+        else:
+            optimizer = RandomSubspaceFilter(
+                model, base_opt, rank=args.rank, seed=args.seed)
 
         for epoch in range(args.epochs):
             model.train()
@@ -196,9 +208,12 @@ def run(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["adam", "ours", "baseline"], required=True)
+    parser.add_argument("--mode", choices=["adam", "ours", "baseline",
+                        "random_subspace", "lora"], required=True)
     parser.add_argument("--base_optimizer", choices=["adam", "sgd", "sgdm"],
                         default="adam")
+    parser.add_argument("--lora_rank", type=int, default=32)
+    parser.add_argument("--lora_alpha", type=float, default=32.0)
     parser.add_argument("--dataset", choices=["standard", "noisy_mnist", "random_labels"],
                         default="standard")
     parser.add_argument("--lr", type=float, default=1e-3)
@@ -207,6 +222,8 @@ if __name__ == "__main__":
     parser.add_argument("--decay", type=float, default=0.99)
     parser.add_argument("--warmup", type=int, default=100)
     parser.add_argument("--filter_strength", type=float, default=1.0)
+    parser.add_argument("--normalize", choices=["none", "var", "degree"], default="none",
+                        help="basis: none=covariance, var=correlation, degree=spectral/normalized-affinity")
     parser.add_argument("--label_noise", type=float, default=0.0)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--name", type=str, required=True)

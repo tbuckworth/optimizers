@@ -1,0 +1,38 @@
+{
+  "baseline": {
+    "clean": 0.9776,
+    "asr": 1.0
+  },
+  "ablate_online": {
+    "clean": 0.9776,
+    "asr": 1.0
+  },
+  "sweep_m": {
+    "1": {
+      "clean": 0.9783,
+      "asr": 1.0,
+      "subspace_energy": 0.267
+    },
+    "3": {
+      "clean": 0.974,
+      "asr": 0.9998,
+      "subspace_energy": 0.3312
+    },
+    "10": {
+      "clean": 0.9764,
+      "asr": 0.9999,
+      "subspace_energy": 0.4483
+    },
+    "30": {
+      "clean": 0.9781,
+      "asr": 1.0,
+      "subspace_energy": 0.5821
+    },
+    "100": {
+      "clean": 0.8496,
+      "asr": 0.9858,
+      "subspace_energy": 0.7452
+    }
+  },
+  "warmup": 0
+}

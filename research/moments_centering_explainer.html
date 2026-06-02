@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moments &amp; centering — what the gradient covariance actually captures</title>
+<style>
+  :root{
+    --bg:#0f1117; --panel:#181b24; --panel2:#1f2330; --ink:#e6e9ef; --mut:#9aa3b2;
+    --grid:#2a2f3a; --green:#37c87a; --red:#ff5d6c; --blue:#4aa3ff; --amber:#ffb454; --purp:#b07cff;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.65;font-size:16.5px;}
+  .wrap{max-width:840px;margin:0 auto;padding:48px 24px 80px;}
+  h1{font-size:30px;line-height:1.2;margin:0 0 8px;letter-spacing:-0.5px;}
+  .sub{color:var(--mut);font-size:18px;margin:0 0 6px;}
+  .meta{color:var(--mut);font-size:13.5px;border-bottom:1px solid var(--grid);padding-bottom:20px;margin-bottom:8px;}
+  h2{font-size:22px;margin:42px 0 10px;padding-top:14px;border-top:1px solid var(--grid);letter-spacing:-0.3px;}
+  h3{font-size:18px;margin:26px 0 6px;color:#cdd3df;}
+  p{margin:12px 0;}
+  code{background:var(--panel2);padding:1.5px 6px;border-radius:5px;font-size:14px;
+    font-family:'SF Mono',ui-monospace,Menlo,Consolas,monospace;color:#dfe5f1;}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;}
+  th,td{padding:7px 10px;border-bottom:1px solid var(--grid);text-align:left;vertical-align:top;}
+  th{color:var(--mut);font-weight:600;}
+  .good{color:var(--green);font-weight:600;} .bad{color:var(--red);font-weight:600;} .amb{color:var(--amber);font-weight:600;}
+  .card{background:var(--panel);border:1px solid var(--grid);border-radius:12px;padding:4px 20px;margin:18px 0;}
+  .eq{background:var(--panel);border:1px solid var(--grid);border-radius:8px;padding:12px 18px;
+    margin:14px 0;font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:15px;color:#eaf0fb;
+    overflow-x:auto;text-align:center;}
+  .note{background:#13241c;border:1px solid #1f4a33;border-radius:12px;padding:14px 20px;margin:20px 0;}
+  .note b{color:var(--green);}
+  .warn{background:#2a1e12;border:1px solid #5a3a1a;border-radius:12px;padding:14px 20px;margin:20px 0;}
+  .warn b{color:var(--amber);}
+  a{color:var(--blue);text-decoration:none;} a:hover{text-decoration:underline;}
+  .small{font-size:13.5px;color:var(--mut);}
+  ul{margin:10px 0;padding-left:22px;} li{margin:6px 0;}
+  em{color:#e9d8ff;font-style:normal;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Moments &amp; centering</h1>
+<p class="sub">What the gradient covariance actually captures, the centered-vs-uncentered choice, and how
+each <i>might</i> map to signal vs noise — with an honest account of what we've actually run.</p>
+<p class="meta">Companion to the <a href="spectral_filter_blog.html">spectral-filter write-up</a></p>
+
+<h2>1. First moment vs second moment</h2>
+<p>Take the gradient vector <code>g ∈ ℝ^p</code> (flattened over all parameters), treated as a random
+quantity — random because it varies across the examples in a batch, and across training steps.</p>
+
+<ul>
+<li><b>First moment</b> = the mean, <code>μ = E[g]</code>. A single vector: "the typical / average push."
+It's a direction (and magnitude) in parameter space.</li>
+<li><b>Second moment</b> = the matrix <code>M = E[g gᵀ]</code> (<i>p×p</i>). Its diagonal entry
+<code>M_ii = E[g_i²]</code> is the average squared gradient of parameter <i>i</i> (how big it is); its
+off-diagonal <code>M_ij = E[g_i g_j]</code> is how parameters <i>i</i> and <i>j</i>'s gradients
+<em>move together</em>. So the second moment is the natural object for "what co-varies with what."</li>
+</ul>
+
+<p>"Moment" is just the statistician's word for an average of a power: the first moment averages
+<code>g</code> (power 1), the second averages products <code>g·gᵀ</code> (power 2). The first is a vector;
+the second is a matrix because there's a product for every <i>pair</i> of parameters.</p>
+
+<h2>2. Centered vs uncentered — one identity says it all</h2>
+<p>The <b>covariance</b> is the second moment with the mean removed:</p>
+<div class="eq">C = E[(g − μ)(g − μ)ᵀ] = E[g gᵀ] − μ μᵀ &nbsp;&nbsp;⟹&nbsp;&nbsp; M = C + μ μᵀ</div>
+<p>That identity is the whole story. The <b>uncentered</b> second moment <code>M</code> equals the
+<b>centered</b> covariance <code>C</code> <i>plus</i> the outer product of the mean. So:</p>
+<ul>
+<li><b>Uncentered (<code>M = E[ggᵀ]</code>)</b> keeps the mean's contribution. Its top eigenvector is the
+direction maximizing <code>E[(vᵀg)²]</code> — the direction of largest <em>average energy</em>. If the
+mean push <code>μ</code> is large, the top eigenvector is pulled toward <code>μ</code>: roughly
+<i>"the dominant direction the gradient points, including the shared push."</i></li>
+<li><b>Centered (<code>C</code>)</b> subtracts <code>μμᵀ</code> first. Its top eigenvector maximizes
+<code>Var(vᵀg)</code> — the direction of largest <em>fluctuation around the mean</em>:
+<i>"the direction the gradient most deviates along."</i></li>
+</ul>
+
+<div class="card">
+<p><b>One-line intuition.</b> Suppose every example pushes roughly the same way (a big shared
+<code>μ</code>) plus small idiosyncratic wiggles. Then the <b>uncentered</b> top eigenvector ≈ the shared
+push, while the <b>centered</b> top eigenvector ≈ the biggest wiggle. They can point in completely
+different — even orthogonal — directions.</p>
+</div>
+
+<h2>3. The part we kept fuzzy: there are <i>two</i> axes, and we only ever moved both at once</h2>
+<p>"Centered vs uncentered" is one axis. But there's a second, independent axis hiding in our two
+implementations: <b>what population are we averaging over?</b></p>
+<ul>
+<li><b>Across time steps (temporal).</b> Accumulate the <i>batch-mean</i> gradient over successive steps
+into an EMA. The covariance then measures how the full-batch gradient direction fluctuates from step to
+step. <span class="small">— this is what <code>WeightCovarianceFilterV2</code> does.</span></li>
+<li><b>Across examples (within a step).</b> Take the <i>per-sample</i> gradients <code>gᵢ</code> inside one
+batch and average <code>gᵢgᵢᵀ</code>. The covariance then measures how examples agree/disagree right now.
+<span class="small">— this is what <code>PerSampleCovarianceFilter</code> does.</span></li>
+</ul>
+
+<div class="warn">
+<p><b>Important confound.</b> Our two optimizers differ on <i>both</i> axes at once:
+<br>• <code>V2</code> = <b>temporal + centered</b> (covary batch-mean gradients over steps, subtract the
+running mean).
+<br>• per-sample = <b>cross-example + uncentered</b> (covary per-sample gradients within a step, no mean
+subtraction).
+<br>So we have <b>never</b> isolated the effect of centering on its own — any difference between the two is
+also a difference between "over time" and "over examples." Keep that in mind for §5.</p>
+</div>
+
+<h2>4. How each <i>might</i> correspond to signal vs noise (speculative)</h2>
+<p>This is the interesting and genuinely unsettled part. Different framings disagree about which end is
+the signal.</p>
+
+<h3>(a) Uncentered, across examples — the "coherent gradients" reading</h3>
+<p>The top eigenvector of the uncentered per-sample second moment ≈ the direction the examples most
+<em>agree</em> on (the mean, since <code>μμᵀ</code> dominates when examples are coherent). Chatterjee's
+<i>coherent gradients</i> hypothesis says exactly this is the generalizing part: patterns common to many
+examples reinforce in the sum and get learned first; idiosyncratic, per-example directions cancel out and
+sit in the low-energy tail = memorization. <b>Reading: signal = the agreed (top) direction; noise = the
+disagreeing tail.</b> → keep the top.</p>
+
+<h3>(b) Centered, across examples — the "disagreement = memorization" reading (NOT run)</h3>
+<p>If instead you <i>center</i> the per-sample gradients (subtract the batch mean) and keep high-variance
+directions, you are keeping the directions of maximum <em>disagreement</em> between examples. Those are
+plausibly the <i>memorization</i> directions (where each example wants something different). <b>Under this
+reading you'd want to <i>remove</i> the centered top directions, not keep them.</b> Centering flips the
+intuition versus (a). We have not run this.</p>
+
+<h3>(c) Centered, across time — what we actually mostly ran (V2)</h3>
+<p>V2 removes the running-average push and keeps the directions in which the <i>full-batch</i> gradient is
+currently <em>changing / co-fluctuating</em> the most over recent steps. The interpretation is murkier
+than (a): high temporal co-fluctuation could be the <i>learning frontier</i> (the directions actively
+being figured out — good to keep) or could be instability. Empirically V2 behaves like a
+<b>coherence amplifier</b> — it helps when the useful thing is the coherent thing (noise robustness,
+grokking on modular addition) and hurts when the useful signal is weak and not yet dominant (sparse
+parity). But note this is the centered-temporal object, which is <i>not</i> the clean "agreement"
+object of (a).</p>
+
+<div class="note">
+<p><b>The honest summary of the theory.</b> "Project onto the top covariance directions" only obviously
+corresponds to "keep signal, drop noise" under reading (a) — uncentered, across examples (coherent
+gradients). The centered objects keep <i>fluctuation/disagreement</i> directions, whose status as signal
+or noise depends on whether you're covarying over examples (likely noise → should remove) or over time
+(ambiguous). We have been somewhat loose about which object we mean, and they are not interchangeable.</p>
+</div>
+
+<h2>5. What we actually ran (and what it does/doesn't tell us)</h2>
+<table>
+<thead><tr><th>Experiment</th><th>Optimizer</th><th>Centered?</th><th>Covary over</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Modular-addition grokking (5 seeds)</td><td>V2</td><td>centered</td><td>time steps</td><td class="good">helps (31% faster)</td></tr>
+<tr><td>CIFAR-10 label-noise (all sweeps)</td><td>V2</td><td>centered</td><td>time steps</td><td class="good">noise-robust (rank dial)</td></tr>
+<tr><td>CIFAR effective-rank / adaptive</td><td>V2</td><td>centered</td><td>time steps</td><td class="amb">underfits adaptively</td></tr>
+<tr><td>Sparse parity — rank sweep</td><td>V2</td><td>centered</td><td>time steps</td><td class="bad">delays grokking</td></tr>
+<tr><td>Sparse parity — adaptive effrank</td><td>V2</td><td>centered</td><td>time steps</td><td class="amb">groks, slower than AdamW</td></tr>
+<tr><td>Sparse parity — per-sample filter</td><td>per-sample</td><td><b>uncentered</b></td><td>examples</td><td class="bad">never groks</td></tr>
+</tbody>
+</table>
+
+<p>Reading this table honestly:</p>
+<ul>
+<li><b>~99% of the runs are the centered (temporal, batch-mean) V2.</b> The uncentered object appears in a
+single experiment family — the per-sample parity filter — which never groked. <span class="small">(It also
+shows up as the direction-estimator in the supervised backdoor-ablation work, but that's a different
+mechanism, not the filter.)</span></li>
+<li><b>The one uncentered datum we have:</b> on parity its top eigenvector was ≈ the mean gradient
+(measured <code>cos ≈ 0.999</code> for a shared direction) and it never groked — consistent with "the top
+agreed direction is the bulk-fitting push, not the 3-bit signal." But that's parity, where <i>nothing</i>
+in the gradient top helps.</li>
+<li><b>We have no clean A/B of centering.</b> Because V2 (centered+temporal) and the per-sample filter
+(uncentered+cross-example) differ on both axes, we cannot attribute any result to centering alone. The
+centered-vs-uncentered question is, in honesty, <b>essentially untested in isolation.</b></li>
+</ul>
+
+<div class="card">
+<p><b>If we wanted to actually test it</b> (cheap, one knob): run the <i>same</i> population — say
+per-sample, across examples — once uncentered (keep the mean = reading (a)) and once centered (keep
+disagreement = reading (b)), on the same task, and compare. That isolates the mean-outer-product term
+<code>μμᵀ</code> and would tell us directly whether "keep the agreed direction" or "keep the fluctuation"
+is the one that tracks generalization. Likewise we could add a centering toggle to V2 to isolate it in the
+temporal setting.</p>
+</div>
+
+<p class="small" style="margin-top:30px;border-top:1px solid var(--grid);padding-top:16px;">
+Code: <code>experiments/weight_cov_optimizer_v2.py</code> (centered, temporal — lines 77–79 subtract the
+running mean), <code>experiments/persample_cov_optimizer.py</code> (uncentered, cross-example).</p>
+
+</div>
+</body>
+</html>
