@@ -20,7 +20,7 @@ import torch.nn.functional as F
 class WeightCovarianceFilterV2:
     def __init__(self, model, base_optimizer, rank=200, decay=0.99,
                  warmup=100, filter_strength=1.0, energy_threshold=None,
-                 adaptive="none"):
+                 adaptive="none", normalize="none"):
         self.model = model
         self.base_optimizer = base_optimizer
         self.rank = rank            # hard cap on kept directions
@@ -31,6 +31,17 @@ class WeightCovarianceFilterV2:
         # capture this fraction of the spectral energy, capped at `rank`. The
         # eigenvalues are already computed each step, so this is ~free.
         self.energy_threshold = energy_threshold
+        # Which BASIS to project onto (one categorical knob):
+        #   "none"   -> eigenvectors of the covariance C            (current)
+        #   "var"    -> eigenvectors of the correlation D^-1/2 C D^-1/2, D=diag(C)
+        #               (per-weight variance divided out: structure over magnitude)
+        #   "degree" -> eigenvectors of D^-1/2 C D^-1/2, D=row-sums of C
+        #               (the normalized-affinity / spectral-clustering basis;
+        #                degree of a SIGNED covariance can be <=0, so it is clamped)
+        # All three project onto the top-k eigenspace of D^-1/2 C D^-1/2, which is the
+        # column space of A = D^-1/2 V diag(S); we project via A (AᵀA)^-1 Aᵀ — no
+        # eigendecomposition needed. normalize!="none" ignores the adaptive proj_k.
+        self.normalize = normalize
         # Adaptive rank rule (overrides energy_threshold if not "none"):
         #   "none"    -> keep `rank` (fixed), or energy_threshold if set
         #   "effrank" -> keep round(effective rank) = round(exp(entropy of spectrum))
@@ -195,8 +206,26 @@ class WeightCovarianceFilterV2:
     def _project_gradient(self, g):
         if self.V is None:
             return g
-        V = self.V if self.proj_k is None else self.V[:, :self.proj_k]
-        g_projected = V @ (V.T @ g)
+        if self.normalize == "none":
+            V = self.V if self.proj_k is None else self.V[:, :self.proj_k]
+            g_projected = V @ (V.T @ g)
+        else:
+            # Project onto col(A), A = D^{-1/2} V diag(S) — the top-k eigenspace of
+            # the diagonally-normalized covariance. No eigendecomposition needed.
+            S = self.S.to(g.device)
+            Vs = self.V * S.unsqueeze(0)                  # (p, k) = V diag(S)
+            if self.normalize == "var":
+                D = (Vs * Vs).sum(1)                      # C_ii = per-weight variance
+            else:  # "degree": row-sums of C = Vs @ (S * colsum)
+                colsum = self.V.sum(0)                    # (k,)
+                D = Vs @ (S * colsum)                     # (p,)
+                D = D.abs()                               # signed degree -> clamp |.|
+            Dinv = (D.clamp_min(1e-12)).rsqrt()           # (p,)
+            A = Vs * Dinv.unsqueeze(1)                    # (p, k)
+            G = A.T @ A                                   # (k, k)
+            G += 1e-6 * torch.eye(G.shape[0], device=G.device, dtype=G.dtype)
+            coeffs = torch.linalg.solve(G, A.T @ g)       # (k,)
+            g_projected = A @ coeffs
         if self.filter_strength < 1.0:
             return (1 - self.filter_strength) * g + self.filter_strength * g_projected
         return g_projected
