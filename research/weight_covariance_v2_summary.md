@@ -258,6 +258,30 @@ energy ∈ {0.90, 0.95, 0.99} at decay 0.999, rank cap 1200, logging the kept ra
   conflicting-label mean dominates), so it keeps even fewer directions — the opposite of helpful. See
   `results/cifar_noise/adaptive/`, `research/cifar_adaptive.png`, `experiments/launch_cifar_adaptive.sh`.
 
+**Adaptive *effective-rank* targeting (the faithful version) — also underfits CIFAR, which is the key
+contrast with parity.** We then built the principled rule: project onto `k = round(exp(spectral entropy))`
+each step, tracking a *broad* basis but narrowing only the projection (decoupled, no ratchet — see
+`grokking_v2_findings.md`). On parity this is the **first filter variant that groks**. On CIFAR it does
+**not** rescue anything. final % (effrank vs energy-99% vs best fixed):
+
+| Noise | adaptive effrank | (kept rank) | adaptive energy 99% | best FIXED |
+|------:|-----------------:|:-----------:|--------------------:|-----------:|
+| 0% | 46.9 | ~13 | 47.3 | **74.2** |
+| 40% | 45.2 | ~32 | 40.0 | **64.8** |
+| 80% | 10.0 | ~11 | 13.4 | **44.1** |
+
+- **effrank is no better than the energy rule on CIFAR** (~47% clean vs 74% fixed). It keeps slightly more
+  directions than energy at 40% noise (~32 vs ~9) but still ~6× too few; at 0%/80% it lands at ~11–13,
+  essentially the same place.
+- **Why the contrast with parity is the real result.** Effective rank measures how *concentrated* the
+  gradient is, not how many directions the *function* needs. These coincide only for an intrinsically
+  low-dimensional task: parity's 3-bit signal lives in ~18 active directions (effrank rises to ~18 → it
+  groks), whereas a CIFAR CNN needs ~200 directions while its gradient covariance is concentrated in ~12.
+  So **every** spectral-concentration rule (99%-energy ≈ 10, effective rank ≈ 12, log-gap ≈ 1) lands in
+  the same tiny range and starves the high-dim model. **Adaptive spectral rank helps iff the task's
+  solution is genuinely low-dimensional** — the algorithmic regime, not the perceptual one. See
+  `results/cifar_noise/effrank/`, `research/cifar_adaptive_compare.png`, `experiments/launch_cifar_effrank.sh`.
+
 ---
 
 ## 6. Honest assessment
