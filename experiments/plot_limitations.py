@@ -36,10 +36,11 @@ ax.grid(True, axis="y", color=GRID, lw=0.5, alpha=0.5)
 
 # Panel 2: backdoor ASR — linear (ablatable) vs MLP (not)
 ax = fig.add_subplot(gs[0, 1]); ax.set_facecolor(PANEL)
-conds = ["baseline", "ablate_init", "ablate_online", "ablate_persample", "ablate_random"]
-# linear numbers from summary §5b (ablate_eig stands in the linear-only slot; use init/online)
-linear = {"baseline":0.999, "ablate_init":0.080, "ablate_online":0.167,
-          "ablate_persample":0.098, "ablate_random":0.999}  # persample slot = linear eig route (0.098)
+# Only plot conditions that are the SAME method on both models (mean-gradient ablation).
+# The eigenvector/per-sample routes are not equivalent across the two models, so they are
+# excluded from the paired bars to avoid a misleading comparison.
+conds = ["baseline", "ablate_init", "ablate_online", "ablate_random"]
+linear = {"baseline":0.999, "ablate_init":0.080, "ablate_online":0.167, "ablate_random":0.999}
 mlp = L(os.path.join(BD, "backdoor_mlp", "metrics.json"))
 mlp_asr = [mlp[c]["asr"] for c in conds]
 lin_asr = [linear[c] for c in conds]

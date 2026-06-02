@@ -69,28 +69,39 @@ def run(args):
     print(f"device={device} noise={args.noise} params={sum(p.numel() for p in model.parameters()):,} mode={args.mode}")
     base = torch.optim.Adam(model.parameters(), lr=args.lr)
 
+    et = args.energy_threshold if args.energy_threshold > 0 else None
     filt = None
     if args.mode == "ours":
-        filt = WeightCovarianceFilterV2(model, base, rank=args.rank, decay=args.decay, warmup=args.warmup)
+        filt = WeightCovarianceFilterV2(model, base, rank=args.rank, decay=args.decay,
+                                        warmup=args.warmup, energy_threshold=et)
     filtering = (args.mode == "ours")
 
     metrics = []; t0 = time.time(); switch_ep = -1
     for epoch in range(args.epochs):
         model.train()
+        krs = []
         for x, y in train_loader:
             x, y = x.to(device), y.to(device)
             if filtering and filt is not None:
-                filt.step(x, y)
+                _, diag = filt.step(x, y)
+                if "kept_rank" in diag:
+                    krs.append(diag["kept_rank"])
             else:
                 base.zero_grad(); F.cross_entropy(model(x), y).backward(); base.step()
         tr = evaluate(model, train_loader, device); te = evaluate(model, test_loader, device)
-        metrics.append({"epoch": epoch, "train_acc": round(tr, 4), "test_acc": round(te, 4)})
+        rec = {"epoch": epoch, "train_acc": round(tr, 4), "test_acc": round(te, 4)}
+        if krs:
+            rec["kept_rank_mean"] = round(float(np.mean(krs)), 1)
+            rec["kept_rank_max"] = int(np.max(krs))
+        metrics.append(rec)
         # switch recipe: enable filter once train acc crosses threshold
         if args.mode == "switch" and filt is None and tr >= args.switch_at:
-            filt = WeightCovarianceFilterV2(model, base, rank=args.rank, decay=args.decay, warmup=args.warmup)
+            filt = WeightCovarianceFilterV2(model, base, rank=args.rank, decay=args.decay,
+                                            warmup=args.warmup, energy_threshold=et)
             filtering = True; switch_ep = epoch
             print(f"  >>> switch ON at epoch {epoch} (train_acc={tr:.3f})")
-        print(f"  ep{epoch:3d} train={tr:.4f} test={te:.4f} [{time.time()-t0:.0f}s]")
+        kr = f" kept_rank={rec.get('kept_rank_mean','-')}" if krs else ""
+        print(f"  ep{epoch:3d} train={tr:.4f} test={te:.4f}{kr} [{time.time()-t0:.0f}s]")
 
     best = max(m["test_acc"] for m in metrics)
     os.makedirs(args.save_dir, exist_ok=True)
@@ -107,6 +118,8 @@ if __name__ == "__main__":
     p.add_argument("--lr", type=float, default=1e-3)
     p.add_argument("--epochs", type=int, default=40)
     p.add_argument("--rank", type=int, default=200)
+    p.add_argument("--energy_threshold", type=float, default=0.0,
+                   help="if >0, keep smallest #eigvecs capturing this energy fraction (<=rank); 0 disables")
     p.add_argument("--decay", type=float, default=0.99)
     p.add_argument("--warmup", type=int, default=100)
     p.add_argument("--switch_at", type=float, default=0.6)

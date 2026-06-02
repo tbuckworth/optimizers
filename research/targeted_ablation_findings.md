@@ -106,3 +106,32 @@ combine with an auxiliary trigger-detection loss.
 
 Code: `experiments/backdoor_ablation_mlp.py`. Results: `results/weight_covariance_v2/backdoor_mlp/`
 (warmup=50) and `.../backdoor_mlp_warmup0/` (warmup=0 control).
+
+### Subspace-size sweep (Titus's follow-up): ablating a *set* of directions doesn't help either
+
+Titus asked whether the backdoor might be spread across *several* directions, so ablating a larger
+subspace (not just the top one) could remove it. We swept the ablated per-sample subspace size
+`m ∈ {1,3,10,30,100}` on the MLP (warmup=0, so projection runs from step 0 — best case for ablation):
+
+| ablated subspace | clean acc | ASR | subspace energy |
+|------------------|----------:|----:|----------------:|
+| baseline | 97.8% | **100%** | — |
+| mean-grad (online) | 97.8% | **100%** | — |
+| m=1 | 97.8% | **100%** | 0.27 |
+| m=3 | 97.4% | **100%** | 0.33 |
+| m=10 | 97.6% | **100%** | 0.45 |
+| m=30 | 97.8% | **100%** | 0.58 |
+| m=100 | **85.0%** | **98.6%** | 0.75 |
+
+**Removing more directions does not remove the backdoor.** ASR stays pinned at ~100% through m=30
+(capturing 58% of the per-sample gradient energy), and the *only* point where ASR moves at all (m=100,
+98.6%) is also where clean accuracy collapses by 13 points. There is no subspace size that removes the
+backdoor while preserving the task: by the time you ablate enough directions to dent ASR, you have already
+destroyed the model. This is the same redundancy story as the single-direction result, now confirmed
+against the strongest version of the intervention — the backdoor→target mapping is genuinely distributed
+across the MLP's representation, not confined to a removable low-dimensional gradient subspace.
+
+**Bottom line for the EM forecast:** gradient-space direction ablation (one direction *or* a set) is not a
+viable lever for removing a learned behaviour in a nonlinear network. Removing the behaviour requires a
+capability- / activation-level intervention, not a projection in gradient space. Figure: `research/subspace_sweep.png`.
+Result: `results/weight_covariance_v2/backdoor_mlp/subspace_sweep.json`.

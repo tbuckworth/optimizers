@@ -139,6 +139,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--persample_n", type=int, default=3)
     ap.add_argument("--warmup", type=int, default=WARMUP_STEPS)
+    ap.add_argument("--sweep_m", type=str, default="",
+                    help="comma list of subspace sizes for ablate_persample, e.g. 1,3,10,30,100. "
+                         "If set, runs ONLY the subspace-size sweep (+ baseline + mean-grad ref).")
     ap.add_argument("--save_dir", default="../results/weight_covariance_v2/backdoor_mlp")
     args = ap.parse_args()
     WARMUP_STEPS = args.warmup
@@ -164,6 +167,33 @@ def main():
 
     rand_dir = torch.randn(sum(p.numel() for p in make_model(device).parameters()), device=device)
     res = {}
+
+    if args.sweep_m:
+        # Subspace-size sweep: does ablating MORE per-sample eigenvectors ever kill the backdoor?
+        ms = [int(x) for x in args.sweep_m.split(",")]
+        # references
+        for mode in ["baseline", "ablate_online"]:
+            m = train(Xtr, ytr_p, Xtrig, ytrig, mode, device, rand_dir=rand_dir)
+            ca = clean_acc(m, Xte, yte); asr = attack_success(m, Xte01, yte, device)
+            res[mode] = {"clean": round(ca, 4), "asr": round(asr, 4)}
+            print(f"{mode:22s} clean={ca:.4f} asr={asr:.4f}")
+        sweep = {}
+        for mm in ms:
+            _, em = persample_trigger_dirs(make_model(device), Xtrig, ytrig, mm)
+            model = train(Xtr, ytr_p, Xtrig, ytrig, "ablate_persample", device, persample_n=mm,
+                          rand_dir=rand_dir)
+            ca = clean_acc(model, Xte, yte); asr = attack_success(model, Xte01, yte, device)
+            sweep[str(mm)] = {"clean": round(ca, 4), "asr": round(asr, 4),
+                              "subspace_energy": round(em, 4)}
+            print(f"persample m={mm:<4d}        clean={ca:.4f} asr={asr:.4f} energy={em:.3f}")
+        res["sweep_m"] = sweep
+        res["warmup"] = WARMUP_STEPS
+        os.makedirs(args.save_dir, exist_ok=True)
+        out_path = os.path.join(args.save_dir, "subspace_sweep.json")
+        json.dump(res, open(out_path, "w"), indent=2)
+        print("saved", out_path)
+        return
+
     for mode in ["baseline", "ablate_init", "ablate_online", "ablate_persample", "ablate_random"]:
         m = train(Xtr, ytr_p, Xtrig, ytrig, mode if mode != "baseline" else "baseline",
                   device, persample_n=args.persample_n, rand_dir=rand_dir)

@@ -187,6 +187,9 @@ class WeightCovarianceFilterV2:
             if total > 1e-12:
                 diagnostics["variance_in_top5"] = (self.S[:5] ** 2).sum().item() / total
             diagnostics["effective_rank"] = self._effective_rank()
+            # kept_rank: the actual number of basis vectors retained this step
+            # (== rank cap unless energy_threshold is trimming it lower)
+            diagnostics["kept_rank"] = self.V.shape[1] if self.V is not None else 0
 
         return loss_val, diagnostics
 
