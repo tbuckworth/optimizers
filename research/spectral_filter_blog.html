@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spectral Gradient Filtering — projecting gradients onto their own covariance</title>
+<style>
+  :root{
+    --bg:#0f1117; --panel:#181b24; --panel2:#1f2330; --ink:#e6e9ef; --mut:#9aa3b2;
+    --grid:#2a2f3a; --green:#37c87a; --red:#ff5d6c; --blue:#4aa3ff; --amber:#ffb454; --purp:#b07cff;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.65;font-size:16.5px;}
+  .wrap{max-width:860px;margin:0 auto;padding:48px 24px 80px;}
+  h1{font-size:32px;line-height:1.2;margin:0 0 8px;letter-spacing:-0.5px;}
+  .sub{color:var(--mut);font-size:18px;margin:0 0 6px;}
+  .meta{color:var(--mut);font-size:13.5px;border-bottom:1px solid var(--grid);padding-bottom:20px;margin-bottom:8px;}
+  h2{font-size:23px;margin:44px 0 10px;padding-top:14px;border-top:1px solid var(--grid);letter-spacing:-0.3px;}
+  h3{font-size:18.5px;margin:28px 0 6px;color:#cdd3df;}
+  p{margin:12px 0;}
+  code{background:var(--panel2);padding:1.5px 6px;border-radius:5px;font-size:14px;
+    font-family:'SF Mono',ui-monospace,Menlo,Consolas,monospace;color:#dfe5f1;}
+  pre{background:var(--panel);border:1px solid var(--grid);border-radius:10px;padding:16px 18px;
+    overflow-x:auto;font-size:13.5px;line-height:1.5;
+    font-family:'SF Mono',ui-monospace,Menlo,Consolas,monospace;}
+  pre code{background:none;padding:0;color:#cfe3ff;}
+  figure{margin:22px 0;}
+  img{width:100%;border-radius:10px;border:1px solid var(--grid);display:block;}
+  figcaption{color:var(--mut);font-size:13.5px;margin-top:8px;text-align:center;}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;margin:16px 0;}
+  th,td{padding:7px 11px;border-bottom:1px solid var(--grid);text-align:left;}
+  th{color:var(--mut);font-weight:600;}
+  td.r,th.r{text-align:right;}
+  .good{color:var(--green);font-weight:600;} .bad{color:var(--red);font-weight:600;}
+  .card{background:var(--panel);border:1px solid var(--grid);border-radius:12px;padding:4px 20px;margin:18px 0;}
+  .tldr{background:#13241c;border:1px solid #1f4a33;border-radius:12px;padding:16px 20px;margin:20px 0;}
+  .tldr b{color:var(--green);}
+  .hyp{background:var(--panel2);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;
+    padding:10px 16px;margin:16px 0;}
+  .hyp .h{color:var(--blue);font-weight:600;}
+  .verdict{display:inline-block;font-size:12.5px;font-weight:700;border-radius:5px;padding:1px 8px;margin-left:4px;
+    vertical-align:middle;}
+  .v-yes{background:#13351f;color:#48d17e;} .v-no{background:#3a1620;color:#ff7384;}
+  .v-mix{background:#3a2e12;color:#ffc06b;}
+  a{color:var(--blue);text-decoration:none;} a:hover{text-decoration:underline;}
+  .small{font-size:13.5px;color:var(--mut);}
+  ul{margin:10px 0;padding-left:22px;} li{margin:5px 0;}
+  .eq{background:var(--panel);border:1px solid var(--grid);border-radius:8px;padding:10px 16px;
+    margin:12px 0;font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:14.5px;color:#dfe5f1;overflow-x:auto;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Spectral Gradient Filtering</h1>
+<p class="sub">A streaming rank-1 / rank-B optimizer that projects each gradient onto the dominant
+directions of its own running covariance — what it does, and where it helps.</p>
+<p class="meta">Research notes · gradient-covariance filtering · all results reproduce from the linked code &amp; data</p>
+
+<div class="tldr">
+<p><b>TL;DR.</b> We wrap a standard optimizer (Adam/AdamW) with a filter that maintains a low-rank
+estimate of the <i>p×p</i> covariance of the gradient over training, and each step replaces the gradient
+with its projection onto the top eigen-directions. The filter <b>resists label-noise memorization</b> and
+<b>accelerates grokking on modular addition (31% earlier, 5 seeds)</b>. But it is <b>not</b> a free lunch:
+the kept-rank is a capacity dial (more rank fits clean data but lets noise back in), it <b>delays</b>
+grokking on sparse parity, and an <b>adaptive effective-rank</b> rule only helps when the task's solution
+is genuinely low-dimensional. A supervised version removes a backdoor in a linear model but <b>not</b> in
+an MLP. The unifying lesson: the filter amplifies whatever the gradient is <i>coherent</i> about —
+which is a feature for noise robustness and a limitation everywhere the useful signal is not the dominant
+gradient direction.</p>
+</div>
+
+<h2>1. The idea</h2>
+<p>Across a batch and across training steps, gradients have structure: some directions recur (the network
+keeps being pushed the same way), others are transient (sample-specific, noise-like). The hypothesis is
+that the <b>recurring directions are the generalizing signal</b> and the transient tail is memorization /
+noise. If so, projecting each gradient onto the top directions of its running covariance should suppress
+memorization while preserving real learning.</p>
+
+<p>The object we track is the covariance of the gradient vector <code>g ∈ ℝ^p</code> (flattened over
+<i>all</i> parameters), accumulated as an exponential moving average:</p>
+<div class="eq">C_t = λ · C_{t−1} + (1−λ) · ĝ_t ĝ_tᵀ &nbsp;&nbsp; where ĝ_t = g_t − (running mean)</div>
+<p>Materializing <code>C</code> is impossible (<i>p</i> is 10⁵–10⁶, so <code>C</code> is 10¹⁰–10¹²
+entries). The whole method is about tracking its <b>top-k eigenspace</b> cheaply, in a streaming fashion,
+and projecting onto it.</p>
+
+<h2>2. Method</h2>
+
+<h3>2.1 Streaming rank-1 covariance SVD</h3>
+<p>We keep only the top-k eigenvectors <code>V ∈ ℝ^{p×k}</code> and singular values <code>S ∈ ℝ^k</code>.
+The EMA update <code>C ← λC + (1−λ)ĝĝᵀ</code> is equivalent to appending one row to a factor matrix.
+The trick: the updated covariance lives entirely in the span of the current basis <i>plus</i> the new
+gradient — a <code>(k+1)</code>-dimensional subspace. So we never touch <i>p×p</i>; we build a tiny
+<code>(k+1)×(k+1)</code> Gram matrix, eigendecompose <i>that</i>, and rotate the basis.</p>
+
+<pre><code># g_hat: centered batch-mean gradient (p,). V:(p,k), S:(k,)
+c       = V.T @ g_hat                 # (k,) coords of g in current basis
+g_perp  = g_hat - V @ c               # residual orthogonal to V
+q       = g_perp / g_perp.norm()      # the ONE candidate new direction
+
+# (k+1)x(k+1) Gram of [sqrt(λ)·diag(S)·Vᵀ ; sqrt(1−λ)·ĝᵀ], built in closed form:
+G[:k,:k] = λ * diag(S**2)
+G[:k, k] = G[k,:k] = sqrt(λ(1−λ)) * S * c
+G[k , k] = (1−λ) * g_hat.dot(g_hat)
+
+evals, evecs = eigh(G)                # cheap: (k+1)x(k+1)
+keep = top_k(evals)                   # truncate back to rank k
+V, S = rotate(V, q, evecs[:,keep]), sqrt(evals[keep])
+
+g_filtered = V @ (V.T @ g)            # project gradient onto top-k, then hand to Adam
+</code></pre>
+
+<p>The residual <code>q</code> is the only way new directions enter: it is exactly "the part of this
+gradient the current basis could not represent." A single gradient therefore adds <b>at most one</b> new
+direction per step — the honest limit of rank-1 information.</p>
+
+<div class="card">
+<p><b>Cost.</b> Time <code>O(pk + k³)</code> per step (the <i>p</i> term is the projection; the
+<code>k³</code> is the small eigendecomposition), memory <code>O(pk)</code>. For <i>k</i> in the low
+hundreds this is ~2× Adam. No <i>p×p</i> object is ever formed.</p>
+</div>
+
+<h3>2.2 The rank-B (per-sample) variant</h3>
+<p>Instead of the batch-mean gradient, we can feed the <i>B</i> per-sample gradients within a step
+(computed with <code>vmap(grad(...))</code>). The covariance is then the uncentered second moment
+<code>C = EMA[(1/B) Σ gᵢ gᵢᵀ]</code>, and the update generalizes to rank-B via a
+<code>(k+B)×(k+B)</code> Gram. Its top eigenvector is the direction the per-sample gradients most
+<i>agree</i> on — the natural object for "what is the batch coherent about?"</p>
+
+<h3>2.3 Choosing the rank</h3>
+<p>Three rules, in increasing sophistication:</p>
+<ul>
+<li><b>Fixed</b> — keep a constant <i>k</i> (and a decay <code>λ</code>, which sets a ceiling of ~
+<code>1/(1−λ)</code> on how many directions the EMA can hold).</li>
+<li><b>Energy threshold</b> — keep the smallest <i>k</i> whose eigenvalues sum to X% of the total.</li>
+<li><b>Effective-rank targeting</b> — set <code>k = round(exp(H))</code> where <code>H</code> is the
+Shannon entropy of the normalized spectrum: a soft count of "how many directions are meaningfully active."
+We track a <i>broad</i> basis but only project onto the top <code>round(effrank)</code> each step
+(decoupling estimation from projection, so the projection width can change freely).</li>
+</ul>
+
+<h2>3. Hypotheses &amp; what we found</h2>
+<table>
+<thead><tr><th>Hypothesis</th><th>Task</th><th>Verdict</th></tr></thead>
+<tbody>
+<tr><td>H1 — Filtering resists noise memorization</td><td>CIFAR-10 / MNIST label noise</td><td><span class="verdict v-yes">SUPPORTED</span></td></tr>
+<tr><td>H2 — Filtering accelerates grokking</td><td>modular addition</td><td><span class="verdict v-yes">SUPPORTED</span></td></tr>
+<tr><td>H2′ — …on all algorithmic tasks</td><td>sparse parity</td><td><span class="verdict v-no">REFUTED (delays)</span></td></tr>
+<tr><td>H3 — Low rank isolates the signal</td><td>sparse parity</td><td><span class="verdict v-no">REFUTED</span></td></tr>
+<tr><td>H4 — Per-sample top-k isolates the signal</td><td>sparse parity</td><td><span class="verdict v-no">REFUTED</span></td></tr>
+<tr><td>H5 — Adaptive rank (broaden-then-narrow) helps</td><td>parity / CIFAR</td><td><span class="verdict v-mix">MIXED</span></td></tr>
+<tr><td>H6 — Supervised ablation removes a planted hack</td><td>backdoor (linear / MLP)</td><td><span class="verdict v-mix">linear yes, MLP no</span></td></tr>
+</tbody>
+</table>
+
+<h3>H1 — Noise robustness, but it's a capacity dial <span class="verdict v-yes">SUPPORTED</span></h3>
+<p>On CIFAR-10 with symmetric label noise (small CNN, 591K params), the filter resists fitting the noise:
+where Adam peaks then collapses as it memorizes corrupted labels, the filter holds. But raising the
+<i>effective rank</i> (rank and decay together) trades this off cleanly — more rank recovers clean-data
+accuracy all the way to Adam, while letting more noise back in. <b>Rank is one knob: how many gradient
+directions you keep.</b></p>
+<figure>
+<img src="cifar_ranksweep.png" alt="CIFAR effective-rank sweep">
+<figcaption>Higher effective rank fits clean data (0% noise → matches Adam at 74%) but admits noise;
+lower rank resists noise (80%) but underfits clean. The sweet spot slides with the noise level.</figcaption>
+</figure>
+
+<h3>H2 — Grokking acceleration on modular addition <span class="verdict v-yes">SUPPORTED</span></h3>
+<p>On the canonical grokking task (modular addition, <i>p</i>=113), the filter brings the
+generalization phase transition forward by <b>~31%</b> (mean over 5 seeds, non-overlapping). Consistent
+with the mechanism: the generalizing circuit is a strongly recurring direction, so amplifying coherence
+helps it win sooner.</p>
+<figure>
+<img src="blog_grokking_modadd.png" alt="Modular addition grokking acceleration">
+<figcaption>Filter + AdamW reaches test ≥ 0.9 at ~2550 epochs vs ~3720 for AdamW (5 seeds, mean ± std).</figcaption>
+</figure>
+
+<h3>H2′/H3 — On sparse parity the filter <i>delays</i> grokking, and low rank breaks it <span class="verdict v-no">REFUTED</span></h3>
+<p>Sparse parity (n=40, k=3) is the opposite story. Here the generalizing solution is a <i>weak</i> 3-bit
+signal that the bulk memorization direction drowns out — so amplifying the dominant direction delays
+generalization. A rank sweep confirms it mechanistically: rank 1–3 don't isolate the signal, they
+<b>prevent grokking entirely</b> (the fit destabilizes); rank ~10 is the fastest <i>among filtered runs</i>
+but <b>no rank beats AdamW</b>. The per-sample (rank-B) variant never groks at any rank either — its top
+direction is the bulk-fitting mean, not the signal.</p>
+<figure>
+<img src="sparse_parity_ranksweep.png" alt="Sparse parity rank sweep">
+<figcaption>Sparse parity: a sharp non-monotonic rank dial with a sweet spot near 10, but every filtered
+run is slower than un-filtered AdamW. The 3-bit signal is not among the top gradient directions.</figcaption>
+</figure>
+
+<h3>H5 — Adaptive effective-rank: groks parity, underfits CIFAR <span class="verdict v-mix">MIXED — the most informative result</span></h3>
+<p>The intuition (from watching the gradient subspace broaden during the search and collapse afterward) is
+to make the rank adaptive. The naive "keep 99% of the eigenvalue energy" rule fails — the spectrum is so
+top-heavy that 99% of the energy lives in ~10 directions. The faithful version targets the
+<b>effective rank</b> instead.</p>
+<p>On parity, this is the <b>first filter variant that groks at all</b> (1200–1400 epochs vs AdamW's
+650–750): the projection rank traces a clean <b>broaden-then-narrow</b> — narrow during memorization,
+peaking right at the grok, narrowing as the solution consolidates. It auto-matches the best fixed rank
+with no tuning.</p>
+<figure>
+<img src="parity_adaptive.png" alt="Parity adaptive effective-rank">
+<figcaption>Left: effrank/gap targeting groks (unlike fixed-low-rank and the energy rule). Right: the
+projection rank broadens through the transition and narrows after — the explore-then-compress curve.</figcaption>
+</figure>
+<p>On CIFAR, the <i>same</i> rule underfits — no better than the energy rule.</p>
+<figure>
+<img src="cifar_adaptive_compare.png" alt="CIFAR adaptive comparison">
+<figcaption>On CIFAR every spectral-concentration rule keeps ~10–30 directions, while fitting needs ~200.
+Both adaptive rules underfit to ~47% vs 74% for fixed rank.</figcaption>
+</figure>
+<div class="card">
+<p><b>Why the contrast is the real result.</b> Effective rank measures how <i>concentrated</i> the gradient
+is, not how many directions the <i>function</i> needs. They coincide only for an intrinsically
+low-dimensional task: parity's 3-bit circuit lives in ~18 active directions, but a CIFAR CNN needs ~200
+while its gradient covariance is concentrated in ~12. <b>Adaptive spectral rank helps iff the task's
+solution is genuinely low-dimensional</b> — the algorithmic regime, not the perceptual one.</p>
+</div>
+
+<h3>H6 — Supervised direction ablation: works on a linear model, fails on an MLP <span class="verdict v-mix">SCOPE-LIMITED</span></h3>
+<p>If coherent structure can be <i>amplified</i>, can a known-bad direction be <i>removed</i>? As a proxy
+for reward-hacking / emergent misalignment, we plant a backdoor (trigger patch → target class) and ablate
+the trigger gradient direction during training. On a <b>linear</b> model this works: attack success drops
+99.9% → 8% at ~1% clean-accuracy cost. On an <b>MLP</b> it fails completely — and ablating a larger
+subspace doesn't rescue it.</p>
+<figure>
+<img src="subspace_sweep.png" alt="Backdoor subspace sweep on MLP">
+<figcaption>MLP backdoor: attack success stays ~100% as we ablate up to 30 directions, and only dents at
+m=100 — exactly where clean accuracy has already collapsed. The backdoor is distributed, not confined to
+a removable low-dim gradient subspace.</figcaption>
+</figure>
+<p class="small">Implication for the emergent-misalignment direction: single/few-direction gradient
+ablation is unlikely to remove a learned behaviour in a nonlinear network — a capability- or
+activation-level intervention is probably needed.</p>
+
+<h2>4. What we learned</h2>
+<p>One mechanism explains the whole spread of results: <b>the filter is a coherence amplifier.</b> It keeps
+whatever the gradient repeatedly agrees on and discards the transient tail.</p>
+<ul>
+<li>When the useful signal <i>is</i> the coherent thing — recurring generalizing circuits, or the contrast
+between real structure and i.i.d. label noise — the filter helps (grokking acceleration, noise robustness).</li>
+<li>When the useful signal is <i>weak and not yet dominant</i> — sparse parity's 3-bit feature — amplifying
+coherence amplifies the memorization that is currently louder, and the filter delays or prevents learning.</li>
+<li>Choosing the rank from the spectrum alone (energy or effective rank) only works when gradient
+concentration reflects the task's true dimensionality.</li>
+<li>The same coherence that the filter amplifies cannot be surgically <i>removed</i> in a redundant
+nonlinear network by projecting out a few directions.</li>
+</ul>
+
+<h2>5. Honest scope &amp; limitations</h2>
+<ul>
+<li>Small models (≤ ~600K params), MNIST / CIFAR-10 / two algorithmic tasks. The <i>p×p</i> tracking is
+cheap per step (~2× Adam) but the design's value at large scale is untested.</li>
+<li>Noise robustness is real but is a rank/decay <b>tradeoff</b>, not a strictly dominant win; with early
+stopping, Adam/LoRA reach similar peaks — the filter's distinctive value is stability <i>without</i> early
+stopping.</li>
+<li>The signal-vs-noise separation is a hypothesis supported by behavior, not a proof.</li>
+<li>The emergent-misalignment connection is so far only a controlled backdoor proxy; the LLM fine-tuning
+test is deferred.</li>
+</ul>
+
+<p class="small" style="margin-top:30px;border-top:1px solid var(--grid);padding-top:16px;">
+Code: <code>experiments/weight_cov_optimizer_v2.py</code> (filter), <code>persample_cov_optimizer.py</code>
+(rank-B), <code>run_cifar_noise.py</code>, <code>modal_sparse_parity.py</code>,
+<code>modal_parity_adaptive.py</code>, <code>backdoor_ablation_mlp.py</code>. Full write-ups:
+<code>weight_covariance_v2_summary.md</code>, <code>grokking_v2_findings.md</code>,
+<code>targeted_ablation_findings.md</code>. Rank-1 derivation: <code>rank1_svd_explainer.html</code>.
+</p>
+
+</div>
+</body>
+</html>
