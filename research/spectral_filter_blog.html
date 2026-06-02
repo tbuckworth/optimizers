@@ -73,11 +73,16 @@ gradient direction.</p>
 </div>
 
 <h2>1. The idea</h2>
-<p>Across a batch and across training steps, gradients have structure: some directions recur (the network
-keeps being pushed the same way), others are transient (sample-specific, noise-like). The hypothesis is
-that the <b>recurring directions are the generalizing signal</b> and the transient tail is memorization /
-noise. If so, projecting each gradient onto the top directions of its running covariance should suppress
-memorization while preserving real learning.</p>
+<p>Across a batch and across training steps, gradients have structure: in some directions many parameters'
+gradient components consistently move <i>together</i> — strongly correlated, positively or negatively —
+while in others they vary independently. The top eigenvectors of the gradient covariance are exactly these
+strong co-variation directions. The hypothesis is that the <b>directions of strongest gradient
+co-variation are the generalizing signal</b> — clusters of weights whose gradients consistently co-move
+across examples and steps — while the uncorrelated, low-covariance tail is memorization / noise. If so,
+projecting each gradient onto the top eigenvectors of its running covariance should suppress memorization
+while preserving real learning. <span class="small">(See the <a href="moments_centering_explainer.html">companion
+note</a> on first- vs second-moment structure and the centered-vs-uncentered choice — which we mostly ran
+<i>centered</i>.)</span></p>
 
 <p>The object we track is the covariance of the gradient vector <code>g ∈ ℝ^p</code> (flattened over
 <i>all</i> parameters), accumulated as an exponential moving average:</p>
