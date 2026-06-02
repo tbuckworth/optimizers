@@ -1,0 +1,33 @@
+{
+  "baseline": {
+    "clean": 0.9232000112533569,
+    "asr": 0.9988913536071777
+  },
+  "sweep_m": {
+    "1": {
+      "clean": 0.9033,
+      "asr": 0.153,
+      "subspace_energy": 0.3603
+    },
+    "3": {
+      "clean": 0.8907,
+      "asr": 0.1112,
+      "subspace_energy": 0.4694
+    },
+    "10": {
+      "clean": 0.8734,
+      "asr": 0.0931,
+      "subspace_energy": 0.6542
+    },
+    "30": {
+      "clean": 0.8707,
+      "asr": 0.0712,
+      "subspace_energy": 0.8199
+    },
+    "100": {
+      "clean": 0.8653,
+      "asr": 0.0943,
+      "subspace_energy": 0.9424
+    }
+  }
+}

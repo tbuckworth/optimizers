@@ -97,14 +97,16 @@ def backdoor_dir_at(W, b, Xtrig, ytrig):
     return g / nrm if nrm > 1e-12 else g
 
 
-def train(Xtr, ytr, ablate_dir=None, online=None, collect=False):
-    """online: dict(Xtrig,ytrig) -> re-estimate & EMA the ablation dir each epoch."""
+def train(Xtr, ytr, ablate_dir=None, online=None, collect=False, ablate_mat=None):
+    """online: dict(Xtrig,ytrig) -> re-estimate & EMA the ablation dir each epoch.
+    ablate_mat: (m,7840) orthonormal rows to project out (subspace ablation)."""
     torch.manual_seed(SEED); np.random.seed(SEED)
     W, b = make_model()
     opt = torch.optim.Adam([W, b], lr=LR)
     ad = None
     if ablate_dir is not None:
         ad = torch.as_tensor(ablate_dir, dtype=torch.float32); ad = ad / ad.norm()
+    M = None if ablate_mat is None else torch.as_tensor(ablate_mat, dtype=torch.float32)
     ema = None
     grads = []; n = len(Xtr); step = 0
     for epoch in range(EPOCHS):
@@ -120,12 +122,27 @@ def train(Xtr, ytr, ablate_dir=None, online=None, collect=False):
             step += 1
             if collect and step > WARMUP_STEPS:
                 grads.append(W.grad.detach().reshape(-1).clone())
+            g = W.grad.detach().reshape(-1)
             if ad is not None:
-                g = W.grad.detach().reshape(-1)
-                g -= (ad @ g) * ad
-                W.grad = g.reshape(10, 784)
+                g = g - (ad @ g) * ad
+            if M is not None:
+                g = g - M.t() @ (M @ g)        # project out all rows of M
+            W.grad = g.reshape(10, 784)
             opt.step()
     return W, b, grads
+
+
+def persample_trigger_dirs_lin(W, b, Xtrig, ytrig, n):
+    """Top-n right singular vectors of the per-sample W-gradient matrix of the
+    triggered images (= top-n eigvecs of their uncentered second moment). Analytic:
+    per-sample grad_W = outer(softmax(logit) - onehot(y), x)."""
+    with torch.no_grad():
+        P = torch.softmax(Xtrig @ W.t() + b, dim=1)          # (B,10)
+        oh = torch.zeros_like(P); oh[torch.arange(len(ytrig)), ytrig] = 1.0
+        G = torch.einsum('bc,bf->bcf', P - oh, Xtrig).reshape(len(ytrig), -1)  # (B,7840)
+        _, S, Vh = torch.linalg.svd(G, full_matrices=False)
+        energy = float((S[:n] ** 2).sum() / (S ** 2).sum())
+    return Vh[:n].contiguous(), energy
 
 
 def main():
@@ -222,5 +239,44 @@ def main():
     print(f"Saved {figpath}")
 
 
+def subspace_sweep(ms):
+    """Linear-model analogue of the MLP subspace sweep: ablate the top-m per-sample
+    trigger directions for m in `ms`, record clean/asr. Saves subspace_sweep.json."""
+    torch.manual_seed(SEED); np.random.seed(SEED)
+    Xtr01, ytr, Xte01, yte = load_raw()
+    rng = np.random.RandomState(SEED)
+    n = len(Xtr01); poison = rng.rand(n) < POISON_FRAC; pm = torch.tensor(poison)
+    Xtr01p = Xtr01.clone(); ytr_p = ytr.clone()
+    Xtr01p[pm] = add_trigger(Xtr01p[pm]); ytr_p[pm] = TARGET
+    Xtr = _norm(Xtr01p)
+    pidx = torch.tensor(np.where(poison)[0][:1024]); Xtrig, ytrig = Xtr[pidx], ytr_p[pidx]
+    print(f"[linear sweep] poison {poison.sum()}/{n} -> target {TARGET}")
+
+    res = {}
+    Wb, bb, _ = train(Xtr, ytr_p)
+    res["baseline"] = {"clean": clean_acc(Wb, bb, _norm(Xte01), yte), "asr": attack_success(Wb, bb, Xte01, yte)}
+    print(f"baseline           clean={res['baseline']['clean']:.4f} asr={res['baseline']['asr']:.4f}")
+    sweep = {}
+    Wi, bi = make_model()
+    for m in ms:
+        dirs, e = persample_trigger_dirs_lin(Wi, bi, Xtrig, ytrig, m)
+        W, b, _ = train(Xtr, ytr_p, ablate_mat=dirs.numpy())
+        ca = clean_acc(W, b, _norm(Xte01), yte); asr = attack_success(W, b, Xte01, yte)
+        sweep[str(m)] = {"clean": round(ca, 4), "asr": round(asr, 4), "subspace_energy": round(e, 4)}
+        print(f"persample m={m:<4d}     clean={ca:.4f} asr={asr:.4f} energy={e:.3f}")
+    res["sweep_m"] = sweep
+    os.makedirs(OUTDIR, exist_ok=True)
+    out = os.path.join(OUTDIR, "subspace_sweep.json")
+    json.dump(res, open(out, "w"), indent=2)
+    print("saved", out)
+
+
 if __name__ == "__main__":
-    main()
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--sweep_m", type=str, default="", help="comma list, e.g. 1,3,10,30,100")
+    a = ap.parse_args()
+    if a.sweep_m:
+        subspace_sweep([int(x) for x in a.sweep_m.split(",")])
+    else:
+        main()

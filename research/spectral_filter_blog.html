@@ -157,6 +157,7 @@ We track a <i>broad</i> basis but only project onto the top <code>round(effrank)
 <tr><td>H4 — Per-sample top-k isolates the signal</td><td>sparse parity</td><td><span class="verdict v-no">REFUTED</span></td></tr>
 <tr><td>H5 — Adaptive rank (broaden-then-narrow) helps</td><td>parity / CIFAR</td><td><span class="verdict v-mix">MIXED</span></td></tr>
 <tr><td>H6 — Supervised ablation removes a planted hack</td><td>backdoor (linear / MLP)</td><td><span class="verdict v-mix">linear yes, MLP no</span></td></tr>
+<tr><td>H7 — Normalizing the basis (correlation/spectral) beats raw covariance</td><td>MNIST 50% noise</td><td><span class="verdict v-no">REFUTED (covariance wins)</span></td></tr>
 </tbody>
 </table>
 
@@ -182,14 +183,24 @@ Adam's memorization is most catastrophic. <span class="small">(Note on absolute 
 dataset, not the noise.)</span></p>
 <p>It also holds on a harder conv task, but there it's clearly a <b>capacity dial, not a free win</b>. On
 <b>CIFAR-10</b> (small 591K CNN, whose <i>clean</i> ceiling is only ~74%, so all these numbers are lower),
-Adam still memorizes and collapses while the filter holds — but raising the effective rank (rank and decay
-together) trades robustness for clean-data fit:</p>
+the right rank depends on the noise level. The clearest way to see it is the test-accuracy trajectories at
+each noise level, one curve per effective rank:</p>
+<figure>
+<img src="cifar_ranks_overtime.png" alt="CIFAR test accuracy over training by rank">
+<figcaption>CIFAR-10 test accuracy over training, by effective rank. <b>0%:</b> the least-filtering setting
+(r1200) matches Adam at the ~74% ceiling; the strongest filter (r200) underfits. <b>40%:</b> Adam and the
+weak filter (r1200) peak then collapse as they memorize; the mid filter (r500) holds highest. <b>80%:</b>
+everything collapses except the strongest filter (r200). So the absolute numbers are modest because (a) the
+model's clean ceiling is ~74% and (b) more noise demands more filtering — there's no single best rank.</figcaption>
+</figure>
+<p>The earlier training-dynamics view makes the mechanism explicit — Adam's <i>train</i> accuracy climbs as
+it fits the noise while its test collapses; the filter keeps train low and test flat:</p>
 <figure>
 <img src="blog_h1_curves.png" alt="CIFAR noise training curves">
-<figcaption>CIFAR-10 test accuracy over training at 40% and 80% noise. Adam (red) memorizes (train, dotted,
-climbs) and test collapses from its peak (dot); the filter (green) holds. Absolute values are low because a
-small CNN tops out ~74% even on clean CIFAR-10.</figcaption>
+<figcaption>CIFAR-10 at 40% and 80% noise. Adam (red) memorizes (train, dotted, climbs) and test collapses
+from its peak (dot); the filter (green) holds train low and test flat — it doesn't fit the noise.</figcaption>
 </figure>
+<p>Summarizing the dial as final accuracy:</p>
 <figure>
 <img src="cifar_ranksweep.png" alt="CIFAR effective-rank sweep">
 <figcaption>The capacity dial: higher effective rank fits clean data (0% → matches Adam at 74%) but admits
@@ -268,17 +279,42 @@ success 99.9% → 8–17%; on the <i>MLP</i> it stays ~100%. <b>Right:</b> clean
 either — so the MLP failure isn't a broken model, it's that the backdoor is routed through many redundant
 paths the ablation doesn't touch.</figcaption>
 </figure>
-<p>So on the linear model the backdoor genuinely lives in a single removable weight-space direction; on the
-MLP it's distributed. And <b>ablating a larger subspace doesn't rescue it</b>:</p>
+<p>So on the linear model the backdoor genuinely lives in a (near-)removable weight-space direction; on the
+MLP it's distributed — and <b>ablating a larger subspace doesn't rescue the MLP</b>:</p>
 <figure>
-<img src="subspace_sweep.png" alt="Backdoor subspace sweep on MLP">
-<figcaption>MLP backdoor: attack success stays ~100% as we ablate up to 30 directions, and only dents at
-m=100 — exactly where clean accuracy has already collapsed. The backdoor is distributed, not confined to
-a removable low-dim gradient subspace.</figcaption>
+<img src="subspace_sweep.png" alt="Backdoor subspace sweep: linear vs MLP">
+<figcaption>Ablating the top-<i>m</i> per-sample trigger directions, <b>MLP (solid) vs linear (dashed)</b>;
+ASR (red), clean accuracy (green). On the <i>linear</i> model even m=1 crashes ASR to ~15% (→7–9% with
+more) while clean is held ~87%. On the <i>MLP</i>, ASR stays ~100% all the way to m=30 and only dents at
+m=100 — exactly where clean accuracy finally collapses. The backdoor is a removable direction in the linear
+model and genuinely distributed in the MLP.</figcaption>
 </figure>
 <p class="small">Implication for the emergent-misalignment direction: single/few-direction gradient
 ablation is unlikely to remove a learned behaviour in a nonlinear network — a capability- or
 activation-level intervention is probably needed.</p>
+
+<h3>H7 — Which basis to project onto? covariance vs correlation vs spectral <span class="verdict v-yes">covariance wins</span></h3>
+<p>The raw covariance ranks directions by <i>variance</i>, so it's dominated by high-magnitude weights.
+A natural question: would normalizing that away help — projecting onto the <b>correlation</b> matrix
+(<code>D^{-1/2}CD^{-1/2}</code>, <code>D=diag(C)</code> = per-weight variance) or the <b>spectral /
+normalized-affinity</b> basis (<code>D=</code> row-sums of <code>C</code> = degree, the basis ordinary
+spectral clustering would use)? All three are the same machinery — reweight the eigenbasis by a diagonal,
+re-orthogonalize, project onto the top-k — so it's <b>one categorical knob</b>. Matched test on MNIST @
+50% label noise, 3 seeds, everything else fixed:</p>
+<figure>
+<img src="normalize_test.png" alt="covariance vs correlation vs spectral">
+<figcaption>Left: test accuracy over training. Adam (grey) peaks then collapses; the raw <b>covariance</b>
+filter (blue) holds highest and keeps rising; <b>correlation</b> (green) and <b>spectral</b> (orange) hold
+but ~5–6 points lower. Right: final (solid) vs best (faded). Final test: covariance <b>92.1%</b>,
+correlation 86.6%, spectral 86.0%, Adam 78.8%.</figcaption>
+</figure>
+<p><b>Result: the raw covariance basis wins; normalizing it <i>hurts</i>.</b> All three filtered bases beat
+Adam's collapsed final (so any of these subspaces resists memorization), but removing the per-weight-variance
+weighting costs ~5–6 points. So in the noise-robustness regime the <b>variance magnitude is informative,
+not a nuisance</b>: the high-variance directions are the ones carrying the recurring signal, and putting
+low-variance weights on equal footing (correlation) or degree-normalizing (spectral) lets more noise back
+in. This <b>refutes the "structure over magnitude" intuition</b> here. <span class="small">(Spectral uses a
+signed-covariance degree, so its <code>D^{-1/2}</code> is clamped — treat that row as approximate.)</span></p>
 
 <h2>4. What we learned</h2>
 <p>One mechanism explains the whole spread of results: <b>the filter is a coherence amplifier.</b> It keeps
