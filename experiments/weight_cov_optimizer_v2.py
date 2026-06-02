@@ -19,7 +19,8 @@ import torch.nn.functional as F
 
 class WeightCovarianceFilterV2:
     def __init__(self, model, base_optimizer, rank=200, decay=0.99,
-                 warmup=100, filter_strength=1.0, energy_threshold=None):
+                 warmup=100, filter_strength=1.0, energy_threshold=None,
+                 adaptive="none"):
         self.model = model
         self.base_optimizer = base_optimizer
         self.rank = rank            # hard cap on kept directions
@@ -30,12 +31,22 @@ class WeightCovarianceFilterV2:
         # capture this fraction of the spectral energy, capped at `rank`. The
         # eigenvalues are already computed each step, so this is ~free.
         self.energy_threshold = energy_threshold
+        # Adaptive rank rule (overrides energy_threshold if not "none"):
+        #   "none"    -> keep `rank` (fixed), or energy_threshold if set
+        #   "effrank" -> keep round(effective rank) = round(exp(entropy of spectrum))
+        #   "gap"     -> keep up to the largest multiplicative gap in the log-spectrum
+        # Each step the rank-1 update already produces k+1 candidate eigenpairs
+        # (the +1 is the new gradient's component orthogonal to the current basis),
+        # so the rule only chooses the truncation cutoff; rank can grow by at most
+        # 1 per step (a single rank-1 observation adds at most one new direction).
+        self.adaptive = adaptive
 
         self.param_list = list(model.parameters())
         self.n_params = sum(p.numel() for p in self.param_list)
 
         self.V = None  # (p, k) top eigenvectors
         self.S = None  # (k,) singular values
+        self.proj_k = None  # adaptive #directions to project onto (None = all of V)
         self.step_count = 0
 
         # Running mean for centering
@@ -113,8 +124,15 @@ class WeightCovarianceFilterV2:
         pos = eigvals > 1e-12
         eigvals = eigvals[pos]
         eigvecs = eigvecs[:, pos]
+        # Basis truncation. For the "effrank"/"gap" rules we deliberately KEEP the
+        # full basis (up to `rank`) and only narrow the *projection* (self.proj_k,
+        # computed below) — decoupling estimation rank from projection rank. This
+        # avoids a ratchet: if we truncated the basis to a tiny adaptive count, the
+        # covariance could only ever grow +1 direction/step and would get stuck at 1
+        # whenever early gradients are near rank-1. Energy-threshold keeps its
+        # original basis-truncating semantics (the CIFAR energy sweep used those).
         new_k = min(self.rank, len(eigvals))
-        if self.energy_threshold is not None and len(eigvals) > 0:
+        if self.adaptive == "none" and self.energy_threshold is not None and len(eigvals) > 0:
             # smallest #components capturing `energy_threshold` of the energy
             frac = torch.cumsum(eigvals, 0) / eigvals.sum()
             k_energy = int(torch.searchsorted(frac, self.energy_threshold).item()) + 1
@@ -143,11 +161,42 @@ class WeightCovarianceFilterV2:
 
         self.V = V_new.contiguous()
         self.S = s_new
+        self._update_proj_k()
+
+    def _update_proj_k(self):
+        """How many of the (broad) top directions to actually project onto this step.
+
+        Measured on the full retained spectrum self.S, so it can jump to the right
+        value immediately rather than ratcheting up one per step.
+        """
+        if self.adaptive == "none" or self.S is None or len(self.S) == 0:
+            self.proj_k = None
+            return
+        ev = (self.S ** 2)
+        ev = ev[ev > 1e-12]
+        n = len(ev)
+        if n == 0:
+            self.proj_k = None
+            return
+        if self.adaptive == "effrank":
+            p = ev / ev.sum()
+            eff = float(torch.exp(-(p * (p + 1e-30).log()).sum()).item())
+            self.proj_k = max(1, min(self.rank, n, int(round(eff))))
+        elif self.adaptive == "gap":
+            if n == 1:
+                self.proj_k = 1
+            else:
+                logs = (ev + 1e-30).log()
+                drops = logs[:-1] - logs[1:]
+                self.proj_k = max(1, min(self.rank, n, int(torch.argmax(drops).item()) + 1))
+        else:
+            self.proj_k = None
 
     def _project_gradient(self, g):
         if self.V is None:
             return g
-        g_projected = self.V @ (self.V.T @ g)
+        V = self.V if self.proj_k is None else self.V[:, :self.proj_k]
+        g_projected = V @ (V.T @ g)
         if self.filter_strength < 1.0:
             return (1 - self.filter_strength) * g + self.filter_strength * g_projected
         return g_projected
@@ -187,9 +236,11 @@ class WeightCovarianceFilterV2:
             if total > 1e-12:
                 diagnostics["variance_in_top5"] = (self.S[:5] ** 2).sum().item() / total
             diagnostics["effective_rank"] = self._effective_rank()
-            # kept_rank: the actual number of basis vectors retained this step
-            # (== rank cap unless energy_threshold is trimming it lower)
-            diagnostics["kept_rank"] = self.V.shape[1] if self.V is not None else 0
+            # basis_rank: directions tracked; kept_rank: directions actually projected
+            # onto (== basis_rank unless an adaptive rule narrows the projection).
+            basis_rank = self.V.shape[1] if self.V is not None else 0
+            diagnostics["basis_rank"] = basis_rank
+            diagnostics["kept_rank"] = self.proj_k if self.proj_k is not None else basis_rank
 
         return loss_val, diagnostics
 
@@ -207,6 +258,7 @@ class WeightCovarianceFilterV2:
     def reset(self):
         self.V = None
         self.S = None
+        self.proj_k = None
         self.step_count = 0
         self.grad_mean = None
 

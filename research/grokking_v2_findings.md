@@ -228,16 +228,32 @@ already computed each step) and works mechanically, but on parity it selects **~
 grokking-killing regime. So a naive energy rule *under*-shoots here: the network needs exploration
 dimensions *beyond* the high-energy ones, which the energy criterion can't see.
 
-**Unifying conclusion for parity:** *any* "keep only the top-k gradient directions" filter
-(batch-mean or per-sample, fixed or adaptive) suppresses parity grokking. The generalizing signal is
-a weak, slowly-emerging component that is **not** among the top gradient directions in any of these
-decompositions, and aggressive projection additionally chokes the exploration phase. Only un-filtered
-AdamW groks fast. This is a clean negative result that bounds where the method helps.
+**Adaptive *effective-rank* targeting — the first filter variant that GROKS (Titus's broaden-then-narrow
+idea, done faithfully).** Two changes vs the energy rule: (i) target the **effective rank**
+(`k = round(exp(spectral entropy))`), not a cumulative-energy cutoff — it counts the meaningfully-active
+directions instead of collapsing onto the top few; (ii) **decouple estimation from projection** — track a
+*broad* basis (cap 200) but project only onto the top `round(effrank)` each step, so the projection window
+can widen/narrow freely without a basis-truncation ratchet. Result (3 seeds, λ=0.99): **effrank groks @
+1200–1400, gap @ 1250–1400, all final 1.0** — unlike fixed low rank (destabilizes) and the energy rule
+(never groks). It does *not* beat AdamW (650–750), but it auto-matches the best fixed rank (r10 ≈ 1250)
+with no tuning. The projection rank traces a clean **broaden-then-narrow**: narrow during memorization
+(dips to ~1), peaks (~18) **right at the grok**, then narrows to ~8–10 as the solution consolidates
+(`research/parity_adaptive.png`).
+
+**Unifying conclusion for parity (revised):** an *aggressive, fixed-width* "keep only the top-k" projection
+(fixed low rank, or the energy rule that collapses to ~4 dims) suppresses grokking — it chokes the
+high-dimensional exploration phase. But an **adaptive projection that widens during the search**
+(effective-rank targeting) does **not** break grokking: it groks fully, just slower than AdamW. So the
+earlier "any top-k filter kills parity grokking" was too strong — the killer is *fixing the width too
+narrow during exploration*, not projection per se. Still, no variant **beats** AdamW on parity; the
+generalizing signal emerges fine under un-filtered AdamW, and the filter's best case here is to get out of
+its own way. This bounds where the method helps.
 
 Provenance: `experiments/sparse_parity.py`, `experiments/modal_sparse_parity.py`,
 `experiments/persample_cov_optimizer.py`, `experiments/modal_parity_persample.py`,
-`results/sparse_parity_ranksweep/`, `results/parity_persample/`,
-`research/sparse_parity_ranksweep.png`, `parity_grok.png`.
+`experiments/modal_parity_adaptive.py`, `results/sparse_parity_ranksweep/`, `results/parity_persample/`,
+`results/parity_adaptive/`, `research/sparse_parity_ranksweep.png`, `research/parity_adaptive.png`,
+`parity_grok.png`.
 
 ## Provenance
 

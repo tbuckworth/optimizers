@@ -73,7 +73,8 @@ def run(args):
     filt = None
     if args.mode == "ours":
         filt = WeightCovarianceFilterV2(model, base, rank=args.rank, decay=args.decay,
-                                        warmup=args.warmup, energy_threshold=et)
+                                        warmup=args.warmup, energy_threshold=et,
+                                        adaptive=args.adaptive)
     filtering = (args.mode == "ours")
 
     metrics = []; t0 = time.time(); switch_ep = -1
@@ -120,6 +121,8 @@ if __name__ == "__main__":
     p.add_argument("--rank", type=int, default=200)
     p.add_argument("--energy_threshold", type=float, default=0.0,
                    help="if >0, keep smallest #eigvecs capturing this energy fraction (<=rank); 0 disables")
+    p.add_argument("--adaptive", choices=["none", "effrank", "gap"], default="none",
+                   help="adaptive rank rule: effrank=round(exp entropy), gap=log-spectrum elbow")
     p.add_argument("--decay", type=float, default=0.99)
     p.add_argument("--warmup", type=int, default=100)
     p.add_argument("--switch_at", type=float, default=0.6)
