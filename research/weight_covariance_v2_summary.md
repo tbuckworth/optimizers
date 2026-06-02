@@ -233,6 +233,31 @@ many directions the EMA covariance can hold and rank caps below it. final test %
   filters. See `results/cifar_noise/ranksweep/`, `research/cifar_ranksweep.png`,
   `experiments/launch_cifar_ranksweep.sh`.
 
+**Adaptive energy-threshold rank (Titus's idea — keep the top-k carrying X% of the eigenvalue
+energy, k varying each step). It fails on CIFAR, and the *reason* is the interesting part.** Swept
+energy ∈ {0.90, 0.95, 0.99} at decay 0.999, rank cap 1200, logging the kept rank each epoch. final %:
+
+| Noise | adaptive 90% | adaptive 95% | adaptive 99% | best FIXED rank |
+|------:|-------------:|-------------:|-------------:|----------------:|
+| 0% | 47.7 | 45.8 | 47.3 | **74.2** |
+| 40% | 30.5 | 29.2 | 40.0 | **64.8** |
+| 80% | 13.3 | 10.2 | 13.4 | **44.1** |
+
+- **It underfits everywhere and is strictly dominated by fixed rank** — at 80% it (~13%) is barely
+  above chance and worse than plain Adam.
+- **Why: the gradient-covariance spectrum is extremely top-heavy.** The kept rank is tiny — 90% energy
+  ⇒ **1–3 directions**, 99% energy ⇒ **9–12 directions** — yet fitting this CNN needs ~200. So "99% of
+  the *energy*" ≠ "enough directions to represent the function": a handful of dominant directions
+  carry almost all the variance, but the hundreds of low-energy directions are exactly the ones the
+  model needs to fit. **Energy fraction is the wrong currency for choosing rank.**
+- **No broaden-then-narrow.** The kept rank is essentially flat across training (early ≈ max ≈ final),
+  *not* the explore-then-compress curve. That curve was the **entropy-based effective rank** on parity
+  (a participation measure), which is a different quantity from "smallest k holding X% of energy." If
+  we want an adaptive rule that tracks the explore-then-compress shape, it must target effective rank or
+  a spectral elbow/gap — not cumulative energy. Higher noise concentrates the spectrum *further* (the
+  conflicting-label mean dominates), so it keeps even fewer directions — the opposite of helpful. See
+  `results/cifar_noise/adaptive/`, `research/cifar_adaptive.png`, `experiments/launch_cifar_adaptive.sh`.
+
 ---
 
 ## 6. Honest assessment
