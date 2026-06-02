@@ -169,6 +169,15 @@ by consensus).
   eigenvectors → the filter would **amplify** them; removal needs a supervised direction projected out.
   This sharpens the EM prediction: the filter won't fix EM; online ablation of the misalignment
   direction should.
+- **But the supervised ablation does NOT survive the move to an MLP** (`backdoor_ablation_mlp.py`).
+  On a 784-256-128-10 net, *every* condition — ablate_init, ablate_online, ablate_persample (top-3
+  eigenvectors of the uncentered per-sample covariance), random — keeps **ASR ≈ 100%**, even ablating
+  from step 0 (warmup=0 control). The linear win was the *easy* case (the backdoor lived in one
+  weight-space direction); a nonlinear net routes the trigger→target mapping through many paths, so
+  removing a few gradient directions does nothing. **This weakens the optimistic half of the EM
+  prediction**: single/few-direction gradient ablation is unlikely to remove a misaligned persona in
+  an LLM. A larger-subspace or activation-space (not gradient-direction) intervention is probably
+  needed. See `targeted_ablation_findings.md`.
 
 ## 5c. Generalization beyond MNIST (autonomous batch)
 

@@ -70,3 +70,39 @@ expect the filter to *not* fix EM; expect targeted online ablation of the misali
 
 Code: `experiments/backdoor_ablation.py`. Results: `results/weight_covariance_v2/backdoor_ablation/`.
 Related exploratory run (single-pixel shortcut, surfaced the entanglement): `experiments/shortcut_ablation.py`.
+
+## MLP version (Titus's request): targeted ablation FAILS on a nonlinear net
+
+We ran the MLP version Titus asked for — same backdoor (10% poison, 3×3 trigger → class 0) on a
+784-256-128-10 MLP — with the new **per-sample** `d` (top-n eigenvectors of the *uncentered*
+per-sample gradient covariance of the triggered images) as an extra condition. The per-sample `d` is
+well-estimated (the trigger direction is **27%** of per-sample energy in one direction, 33% in three),
+and cos(mean-grad `d`, top per-sample eigvec) = 0.999 — i.e. the shared trigger direction *is* the
+dominant uncentered direction, exactly as expected.
+
+| Condition | clean | ASR | clean (warmup=0) | ASR (warmup=0) |
+|-----------|------:|----:|-----------------:|---------------:|
+| baseline | 97.8% | **100%** | 97.8% | **100%** |
+| ablate_init (mean-grad `d`) | 97.7% | **100%** | 97.7% | **100%** |
+| ablate_online (EMA) | 97.4% | **100%** | 97.8% | **100%** |
+| ablate_persample (top-3 per-sample eigvecs) | 97.6% | **100%** | 97.4% | **100%** |
+| ablate_random | 97.7% | **100%** | 97.9% | **100%** |
+
+**None of the ablations suppress the backdoor on the MLP** (vs the linear model, where ablate_init
+drove ASR 99.9%→8%). The warmup=0 control rules out the "backdoor planted before ablation starts"
+confound — projecting the direction(s) out *from step 0* still leaves ASR ≈ 100%. The reason is
+representational redundancy: a nonlinear net can learn the trigger→target mapping through **many**
+paths, so removing one (or three) gradient directions just gets routed around. In the linear model the
+backdoor genuinely lived in a single weight-space direction, which is why removing it worked — that was
+the *easy* case, and it does not generalize.
+
+**This confirms the doc's own prediction** ("the clean separation may blur in deep nets where the trigger
+direction is less isolated") and **sharpens the EM forecast**: if single/few-direction gradient ablation
+cannot remove a backdoor in a *small MLP*, it is even less likely to remove a misaligned persona in an
+LLM by gradient-direction projection. A capability-level intervention (not a few-direction gradient
+ablation) is probably needed. Possible follow-ups to make ablation work at all on the MLP: ablate a
+*much larger* subspace (top-m with m≫3), ablate in *activation* space rather than gradient space, or
+combine with an auxiliary trigger-detection loss.
+
+Code: `experiments/backdoor_ablation_mlp.py`. Results: `results/weight_covariance_v2/backdoor_mlp/`
+(warmup=50) and `.../backdoor_mlp_warmup0/` (warmup=0 control).
