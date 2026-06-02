@@ -160,24 +160,41 @@ We track a <i>broad</i> basis but only project onto the top <code>round(effrank)
 </tbody>
 </table>
 
-<h3>H1 — Noise robustness, but it's a capacity dial <span class="verdict v-yes">SUPPORTED</span></h3>
-<p>On CIFAR-10 with symmetric label noise (small CNN, 591K params), the filter resists fitting the noise.
-The clearest view is the training dynamics: <b>Adam's train accuracy climbs as it memorizes the corrupted
-labels, and its test accuracy peaks early then collapses; the filter refuses to memorize (train stays low)
-and its test accuracy holds flat.</b></p>
+<h3>H1 — Noise robustness <span class="verdict v-yes">SUPPORTED (the strongest result)</span></h3>
+<p>The setup is the classic one (Zhang et al. 2016): corrupt a fraction of the <i>training</i> labels at
+random; the <b>test set stays clean</b>, so test accuracy measures true generalization. A network with
+enough capacity will eventually <i>memorize</i> the corrupted labels — its test accuracy peaks early and
+then collapses as it fits the noise. The question is whether the filter resists that.</p>
+<p>It does, strikingly. On <b>MNIST at 90% label noise</b> (3 seeds), Adam and LoRA climb to ~83% test
+then <b>collapse to ~37% / 32%</b> as they memorize the garbage labels; the <b>filter holds at ~80%</b>.
+It also beats a <b>random-subspace control</b> (~56%) at the same rank — so it's the <i>learned</i>
+gradient subspace that matters, not merely projecting to low rank — and higher rank holds more.</p>
+<figure>
+<img src="blog_h1_mnist.png" alt="MNIST 90% noise — filter holds, Adam/LoRA collapse">
+<figcaption>MNIST, 90% label noise, 3 seeds. Left: Adam &amp; LoRA peak (~83%) then collapse; the filter
+holds ~80%, well above a random-subspace control. Right: final test — learned subspace &gt; random &gt;
+LoRA &gt; Adam, and higher rank holds more.</figcaption>
+</figure>
+<p>The advantage <b>grows with noise</b>: at 0% the filter matches Adam (97.5 vs 98.0 — essentially free),
+at 20% it's +3, at 40% it's +4 (final), and at 90% the gap is enormous (≈80 vs 37) because that's where
+Adam's memorization is most catastrophic. <span class="small">(Note on absolute numbers: these stay in the
+90s because MNIST's clean-task ceiling is ~98%. You can't reach 100% — the ceiling is set by the model and
+dataset, not the noise.)</span></p>
+<p>It also holds on a harder conv task, but there it's clearly a <b>capacity dial, not a free win</b>. On
+<b>CIFAR-10</b> (small 591K CNN, whose <i>clean</i> ceiling is only ~74%, so all these numbers are lower),
+Adam still memorizes and collapses while the filter holds — but raising the effective rank (rank and decay
+together) trades robustness for clean-data fit:</p>
 <figure>
 <img src="blog_h1_curves.png" alt="CIFAR noise training curves">
-<figcaption>Test accuracy over training at 40% and 80% label noise. Adam (red) memorizes — train (dotted)
-climbs toward 1.0 while test collapses from its early peak (dot). The filter (green) keeps train low and
-test flat: it doesn't fit the noise in the first place.</figcaption>
+<figcaption>CIFAR-10 test accuracy over training at 40% and 80% noise. Adam (red) memorizes (train, dotted,
+climbs) and test collapses from its peak (dot); the filter (green) holds. Absolute values are low because a
+small CNN tops out ~74% even on clean CIFAR-10.</figcaption>
 </figure>
-<p>That robustness is a <b>capacity dial</b>, not a free win: raising the <i>effective rank</i> (rank and
-decay together) recovers clean-data accuracy all the way to Adam, while letting more noise back in.
-<b>Rank is one knob: how many gradient directions you keep.</b></p>
 <figure>
 <img src="cifar_ranksweep.png" alt="CIFAR effective-rank sweep">
-<figcaption>Higher effective rank fits clean data (0% noise → matches Adam at 74%) but admits noise;
-lower rank resists noise (80%) but underfits clean. The sweet spot slides with the noise level.</figcaption>
+<figcaption>The capacity dial: higher effective rank fits clean data (0% → matches Adam at 74%) but admits
+noise; lower rank resists noise (80%) but underfits clean. <b>Rank is one knob — how many gradient
+directions you keep</b> — and the sweet spot slides with the noise level.</figcaption>
 </figure>
 
 <h3>H2 — Grokking acceleration on modular addition <span class="verdict v-yes">SUPPORTED</span></h3>
