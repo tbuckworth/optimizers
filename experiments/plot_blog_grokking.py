@@ -45,8 +45,8 @@ if ga and gf:
     ax.annotate("", xy=(gf, 0.5), xytext=(ga, 0.5),
                 arrowprops=dict(arrowstyle="<->", color=BLUE, lw=1.6))
     ax.text((ga+gf)/2, 0.54, f"{(1-gf/ga)*100:.0f}% earlier", color=BLUE, ha="center", fontsize=10)
-ax.set_xscale("log"); ax.set_xlabel("epoch (log)"); ax.set_ylabel("test accuracy")
-ax.set_ylim(0, 1.03)
+ax.set_xlabel("epoch"); ax.set_ylabel("test accuracy")
+ax.set_ylim(0, 1.03); ax.set_xlim(0, 6000)
 ax.set_title("Modular addition: the filter accelerates grokking\n(mean ± std over 5 seeds; grok = test ≥ 0.9)",
              color=INK, fontsize=12)
 ax.legend(facecolor=PANEL, edgecolor=GRID, fontsize=10, labelcolor=INK, loc="center left")

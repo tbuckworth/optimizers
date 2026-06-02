@@ -161,11 +161,19 @@ We track a <i>broad</i> basis but only project onto the top <code>round(effrank)
 </table>
 
 <h3>H1 — Noise robustness, but it's a capacity dial <span class="verdict v-yes">SUPPORTED</span></h3>
-<p>On CIFAR-10 with symmetric label noise (small CNN, 591K params), the filter resists fitting the noise:
-where Adam peaks then collapses as it memorizes corrupted labels, the filter holds. But raising the
-<i>effective rank</i> (rank and decay together) trades this off cleanly — more rank recovers clean-data
-accuracy all the way to Adam, while letting more noise back in. <b>Rank is one knob: how many gradient
-directions you keep.</b></p>
+<p>On CIFAR-10 with symmetric label noise (small CNN, 591K params), the filter resists fitting the noise.
+The clearest view is the training dynamics: <b>Adam's train accuracy climbs as it memorizes the corrupted
+labels, and its test accuracy peaks early then collapses; the filter refuses to memorize (train stays low)
+and its test accuracy holds flat.</b></p>
+<figure>
+<img src="blog_h1_curves.png" alt="CIFAR noise training curves">
+<figcaption>Test accuracy over training at 40% and 80% label noise. Adam (red) memorizes — train (dotted)
+climbs toward 1.0 while test collapses from its early peak (dot). The filter (green) keeps train low and
+test flat: it doesn't fit the noise in the first place.</figcaption>
+</figure>
+<p>That robustness is a <b>capacity dial</b>, not a free win: raising the <i>effective rank</i> (rank and
+decay together) recovers clean-data accuracy all the way to Adam, while letting more noise back in.
+<b>Rank is one knob: how many gradient directions you keep.</b></p>
 <figure>
 <img src="cifar_ranksweep.png" alt="CIFAR effective-rank sweep">
 <figcaption>Higher effective rank fits clean data (0% noise → matches Adam at 74%) but admits noise;
@@ -185,14 +193,21 @@ helps it win sooner.</p>
 <h3>H2′/H3 — On sparse parity the filter <i>delays</i> grokking, and low rank breaks it <span class="verdict v-no">REFUTED</span></h3>
 <p>Sparse parity (n=40, k=3) is the opposite story. Here the generalizing solution is a <i>weak</i> 3-bit
 signal that the bulk memorization direction drowns out — so amplifying the dominant direction delays
-generalization. A rank sweep confirms it mechanistically: rank 1–3 don't isolate the signal, they
-<b>prevent grokking entirely</b> (the fit destabilizes); rank ~10 is the fastest <i>among filtered runs</i>
-but <b>no rank beats AdamW</b>. The per-sample (rank-B) variant never groks at any rank either — its top
-direction is the bulk-fitting mean, not the signal.</p>
+generalization. A rank sweep (now filled in densely, ranks 1–200) shows a smooth transition: rank
+<b>≤4 destabilizes</b> (memorizes then fails to grok), ranks <b>5–8 grok but slowly and with high
+seed-variance</b>, ~10 is the fastest among filtered runs, and <b>no rank beats AdamW</b>. The per-sample
+(rank-B) variant never groks either — its top direction is the bulk-fitting mean, not the signal.</p>
+<p>The third panel is the honest control you'd want: take the gradient covariance along a <b>pure AdamW</b>
+trajectory but only <i>measure</i> it (never filter with it). The active gradient dimensionality is
+<b>lowest (~4–6) right through the memorization and grokking phases</b>, and only <i>broadens</i> (toward
+the decay ceiling) <b>after</b> the task is solved and the loss collapses, then narrows again. So the
+"broaden-then-narrow" we see under filtering is not a precursor that drives grokking in the baseline — if
+anything the gradient is at its <i>lowest</i> dimensionality exactly when parity is being learned.</p>
 <figure>
 <img src="sparse_parity_ranksweep.png" alt="Sparse parity rank sweep">
-<figcaption>Sparse parity: a sharp non-monotonic rank dial with a sweet spot near 10, but every filtered
-run is slower than un-filtered AdamW. The 3-bit signal is not among the top gradient directions.</figcaption>
+<figcaption>Left: dense rank sweep — ≤4 unstable, 5–8 grok variably, ~10 fastest, none beats AdamW. Middle:
+rank-1 destabilizes while rank-10 groks late. Right: active gradient directions along a <i>pure, unfiltered
+AdamW</i> run — low during the fit/grok, broadening only after the loss is solved.</figcaption>
 </figure>
 
 <h3>H5 — Adaptive effective-rank: groks parity, underfits CIFAR <span class="verdict v-mix">MIXED — the most informative result</span></h3>
