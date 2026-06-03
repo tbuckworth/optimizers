@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memorization vs Generalization: Adam vs the Cov-Filter</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f5f5f0; color: #2c2c2c; }
+.header { background: linear-gradient(135deg, #2c3e50, #34495e); color: #ecf0f1; padding: 18px 30px; border-bottom: 3px solid #e84393; }
+.header h1 { font-size: 1.4em; font-weight: 600; margin-bottom: 4px; }
+.header p { font-size: 0.88em; opacity: 0.85; max-width: 1000px; line-height: 1.45; }
+.main { max-width: 1000px; margin: 0 auto; padding: 20px; }
+.controls { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; padding: 12px 16px; background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.controls button { padding: 6px 14px; font-size: 0.85em; font-weight: 600; border: none; border-radius: 5px; cursor: pointer; background: #e84393; color: #fff; }
+.controls button:hover { background: #d63384; }
+.controls input[type=range] { flex: 1; min-width: 200px; }
+.epoch-label { font-size: 0.9em; font-weight: 600; color: #555; min-width: 150px; }
+.grid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+.panel { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 10px 12px; }
+.panel h3 { font-size: 0.82em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: baseline; }
+.panel .acc { font-weight: 700; font-size: 1.05em; }
+.panel canvas { display: block; width: 100%; border-radius: 4px; }
+.adam .acc { color: #e67e22; } .filter .acc { color: #e84393; }
+.curves { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 12px 16px; }
+.curves h3 { font-size: 0.82em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 8px; }
+.legend { font-size: 0.78em; color: #555; margin-top: 6px; display: flex; gap: 16px; flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.sw { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.note { font-size: 0.8em; color: #777; margin-top: 10px; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Memorization vs Generalization: Adam vs the Cov-Filter</h1>
+  <p>Two-moons with <b>40% of training labels flipped</b>. Same MLP, same data, two optimizers. <b>Top row = training set</b> (noisy labels — flipped points ringed); <b>bottom row = clean test set</b>. Scrub through training and watch <b>Adam</b> (left) carve islands around the flipped points — train accuracy climbs toward 1.0 while its test boundary degrades — while the <b>Cov-Filter</b> (right) keeps a smooth boundary, refuses to fit the noise (train plateaus at the clean ceiling ≈0.6), and holds test accuracy. The spectral filter's benefit is a high-dimensional effect; this 2D replay is the smallest setting where it shows.</p>
+</div>
+<div class="main">
+  <div class="controls">
+    <button id="play">▶ Play</button>
+    <span class="epoch-label" id="epochLabel">epoch 0</span>
+    <input type="range" id="scrub" min="0" max="60" value="0">
+  </div>
+
+  <div class="grid2x2">
+    <div class="panel adam"><h3><span>Adam — Train (noisy)</span><span class="acc" id="adam_train">--</span></h3><canvas id="c_adam_train"></canvas></div>
+    <div class="panel filter"><h3><span>Cov-Filter — Train (noisy)</span><span class="acc" id="filter_train">--</span></h3><canvas id="c_filter_train"></canvas></div>
+    <div class="panel adam"><h3><span>Adam — Test (clean)</span><span class="acc" id="adam_test">--</span></h3><canvas id="c_adam_test"></canvas></div>
+    <div class="panel filter"><h3><span>Cov-Filter — Test (clean)</span><span class="acc" id="filter_test">--</span></h3><canvas id="c_filter_test"></canvas></div>
+  </div>
+
+  <div class="curves">
+    <h3>Accuracy over training</h3>
+    <canvas id="c_curves" style="width:100%;"></canvas>
+    <div class="legend">
+      <span><span class="sw" style="background:#e67e22"></span>Adam train</span>
+      <span><span class="sw" style="background:#e67e22;opacity:0.5"></span>Adam test</span>
+      <span><span class="sw" style="background:#e84393"></span>Filter train</span>
+      <span><span class="sw" style="background:#e84393;opacity:0.5"></span>Filter test</span>
+    </div>
+    <p class="note">Class colors: blue = class 0, red = class 1. Boundary shading is P(class 1). Flipped training points are drawn with a black ring around their (wrong) label color — watch only Adam bend the boundary to capture them.</p>
+  </div>
+</div>
+
+<script src="moons_viz_data.js"></script>
+<script>
+const D = window.MOONS_DATA;
+const G = D.grid, GN = G.n;
+const nFrames = D.adam.length;
+
+// colormap: blue (class0) -> white -> red (class1)
+function probColor(p) {
+  // p in [0,1]; 0 -> blue, 0.5 -> white, 1 -> red
+  const r = p < 0.5 ? Math.round(60 + p*2*195) : 255;
+  const b = p > 0.5 ? Math.round(255 - (p-0.5)*2*195) : 255;
+  const g = Math.round(255 - Math.abs(p-0.5)*2*150);
+  return [r, g, b];
+}
+function classColor(c) { return c === 0 ? '#2459c4' : '#d63031'; }
+
+const CANV_W = 460, CANV_H = 340;
+function setup(id) {
+  const cv = document.getElementById(id);
+  const dpr = window.devicePixelRatio || 1;
+  cv.width = CANV_W*dpr; cv.height = CANV_H*dpr;
+  cv.style.height = CANV_H + 'px';
+  const ctx = cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+  return ctx;
+}
+const ctxs = {
+  adam_train: setup('c_adam_train'), filter_train: setup('c_filter_train'),
+  adam_test: setup('c_adam_test'), filter_test: setup('c_filter_test'),
+};
+const padL=8, padT=8, plotW=CANV_W-16, plotH=CANV_H-16;
+function wx(x){ return padL + (x-G.xmin)/(G.xmax-G.xmin)*plotW; }
+function wy(y){ return padT + (1-(y-G.ymin)/(G.ymax-G.ymin))*plotH; }
+
+// pre-render boundary grid to an offscreen image, scaled up
+const off = document.createElement('canvas'); off.width = GN; off.height = GN;
+const offCtx = off.getContext('2d');
+function drawBoundary(ctx, grid) {
+  const img = offCtx.createImageData(GN, GN);
+  for (let j=0;j<GN;j++) for (let i=0;i<GN;i++) {
+    // grid row-major from meshgrid: index = j*GN + i, j indexes y (gy ascending)
+    const p = grid[j*GN + i];
+    const [r,g,b] = probColor(p);
+    // flip vertically: canvas y grows downward, gy ascending => top row is high y
+    const dj = GN-1-j;
+    const idx = (dj*GN + i)*4;
+    img.data[idx]=r; img.data[idx+1]=g; img.data[idx+2]=b; img.data[idx+3]=235;
+  }
+  offCtx.putImageData(img,0,0);
+  ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(off, padL, padT, plotW, plotH);
+}
+function drawDecisionLine(ctx, grid) {
+  // marching-squares at p=0.5
+  ctx.strokeStyle='rgba(0,0,0,0.55)'; ctx.lineWidth=1.8; ctx.beginPath();
+  const th=0.5;
+  for (let j=0;j<GN-1;j++) for (let i=0;i<GN-1;i++) {
+    const v00=grid[j*GN+i], v10=grid[j*GN+i+1], v01=grid[(j+1)*GN+i], v11=grid[(j+1)*GN+i+1];
+    const a00=v00>th,a10=v10>th,a01=v01>th,a11=v11>th;
+    const cfg=(a00?1:0)|(a10?2:0)|(a01?4:0)|(a11?8:0);
+    if(cfg===0||cfg===15)continue;
+    const gx0=G.xmin+(i/(GN-1))*(G.xmax-G.xmin), gx1=G.xmin+((i+1)/(GN-1))*(G.xmax-G.xmin);
+    const gy0=G.ymin+(j/(GN-1))*(G.ymax-G.ymin), gy1=G.ymin+((j+1)/(GN-1))*(G.ymax-G.ymin);
+    const ip=(va,vb,pa,pb)=> Math.abs(va-vb)<1e-9?(pa+pb)/2:pa+(th-va)/(vb-va)*(pb-pa);
+    const edges=[];
+    if(a00!==a10) edges.push([ip(v00,v10,gx0,gx1), gy0]);
+    if(a01!==a11) edges.push([ip(v01,v11,gx0,gx1), gy1]);
+    if(a00!==a01) edges.push([gx0, ip(v00,v01,gy0,gy1)]);
+    if(a10!==a11) edges.push([gx1, ip(v10,v11,gy0,gy1)]);
+    if(edges.length>=2){ ctx.moveTo(wx(edges[0][0]),wy(edges[0][1])); ctx.lineTo(wx(edges[1][0]),wy(edges[1][1])); }
+  }
+  ctx.stroke();
+}
+function drawPoints(ctx, pts, isTrain) {
+  for (const pt of pts) {
+    const cx=wx(pt.x), cy=wy(pt.y);
+    ctx.beginPath(); ctx.arc(cx,cy,3.4,0,Math.PI*2);
+    ctx.fillStyle=classColor(pt.label); ctx.fill();
+    ctx.lineWidth=1; ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.stroke();
+    if (isTrain && pt.flipped) { // ring flipped points
+      ctx.beginPath(); ctx.arc(cx,cy,5.6,0,Math.PI*2);
+      ctx.lineWidth=1.6; ctx.strokeStyle='#111'; ctx.stroke();
+    }
+  }
+}
+
+function renderPanel(key, optName, frameIdx, pts, isTrain) {
+  const ctx = ctxs[key];
+  const fr = D[optName][frameIdx];
+  ctx.clearRect(0,0,CANV_W,CANV_H);
+  drawBoundary(ctx, fr.grid);
+  drawDecisionLine(ctx, fr.grid);
+  drawPoints(ctx, pts, isTrain);
+  const accEl = document.getElementById(key);
+  accEl.textContent = (isTrain ? fr.train_acc : fr.test_acc).toFixed(3);
+}
+
+// curves canvas
+const cc = document.getElementById('c_curves');
+const dpr = window.devicePixelRatio||1; const CW=968, CH=180;
+cc.width=CW*dpr; cc.height=CH*dpr; cc.style.height=CH+'px';
+const cctx = cc.getContext('2d'); cctx.setTransform(dpr,0,0,dpr,0,0);
+function drawCurves(frameIdx) {
+  cctx.clearRect(0,0,CW,CH);
+  const L=44,R=12,T=10,B=26, pw=CW-L-R, ph=CH-T-B;
+  cctx.fillStyle='#fafafa'; cctx.fillRect(L,T,pw,ph);
+  cctx.strokeStyle='#ddd'; cctx.lineWidth=1;
+  for(let a=0;a<=1.0001;a+=0.25){ const y=T+ph-a*ph; cctx.beginPath(); cctx.moveTo(L,y); cctx.lineTo(L+pw,y); cctx.stroke();
+    cctx.fillStyle='#888'; cctx.font='10px Arial'; cctx.textAlign='right'; cctx.textBaseline='middle'; cctx.fillText(a.toFixed(2),L-5,y); }
+  const maxEp = D.adam[nFrames-1].epoch;
+  const series=[['adam','train_acc','#e67e22',1],['adam','test_acc','#e67e22',0.5],
+                ['filter','train_acc','#e84393',1],['filter','test_acc','#e84393',0.5]];
+  for(const [opt,fld,col,al] of series){
+    cctx.strokeStyle=col; cctx.globalAlpha=al; cctx.lineWidth=2; cctx.beginPath();
+    D[opt].forEach((fr,i)=>{ const x=L+(fr.epoch/maxEp)*pw, y=T+ph-fr[fld]*ph; i?cctx.lineTo(x,y):cctx.moveTo(x,y); });
+    cctx.stroke();
+  }
+  cctx.globalAlpha=1;
+  // playhead
+  const ph_x = L + (D.adam[frameIdx].epoch/maxEp)*pw;
+  cctx.strokeStyle='#2c3e50'; cctx.lineWidth=1.5; cctx.beginPath(); cctx.moveTo(ph_x,T); cctx.lineTo(ph_x,T+ph); cctx.stroke();
+  cctx.fillStyle='#555'; cctx.font='10px Arial'; cctx.textAlign='center'; cctx.textBaseline='top';
+  cctx.fillText('epoch', L+pw/2, T+ph+10);
+}
+
+function render(frameIdx) {
+  renderPanel('adam_train','adam',frameIdx, D.train_pts, true);
+  renderPanel('filter_train','filter',frameIdx, D.train_pts, true);
+  renderPanel('adam_test','adam',frameIdx, D.test_pts, false);
+  renderPanel('filter_test','filter',frameIdx, D.test_pts, false);
+  drawCurves(frameIdx);
+  document.getElementById('epochLabel').textContent = 'epoch ' + D.adam[frameIdx].epoch;
+  document.getElementById('scrub').value = frameIdx;
+}
+
+const scrub = document.getElementById('scrub');
+scrub.max = nFrames-1;
+scrub.addEventListener('input', e => render(parseInt(e.target.value)));
+
+let playing=false, raf=null, cur=0;
+const playBtn=document.getElementById('play');
+function tick(){ if(!playing)return; cur=(cur+1)%nFrames; render(cur);
+  if(cur===nFrames-1){ playing=false; playBtn.textContent='▶ Play'; return; }
+  setTimeout(()=>{ raf=requestAnimationFrame(tick); }, 180); }
+playBtn.addEventListener('click', ()=>{ playing=!playing;
+  playBtn.textContent=playing?'❚❚ Pause':'▶ Play';
+  if(playing){ if(cur>=nFrames-1)cur=0; tick(); } });
+
+render(0);
+</script>
+</body>
+</html>
