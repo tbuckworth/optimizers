@@ -35,10 +35,12 @@ body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f5f5f0; co
 <body>
 <div class="header">
   <h1>Memorization vs Generalization: Adam vs the Cov-Filter</h1>
-  <p>Two-moons with <b>40% of training labels flipped</b>. Same MLP, same data, two optimizers. <b>Top row = training set</b> (noisy labels — flipped points ringed); <b>bottom row = clean test set</b>. Scrub through training and watch <b>Adam</b> (left) carve islands around the flipped points — train accuracy climbs toward 1.0 while its test boundary degrades — while the <b>Cov-Filter</b> (right) keeps a smooth boundary, refuses to fit the noise (train plateaus at the clean ceiling ≈0.6), and holds test accuracy. The spectral filter's benefit is a high-dimensional effect; this 2D replay is the smallest setting where it shows.</p>
+  <p>Two-moons classification with training noise (pick the <b>noise model</b> below: flipped labels, or added random outlier points). Same MLP, same data, two optimizers. <b>Top row = training set</b> (noise/outlier points ringed in black); <b>bottom row = clean test set</b>. Scrub through training and watch <b>Adam</b> (left) carve islands around the noise — train accuracy climbs while its test boundary degrades — while the <b>Cov-Filter</b> (right) keeps a smooth boundary, refuses to fit the noise, and holds test accuracy. The spectral filter's benefit is a high-dimensional effect; this 2D-input replay is the smallest setting where it shows (see the explainer at the bottom).</p>
 </div>
 <div class="main">
   <div class="controls">
+    <label style="font-size:0.85em;font-weight:600;color:#555;">Noise model:</label>
+    <select id="envSelect" style="font-size:0.85em;padding:4px 8px;border:1px solid #ccc;border-radius:4px;"></select>
     <button id="play">▶ Play</button>
     <span class="epoch-label" id="epochLabel">epoch 0</span>
     <input type="range" id="scrub" min="0" max="60" value="0">
@@ -60,15 +62,33 @@ body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f5f5f0; co
       <span style="margin-left:8px;"><span class="sw sw-solid"></span>train (solid)</span>
       <span><span class="sw sw-dash"></span>test (dashed)</span>
     </div>
-    <p class="note">Class colors: blue = class 0, red = class 1. Boundary shading is P(class 1). Flipped training points are drawn with a black ring around their (wrong) label color — watch only Adam bend the boundary to capture them.</p>
+    <p class="note">Class colors: blue = class 0, red = class 1. Boundary shading is P(class 1). Noise/outlier training points are drawn with a black ring around their (assigned) label color — watch only Adam bend the boundary to capture them.</p>
+  </div>
+
+  <div class="curves" style="margin-top:16px;">
+    <h3>How the 2D boundary is drawn (and why there's no dimensionality reduction)</h3>
+    <p class="note" style="font-size:0.84em;">
+      A common assumption is that the picture above is a 2D <i>projection</i> of something high-dimensional. It isn't — and the distinction matters. The <b>inputs are genuinely 2D</b> (each point is an (x, y) coordinate), so we can draw the model's decision surface directly, with no PCA, t-SNE, or any reduction:
+      <br><br>
+      <b>1.</b> Lay a 56×56 grid of (x, y) points over the plane.
+      <b>2.</b> Run every grid point through the trained MLP and take the softmax probability of class 1.
+      <b>3.</b> Shade each pixel by that probability (blue→white→red); the black line is the <code>P=0.5</code> decision boundary (marching squares).
+      <b>4.</b> Overlay the actual train / test data points.
+      <br><br>
+      So <b>what <i>is</i> high-dimensional here is the optimizer's working space, not the picture.</b> The network has thousands of weights; the gradient covariance the filter tracks lives in that thousand-dimensional parameter space, and the filter keeps only its top-k eigendirections. The 2D plot is just a faithful readout of the function those weights compute — it lets us <i>see</i> the consequence of the filter's high-dimensional projection (a smooth, noise-resistant boundary) without ever projecting the picture itself. This is why a true 2D-<i>parameter</i> toy (e.g. the Rosenbrock demo) can't show the effect, but a 2D-<i>input</i> network with thousands of weights can.
+    </p>
   </div>
 </div>
 
 <script src="moons_viz_data.js"></script>
 <script>
 const D = window.MOONS_DATA;
-const G = D.grid, GN = G.n;
-const nFrames = D.adam.length;
+// support both the multi-environment format and the legacy single-env format
+const ENV_ORDER = D.order || ['default'];
+const ENVS = D.environments || {default: D};
+let env = ENVS[ENV_ORDER[0]];
+let G = env.grid, GN = G.n;
+let nFrames = env.adam.length;
 
 // colormap: blue (class0) -> white -> red (class1)
 function probColor(p) {
@@ -142,7 +162,7 @@ function drawPoints(ctx, pts, isTrain) {
     ctx.beginPath(); ctx.arc(cx,cy,3.4,0,Math.PI*2);
     ctx.fillStyle=classColor(pt.label); ctx.fill();
     ctx.lineWidth=1; ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.stroke();
-    if (isTrain && pt.flipped) { // ring flipped points
+    if (isTrain && pt.noise) { // ring noise/outlier points
       ctx.beginPath(); ctx.arc(cx,cy,5.6,0,Math.PI*2);
       ctx.lineWidth=1.6; ctx.strokeStyle='#111'; ctx.stroke();
     }
@@ -151,7 +171,7 @@ function drawPoints(ctx, pts, isTrain) {
 
 function renderPanel(key, optName, frameIdx, pts, isTrain) {
   const ctx = ctxs[key];
-  const fr = D[optName][frameIdx];
+  const fr = env[optName][frameIdx];
   ctx.clearRect(0,0,CANV_W,CANV_H);
   drawBoundary(ctx, fr.grid);
   drawDecisionLine(ctx, fr.grid);
@@ -172,36 +192,51 @@ function drawCurves(frameIdx) {
   cctx.strokeStyle='#ddd'; cctx.lineWidth=1;
   for(let a=0;a<=1.0001;a+=0.25){ const y=T+ph-a*ph; cctx.beginPath(); cctx.moveTo(L,y); cctx.lineTo(L+pw,y); cctx.stroke();
     cctx.fillStyle='#888'; cctx.font='10px Arial'; cctx.textAlign='right'; cctx.textBaseline='middle'; cctx.fillText(a.toFixed(2),L-5,y); }
-  const maxEp = D.adam[nFrames-1].epoch;
+  const maxEp = env.adam[nFrames-1].epoch;
   // color = optimizer (Adam orange / Filter magenta); style = split (train solid / test dashed)
   const series=[['adam','train_acc','#e67e22',[]],['adam','test_acc','#e67e22',[5,4]],
                 ['filter','train_acc','#e84393',[]],['filter','test_acc','#e84393',[5,4]]];
   for(const [opt,fld,col,dash] of series){
     cctx.strokeStyle=col; cctx.lineWidth=2; cctx.setLineDash(dash); cctx.beginPath();
-    D[opt].forEach((fr,i)=>{ const x=L+(fr.epoch/maxEp)*pw, y=T+ph-fr[fld]*ph; i?cctx.lineTo(x,y):cctx.moveTo(x,y); });
+    env[opt].forEach((fr,i)=>{ const x=L+(fr.epoch/maxEp)*pw, y=T+ph-fr[fld]*ph; i?cctx.lineTo(x,y):cctx.moveTo(x,y); });
     cctx.stroke();
   }
   cctx.setLineDash([]);
   // playhead
-  const ph_x = L + (D.adam[frameIdx].epoch/maxEp)*pw;
+  const ph_x = L + (env.adam[frameIdx].epoch/maxEp)*pw;
   cctx.strokeStyle='#2c3e50'; cctx.lineWidth=1.5; cctx.beginPath(); cctx.moveTo(ph_x,T); cctx.lineTo(ph_x,T+ph); cctx.stroke();
   cctx.fillStyle='#555'; cctx.font='10px Arial'; cctx.textAlign='center'; cctx.textBaseline='top';
   cctx.fillText('epoch', L+pw/2, T+ph+10);
 }
 
 function render(frameIdx) {
-  renderPanel('adam_train','adam',frameIdx, D.train_pts, true);
-  renderPanel('filter_train','filter',frameIdx, D.train_pts, true);
-  renderPanel('adam_test','adam',frameIdx, D.test_pts, false);
-  renderPanel('filter_test','filter',frameIdx, D.test_pts, false);
+  renderPanel('adam_train','adam',frameIdx, env.train_pts, true);
+  renderPanel('filter_train','filter',frameIdx, env.train_pts, true);
+  renderPanel('adam_test','adam',frameIdx, env.test_pts, false);
+  renderPanel('filter_test','filter',frameIdx, env.test_pts, false);
   drawCurves(frameIdx);
-  document.getElementById('epochLabel').textContent = 'epoch ' + D.adam[frameIdx].epoch;
+  document.getElementById('epochLabel').textContent = 'epoch ' + env.adam[frameIdx].epoch;
   document.getElementById('scrub').value = frameIdx;
 }
 
 const scrub = document.getElementById('scrub');
 scrub.max = nFrames-1;
 scrub.addEventListener('input', e => render(parseInt(e.target.value)));
+
+// environment dropdown
+const envSelect = document.getElementById('envSelect');
+ENV_ORDER.forEach(k => {
+  const o = document.createElement('option');
+  o.value = k; o.textContent = ENVS[k].label || k;
+  envSelect.appendChild(o);
+});
+envSelect.addEventListener('change', e => {
+  env = ENVS[e.target.value];
+  G = env.grid; GN = env.grid.n; nFrames = env.adam.length;
+  scrub.max = nFrames-1;
+  if (cur >= nFrames) cur = nFrames-1;
+  render(cur);
+});
 
 let playing=false, raf=null, cur=0;
 const playBtn=document.getElementById('play');
