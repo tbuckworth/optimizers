@@ -20,13 +20,33 @@ import torch.nn.functional as F
 class WeightCovarianceFilterV2:
     def __init__(self, model, base_optimizer, rank=200, decay=0.99,
                  warmup=100, filter_strength=1.0, energy_threshold=None,
-                 adaptive="none", normalize="none"):
+                 adaptive="none", normalize="none",
+                 weighting="hard", alpha=1.0, soft_residual=True):
         self.model = model
         self.base_optimizer = base_optimizer
         self.rank = rank            # hard cap on kept directions
         self.decay = decay
         self.warmup = warmup
         self.filter_strength = filter_strength
+        # Direction C — graded eigenvalue weighting (soft filter).
+        #   weighting="hard"  -> project onto top-k subspace, all kept dirs weight 1
+        #                        (the original hard top-k filter)
+        #   weighting="soft"  -> reweight each retained eigendirection i by
+        #                        w_i = (lambda_i / lambda_max)^alpha, lambda_i = S_i^2,
+        #                        then renormalize the result to preserve ||g|| (so
+        #                        alpha is a pure "where to point" knob, decoupled from
+        #                        the global learning rate).
+        # The alpha spectrum (soft):
+        #   alpha = 0          -> if soft_residual: identity (no filter, == base opt);
+        #                         else: uniform weights == hard top-k filter
+        #   alpha = 1          -> update proportional to how agreed-upon a direction is
+        #   alpha -> +inf      -> collapses toward the single dominant direction
+        #   alpha < 0          -> whitening / natural-gradient (amplify rare dirs)
+        # soft_residual=True keeps g's component OUTSIDE the retained basis at weight 1
+        # so that alpha=0 is a genuine no-filter control; False drops it (subspace-only).
+        self.weighting = weighting
+        self.alpha = alpha
+        self.soft_residual = soft_residual
         # If set (e.g. 0.99), keep the smallest number of top eigenvectors that
         # capture this fraction of the spectral energy, capped at `rank`. The
         # eigenvalues are already computed each step, so this is ~free.
@@ -206,7 +226,25 @@ class WeightCovarianceFilterV2:
     def _project_gradient(self, g):
         if self.V is None:
             return g
-        if self.normalize == "none":
+        if self.normalize == "none" and self.weighting == "soft":
+            V = self.V if self.proj_k is None else self.V[:, :self.proj_k]
+            S = self.S.to(g.device)
+            if self.proj_k is not None:
+                S = S[:self.proj_k]
+            lam = S * S
+            lam_max = lam.max().clamp_min(1e-30)
+            ratio = (lam / lam_max).clamp_min(1e-12)        # (k,) in (0, 1]
+            w = ratio.pow(self.alpha).clamp(max=1e3)        # graded weights
+            coeffs = V.T @ g                                # (k,)
+            if self.soft_residual:
+                # g + V diag(w-1) Vᵀg : retained dirs reweighted, complement untouched
+                g_projected = g + V @ ((w - 1.0) * coeffs)
+            else:
+                g_projected = V @ (w * coeffs)              # subspace-only
+            gn = g.norm()
+            pn = g_projected.norm().clamp_min(1e-12)
+            g_projected = g_projected * (gn / pn)           # preserve ‖g‖
+        elif self.normalize == "none":
             V = self.V if self.proj_k is None else self.V[:, :self.proj_k]
             g_projected = V @ (V.T @ g)
         else:

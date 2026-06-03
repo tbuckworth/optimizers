@@ -167,7 +167,8 @@ def run(args):
             optimizer = WeightCovarianceFilterV2(
                 model, base_opt, rank=args.rank, decay=args.decay,
                 warmup=args.warmup, filter_strength=args.filter_strength,
-                normalize=args.normalize)
+                normalize=args.normalize, weighting=args.weighting,
+                alpha=args.alpha, soft_residual=args.soft_residual)
         else:
             optimizer = RandomSubspaceFilter(
                 model, base_opt, rank=args.rank, seed=args.seed)
@@ -222,6 +223,12 @@ if __name__ == "__main__":
     parser.add_argument("--decay", type=float, default=0.99)
     parser.add_argument("--warmup", type=int, default=100)
     parser.add_argument("--filter_strength", type=float, default=1.0)
+    parser.add_argument("--weighting", choices=["hard", "soft"], default="hard",
+                        help="hard top-k filter, or soft eigenvalue^alpha weighting (Direction C)")
+    parser.add_argument("--alpha", type=float, default=1.0,
+                        help="soft-weighting exponent: 0=identity, 1=consensus, inf=top dir, <0=whitening")
+    parser.add_argument("--soft_residual", type=int, default=1,
+                        help="1: keep out-of-basis component (alpha=0 == no filter); 0: subspace-only")
     parser.add_argument("--normalize", choices=["none", "var", "degree"], default="none",
                         help="basis: none=covariance, var=correlation, degree=spectral/normalized-affinity")
     parser.add_argument("--label_noise", type=float, default=0.0)
