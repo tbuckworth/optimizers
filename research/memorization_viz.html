@@ -27,6 +27,8 @@ body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f5f5f0; co
 .legend { font-size: 0.78em; color: #555; margin-top: 6px; display: flex; gap: 16px; flex-wrap: wrap; }
 .legend span { display: inline-flex; align-items: center; gap: 5px; }
 .sw { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.sw-solid { background: #555; }
+.sw-dash { height: 0; border-top: 3px dashed #555; border-radius: 0; }
 .note { font-size: 0.8em; color: #777; margin-top: 10px; line-height: 1.4; }
 </style>
 </head>
@@ -53,10 +55,10 @@ body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f5f5f0; co
     <h3>Accuracy over training</h3>
     <canvas id="c_curves" style="width:100%;"></canvas>
     <div class="legend">
-      <span><span class="sw" style="background:#e67e22"></span>Adam train</span>
-      <span><span class="sw" style="background:#e67e22;opacity:0.5"></span>Adam test</span>
-      <span><span class="sw" style="background:#e84393"></span>Filter train</span>
-      <span><span class="sw" style="background:#e84393;opacity:0.5"></span>Filter test</span>
+      <span><span class="sw" style="background:#e67e22"></span>Adam</span>
+      <span><span class="sw" style="background:#e84393"></span>Cov-Filter</span>
+      <span style="margin-left:8px;"><span class="sw sw-solid"></span>train (solid)</span>
+      <span><span class="sw sw-dash"></span>test (dashed)</span>
     </div>
     <p class="note">Class colors: blue = class 0, red = class 1. Boundary shading is P(class 1). Flipped training points are drawn with a black ring around their (wrong) label color — watch only Adam bend the boundary to capture them.</p>
   </div>
@@ -171,14 +173,15 @@ function drawCurves(frameIdx) {
   for(let a=0;a<=1.0001;a+=0.25){ const y=T+ph-a*ph; cctx.beginPath(); cctx.moveTo(L,y); cctx.lineTo(L+pw,y); cctx.stroke();
     cctx.fillStyle='#888'; cctx.font='10px Arial'; cctx.textAlign='right'; cctx.textBaseline='middle'; cctx.fillText(a.toFixed(2),L-5,y); }
   const maxEp = D.adam[nFrames-1].epoch;
-  const series=[['adam','train_acc','#e67e22',1],['adam','test_acc','#e67e22',0.5],
-                ['filter','train_acc','#e84393',1],['filter','test_acc','#e84393',0.5]];
-  for(const [opt,fld,col,al] of series){
-    cctx.strokeStyle=col; cctx.globalAlpha=al; cctx.lineWidth=2; cctx.beginPath();
+  // color = optimizer (Adam orange / Filter magenta); style = split (train solid / test dashed)
+  const series=[['adam','train_acc','#e67e22',[]],['adam','test_acc','#e67e22',[5,4]],
+                ['filter','train_acc','#e84393',[]],['filter','test_acc','#e84393',[5,4]]];
+  for(const [opt,fld,col,dash] of series){
+    cctx.strokeStyle=col; cctx.lineWidth=2; cctx.setLineDash(dash); cctx.beginPath();
     D[opt].forEach((fr,i)=>{ const x=L+(fr.epoch/maxEp)*pw, y=T+ph-fr[fld]*ph; i?cctx.lineTo(x,y):cctx.moveTo(x,y); });
     cctx.stroke();
   }
-  cctx.globalAlpha=1;
+  cctx.setLineDash([]);
   // playhead
   const ph_x = L + (D.adam[frameIdx].epoch/maxEp)*pw;
   cctx.strokeStyle='#2c3e50'; cctx.lineWidth=1.5; cctx.beginPath(); cctx.moveTo(ph_x,T); cctx.lineTo(ph_x,T+ph); cctx.stroke();
