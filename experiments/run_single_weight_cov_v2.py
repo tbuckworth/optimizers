@@ -21,6 +21,7 @@ from torchvision import datasets, transforms
 from weight_cov_optimizer_v2 import WeightCovarianceFilterV2
 from random_subspace_optimizer import RandomSubspaceFilter
 from lora_mlp import LoRAMLP
+from custom_optimizers import Lion, MuonNS
 
 
 class FlexMNISTNet(nn.Module):
@@ -98,6 +99,12 @@ def make_base_optimizer(name, params, lr):
         return torch.optim.SGD(params, lr=lr)
     elif name == "sgdm":
         return torch.optim.SGD(params, lr=lr, momentum=0.9)
+    elif name == "rmsprop":
+        return torch.optim.RMSprop(params, lr=lr)
+    elif name == "lion":
+        return Lion(params, lr=lr)
+    elif name == "muon":
+        return MuonNS(params, lr=lr)
     raise ValueError(f"Unknown base optimizer: {name}")
 
 
@@ -211,7 +218,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", choices=["adam", "ours", "baseline",
                         "random_subspace", "lora"], required=True)
-    parser.add_argument("--base_optimizer", choices=["adam", "sgd", "sgdm"],
+    parser.add_argument("--base_optimizer",
+                        choices=["adam", "sgd", "sgdm", "rmsprop", "lion", "muon"],
                         default="adam")
     parser.add_argument("--lora_rank", type=int, default=32)
     parser.add_argument("--lora_alpha", type=float, default=32.0)
