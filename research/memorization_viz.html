@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memorization vs Generalization: Adam vs the Cov-Filter</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f5f5f0; color: #2c2c2c; }
+.header { background: linear-gradient(135deg, #2c3e50, #34495e); color: #ecf0f1; padding: 18px 30px; border-bottom: 3px solid #e84393; }
+.header h1 { font-size: 1.4em; font-weight: 600; margin-bottom: 4px; }
+.header p { font-size: 0.88em; opacity: 0.85; max-width: 1000px; line-height: 1.45; }
+.main { max-width: 1000px; margin: 0 auto; padding: 20px; }
+.controls { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; padding: 12px 16px; background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.controls button { padding: 6px 14px; font-size: 0.85em; font-weight: 600; border: none; border-radius: 5px; cursor: pointer; background: #e84393; color: #fff; }
+.controls button:hover { background: #d63384; }
+.controls input[type=range] { flex: 1; min-width: 200px; }
+.epoch-label { font-size: 0.9em; font-weight: 600; color: #555; min-width: 150px; }
+.grid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+.panel { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 10px 12px; }
+.panel h3 { font-size: 0.82em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: baseline; }
+.panel .acc { font-weight: 700; font-size: 1.05em; }
+.panel canvas { display: block; width: 100%; border-radius: 4px; }
+.adam .acc { color: #e67e22; } .filter .acc { color: #e84393; }
+.curves { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 12px 16px; }
+.curves h3 { font-size: 0.82em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 8px; }
+.legend { font-size: 0.78em; color: #555; margin-top: 6px; display: flex; gap: 16px; flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.sw { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.sw-solid { background: #555; }
+.sw-dash { height: 0; border-top: 3px dashed #555; border-radius: 0; }
+.note { font-size: 0.8em; color: #777; margin-top: 10px; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Memorization vs Generalization: Adam vs the Cov-Filter</h1>
+  <p>Two-moons classification with training noise (pick the <b>noise model</b> below: flipped labels, or added random outlier points). Same MLP, same data, two optimizers. <b>Top row = training set</b> (noise/outlier points ringed in black); <b>bottom row = clean test set</b>. Scrub through training and watch <b>Adam</b> (left) carve islands around the noise — train accuracy climbs while its test boundary degrades — while the <b>Cov-Filter</b> (right) keeps a smooth boundary, refuses to fit the noise, and holds test accuracy. The spectral filter's benefit is a high-dimensional effect; this 2D-input replay is the smallest setting where it shows (see the explainer at the bottom).</p>
+</div>
+<div class="main">
+  <div class="controls">
+    <label style="font-size:0.85em;font-weight:600;color:#555;">Noise model:</label>
+    <select id="envSelect" style="font-size:0.85em;padding:4px 8px;border:1px solid #ccc;border-radius:4px;"></select>
+    <button id="play">▶ Play</button>
+    <span class="epoch-label" id="epochLabel">epoch 0</span>
+    <input type="range" id="scrub" min="0" max="60" value="0">
+  </div>
+
+  <div class="grid2x2">
+    <div class="panel adam"><h3><span>Adam — Train (noisy)</span><span class="acc" id="adam_train">--</span></h3><canvas id="c_adam_train"></canvas></div>
+    <div class="panel filter"><h3><span>Cov-Filter — Train (noisy)</span><span class="acc" id="filter_train">--</span></h3><canvas id="c_filter_train"></canvas></div>
+    <div class="panel adam"><h3><span>Adam — Test (clean)</span><span class="acc" id="adam_test">--</span></h3><canvas id="c_adam_test"></canvas></div>
+    <div class="panel filter"><h3><span>Cov-Filter — Test (clean)</span><span class="acc" id="filter_test">--</span></h3><canvas id="c_filter_test"></canvas></div>
+  </div>
+
+  <div class="curves">
+    <h3>Accuracy over training</h3>
+    <canvas id="c_curves" style="width:100%;"></canvas>
+    <div class="legend">
+      <span><span class="sw" style="background:#e67e22"></span>Adam</span>
+      <span><span class="sw" style="background:#e84393"></span>Cov-Filter</span>
+      <span style="margin-left:8px;"><span class="sw sw-solid"></span>train (solid)</span>
+      <span><span class="sw sw-dash"></span>test (dashed)</span>
+    </div>
+    <p class="note">Class colors: blue = class 0, red = class 1. Boundary shading is P(class 1). Noise/outlier training points are drawn with a black ring around their (assigned) label color — watch only Adam bend the boundary to capture them.</p>
+  </div>
+
+  <div class="curves" style="margin-top:16px;">
+    <h3>How the 2D boundary is drawn (and why there's no dimensionality reduction)</h3>
+    <p class="note" style="font-size:0.84em;">
+      A common assumption is that the picture above is a 2D <i>projection</i> of something high-dimensional. It isn't — and the distinction matters. The <b>inputs are genuinely 2D</b> (each point is an (x, y) coordinate), so we can draw the model's decision surface directly, with no PCA, t-SNE, or any reduction:
+      <br><br>
+      <b>1.</b> Lay a 56×56 grid of (x, y) points over the plane.
+      <b>2.</b> Run every grid point through the trained MLP and take the softmax probability of class 1.
+      <b>3.</b> Shade each pixel by that probability (blue→white→red); the black line is the <code>P=0.5</code> decision boundary (marching squares).
+      <b>4.</b> Overlay the actual train / test data points.
+      <br><br>
+      So <b>what <i>is</i> high-dimensional here is the optimizer's working space, not the picture.</b> The network has thousands of weights; the gradient covariance the filter tracks lives in that thousand-dimensional parameter space, and the filter keeps only its top-k eigendirections. The 2D plot is just a faithful readout of the function those weights compute — it lets us <i>see</i> the consequence of the filter's high-dimensional projection (a smooth, noise-resistant boundary) without ever projecting the picture itself. This is why a true 2D-<i>parameter</i> toy (e.g. the Rosenbrock demo) can't show the effect, but a 2D-<i>input</i> network with thousands of weights can.
+    </p>
+  </div>
+</div>
+
+<script src="moons_viz_data.js"></script>
+<script>
+const D = window.MOONS_DATA;
+// support both the multi-environment format and the legacy single-env format
+const ENV_ORDER = D.order || ['default'];
+const ENVS = D.environments || {default: D};
+let env = ENVS[ENV_ORDER[0]];
+let G = env.grid, GN = G.n;
+let nFrames = env.adam.length;
+
+// colormap: blue (class0) -> white -> red (class1)
+function probColor(p) {
+  // p in [0,1]; 0 -> blue, 0.5 -> white, 1 -> red
+  const r = p < 0.5 ? Math.round(60 + p*2*195) : 255;
+  const b = p > 0.5 ? Math.round(255 - (p-0.5)*2*195) : 255;
+  const g = Math.round(255 - Math.abs(p-0.5)*2*150);
+  return [r, g, b];
+}
+function classColor(c) { return c === 0 ? '#2459c4' : '#d63031'; }
+
+const CANV_W = 460, CANV_H = 340;
+function setup(id) {
+  const cv = document.getElementById(id);
+  const dpr = window.devicePixelRatio || 1;
+  cv.width = CANV_W*dpr; cv.height = CANV_H*dpr;
+  cv.style.height = CANV_H + 'px';
+  const ctx = cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+  return ctx;
+}
+const ctxs = {
+  adam_train: setup('c_adam_train'), filter_train: setup('c_filter_train'),
+  adam_test: setup('c_adam_test'), filter_test: setup('c_filter_test'),
+};
+const padL=8, padT=8, plotW=CANV_W-16, plotH=CANV_H-16;
+function wx(x){ return padL + (x-G.xmin)/(G.xmax-G.xmin)*plotW; }
+function wy(y){ return padT + (1-(y-G.ymin)/(G.ymax-G.ymin))*plotH; }
+
+// pre-render boundary grid to an offscreen image, scaled up
+const off = document.createElement('canvas'); off.width = GN; off.height = GN;
+const offCtx = off.getContext('2d');
+function drawBoundary(ctx, grid) {
+  const img = offCtx.createImageData(GN, GN);
+  for (let j=0;j<GN;j++) for (let i=0;i<GN;i++) {
+    // grid row-major from meshgrid: index = j*GN + i, j indexes y (gy ascending)
+    const p = grid[j*GN + i];
+    const [r,g,b] = probColor(p);
+    // flip vertically: canvas y grows downward, gy ascending => top row is high y
+    const dj = GN-1-j;
+    const idx = (dj*GN + i)*4;
+    img.data[idx]=r; img.data[idx+1]=g; img.data[idx+2]=b; img.data[idx+3]=235;
+  }
+  offCtx.putImageData(img,0,0);
+  ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(off, padL, padT, plotW, plotH);
+}
+function drawDecisionLine(ctx, grid) {
+  // marching-squares at p=0.5
+  ctx.strokeStyle='rgba(0,0,0,0.55)'; ctx.lineWidth=1.8; ctx.beginPath();
+  const th=0.5;
+  for (let j=0;j<GN-1;j++) for (let i=0;i<GN-1;i++) {
+    const v00=grid[j*GN+i], v10=grid[j*GN+i+1], v01=grid[(j+1)*GN+i], v11=grid[(j+1)*GN+i+1];
+    const a00=v00>th,a10=v10>th,a01=v01>th,a11=v11>th;
+    const cfg=(a00?1:0)|(a10?2:0)|(a01?4:0)|(a11?8:0);
+    if(cfg===0||cfg===15)continue;
+    const gx0=G.xmin+(i/(GN-1))*(G.xmax-G.xmin), gx1=G.xmin+((i+1)/(GN-1))*(G.xmax-G.xmin);
+    const gy0=G.ymin+(j/(GN-1))*(G.ymax-G.ymin), gy1=G.ymin+((j+1)/(GN-1))*(G.ymax-G.ymin);
+    const ip=(va,vb,pa,pb)=> Math.abs(va-vb)<1e-9?(pa+pb)/2:pa+(th-va)/(vb-va)*(pb-pa);
+    const edges=[];
+    if(a00!==a10) edges.push([ip(v00,v10,gx0,gx1), gy0]);
+    if(a01!==a11) edges.push([ip(v01,v11,gx0,gx1), gy1]);
+    if(a00!==a01) edges.push([gx0, ip(v00,v01,gy0,gy1)]);
+    if(a10!==a11) edges.push([gx1, ip(v10,v11,gy0,gy1)]);
+    if(edges.length>=2){ ctx.moveTo(wx(edges[0][0]),wy(edges[0][1])); ctx.lineTo(wx(edges[1][0]),wy(edges[1][1])); }
+  }
+  ctx.stroke();
+}
+function drawPoints(ctx, pts, isTrain) {
+  for (const pt of pts) {
+    const cx=wx(pt.x), cy=wy(pt.y);
+    ctx.beginPath(); ctx.arc(cx,cy,3.4,0,Math.PI*2);
+    ctx.fillStyle=classColor(pt.label); ctx.fill();
+    ctx.lineWidth=1; ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.stroke();
+    if (isTrain && pt.noise) { // ring noise/outlier points
+      ctx.beginPath(); ctx.arc(cx,cy,5.6,0,Math.PI*2);
+      ctx.lineWidth=1.6; ctx.strokeStyle='#111'; ctx.stroke();
+    }
+  }
+}
+
+function renderPanel(key, optName, frameIdx, pts, isTrain) {
+  const ctx = ctxs[key];
+  const fr = env[optName][frameIdx];
+  ctx.clearRect(0,0,CANV_W,CANV_H);
+  drawBoundary(ctx, fr.grid);
+  drawDecisionLine(ctx, fr.grid);
+  drawPoints(ctx, pts, isTrain);
+  const accEl = document.getElementById(key);
+  accEl.textContent = (isTrain ? fr.train_acc : fr.test_acc).toFixed(3);
+}
+
+// curves canvas
+const cc = document.getElementById('c_curves');
+const dpr = window.devicePixelRatio||1; const CW=968, CH=180;
+cc.width=CW*dpr; cc.height=CH*dpr; cc.style.height=CH+'px';
+const cctx = cc.getContext('2d'); cctx.setTransform(dpr,0,0,dpr,0,0);
+function drawCurves(frameIdx) {
+  cctx.clearRect(0,0,CW,CH);
+  const L=44,R=12,T=10,B=26, pw=CW-L-R, ph=CH-T-B;
+  cctx.fillStyle='#fafafa'; cctx.fillRect(L,T,pw,ph);
+  cctx.strokeStyle='#ddd'; cctx.lineWidth=1;
+  for(let a=0;a<=1.0001;a+=0.25){ const y=T+ph-a*ph; cctx.beginPath(); cctx.moveTo(L,y); cctx.lineTo(L+pw,y); cctx.stroke();
+    cctx.fillStyle='#888'; cctx.font='10px Arial'; cctx.textAlign='right'; cctx.textBaseline='middle'; cctx.fillText(a.toFixed(2),L-5,y); }
+  const maxEp = env.adam[nFrames-1].epoch;
+  // color = optimizer (Adam orange / Filter magenta); style = split (train solid / test dashed)
+  const series=[['adam','train_acc','#e67e22',[]],['adam','test_acc','#e67e22',[5,4]],
+                ['filter','train_acc','#e84393',[]],['filter','test_acc','#e84393',[5,4]]];
+  for(const [opt,fld,col,dash] of series){
+    cctx.strokeStyle=col; cctx.lineWidth=2; cctx.setLineDash(dash); cctx.beginPath();
+    env[opt].forEach((fr,i)=>{ const x=L+(fr.epoch/maxEp)*pw, y=T+ph-fr[fld]*ph; i?cctx.lineTo(x,y):cctx.moveTo(x,y); });
+    cctx.stroke();
+  }
+  cctx.setLineDash([]);
+  // playhead
+  const ph_x = L + (env.adam[frameIdx].epoch/maxEp)*pw;
+  cctx.strokeStyle='#2c3e50'; cctx.lineWidth=1.5; cctx.beginPath(); cctx.moveTo(ph_x,T); cctx.lineTo(ph_x,T+ph); cctx.stroke();
+  cctx.fillStyle='#555'; cctx.font='10px Arial'; cctx.textAlign='center'; cctx.textBaseline='top';
+  cctx.fillText('epoch', L+pw/2, T+ph+10);
+}
+
+function render(frameIdx) {
+  renderPanel('adam_train','adam',frameIdx, env.train_pts, true);
+  renderPanel('filter_train','filter',frameIdx, env.train_pts, true);
+  renderPanel('adam_test','adam',frameIdx, env.test_pts, false);
+  renderPanel('filter_test','filter',frameIdx, env.test_pts, false);
+  drawCurves(frameIdx);
+  document.getElementById('epochLabel').textContent = 'epoch ' + env.adam[frameIdx].epoch;
+  document.getElementById('scrub').value = frameIdx;
+}
+
+const scrub = document.getElementById('scrub');
+scrub.max = nFrames-1;
+scrub.addEventListener('input', e => render(parseInt(e.target.value)));
+
+// environment dropdown
+const envSelect = document.getElementById('envSelect');
+ENV_ORDER.forEach(k => {
+  const o = document.createElement('option');
+  o.value = k; o.textContent = ENVS[k].label || k;
+  envSelect.appendChild(o);
+});
+envSelect.addEventListener('change', e => {
+  env = ENVS[e.target.value];
+  G = env.grid; GN = env.grid.n; nFrames = env.adam.length;
+  scrub.max = nFrames-1;
+  if (cur >= nFrames) cur = nFrames-1;
+  render(cur);
+});
+
+let playing=false, raf=null, cur=0;
+const playBtn=document.getElementById('play');
+function tick(){ if(!playing)return; cur=(cur+1)%nFrames; render(cur);
+  if(cur===nFrames-1){ playing=false; playBtn.textContent='▶ Play'; return; }
+  setTimeout(()=>{ raf=requestAnimationFrame(tick); }, 180); }
+playBtn.addEventListener('click', ()=>{ playing=!playing;
+  playBtn.textContent=playing?'❚❚ Pause':'▶ Play';
+  if(playing){ if(cur>=nFrames-1)cur=0; tick(); } });
+
+render(0);
+</script>
+</body>
+</html>

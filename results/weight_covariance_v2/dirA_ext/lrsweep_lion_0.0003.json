@@ -1,0 +1,71 @@
+{
+  "config": {
+    "mode": "baseline",
+    "base_optimizer": "lion",
+    "dataset": "standard",
+    "lr": 0.0003,
+    "epochs": 5,
+    "rank": 200,
+    "decay": 0.99,
+    "warmup": 100,
+    "filter_strength": 1.0,
+    "normalize": "none",
+    "weighting": "hard",
+    "alpha": 1.0,
+    "soft_residual": 1,
+    "label_noise": 0.0,
+    "seed": 42,
+    "lora_rank": 32,
+    "lora_alpha": 32.0,
+    "name": "lrsweep_lion_0.0003",
+    "save_dir": "../results/weight_covariance_v2/dirA_ext",
+    "data_dir": "./data"
+  },
+  "metrics": [
+    {
+      "epoch": -1,
+      "train_acc": 0.05775,
+      "test_acc": 0.053,
+      "train_loss": 2.30352,
+      "test_loss": 2.30408
+    },
+    {
+      "epoch": 0,
+      "train_acc": 0.96735,
+      "test_acc": 0.9635,
+      "train_loss": 0.10507,
+      "test_loss": 0.12096
+    },
+    {
+      "epoch": 1,
+      "train_acc": 0.9755,
+      "test_acc": 0.9672,
+      "train_loss": 0.07917,
+      "test_loss": 0.11144
+    },
+    {
+      "epoch": 2,
+      "train_acc": 0.97992,
+      "test_acc": 0.9693,
+      "train_loss": 0.06376,
+      "test_loss": 0.1113
+    },
+    {
+      "epoch": 3,
+      "train_acc": 0.9822,
+      "test_acc": 0.972,
+      "train_loss": 0.05577,
+      "test_loss": 0.10363
+    },
+    {
+      "epoch": 4,
+      "train_acc": 0.98142,
+      "test_acc": 0.9695,
+      "train_loss": 0.05595,
+      "test_loss": 0.1136
+    }
+  ],
+  "time_s": 10.7,
+  "n_params": 235146,
+  "input_dim": 784
+}

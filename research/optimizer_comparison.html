@@ -295,7 +295,7 @@ canvas#lossCanvas {
 
 <div class="header">
     <h1>Optimizer Comparison: Real Update Rules</h1>
-    <p>Watch SGD, RMSprop, Adam, AdamW, Lion, and Muon navigate the same loss landscape with their actual update rules.</p>
+    <p>Watch SGD, RMSprop, Adam, AdamW, Lion, Muon, and our <b>Cov-Filter</b> (the gradient-covariance spectral filter) navigate the same loss landscape with their actual update rules. Cov-Filter projects the gradient onto the top eigenvector of its EMA gradient covariance, then steps with Adam — here k=1 is the 2D analog of keeping rank&nbsp;≪&nbsp;p. Two rows show the <b>centered</b> covariance (the current default — it stalls here because in a clean low-dim bowl the descent direction <i>is</i> the gradient mean, so centering cancels it) vs the <b>uncentered</b> second moment (locks onto the dominant gradient direction and converges). The filter is designed for high-dim, noisy-label regimes, not deterministic 2D landscapes — this contrast is the point.</p>
 </div>
 
 <div class="main-container">
@@ -358,7 +358,8 @@ const OPTIMIZERS = [
     { name: 'AdamW',   color: '#e74c3c', defaultLr: 0.05 },
     { name: 'Lion',    color: '#2ecc71', defaultLr: 0.005 },
     { name: 'Muon',    color: '#1abc9c', defaultLr: 0.1 },
-    { name: 'Spectral', color: '#9b59b6', defaultLr: 0.05 },
+    { name: 'Cov-Filter (centered)', color: '#e84393', defaultLr: 0.05 },
+    { name: 'Cov-Filter (2nd-moment)', color: '#6c5ce7', defaultLr: 0.05 },
 ];
 
 const DEFAULT_STARTS = {
@@ -486,6 +487,10 @@ function createOptimizerState(idx) {
         v: [0, 0],        // second moment / variance
         s: [0, 0],        // RMSprop running avg
         t: 0,             // step counter for bias correction
+        // Cov-Filter (V2) state
+        gmean: [0, 0],    // EMA of gradient (running mean, for centering)
+        cov: [0, 0, 0],   // EMA of centered grad outer product [Cxx, Cxy, Cyy]
+        cstep: 0,         // filter step counter (warmup)
     };
 }
 
@@ -617,82 +622,77 @@ function stepMuon(st) {
     clampPos(st.w);
 }
 
-function stepSpectral(st) {
-    const trueGrad = getGrad(st.w[0], st.w[1]);
-    const B = 16; // simulated batch size
-    const noiseScale = 0.5;
-    // Generate B noisy gradient "samples" simulating a mini-batch
-    const samples = [];
-    for (let i = 0; i < B; i++) {
-        const n0 = (Math.random() - 0.5) * 2 * noiseScale * (Math.abs(trueGrad[0]) + 0.1);
-        const n1 = (Math.random() - 0.5) * 2 * noiseScale * (Math.abs(trueGrad[1]) + 0.1);
-        samples.push([trueGrad[0] + n0, trueGrad[1] + n1]);
+// Cov-Filter = WeightCovarianceFilterV2 (faithful 2D rendering):
+//   1. EMA running mean of the gradient (for mean-centering)
+//   2. EMA of the centered-gradient outer product C = λC + (1-λ)ĝĝᵀ
+//   3. project the RAW gradient onto C's top-k eigenspace (k=1 is the 2D
+//      analog of rank ≪ p — keeping both eigenvectors would equal plain Adam)
+//   4. hand the projected gradient to the base optimizer (Adam)
+// Decay/warmup are toy-scaled (λ=0.9, warmup=5) so the covariance adapts
+// within a short trajectory; the real default is λ=0.99, warmup=100.
+//
+// `centered=true` is the actual current default (subtract the EMA mean before
+// the outer product). NOTE it stalls on a clean low-dim landscape: the
+// persistent descent direction *is* the running mean, so ĝ=g-mean→0 and the
+// covariance collapses to fluctuation noise — the filter is built for
+// high-dim, noisy regimes, not deterministic 2D bowls. `centered=false` (the
+// uncentered second moment E[ggᵀ]) instead locks onto the dominant gradient
+// direction and converges; the two rows make the centering effect visible.
+function stepCovFilter(st, centered) {
+    const g = getGrad(st.w[0], st.w[1]);
+    const betaMean = 0.9;   // running-mean EMA
+    const lambda = 0.9;     // covariance EMA decay (toy-scaled)
+    const warmup = 5;
+    st.cstep += 1;
+
+    // (1) EMA running mean, then center (uncentered variant skips the subtraction)
+    st.gmean[0] = betaMean * st.gmean[0] + (1 - betaMean) * g[0];
+    st.gmean[1] = betaMean * st.gmean[1] + (1 - betaMean) * g[1];
+    const c0 = centered ? g[0] - st.gmean[0] : g[0];
+    const c1 = centered ? g[1] - st.gmean[1] : g[1];
+
+    // (2) EMA of centered outer product (symmetric 2×2)
+    st.cov[0] = lambda * st.cov[0] + (1 - lambda) * c0 * c0; // Cxx
+    st.cov[1] = lambda * st.cov[1] + (1 - lambda) * c0 * c1; // Cxy
+    st.cov[2] = lambda * st.cov[2] + (1 - lambda) * c1 * c1; // Cyy
+
+    // (3) project raw gradient onto top eigenvector of C (analytic 2×2)
+    let pg0 = g[0], pg1 = g[1];
+    if (st.cstep > warmup) {
+        const a = st.cov[0], b = st.cov[1], d = st.cov[2];
+        const tr = a + d, det = a * d - b * b;
+        const disc = Math.sqrt(Math.max(0, tr * tr / 4 - det));
+        const l1 = tr / 2 + disc; // larger eigenvalue
+        let e0, e1;
+        if (Math.abs(b) > 1e-12) { e0 = l1 - d; e1 = b; }
+        else if (a >= d) { e0 = 1; e1 = 0; }
+        else { e0 = 0; e1 = 1; }
+        const en = Math.sqrt(e0 * e0 + e1 * e1) || 1e-12;
+        e0 /= en; e1 /= en;
+        const dot = g[0] * e0 + g[1] * e1;
+        pg0 = dot * e0; pg1 = dot * e1;
     }
-    // Normalize each sample to unit norm
-    const normed = samples.map(g => {
-        const n = Math.sqrt(g[0]*g[0] + g[1]*g[1]) || 1e-12;
-        return [g[0]/n, g[1]/n];
-    });
-    // Build B×B cosine similarity (Gram) matrix
-    const S = [];
-    for (let i = 0; i < B; i++) {
-        S[i] = [];
-        for (let j = 0; j < B; j++) {
-            S[i][j] = normed[i][0]*normed[j][0] + normed[i][1]*normed[j][1];
-        }
-    }
-    // Power iteration to find top eigenvector of S
-    let ev = new Array(B).fill(1/Math.sqrt(B));
-    for (let iter = 0; iter < 20; iter++) {
-        const nev = new Array(B).fill(0);
-        for (let i = 0; i < B; i++)
-            for (let j = 0; j < B; j++)
-                nev[i] += S[i][j] * ev[j];
-        let norm = 0;
-        for (let i = 0; i < B; i++) norm += nev[i]*nev[i];
-        norm = Math.sqrt(norm) || 1e-12;
-        for (let i = 0; i < B; i++) ev[i] = nev[i] / norm;
-    }
-    // Compute eigenvalue for this eigenvector
-    let Sev = new Array(B).fill(0);
-    for (let i = 0; i < B; i++)
-        for (let j = 0; j < B; j++)
-            Sev[i] += S[i][j] * ev[j];
-    let topEig = 0;
-    for (let i = 0; i < B; i++) topEig += ev[i] * Sev[i];
-    const meanEig = B / B; // trace of cosine sim matrix = B, so mean = 1
-    // Consensus weights: project uniform onto top eigenvector if eigenvalue > 2*mean
-    let consensusGrad;
-    if (topEig > 2.0 * meanEig) {
-        // Weight samples by top eigenvector projection
-        const uniform = 1.0 / B;
-        const proj = ev.reduce((s, e) => s + e * uniform, 0);
-        const weights = ev.map(e => e * proj);
-        consensusGrad = [0, 0];
-        for (let i = 0; i < B; i++) {
-            consensusGrad[0] += weights[i] * samples[i][0];
-            consensusGrad[1] += weights[i] * samples[i][1];
-        }
-    } else {
-        // No consensus — use mean gradient (very weak update)
-        consensusGrad = [0, 0];
-        for (let i = 0; i < B; i++) {
-            consensusGrad[0] += samples[i][0] / B;
-            consensusGrad[1] += samples[i][1] / B;
-        }
-        consensusGrad[0] *= 0.1;
-        consensusGrad[1] *= 0.1;
-    }
-    // Apply SGD with momentum using consensus gradient
-    const beta = 0.9;
-    st.m[0] = beta * st.m[0] + consensusGrad[0];
-    st.m[1] = beta * st.m[1] + consensusGrad[1];
-    st.w[0] -= st.lr * st.m[0];
-    st.w[1] -= st.lr * st.m[1];
+
+    // (4) base optimizer = Adam, stepping on the projected gradient
+    const beta1 = 0.9, beta2 = 0.999, eps = 1e-8;
+    st.t += 1;
+    st.m[0] = beta1 * st.m[0] + (1 - beta1) * pg0;
+    st.m[1] = beta1 * st.m[1] + (1 - beta1) * pg1;
+    st.v[0] = beta2 * st.v[0] + (1 - beta2) * pg0 * pg0;
+    st.v[1] = beta2 * st.v[1] + (1 - beta2) * pg1 * pg1;
+    const bc1 = 1 - Math.pow(beta1, st.t);
+    const bc2 = 1 - Math.pow(beta2, st.t);
+    const mh0 = st.m[0] / bc1, mh1 = st.m[1] / bc1;
+    const vh0 = st.v[0] / bc2, vh1 = st.v[1] / bc2;
+    st.w[0] -= st.lr * mh0 / (Math.sqrt(vh0) + eps);
+    st.w[1] -= st.lr * mh1 / (Math.sqrt(vh1) + eps);
     clampPos(st.w);
 }
 
-const STEP_FNS = [stepSGD, stepRMSprop, stepAdam, stepAdamW, stepLion, stepMuon, stepSpectral];
+function stepCovCentered(st)   { stepCovFilter(st, true); }
+function stepCovUncentered(st) { stepCovFilter(st, false); }
+
+const STEP_FNS = [stepSGD, stepRMSprop, stepAdam, stepAdamW, stepLion, stepMuon, stepCovCentered, stepCovUncentered];
 
 function stepAll() {
     for (let i = 0; i < optimizerStates.length; i++) {

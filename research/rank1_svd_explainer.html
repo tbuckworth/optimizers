@@ -116,7 +116,7 @@ $$ G \;=\; M' M'^\top \ \in\ \mathbb{R}^{(k+1)\times(k+1)}. $$
 
 $$ c \;=\; V^\top w \ \in\ \mathbb{R}^k \quad(\text{the new gradient's coordinates in the current basis}). $$
 
-<p>Write the rows of \(M'\) explicitly: row \(i<k\) is \(\sqrt\lambda\, s_i V_{:,i}^\top\); the last row is \(\sqrt{1-\lambda}\,w^\top\). Then \(G_{ab}=(\text{row }a)\cdot(\text{row }b)\) splits into three blocks, using \(V_{:,i}^\top V_{:,j}=\delta_{ij}\) and \(V_{:,i}^\top w = c_i\):</p>
+<p>Write the rows of \(M'\) explicitly: row \(i \lt k\) is \(\sqrt\lambda\, s_i V_{:,i}^\top\); the last row is \(\sqrt{1-\lambda}\,w^\top\). Then \(G_{ab}=(\text{row }a)\cdot(\text{row }b)\) splits into three blocks, using \(V_{:,i}^\top V_{:,j}=\delta_{ij}\) and \(V_{:,i}^\top w = c_i\):</p>
 
 <table>
 <thead><tr><th>Block</th><th>Entry</th><th>Value</th></tr></thead>
