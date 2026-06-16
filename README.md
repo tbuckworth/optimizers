@@ -1,20 +1,68 @@
-# Optimizers & Generalization
+# Spectral Gradient Filter
 
-Research into how optimizers shape generalization, centered on a **spectral gradient filter**: a
-streaming rank-1 / rank-B estimator of the `p×p` gradient covariance that projects each gradient onto its
-dominant eigen-directions before handing it to a base optimizer (Adam/AdamW).
+A one-file, drop-in wrapper for any PyTorch optimizer that makes it **resist
+memorizing noise**. Before each update it projects the gradient onto the top
+eigen-directions of a streaming estimate of the gradient covariance — so the
+optimizer only steps in directions the gradient has been *consistently* pointing.
+It's a *coherence amplifier*: it keeps whatever the gradient agrees about across
+steps and drops the rest. Cost is ~2× a bare Adam step (no `p×p` matrix is ever
+formed).
 
-📄 **Start here:** [`research/spectral_filter_blog.html`](research/spectral_filter_blog.html) — a
-self-contained write-up with methodology, figures, and every hypothesis tested. Open it in a browser.
+## The core, in one file
 
-## The filter, in one line
+👉 **[`spectral_filter.py`](spectral_filter.py)** — the whole idea in one
+self-contained file (only needs `torch`; the rest is comments and knobs). This
+is the thing to copy.
 
-Track an EMA of the (mean-centred) gradient outer product, keep its top-`k` eigenspace via a cheap
-streaming rank-1 SVD update (no `p×p` matrix is ever formed; ~2× Adam), and replace `g` with its
-projection onto that subspace each step. A per-sample **rank-B** variant and **adaptive-rank** rules
-(energy / effective-rank) are also implemented.
+Drop it into **any** training loop — any loss, any model:
 
-## Findings at a glance
+```python
+from spectral_filter import SpectralGradientFilter
+
+base_opt = torch.optim.Adam(model.parameters(), lr=1e-3)
+filt = SpectralGradientFilter(model, base_opt, rank=200)
+
+for x, y in loader:
+    base_opt.zero_grad()
+    loss = loss_fn(model(x), y)
+    loss.backward()
+    filt.filter_grad()      # <-- the only new line: filters .grad in place
+    base_opt.step()
+```
+
+That's it. `filter_grad()` updates the covariance estimate and replaces each
+parameter's `.grad` with its projection onto the top-`k` eigenspace, in place,
+after a `warmup`. (For plain classification there's also a one-call convenience,
+`filt.step(x, y)`, that does the forward/backward for you.)
+
+## See it work in ~1 minute
+
+```bash
+python3 example.py
+```
+
+[`example.py`](example.py) trains a small MLP on MNIST with **90% of labels
+randomized**, with and without the filter. Plain Adam memorizes the noise — its
+training accuracy climbs while test accuracy collapses (~0.26). The filter
+refuses to memorize (train stays flat) and **holds ~0.61 test accuracy**.
+
+## What the knobs do
+
+| arg | default | meaning |
+|-----|---------|---------|
+| `rank` | 200 | hard cap on eigendirections kept |
+| `decay` | 0.99 | EMA decay of the covariance estimate |
+| `warmup` | 100 | steps to observe before filtering kicks in |
+| `weighting` | `"hard"` | `"hard"` top-k projection, or `"soft"` eigenvalue^`alpha` reweighting |
+| `alpha` | 1.0 | soft exponent: `0`=identity, `1`=consensus, `∞`=top dir, `<0`=whitening |
+| `normalize` | `"none"` | basis: `none` (covariance), `var` (correlation), `degree` (affinity) |
+| `adaptive` | `"none"` | rank rule: `none`, `effrank`, or `gap` |
+
+## Findings from the research
+
+The repo is also a full research project on how this filter behaves. Full
+write-up with figures: **[`research/spectral_filter_blog.html`](research/spectral_filter_blog.html)**
+(open in a browser).
 
 | # | Hypothesis | Task | Verdict |
 |---|------------|------|---------|
@@ -27,22 +75,32 @@ projection onto that subspace each step. A per-sample **rank-B** variant and **a
 | H6 | Supervised ablation removes a planted "hack" | backdoor (linear / MLP) | ⚖️ Works on a linear model (ASR 99.9→8%), fails on an MLP at any subspace size — the backdoor is distributed. |
 | H7 | Normalizing the basis (correlation/spectral) beats raw covariance | MNIST 50% noise | ❌ Raw covariance wins (92.1% vs 86.6/86.0) — variance magnitude is informative, not a nuisance. |
 
-**Unifying mechanism:** the filter is a *coherence amplifier* — it keeps whatever the gradient is
-coherent about. That helps when the useful signal is the coherent thing (noise robustness, grokking on
-modular addition) and hurts when the useful signal is weak and not yet dominant (sparse parity).
+**Unifying mechanism:** the filter keeps whatever the gradient is coherent about.
+That helps when the useful signal *is* the coherent thing (noise robustness,
+grokking on modular addition) and hurts when the useful signal is weak and not
+yet dominant (sparse parity).
 
-## Repo structure
+## Repo map
 
 ```
-research/      notes, write-ups, figures (start with spectral_filter_blog.html)
-experiments/   optimizer + experiment/plot code
-results/       raw run outputs (JSON)
+spectral_filter.py     ← THE core (copy this)
+example.py             ← minimal runnable demo (the H1 result)
+
+experiments/           exploration: experiment + plot scripts for H1–H7
+  run_single_weight_cov_v2.py   main MNIST/label-noise harness
+  run_cifar_noise.py            CIFAR-10 label noise
+  run_grokking.py               grokking / modular addition
+  persample_cov_optimizer.py    per-sample rank-B variant (H4)
+  backdoor_ablation*.py         planted-backdoor ablation (H6)
+  legacy/                       superseded v1 code, kept for provenance
+
+research/              write-ups, figures, interactive HTML
+  spectral_filter_blog.html     ← canonical write-up, start here
+  (see research/README.md for the index)
+
+results/               raw run outputs (JSON metrics)
 ```
 
-Key code: `experiments/weight_cov_optimizer_v2.py` (filter; `normalize ∈ {none,var,degree}`,
-`adaptive ∈ {none,effrank,gap}`), `persample_cov_optimizer.py` (rank-B), `run_cifar_noise.py`,
-`run_single_weight_cov_v2.py`, `modal_*` (A10G harnesses), `backdoor_ablation*.py`.
-
-Key write-ups: `research/spectral_filter_blog.html`, `weight_covariance_v2_summary.md`,
-`grokking_v2_findings.md`, `targeted_ablation_findings.md`, `moments_centering_explainer.html`,
-`rank1_svd_explainer.html`.
+> Note: every experiment script under `experiments/` imports the filter from the
+> root `spectral_filter.py` (via a thin back-compat shim at
+> `experiments/weight_cov_optimizer_v2.py`). There is one implementation.
