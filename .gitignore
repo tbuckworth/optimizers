@@ -1,3 +1,9 @@
 data/
 __pycache__/
 *.pyc
+
+# Heavy artifacts — kept in git history, but not tracked going forward.
+# Model checkpoints (reproducible by re-running) and multi-MB raw data dumps.
+*.pt
+results/spectral_spiral_sweep.json
+results/moons_viz_data.json
