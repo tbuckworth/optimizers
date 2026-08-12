@@ -74,7 +74,8 @@ def run(args):
     if args.mode == "ours":
         filt = WeightCovarianceFilterV2(model, base, rank=args.rank, decay=args.decay,
                                         warmup=args.warmup, energy_threshold=et,
-                                        adaptive=args.adaptive)
+                                        adaptive=args.adaptive,
+                                        stable_update=not args.legacy_update)
     filtering = (args.mode == "ours")
 
     metrics = []; t0 = time.time(); switch_ep = -1
@@ -98,7 +99,8 @@ def run(args):
         # switch recipe: enable filter once train acc crosses threshold
         if args.mode == "switch" and filt is None and tr >= args.switch_at:
             filt = WeightCovarianceFilterV2(model, base, rank=args.rank, decay=args.decay,
-                                            warmup=args.warmup, energy_threshold=et)
+                                            warmup=args.warmup, energy_threshold=et,
+                                            stable_update=not args.legacy_update)
             filtering = True; switch_ep = epoch
             print(f"  >>> switch ON at epoch {epoch} (train_acc={tr:.3f})")
         kr = f" kept_rank={rec.get('kept_rank_mean','-')}" if krs else ""
@@ -123,6 +125,7 @@ if __name__ == "__main__":
                    help="if >0, keep smallest #eigvecs capturing this energy fraction (<=rank); 0 disables")
     p.add_argument("--adaptive", choices=["none", "effrank", "gap"], default="none",
                    help="adaptive rank rule: effrank=round(exp entropy), gap=log-spectrum elbow")
+    p.add_argument("--legacy_update", action="store_true")
     p.add_argument("--decay", type=float, default=0.99)
     p.add_argument("--warmup", type=int, default=100)
     p.add_argument("--switch_at", type=float, default=0.6)

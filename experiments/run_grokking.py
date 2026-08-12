@@ -35,7 +35,8 @@ def make_base(name, model, args):
 def wrap_weightcov(base, model, args):
     return WeightCovarianceFilterV2(
         model, base, rank=args.rank, decay=args.decay,
-        warmup=args.warmup, filter_strength=args.filter_strength)
+        warmup=args.warmup, filter_strength=args.filter_strength,
+        stable_update=not args.legacy_update)
 
 
 def make_optimizer(name, model, args):
@@ -211,6 +212,7 @@ if __name__ == "__main__":
     parser.add_argument("--decay", type=float, default=0.99)
     parser.add_argument("--warmup", type=int, default=100)
     parser.add_argument("--filter_strength", type=float, default=1.0)
+    parser.add_argument("--legacy_update", action="store_true")
     # switch mode: enable filter once train_acc >= this (0 = off)
     parser.add_argument("--switch_at", type=float, default=0.0)
     parser.add_argument("--p", type=int, default=113)

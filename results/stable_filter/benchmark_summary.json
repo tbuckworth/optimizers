@@ -1,0 +1,70 @@
+{
+  "date": "2026-08-12",
+  "base_commit": "880e81bd5ee7c0b56a1b0bd5a65cf4e3ff7befed",
+  "external_source": {
+    "repository": "/media/titus/big/researcher-output/2026-07-31-spectral-optimizer-for-noise-reduction-on-financial-timeseri",
+    "implementation_commit": "daa8e1cb9964ed85f555ee69694e14ace2292f8b",
+    "file": "experiments/exp-006/src/spectral_filter_fixed.py"
+  },
+  "environment": {
+    "device": "NVIDIA GeForce RTX 3090",
+    "torch": "2.11.0+cu128",
+    "python": "3.12.3"
+  },
+  "numerical_diagnostic": {
+    "configuration": "600 fp32 gradients, p=256, rank=64, decay=0.9, seed=6",
+    "legacy_orthogonality_error": 3.8460766518255696e-05,
+    "stable_orthogonality_error": 7.713517788943136e-07,
+    "orthogonality_error_reduction_factor": 49.86539804690328,
+    "legacy_max_projection_norm_ratio": 0.5916512608528137,
+    "stable_max_projection_norm_ratio": 0.5916510820388794
+  },
+  "two_moons": {
+    "configuration": "noise=0.30, epochs=300, rank=32, decay=0.9, warmup=50, lr=0.01, seed=0",
+    "adam_final_test_accuracy": 0.832,
+    "legacy_filter_final_test_accuracy": 0.880,
+    "stable_filter_final_test_accuracy": 0.886,
+    "stable_minus_legacy": 0.006
+  },
+  "mnist_standard": {
+    "configuration": "epochs=5, rank=50, decay=0.95, warmup=100, lr=0.001, seed=42",
+    "legacy": {
+      "train_accuracy": 0.94062,
+      "test_accuracy": 0.9409,
+      "train_loss": 0.20048,
+      "test_loss": 0.19796,
+      "time_seconds": 13.9
+    },
+    "stable": {
+      "train_accuracy": 0.94398,
+      "test_accuracy": 0.9427,
+      "train_loss": 0.19335,
+      "test_loss": 0.19091,
+      "time_seconds": 16.7
+    },
+    "stable_minus_legacy_test_accuracy": 0.0018
+  },
+  "sparse_parity": {
+    "configuration": "n=40, k=3, train=2000, test=2000, epochs=6000, rank=200, decay=0.99, warmup=100, lr=0.001, weight_decay=1.0, seeds=[0,1,2]",
+    "legacy": {
+      "grok_epochs": [2050, 1800, 4600],
+      "mean_grok_epoch": 2816.6666666666665,
+      "final_test_accuracy": [0.998, 0.9875, 0.988],
+      "mean_final_test_accuracy": 0.9911666666666666
+    },
+    "stable": {
+      "grok_epochs": [2000, 1750, 4100],
+      "mean_grok_epoch": 2616.6666666666665,
+      "final_test_accuracy": [0.9995, 0.9965, 0.907],
+      "mean_final_test_accuracy": 0.9676666666666667
+    },
+    "relative_mean_grok_epoch_change": -0.0710059171597633,
+    "mean_final_test_accuracy_change": -0.0235,
+    "note": "Stable mode reached the primary 0.9 grok threshold earlier in all seeds, but seed 2 regressed after grokking and ended lower at the final checkpoint."
+  },
+  "decision": {
+    "default": "stable_update=True",
+    "legacy_escape_hatch": "stable_update=False or --legacy_update",
+    "reason": "The stable update restores the intended orthonormal projection, improves two-moons and MNIST, and reaches parity grokking earlier in all three seeds. The final parity instability is retained as a documented limitation."
+  }
+}
