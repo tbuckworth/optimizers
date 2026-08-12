@@ -1,0 +1,132 @@
+{
+  "date": "2026-08-12",
+  "environment": {
+    "device": "NVIDIA GeForce RTX 3090",
+    "torch": "2.11.0+cu128",
+    "python": "3.12.3"
+  },
+  "selection_protocol": {
+    "development_seed": 42,
+    "confirmation_seeds": [43, 44],
+    "reported_means_include_development_seed": true,
+    "full_model_hard_ranks": [1, 2, 4, 8, 16, 32, 64],
+    "lora_hard_ranks": [1, 2, 4, 8, 16],
+    "lora_soft_rank_alpha": [[4, 0.5], [4, 1.0], [4, 2.0], [8, 1.0], [16, 1.0]],
+    "noise_soft_rank_alpha": [[2, 0.5], [4, 0.25], [4, 0.5], [4, 1.0], [8, 0.5]]
+  },
+  "rank_scout": {
+    "full_model_hard_final_test": {
+      "1": 0.8948,
+      "2": 0.8893,
+      "4": 0.8981,
+      "8": 0.9141,
+      "16": 0.9191,
+      "32": 0.9383,
+      "64": 0.9510
+    },
+    "lora_hard_final_test": {
+      "1": 0.8599,
+      "2": 0.8639,
+      "4": 0.8683,
+      "8": 0.8694,
+      "16": 0.8810
+    },
+    "lora_soft_three_epoch_final_test": {
+      "rank4_alpha0.5": 0.9631,
+      "rank4_alpha1": 0.9640,
+      "rank4_alpha2": 0.9682,
+      "rank8_alpha1": 0.9599,
+      "rank16_alpha1": 0.9557
+    }
+  },
+  "full_model_clean": {
+    "epochs": 5,
+    "adam": {
+      "final_test": [0.9804, 0.9760, 0.9715],
+      "mean": 0.9759666666666666,
+      "sample_sd": 0.00445009363197376,
+      "mean_seconds": 10.433333333333334
+    },
+    "global_hard_rank50": {
+      "final_test": [0.9427, 0.9355, 0.9346],
+      "mean": 0.9376,
+      "sample_sd": 0.004439594576084617,
+      "mean_seconds": 18.666666666666664,
+      "basis_mib": 44.85054016113281
+    },
+    "per_matrix_hard_rank64": {
+      "final_test": [0.9510, 0.9524, 0.9475],
+      "mean": 0.9503,
+      "sample_sd": 0.0025238858928247915,
+      "mean_seconds": 31.6,
+      "blocks": 3,
+      "basis_mib": 57.40869140625
+    }
+  },
+  "lora_clean": {
+    "epochs": 5,
+    "trainable_parameters": 46948,
+    "plain_adam": {
+      "final_test": [0.9698, 0.9626, 0.9662],
+      "mean": 0.9662,
+      "sample_sd": 0.003599999999999992,
+      "mean_seconds": 13.533333333333333
+    },
+    "global_hard_rank50": {
+      "final_test": [0.8985, 0.8920, 0.8915],
+      "mean": 0.8940,
+      "sample_sd": 0.0039051248379533164,
+      "mean_seconds": 20.466666666666665,
+      "basis_mib": 8.954620361328125
+    },
+    "per_matrix_hard_rank16": {
+      "final_test": [0.8941, 0.8987, 0.8899],
+      "mean": 0.8942333333333333,
+      "sample_sd": 0.004401514890731766,
+      "mean_seconds": 42.6,
+      "blocks": 6,
+      "basis_mib": 2.865478515625
+    },
+    "per_matrix_soft_rank4_alpha2": {
+      "final_test": [0.9724, 0.9687, 0.9616],
+      "mean": 0.9675666666666667,
+      "sample_sd": 0.005488472768752113,
+      "mean_seconds": 49.1,
+      "blocks": 6,
+      "basis_mib": 0.71636962890625
+    }
+  },
+  "lora_noise90": {
+    "epochs": 20,
+    "plain_adam_existing_matched": {
+      "source": "results/weight_covariance_v2/subspace_baselines/lora_n90_s{42,43,44}.json",
+      "final_test": [0.5922, 0.5807, 0.5697],
+      "mean_final": 0.5808666666666666,
+      "sample_sd_final": 0.011250925887825097,
+      "peak_test": [0.8266, 0.8075, 0.8127],
+      "mean_peak": 0.8156
+    },
+    "per_matrix_soft_rank2_alpha0.5": {
+      "final_test": [0.5595, 0.5760, 0.5553],
+      "mean_final": 0.5636,
+      "sample_sd_final": 0.010942120452636196,
+      "peak_test": [0.8218, 0.7909, 0.8060],
+      "mean_peak": 0.8062333333333334,
+      "mean_seconds": 197.6,
+      "blocks": 6,
+      "basis_mib": 0.358184814453125
+    }
+  },
+  "decision": {
+    "merge": true,
+    "replace_plain_optimizer": false,
+    "recommended_lora_configuration": {
+      "rank": 4,
+      "weighting": "soft",
+      "alpha": 2.0,
+      "soft_residual": true,
+      "bias_mode": "joint"
+    },
+    "summary": "Per-matrix filtering is memory-tractable and soft rank 4 matches plain LoRA on clean MNIST, but it is slower and does not improve 90%-label-noise robustness."
+  }
+}

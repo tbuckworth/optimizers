@@ -1,0 +1,73 @@
+{
+  "config": {
+    "mode": "adam",
+    "base_optimizer": "adam",
+    "lora_rank": 32,
+    "lora_alpha": 32.0,
+    "dataset": "standard",
+    "lr": 0.001,
+    "epochs": 5,
+    "rank": 200,
+    "decay": 0.99,
+    "warmup": 100,
+    "filter_strength": 1.0,
+    "weighting": "hard",
+    "alpha": 1.0,
+    "soft_residual": 1,
+    "normalize": "none",
+    "legacy_update": false,
+    "bias_mode": "joint",
+    "label_noise": 0.0,
+    "seed": 43,
+    "name": "adam_standard_s43",
+    "save_dir": "results/per_matrix_spectral/full_model",
+    "data_dir": "experiments/data"
+  },
+  "metrics": [
+    {
+      "epoch": -1,
+      "train_acc": 0.111,
+      "test_acc": 0.1102,
+      "train_loss": 2.309,
+      "test_loss": 2.30826
+    },
+    {
+      "epoch": 0,
+      "train_acc": 0.96927,
+      "test_acc": 0.9653,
+      "train_loss": 0.10005,
+      "test_loss": 0.11422
+    },
+    {
+      "epoch": 1,
+      "train_acc": 0.98243,
+      "test_acc": 0.9756,
+      "train_loss": 0.05656,
+      "test_loss": 0.08329
+    },
+    {
+      "epoch": 2,
+      "train_acc": 0.98525,
+      "test_acc": 0.9759,
+      "train_loss": 0.04481,
+      "test_loss": 0.08127
+    },
+    {
+      "epoch": 3,
+      "train_acc": 0.98768,
+      "test_acc": 0.9752,
+      "train_loss": 0.0379,
+      "test_loss": 0.08529
+    },
+    {
+      "epoch": 4,
+      "train_acc": 0.9889,
+      "test_acc": 0.976,
+      "train_loss": 0.03235,
+      "test_loss": 0.08077
+    }
+  ],
+  "time_s": 10.6,
+  "n_params": 235146,
+  "input_dim": 784
+}

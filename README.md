@@ -39,6 +39,33 @@ The default streaming update solves its small covariance eigensystem in fp64
 and periodically re-orthogonalizes the tracked basis. Set
 `stable_update=False` only to reproduce results from before this numerical fix.
 
+### Per-weight-matrix variant (LoRA/large models)
+
+[`matrix_spectral_filter.py`](matrix_spectral_filter.py) keeps an independent
+small covariance basis for every trainable weight matrix instead of one global
+basis over all parameters. It also respects the base optimizer's parameter
+subset, so frozen base-model weights are excluded automatically:
+
+```python
+from matrix_spectral_filter import PerMatrixSpectralGradientFilter
+
+trainable = [parameter for parameter in model.parameters() if parameter.requires_grad]
+base_opt = torch.optim.AdamW(trainable, lr=3e-4)
+filt = PerMatrixSpectralGradientFilter(
+    model, base_opt, rank=4, weighting="soft", alpha=2.0
+)
+```
+
+The default `bias_mode="joint"` adds a trainable affine bias to its weight
+matrix's block; unmatched vectors such as LayerNorm parameters pass through
+unchanged. Use `bias_mode="separate"` to filter those vectors independently or
+`"exclude"` to leave every 1D parameter alone.
+
+On the small LoRA benchmark, soft per-matrix rank 4 matched plain LoRA while
+using a 0.72 MiB covariance basis (versus 8.95 MiB for global rank 50). Hard
+per-matrix projection underfit, and the method did not improve the 90%-label-
+noise result. See [`research/per_matrix_spectral_evaluation.md`](research/per_matrix_spectral_evaluation.md).
+
 ## See it work in ~1 minute
 
 ```bash
@@ -91,6 +118,7 @@ yet dominant (sparse parity).
 
 ```
 spectral_filter.py     ← THE core (copy this)
+matrix_spectral_filter.py  scalable per-weight-matrix wrapper (LoRA/PEFT)
 example.py             ← minimal runnable demo (the H1 result)
 
 experiments/           exploration: experiment + plot scripts for H1–H7
