@@ -3,6 +3,10 @@
 Notes, write-ups, and interactive figures from the project. **Start with the
 canonical write-up; everything else is supporting detail.**
 
+For the maintained cross-experiment synthesis, decisions, and open questions,
+start with the [`knowledge/` index](../knowledge/index.md). This page remains the
+catalog of experiment reports and figures.
+
 ## Start here
 
 - **[`spectral_filter_blog.html`](spectral_filter_blog.html)** — the canonical,

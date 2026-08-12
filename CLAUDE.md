@@ -1,5 +1,14 @@
 # Optimizers & Generalization
 
+## Maintained knowledge base
+
+For the current synthesis of this project, begin with
+[`knowledge/index.md`](knowledge/index.md). Follow the shared maintenance rules
+in [`knowledge/schema.md`](knowledge/schema.md) when ingesting evidence,
+answering research questions, or updating conclusions. New durable findings
+must update the relevant knowledge pages and append an entry to
+`knowledge/log.md`. Validate changes with `python3 scripts/lint_knowledge.py`.
+
 ## Project Overview
 
 Research project investigating how different optimizers affect generalization in deep learning, with a particular focus on:
