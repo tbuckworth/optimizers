@@ -18,13 +18,14 @@ def make_filter(size, rank, dtype=torch.float64, **kwargs):
     kwargs.setdefault("relative_eig_tol", 1e-12)
     kwargs.setdefault("stabilize_every", 7)
     kwargs.setdefault("stable_update", True)
+    weighting = kwargs.pop("weighting", "hard")
     filt = SpectralGradientFilter(
         model,
         optimizer,
         rank=rank,
         decay=0.9,
         warmup=0,
-        weighting="hard",
+        weighting=weighting,
         **kwargs,
     )
     return model, filt
@@ -121,6 +122,38 @@ class SpectralFilterNumericsTest(unittest.TestCase):
         self.assertEqual(filt.stabilization_count, 0)
         self.assertEqual(filt.max_orthogonality_error, 0.0)
 
+    def test_stable_soft_projection_preserves_dtype_and_norm(self):
+        torch.manual_seed(7)
+        model, filt = make_filter(
+            24,
+            6,
+            dtype=torch.float32,
+            weighting="soft",
+            alpha=1.0,
+            relative_eig_tol=1e-8,
+        )
+        for gradient in torch.randn(30, 24, dtype=torch.float32):
+            feed(model, filt, gradient)
+        gradient = torch.randn(24, dtype=torch.float32)
+        projected = filt._project_gradient(gradient)
+        self.assertEqual(projected.dtype, torch.float32)
+        torch.testing.assert_close(projected.norm(), gradient.norm())
+
+    def test_stable_normalized_projection_preserves_dtype(self):
+        torch.manual_seed(8)
+        model, filt = make_filter(
+            16,
+            4,
+            dtype=torch.float32,
+            normalize="var",
+            relative_eig_tol=1e-8,
+        )
+        for gradient in torch.randn(20, 16, dtype=torch.float32):
+            feed(model, filt, gradient)
+        projected = filt._project_gradient(torch.randn(16, dtype=torch.float32))
+        self.assertEqual(projected.dtype, torch.float32)
+        self.assertTrue(torch.isfinite(projected).all())
+
     def test_invalid_numerical_controls_are_rejected(self):
         model = FlatModel(4)
         optimizer = torch.optim.SGD(model.parameters(), lr=0.0)
@@ -128,6 +161,13 @@ class SpectralFilterNumericsTest(unittest.TestCase):
             SpectralGradientFilter(model, optimizer, relative_eig_tol=-1)
         with self.assertRaisesRegex(ValueError, "positive or None"):
             SpectralGradientFilter(model, optimizer, stabilize_every=0)
+
+    def test_optimizer_parameter_outside_model_is_rejected(self):
+        model = FlatModel(4)
+        outside = nn.Parameter(torch.zeros(4, dtype=torch.float64))
+        optimizer = torch.optim.SGD([model.weight, outside], lr=0.0)
+        with self.assertRaisesRegex(ValueError, "not in model"):
+            SpectralGradientFilter(model, optimizer)
 
     def test_stable_update_is_default_and_legacy_is_available(self):
         model = FlatModel(4)

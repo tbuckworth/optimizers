@@ -19,6 +19,7 @@ from torch.utils.data import DataLoader, TensorDataset
 from torchvision import datasets, transforms
 
 from weight_cov_optimizer_v2 import WeightCovarianceFilterV2
+from matrix_spectral_filter import PerMatrixSpectralGradientFilter
 from random_subspace_optimizer import RandomSubspaceFilter
 from lora_mlp import LoRAMLP
 from custom_optimizers import Lion, MuonNS
@@ -119,7 +120,7 @@ def run(args):
         random_labels=random_labels, noise_features=noise_features,
         label_noise=args.label_noise, seed=args.seed, data_dir=args.data_dir)
 
-    if args.mode == "lora":
+    if args.mode.startswith("lora"):
         model = LoRAMLP(input_dim, r=args.lora_rank, alpha=args.lora_alpha).to(device)
     else:
         model = FlexMNISTNet(input_dim).to(device)
@@ -167,15 +168,30 @@ def run(args):
             print(f"  Epoch {epoch:3d}: train={train_acc:.4f} test={test_acc:.4f} "
                   f"loss={train_loss:.4f} ({time.time()-t_start:.0f}s)")
 
-    elif args.mode in ("ours", "random_subspace"):
+    elif args.mode in (
+        "ours", "matrix", "random_subspace", "lora_global", "lora_matrix"
+    ):
+        optimized_parameters = (
+            model.trainable_parameters()
+            if args.mode.startswith("lora")
+            else model.parameters()
+        )
         base_opt = make_base_optimizer(args.base_optimizer,
-                                       model.parameters(), args.lr)
-        if args.mode == "ours":
+                                       optimized_parameters, args.lr)
+        if args.mode in ("ours", "lora_global"):
             optimizer = WeightCovarianceFilterV2(
                 model, base_opt, rank=args.rank, decay=args.decay,
                 warmup=args.warmup, filter_strength=args.filter_strength,
                 normalize=args.normalize, weighting=args.weighting,
                 alpha=args.alpha, soft_residual=args.soft_residual,
+                stable_update=not args.legacy_update)
+        elif args.mode in ("matrix", "lora_matrix"):
+            optimizer = PerMatrixSpectralGradientFilter(
+                model, base_opt, rank=args.rank, decay=args.decay,
+                warmup=args.warmup, filter_strength=args.filter_strength,
+                normalize=args.normalize, weighting=args.weighting,
+                alpha=args.alpha, soft_residual=args.soft_residual,
+                bias_mode=args.bias_mode,
                 stable_update=not args.legacy_update)
         else:
             optimizer = RandomSubspaceFilter(
@@ -196,6 +212,20 @@ def run(args):
             }
             if hasattr(optimizer, 'S') and optimizer.S is not None:
                 entry["effective_rank"] = round(optimizer._effective_rank(), 2)
+            elif hasattr(optimizer, "blocks"):
+                block_ranks = [
+                    block._effective_rank()
+                    for block in optimizer.blocks.values()
+                    if block.S is not None
+                ]
+                entry["mean_block_effective_rank"] = round(
+                    float(np.mean(block_ranks)) if block_ranks else 0.0, 2
+                )
+                entry["total_basis_rank"] = sum(
+                    block.V.shape[1]
+                    for block in optimizer.blocks.values()
+                    if block.V is not None
+                )
             metrics.append(entry)
             print(f"  Epoch {epoch:3d}: train={train_acc:.4f} test={test_acc:.4f} "
                   f"loss={train_loss:.4f} ({time.time()-t_start:.0f}s)")
@@ -205,6 +235,8 @@ def run(args):
         "config": vars(args), "metrics": metrics, "time_s": round(dt, 1),
         "n_params": n_params, "input_dim": input_dim,
     }
+    if "optimizer" in locals() and hasattr(optimizer, "memory_estimate"):
+        result["filter_memory_estimate"] = optimizer.memory_estimate()
 
     os.makedirs(args.save_dir, exist_ok=True)
     save_path = os.path.join(args.save_dir, args.name + ".json")
@@ -217,8 +249,9 @@ def run(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["adam", "ours", "baseline",
-                        "random_subspace", "lora"], required=True)
+    parser.add_argument("--mode", choices=["adam", "ours", "matrix", "baseline",
+                        "random_subspace", "lora", "lora_global", "lora_matrix"],
+                        required=True)
     parser.add_argument("--base_optimizer",
                         choices=["adam", "sgd", "sgdm", "rmsprop", "lion", "muon"],
                         default="adam")
@@ -242,6 +275,9 @@ if __name__ == "__main__":
                         help="basis: none=covariance, var=correlation, degree=spectral/normalized-affinity")
     parser.add_argument("--legacy_update", action="store_true",
                         help="reproduce the historical, less stable covariance update")
+    parser.add_argument("--bias_mode", choices=["joint", "separate", "exclude"],
+                        default="joint",
+                        help="per-matrix handling for optimized 1D parameters")
     parser.add_argument("--label_noise", type=float, default=0.0)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--name", type=str, required=True)

@@ -1,0 +1,90 @@
+{
+  "config": {
+    "mode": "lora_matrix",
+    "base_optimizer": "adam",
+    "lora_rank": 32,
+    "lora_alpha": 32.0,
+    "dataset": "standard",
+    "lr": 0.003,
+    "epochs": 5,
+    "rank": 16,
+    "decay": 0.99,
+    "warmup": 100,
+    "filter_strength": 1.0,
+    "weighting": "hard",
+    "alpha": 1.0,
+    "soft_residual": 1,
+    "normalize": "none",
+    "legacy_update": false,
+    "bias_mode": "joint",
+    "label_noise": 0.0,
+    "seed": 43,
+    "name": "matrix_hard_r16_standard_s43",
+    "save_dir": "results/per_matrix_spectral/lora_clean",
+    "data_dir": "experiments/data"
+  },
+  "metrics": [
+    {
+      "epoch": -1,
+      "train_acc": 0.1194,
+      "test_acc": 0.123,
+      "train_loss": 2.31077,
+      "test_loss": 2.31
+    },
+    {
+      "epoch": 0,
+      "train_acc": 0.87783,
+      "test_acc": 0.8809,
+      "train_loss": 0.40064,
+      "test_loss": 0.39251,
+      "mean_block_effective_rank": 11.09,
+      "total_basis_rank": 96
+    },
+    {
+      "epoch": 1,
+      "train_acc": 0.87292,
+      "test_acc": 0.8777,
+      "train_loss": 0.39037,
+      "test_loss": 0.37796,
+      "mean_block_effective_rank": 11.2,
+      "total_basis_rank": 96
+    },
+    {
+      "epoch": 2,
+      "train_acc": 0.86762,
+      "test_acc": 0.8706,
+      "train_loss": 0.42378,
+      "test_loss": 0.41117,
+      "mean_block_effective_rank": 11.32,
+      "total_basis_rank": 96
+    },
+    {
+      "epoch": 3,
+      "train_acc": 0.87973,
+      "test_acc": 0.8855,
+      "train_loss": 0.39458,
+      "test_loss": 0.38185,
+      "mean_block_effective_rank": 10.67,
+      "total_basis_rank": 96
+    },
+    {
+      "epoch": 4,
+      "train_acc": 0.89462,
+      "test_acc": 0.8987,
+      "train_loss": 0.35433,
+      "test_loss": 0.33842,
+      "mean_block_effective_rank": 11.36,
+      "total_basis_rank": 96
+    }
+  ],
+  "time_s": 43.2,
+  "n_params": 282094,
+  "input_dim": 784,
+  "filter_memory_estimate": {
+    "filtered_parameters": 46948,
+    "blocks": 6,
+    "max_basis_elements": 751168,
+    "max_basis_bytes": 3004672,
+    "max_basis_mib": 2.865478515625
+  }
+}

@@ -56,7 +56,7 @@ class SpectralGradientFilter:
                  weighting="hard", alpha=1.0, soft_residual=True,
                  stable_update=True,
                  relative_eig_tol=1e-8, absolute_eig_floor=0.0,
-                 stabilize_every=100):
+                 stabilize_every=100, parameters=None):
         self.model = model
         self.base_optimizer = base_optimizer
         self.rank = rank            # hard cap on kept directions
@@ -119,7 +119,30 @@ class SpectralGradientFilter:
         self.absolute_eig_floor = float(absolute_eig_floor)
         self.stabilize_every = stabilize_every
 
-        self.param_list = list(model.parameters())
+        model_parameters = {id(parameter) for parameter in model.parameters()}
+        optimizer_parameters = [
+            parameter
+            for group in base_optimizer.param_groups
+            for parameter in group["params"]
+        ]
+        optimizer_ids = {id(parameter) for parameter in optimizer_parameters}
+        if not optimizer_ids.issubset(model_parameters):
+            raise ValueError(
+                "base_optimizer contains a parameter that is not in model"
+            )
+        selected = optimizer_parameters if parameters is None else list(parameters)
+        if any(id(parameter) not in optimizer_ids for parameter in selected):
+            raise ValueError("filtered parameters must belong to base_optimizer")
+        if any(id(parameter) not in model_parameters for parameter in selected):
+            raise ValueError("filtered parameters must belong to model")
+        self.param_list = []
+        seen_parameters = set()
+        for parameter in selected:
+            if parameter.requires_grad and id(parameter) not in seen_parameters:
+                self.param_list.append(parameter)
+                seen_parameters.add(id(parameter))
+        if not self.param_list:
+            raise ValueError("base_optimizer has no trainable model parameters")
         self.n_params = sum(p.numel() for p in self.param_list)
 
         self.V = None  # (p, k) top eigenvectors
@@ -133,6 +156,13 @@ class SpectralGradientFilter:
         self.max_orthogonality_error = 0.0
 
     def _get_flat_grad(self):
+        if any(parameter.grad is None for parameter in self.param_list):
+            raise RuntimeError(
+                "all filtered optimizer parameters must have gradients; "
+                "use a separate filter for conditionally active parameters"
+            )
+        if any(parameter.grad.is_sparse for parameter in self.param_list):
+            raise RuntimeError("sparse gradients are not supported")
         return torch.cat([p.grad.reshape(-1) for p in self.param_list])
 
     def _set_flat_grad(self, flat_grad):
@@ -407,7 +437,7 @@ class SpectralGradientFilter:
             return g
         if self.normalize == "none" and self.weighting == "soft":
             V = self.V if self.proj_k is None else self.V[:, :self.proj_k]
-            S = self.S.to(g.device)
+            S = self.S.to(g)
             if self.proj_k is not None:
                 S = S[:self.proj_k]
             lam = S * S
@@ -429,7 +459,7 @@ class SpectralGradientFilter:
         else:
             # Project onto col(A), A = D^{-1/2} V diag(S) — the top-k eigenspace of
             # the diagonally-normalized covariance. No eigendecomposition needed.
-            S = self.S.to(g.device)
+            S = self.S.to(g)
             Vs = self.V * S.unsqueeze(0)                  # (p, k) = V diag(S)
             if self.normalize == "var":
                 D = (Vs * Vs).sum(1)                      # C_ii = per-weight variance

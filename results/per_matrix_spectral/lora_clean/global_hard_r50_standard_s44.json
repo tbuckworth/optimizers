@@ -1,0 +1,78 @@
+{
+  "config": {
+    "mode": "lora_global",
+    "base_optimizer": "adam",
+    "lora_rank": 32,
+    "lora_alpha": 32.0,
+    "dataset": "standard",
+    "lr": 0.003,
+    "epochs": 5,
+    "rank": 50,
+    "decay": 0.99,
+    "warmup": 100,
+    "filter_strength": 1.0,
+    "weighting": "hard",
+    "alpha": 1.0,
+    "soft_residual": 1,
+    "normalize": "none",
+    "legacy_update": false,
+    "bias_mode": "joint",
+    "label_noise": 0.0,
+    "seed": 44,
+    "name": "global_hard_r50_standard_s44",
+    "save_dir": "results/per_matrix_spectral/lora_clean",
+    "data_dir": "experiments/data"
+  },
+  "metrics": [
+    {
+      "epoch": -1,
+      "train_acc": 0.12128,
+      "test_acc": 0.1273,
+      "train_loss": 2.30409,
+      "test_loss": 2.30447
+    },
+    {
+      "epoch": 0,
+      "train_acc": 0.89392,
+      "test_acc": 0.8922,
+      "train_loss": 0.34851,
+      "test_loss": 0.35202,
+      "effective_rank": 20.21
+    },
+    {
+      "epoch": 1,
+      "train_acc": 0.89007,
+      "test_acc": 0.8955,
+      "train_loss": 0.36047,
+      "test_loss": 0.33666,
+      "effective_rank": 20.16
+    },
+    {
+      "epoch": 2,
+      "train_acc": 0.90107,
+      "test_acc": 0.9063,
+      "train_loss": 0.33097,
+      "test_loss": 0.31334,
+      "effective_rank": 19.39
+    },
+    {
+      "epoch": 3,
+      "train_acc": 0.90203,
+      "test_acc": 0.903,
+      "train_loss": 0.32738,
+      "test_loss": 0.31853,
+      "effective_rank": 20.96
+    },
+    {
+      "epoch": 4,
+      "train_acc": 0.88915,
+      "test_acc": 0.8915,
+      "train_loss": 0.35599,
+      "test_loss": 0.34168,
+      "effective_rank": 21.62
+    }
+  ],
+  "time_s": 20.4,
+  "n_params": 282094,
+  "input_dim": 784
+}
