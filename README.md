@@ -66,6 +66,12 @@ using a 0.72 MiB covariance basis (versus 8.95 MiB for global rank 50). Hard
 per-matrix projection underfit, and the method did not improve the 90%-label-
 noise result. See [`research/per_matrix_spectral_evaluation.md`](research/per_matrix_spectral_evaluation.md).
 
+On the full MNIST MLP with 90% random relabeling, however, stable hard
+per-matrix rank 64 retained 0.817 final clean-test accuracy versus 0.389 for
+AdamW and 0.788 for global hard rank 200 in a 60-epoch seed-42 run. It used
+57.41 MiB of basis storage versus 179.40 MiB globally. See
+[`research/noisy_mnist_hard_curves.md`](research/noisy_mnist_hard_curves.md).
+
 ## See it work in ~1 minute
 
 ```bash
