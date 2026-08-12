@@ -139,6 +139,9 @@ research/              write-ups, figures, interactive HTML
   spectral_filter_blog.html     ← canonical write-up, start here
   (see research/README.md for the index)
 
+knowledge/             maintained cross-experiment wiki
+  index.md                     ← current synthesis, decisions, and evidence map
+
 results/               raw run outputs (JSON metrics)
 ```
 
