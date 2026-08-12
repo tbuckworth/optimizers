@@ -53,7 +53,10 @@ class SpectralGradientFilter:
     def __init__(self, model, base_optimizer, rank=200, decay=0.99,
                  warmup=100, filter_strength=1.0, energy_threshold=None,
                  adaptive="none", normalize="none",
-                 weighting="hard", alpha=1.0, soft_residual=True):
+                 weighting="hard", alpha=1.0, soft_residual=True,
+                 stable_update=True,
+                 relative_eig_tol=1e-8, absolute_eig_floor=0.0,
+                 stabilize_every=100):
         self.model = model
         self.base_optimizer = base_optimizer
         self.rank = rank            # hard cap on kept directions
@@ -103,6 +106,18 @@ class SpectralGradientFilter:
         # so the rule only chooses the truncation cutoff; rank can grow by at most
         # 1 per step (a single rank-1 observation adds at most one new direction).
         self.adaptive = adaptive
+        self.stable_update = bool(stable_update)
+        # Numerical controls for the streaming eigensystem. Eigenvalues below
+        # max(absolute_eig_floor, relative_eig_tol * lambda_max) are discarded.
+        # Periodic repair re-orthogonalizes V while preserving the represented
+        # covariance; set stabilize_every=None to disable scheduled repairs.
+        if relative_eig_tol < 0 or absolute_eig_floor < 0:
+            raise ValueError("eigenvalue tolerances must be non-negative")
+        if stabilize_every is not None and stabilize_every < 1:
+            raise ValueError("stabilize_every must be positive or None")
+        self.relative_eig_tol = float(relative_eig_tol)
+        self.absolute_eig_floor = float(absolute_eig_floor)
+        self.stabilize_every = stabilize_every
 
         self.param_list = list(model.parameters())
         self.n_params = sum(p.numel() for p in self.param_list)
@@ -114,6 +129,8 @@ class SpectralGradientFilter:
 
         # Running mean for centering
         self.grad_mean = None
+        self.stabilization_count = 0
+        self.max_orthogonality_error = 0.0
 
     def _get_flat_grad(self):
         return torch.cat([p.grad.reshape(-1) for p in self.param_list])
@@ -125,106 +142,236 @@ class SpectralGradientFilter:
             p.grad = flat_grad[offset:offset + numel].reshape(p.shape)
             offset += numel
 
-    def _update_svd(self, g):
-        """Rank-1 update to the streaming covariance SVD.
+    @staticmethod
+    def _sym_eigh_desc(matrix_cpu_f64):
+        """Return eigenpairs of a small symmetric matrix, largest first."""
+        matrix_cpu_f64 = (matrix_cpu_f64 + matrix_cpu_f64.T) * 0.5
+        eigvals, eigvecs = torch.linalg.eigh(matrix_cpu_f64)
+        return eigvals.flip(0), eigvecs.flip(1)
 
-        g: (p,) batch-mean gradient vector on the compute device.
-        All heavy ops stay on GPU. Only the small (k+1 × k+1) eigh goes to CPU.
-        """
+    def _truncate_eigensystem(self, eigvals, eigvecs):
+        """Apply scale-aware positivity and configured rank truncation."""
+        if eigvals.numel() == 0:
+            return eigvals, eigvecs
+        largest = eigvals[0].clamp_min(0.0)
+        floor = max(
+            self.absolute_eig_floor,
+            self.relative_eig_tol * float(largest.item()),
+        )
+        keep = eigvals > floor
+        eigvals = eigvals[keep]
+        eigvecs = eigvecs[:, keep]
+        if eigvals.numel() == 0:
+            return eigvals, eigvecs
+
+        # Adaptive projection rules retain a broad estimation basis. Energy
+        # thresholding retains its historical basis-truncating semantics.
+        new_k = min(self.rank, eigvals.numel())
+        if self.adaptive == "none" and self.energy_threshold is not None:
+            frac = torch.cumsum(eigvals, 0) / eigvals.sum()
+            k_energy = int(torch.searchsorted(frac, self.energy_threshold).item()) + 1
+            new_k = max(1, min(new_k, k_energy))
+        return eigvals[:new_k], eigvecs[:, :new_k]
+
+    def _repair_representation(self):
+        """Re-orthogonalize V without changing its represented covariance."""
+        if self.V is None or self.V.shape[1] == 0:
+            return
+        q, r = torch.linalg.qr(self.V, mode="reduced")
+        r64 = r.detach().double().cpu()
+        variances = self.S.detach().double().square()
+        small = (r64 * variances.unsqueeze(0)) @ r64.T
+        eigvals, rotation = self._sym_eigh_desc(small)
+        eigvals, rotation = self._truncate_eigensystem(eigvals, rotation)
+        if eigvals.numel() == 0:
+            self.V = None
+            self.S = None
+            self.proj_k = None
+            return
+        self.V = (q @ rotation.to(device=q.device, dtype=q.dtype)).contiguous()
+        self.S = eigvals.sqrt().cpu()
+        self.stabilization_count += 1
+        self._update_proj_k()
+
+    def orthogonality_error(self):
+        """Spectral norm of V^T V - I; zero when no basis exists."""
+        if self.V is None:
+            return 0.0
+        gram = self.V.T @ self.V
+        eye = torch.eye(gram.shape[0], device=gram.device, dtype=gram.dtype)
+        return float(torch.linalg.matrix_norm(gram - eye, ord=2).item())
+
+    def _update_svd(self, g):
+        if self.stable_update:
+            return self._update_svd_stable(g)
+        return self._update_svd_legacy(g)
+
+    def _update_svd_legacy(self, g):
+        """Historical streaming update retained for result reproducibility."""
         device = g.device
 
-        # Update running mean with same decay
         if self.grad_mean is None:
             self.grad_mean = g.detach().clone()
         else:
             self.grad_mean.mul_(self.decay).add_(g.detach(), alpha=1 - self.decay)
-
-        g_centered = g.detach() - self.grad_mean  # (p,)
+        centered = g.detach() - self.grad_mean
 
         if self.V is None:
-            norm = g_centered.norm()
+            norm = centered.norm()
             if norm > 1e-12:
-                self.V = (g_centered / norm).unsqueeze(1).contiguous()  # (p, 1)
-                self.S = norm.unsqueeze(0).cpu()  # keep S on CPU for eigh
+                self.V = (centered / norm).unsqueeze(1).contiguous()
+                self.S = norm.unsqueeze(0).cpu()
             return
 
         k = self.V.shape[1]
-        sd = math.sqrt(self.decay)
-        sn = math.sqrt(1 - self.decay)
+        sqrt_decay = math.sqrt(self.decay)
+        sqrt_observation = math.sqrt(1 - self.decay)
+        coefficients = self.V.T @ centered
+        centered_norm_sq = centered.dot(centered).item()
 
-        # Project new gradient onto existing basis: c = V^T @ g_centered (k,)
-        c = self.V.T @ g_centered  # (k,) on GPU
-        # Residual component orthogonal to V
-        g_perp = g_centered - self.V @ c  # (p,) on GPU
-        g_perp_norm = g_perp.norm()
-        has_perp = g_perp_norm > 1e-12
-
-        # Build (k+1 × k+1) Gram matrix on CPU — never materialize (k+1 × p)
-        # Row i of "combined" is: sd * S[i] * V[:,i]  for i < k
-        # Row k is: sn * g_centered
-        # Gram[i,j] = row_i . row_j
-        # For i,j < k: sd² * S[i] * S[j] * (V[:,i] . V[:,j]) = sd² * S[i]*S[j] * delta_ij
-        # For i < k, j=k: sd * S[i] * sn * (V[:,i] . g_centered) = sd*sn * S[i] * c[i]
-        # For i=k, j=k: sn² * (g_centered . g_centered) = sn² * ||g_centered||²
-
-        S_cpu = self.S  # already on CPU
-        c_cpu = c.cpu()
-        g_norm_sq = g_centered.dot(g_centered).item()
-
+        singular_values = self.S
+        coefficients_cpu = coefficients.cpu()
         gram = torch.zeros(k + 1, k + 1)
-        # Diagonal block: sd² * S²
-        gram[:k, :k] = torch.diag(sd * sd * S_cpu * S_cpu)
-        # Off-diagonal: sd * sn * S * c
-        cross = sd * sn * S_cpu * c_cpu
+        gram[:k, :k] = torch.diag(
+            sqrt_decay * sqrt_decay * singular_values * singular_values
+        )
+        cross = (
+            sqrt_decay
+            * sqrt_observation
+            * singular_values
+            * coefficients_cpu
+        )
         gram[:k, k] = cross
         gram[k, :k] = cross
-        # Bottom-right
-        gram[k, k] = sn * sn * g_norm_sq
+        gram[k, k] = sqrt_observation * sqrt_observation * centered_norm_sq
 
         eigvals, eigvecs = torch.linalg.eigh(gram)
         eigvals = eigvals.flip(0)
         eigvecs = eigvecs.flip(1)
-        pos = eigvals > 1e-12
-        eigvals = eigvals[pos]
-        eigvecs = eigvecs[:, pos]
-        # Basis truncation. For the "effrank"/"gap" rules we deliberately KEEP the
-        # full basis (up to `rank`) and only narrow the *projection* (self.proj_k,
-        # computed below) — decoupling estimation rank from projection rank. This
-        # avoids a ratchet: if we truncated the basis to a tiny adaptive count, the
-        # covariance could only ever grow +1 direction/step and would get stuck at 1
-        # whenever early gradients are near rank-1. Energy-threshold keeps its
-        # original basis-truncating semantics (the CIFAR energy sweep used those).
+        positive = eigvals > 1e-12
+        eigvals = eigvals[positive]
+        eigvecs = eigvecs[:, positive]
         new_k = min(self.rank, len(eigvals))
-        if self.adaptive == "none" and self.energy_threshold is not None and len(eigvals) > 0:
-            # smallest #components capturing `energy_threshold` of the energy
-            frac = torch.cumsum(eigvals, 0) / eigvals.sum()
-            k_energy = int(torch.searchsorted(frac, self.energy_threshold).item()) + 1
-            new_k = max(1, min(self.rank, k_energy, len(eigvals)))
+        if (
+            self.adaptive == "none"
+            and self.energy_threshold is not None
+            and len(eigvals) > 0
+        ):
+            fraction = torch.cumsum(eigvals, 0) / eigvals.sum()
+            energy_k = (
+                int(torch.searchsorted(fraction, self.energy_threshold).item())
+                + 1
+            )
+            new_k = max(1, min(self.rank, energy_k, len(eigvals)))
         eigvals = eigvals[:new_k]
-        eigvecs = eigvecs[:, :new_k]  # (k+1, new_k)
-        s_new = eigvals.sqrt()
+        eigvecs = eigvecs[:, :new_k]
+        new_singular_values = eigvals.sqrt()
 
-        # Recover V_new = [V | q] @ eigvecs @ diag(1/s_new)
-        # where q = g_perp / ||g_perp|| (the new basis vector)
-        # [V | q] is (p, k+1), but we compute V_new without materializing it:
-        # V_new[:,j] = sum_i eigvecs[i,j]/s_new[j] * (row_i_direction)
-        # For i < k: direction = V[:,i]
-        # For i = k: direction = q (or g_centered if no perp component)
-
-        coeffs = eigvecs / s_new.unsqueeze(0)  # (k+1, new_k)
-        # V_new = V @ (sd * diag(S_cpu) @ coeffs[:k]) + q @ (sn * coeffs[k:k+1])
-        # The "combined" rows are sd*S[i]*V[:,i] and sn*g_centered
-        # So V_new = V @ diag(sd*S) @ coeffs[:k] + (sn * g_centered) * coeffs[k]
-        #          = V @ (sd * S.unsqueeze(1) * coeffs[:k]).to(device) + ...
-
-        top_coeffs = (sd * S_cpu.unsqueeze(1) * coeffs[:k]).to(device)  # (k, new_k)
-        bot_coeffs = (sn * coeffs[k]).to(device)  # (new_k,)
-
-        V_new = self.V @ top_coeffs + g_centered.unsqueeze(1) * bot_coeffs.unsqueeze(0)
-
-        self.V = V_new.contiguous()
-        self.S = s_new
+        reconstruction = eigvecs / new_singular_values.unsqueeze(0)
+        top = (
+            sqrt_decay
+            * singular_values.unsqueeze(1)
+            * reconstruction[:k]
+        ).to(device)
+        bottom = (sqrt_observation * reconstruction[k]).to(device)
+        self.V = (
+            self.V @ top + centered.unsqueeze(1) * bottom.unsqueeze(0)
+        ).contiguous()
+        self.S = new_singular_values
         self._update_proj_k()
+
+    def _update_svd_stable(self, g):
+        """Stably update the low-rank streaming covariance representation.
+
+        The covariance is diagonalized directly in the orthonormal augmented
+        basis [V, q]. Heavy p-by-k operations stay on the compute device; only
+        the small k-by-k symmetric eigensystem is solved on the CPU in fp64.
+        """
+        device, dtype = g.device, g.dtype
+
+        if self.grad_mean is None:
+            self.grad_mean = g.detach().clone()
+        else:
+            self.grad_mean.mul_(self.decay).add_(g.detach(), alpha=1 - self.decay)
+        centered = g.detach() - self.grad_mean
+
+        if self.V is None:
+            norm = centered.norm()
+            if norm > 0:
+                self.V = (centered / norm).unsqueeze(1).contiguous()
+                self.S = norm.detach().double().cpu().unsqueeze(0)
+            return
+
+        if self.stabilize_every and self.step_count % self.stabilize_every == 0:
+            self._repair_representation()
+            if self.V is None:
+                return
+
+        # Two-pass Gram-Schmidt controls residual error when V has accumulated
+        # small fp32 orthogonality drift.
+        coefficients = self.V.T @ centered
+        residual = centered - self.V @ coefficients
+        correction = self.V.T @ residual
+        residual = residual - self.V @ correction
+        coefficients = coefficients + correction
+        residual_norm = residual.norm()
+        residual_floor = max(
+            1e-12,
+            10 * torch.finfo(dtype).eps * float(centered.norm().item()),
+        )
+        has_residual = bool(residual_norm > residual_floor)
+
+        k = self.V.shape[1]
+        coefficients64 = coefficients.detach().double().cpu()
+        old_variances = self.S.detach().double().square()
+        decay, observation_weight = float(self.decay), float(1 - self.decay)
+        size = k + int(has_residual)
+        small = torch.zeros(size, size, dtype=torch.float64)
+        small[:k, :k] = (
+            torch.diag(decay * old_variances)
+            + observation_weight * torch.outer(coefficients64, coefficients64)
+        )
+
+        residual_direction = None
+        if has_residual:
+            residual_norm64 = float(residual_norm.double().item())
+            cross = observation_weight * coefficients64 * residual_norm64
+            small[:k, k] = cross
+            small[k, :k] = cross
+            small[k, k] = observation_weight * residual_norm64 * residual_norm64
+            residual_direction = residual / residual_norm
+
+        eigvals, rotation = self._sym_eigh_desc(small)
+        eigvals, rotation = self._truncate_eigensystem(eigvals, rotation)
+        if eigvals.numel() == 0:
+            self.V = None
+            self.S = None
+            self.proj_k = None
+            return
+
+        rotation_device = rotation.to(device=device, dtype=dtype)
+        updated = self.V @ rotation_device[:k]
+        if has_residual:
+            updated = (
+                updated
+                + residual_direction.unsqueeze(1)
+                * rotation_device[k].unsqueeze(0)
+            )
+        self.V = updated.contiguous()
+        self.S = eigvals.sqrt().cpu()
+        self._update_proj_k()
+
+        # Check often during basis growth, then periodically. Repair only when
+        # the measured drift is material; scheduled repair handles large ranks.
+        if self.V.shape[1] <= 256 and (
+            self.step_count <= 10 or self.step_count % 50 == 0
+        ):
+            error = self.orthogonality_error()
+            self.max_orthogonality_error = max(
+                self.max_orthogonality_error, error
+            )
+            if not math.isfinite(error) or error > 5e-3:
+                self._repair_representation()
 
     def _update_proj_k(self):
         """How many of the (broad) top directions to actually project onto this step.
@@ -350,6 +497,10 @@ class SpectralGradientFilter:
         diagnostics = {
             "step": self.step_count,
             "filtering_active": self.step_count > self.warmup,
+            "stabilization_count": self.stabilization_count,
+            "max_orthogonality_error": self.max_orthogonality_error,
+            "relative_eig_tol": self.relative_eig_tol,
+            "stable_update": self.stable_update,
         }
         if self.S is not None:
             diagnostics["top_singular_values"] = self.S[:5].tolist()
@@ -381,6 +532,8 @@ class SpectralGradientFilter:
         self.proj_k = None
         self.step_count = 0
         self.grad_mean = None
+        self.stabilization_count = 0
+        self.max_orthogonality_error = 0.0
 
     def zero_grad(self):
         self.base_optimizer.zero_grad()

@@ -35,6 +35,10 @@ parameter's `.grad` with its projection onto the top-`k` eigenspace, in place,
 after a `warmup`. (For plain classification there's also a one-call convenience,
 `filt.step(x, y)`, that does the forward/backward for you.)
 
+The default streaming update solves its small covariance eigensystem in fp64
+and periodically re-orthogonalizes the tracked basis. Set
+`stable_update=False` only to reproduce results from before this numerical fix.
+
 ## See it work in ~1 minute
 
 ```bash
@@ -57,6 +61,9 @@ refuses to memorize (train stays flat) and **holds ~0.61 test accuracy**.
 | `alpha` | 1.0 | soft exponent: `0`=identity, `1`=consensus, `∞`=top dir, `<0`=whitening |
 | `normalize` | `"none"` | basis: `none` (covariance), `var` (correlation), `degree` (affinity) |
 | `adaptive` | `"none"` | rank rule: `none`, `effrank`, or `gap` |
+| `stable_update` | `True` | use the fp64, periodically re-orthogonalized covariance update (`False` reproduces historical runs) |
+| `relative_eig_tol` | `1e-8` | discard numerically negligible covariance directions relative to the leading eigenvalue |
+| `stabilize_every` | `100` | periodically re-orthogonalize the streaming basis (`None` disables scheduled repair) |
 
 ## Findings from the research
 

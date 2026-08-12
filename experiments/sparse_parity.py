@@ -53,7 +53,9 @@ def run(args):
 
     base = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.wd)
     if args.mode == "ours":
-        opt = WeightCovarianceFilterV2(model, base, rank=args.rank, decay=args.decay, warmup=args.warmup)
+        opt = WeightCovarianceFilterV2(
+            model, base, rank=args.rank, decay=args.decay,
+            warmup=args.warmup, stable_update=not args.legacy_update)
     metrics = []; t0 = time.time()
     for epoch in range(args.epochs):
         model.train()
@@ -92,6 +94,7 @@ if __name__ == "__main__":
     p.add_argument("--rank", type=int, default=200)
     p.add_argument("--decay", type=float, default=0.99)
     p.add_argument("--warmup", type=int, default=100)
+    p.add_argument("--legacy_update", action="store_true")
     p.add_argument("--log_every", type=int, default=50)
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--name", type=str, required=True)
