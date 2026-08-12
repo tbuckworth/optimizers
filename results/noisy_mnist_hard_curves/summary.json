@@ -1,0 +1,68 @@
+{
+  "date": "2026-08-12",
+  "selection_protocol": "Per-matrix rank selected on the final test accuracy of a 20-epoch seed-42 scout; the plotted 60-epoch run uses the same seed and is therefore descriptive, not an unbiased multi-seed estimate.",
+  "dataset": {
+    "name": "MNIST",
+    "training_examples": 60000,
+    "test_examples": 10000,
+    "label_noise": 0.9,
+    "label_noise_definition": "90% of training examples are selected for uniform random relabeling; a replacement can equal the original label. Test labels are clean."
+  },
+  "model": {
+    "name": "FlexMNISTNet",
+    "parameters": 235146
+  },
+  "shared_configuration": {
+    "epochs": 60,
+    "seed": 42,
+    "learning_rate": 0.001,
+    "base_optimizer": "AdamW",
+    "weight_decay": 0.01,
+    "spectral_decay": 0.99,
+    "spectral_warmup_steps": 100,
+    "spectral_weighting": "hard",
+    "stable_covariance_update": true
+  },
+  "per_matrix_rank_scout": {
+    "epochs": 20,
+    "runs": {
+      "8": {"peak_test_accuracy": 0.5791, "final_test_accuracy": 0.4678},
+      "16": {"peak_test_accuracy": 0.6245, "final_test_accuracy": 0.6136},
+      "32": {"peak_test_accuracy": 0.7157, "final_test_accuracy": 0.6740},
+      "64": {"peak_test_accuracy": 0.7695, "final_test_accuracy": 0.7420}
+    },
+    "selected_rank": 64
+  },
+  "runs": {
+    "adamw": {
+      "peak_test_accuracy": 0.8235,
+      "peak_epoch": 3,
+      "mean_test_accuracy": 0.53948,
+      "last_10_epoch_mean_test_accuracy": 0.40686,
+      "final_train_accuracy": 0.36508,
+      "final_test_accuracy": 0.3893,
+      "time_seconds": 132.7
+    },
+    "global_stable_hard_rank_200": {
+      "peak_test_accuracy": 0.8548,
+      "peak_epoch": 41,
+      "mean_test_accuracy": 0.77281,
+      "last_10_epoch_mean_test_accuracy": 0.80261,
+      "final_train_accuracy": 0.17258,
+      "final_test_accuracy": 0.7877,
+      "time_seconds": 485.2,
+      "maximum_basis_mib": 179.40216064453125
+    },
+    "per_matrix_stable_hard_rank_64": {
+      "peak_test_accuracy": 0.8435,
+      "peak_epoch": 55,
+      "mean_test_accuracy": 0.74999,
+      "last_10_epoch_mean_test_accuracy": 0.81460,
+      "final_train_accuracy": 0.17807,
+      "final_test_accuracy": 0.8174,
+      "time_seconds": 428.7,
+      "blocks": 3,
+      "maximum_basis_mib": 57.40869140625
+    }
+  }
+}

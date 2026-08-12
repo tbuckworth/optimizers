@@ -93,9 +93,11 @@ def evaluate(model, loader, device):
     return correct / total, total_loss / total
 
 
-def make_base_optimizer(name, params, lr):
+def make_base_optimizer(name, params, lr, weight_decay=0.01):
     if name == "adam":
         return torch.optim.Adam(params, lr=lr)
+    elif name == "adamw":
+        return torch.optim.AdamW(params, lr=lr, weight_decay=weight_decay)
     elif name == "sgd":
         return torch.optim.SGD(params, lr=lr)
     elif name == "sgdm":
@@ -141,9 +143,13 @@ def run(args):
     }]
     t_start = time.time()
 
-    if args.mode in ("adam", "baseline", "lora"):
+    if args.mode in ("adam", "adamw", "baseline", "lora"):
         if args.mode == "adam":
             optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+        elif args.mode == "adamw":
+            optimizer = torch.optim.AdamW(
+                model.parameters(), lr=args.lr, weight_decay=args.weight_decay
+            )
         elif args.mode == "lora":
             optimizer = torch.optim.Adam(model.trainable_parameters(), lr=args.lr)
         else:
@@ -176,8 +182,12 @@ def run(args):
             if args.mode.startswith("lora")
             else model.parameters()
         )
-        base_opt = make_base_optimizer(args.base_optimizer,
-                                       optimized_parameters, args.lr)
+        base_opt = make_base_optimizer(
+            args.base_optimizer,
+            optimized_parameters,
+            args.lr,
+            weight_decay=args.weight_decay,
+        )
         if args.mode in ("ours", "lora_global"):
             optimizer = WeightCovarianceFilterV2(
                 model, base_opt, rank=args.rank, decay=args.decay,
@@ -249,17 +259,19 @@ def run(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["adam", "ours", "matrix", "baseline",
+    parser.add_argument("--mode", choices=["adam", "adamw", "ours", "matrix", "baseline",
                         "random_subspace", "lora", "lora_global", "lora_matrix"],
                         required=True)
     parser.add_argument("--base_optimizer",
-                        choices=["adam", "sgd", "sgdm", "rmsprop", "lion", "muon"],
+                        choices=["adam", "adamw", "sgd", "sgdm", "rmsprop", "lion", "muon"],
                         default="adam")
     parser.add_argument("--lora_rank", type=int, default=32)
     parser.add_argument("--lora_alpha", type=float, default=32.0)
     parser.add_argument("--dataset", choices=["standard", "noisy_mnist", "random_labels"],
                         default="standard")
     parser.add_argument("--lr", type=float, default=1e-3)
+    parser.add_argument("--weight_decay", type=float, default=0.01,
+                        help="AdamW weight decay (ignored by other optimizers)")
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--rank", type=int, default=200)
     parser.add_argument("--decay", type=float, default=0.99)
