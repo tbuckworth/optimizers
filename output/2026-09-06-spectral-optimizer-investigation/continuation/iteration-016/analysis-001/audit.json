@@ -1,0 +1,36 @@
+{
+  "schema": "i16_scalar_analysis_audit_v1",
+  "status": "pass",
+  "artifact_root": "/tmp/spectral-experiment-artifacts/spectral-i16-001.NdCmZ1",
+  "phase_completion_sha256": {
+    "smoke": "bdc55423aba8a64de610cda6fd15587408bf3ee70a4823e7363217b4109a096e",
+    "confirmation": "eed6d1497f6a3672a6a59bd8962b5c9e4d33e8b97521ba2f499df0f7a7ec4cb4"
+  },
+  "attempt_sha256": {
+    "smoke": "9e96cfdcb70c17a0fd0a823ab073002fe663ac20e39680519fd4250fc59f4ec0",
+    "confirmation": "7a677f98dfaf8d6270af056ad0d9248be05b479410afb39b897483a7069e8b15"
+  },
+  "runtime_inventory": {
+    "declared_name": "runtime",
+    "entries": [
+      {
+        "path": "torchinductor_titus",
+        "kind": "directory",
+        "bytes": 0,
+        "sha256": null
+      }
+    ],
+    "manifest_sha256": "6ef9bfb4fb59566107508594672f8f97ac3d712626af5b95baf0669222ff206c",
+    "regular_file_bytes": 0,
+    "logical_bytes_only": true
+  },
+  "checks": 5304819,
+  "errors": [],
+  "warnings": [],
+  "hash_files_verified": 431,
+  "hash_bytes_streamed": 1314171445,
+  "complete_state_tree_digests_verified": 30,
+  "maximum_saved_algebra_residual": 3.6357702342334186e-07,
+  "maximum_leakage_identity_error": 2.220446049250313e-16,
+  "failure_state_tree_digests": {}
+}

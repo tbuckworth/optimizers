@@ -1,0 +1,66 @@
+{
+  "protocol_sha256": "c63ffe3ee59cb9a731e84c356ab60d978e98b473e64078eca2111cdd3e02466e",
+  "script_sha256": "0551f3579aad7985f8b907862963805bb8deb9bafb12f0e1980725b316026632",
+  "filter_sha256": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+  "torch": "2.11.0+cu128",
+  "dtype": "float64",
+  "device": "cpu",
+  "results": [
+    {
+      "decay": 0.9,
+      "initial_eigenvalue": 1.0,
+      "exact_predicted": 7,
+      "wide_observed": 7,
+      "rank_one_predicted": 22,
+      "rank_one_observed": 22,
+      "extra_observations": 15
+    },
+    {
+      "decay": 0.9,
+      "initial_eigenvalue": 10.000000000000002,
+      "exact_predicted": 23,
+      "wide_observed": 23,
+      "rank_one_predicted": 44,
+      "rank_one_observed": 44,
+      "extra_observations": 21
+    },
+    {
+      "decay": 0.99,
+      "initial_eigenvalue": 1.0,
+      "exact_predicted": 69,
+      "wide_observed": 69,
+      "rank_one_predicted": 459,
+      "rank_one_observed": 459,
+      "extra_observations": 390
+    },
+    {
+      "decay": 0.99,
+      "initial_eigenvalue": 99.99999999999991,
+      "exact_predicted": 460,
+      "wide_observed": 460,
+      "rank_one_predicted": 917,
+      "rank_one_observed": 917,
+      "extra_observations": 457
+    },
+    {
+      "decay": 0.999,
+      "initial_eigenvalue": 1.0,
+      "exact_predicted": 693,
+      "wide_observed": 693,
+      "rank_one_predicted": 6905,
+      "rank_one_observed": 6905,
+      "extra_observations": 6212
+    },
+    {
+      "decay": 0.999,
+      "initial_eigenvalue": 999.9999999999991,
+      "exact_predicted": 6906,
+      "wide_observed": 6906,
+      "rank_one_predicted": 13809,
+      "rank_one_observed": 13809,
+      "extra_observations": 6903
+    }
+  ],
+  "elapsed_seconds": 9.760444382205606,
+  "scope": "Controlled centered innovations; no model training or generalization claim."
+}

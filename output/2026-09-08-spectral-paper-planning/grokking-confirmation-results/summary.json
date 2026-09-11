@@ -1,0 +1,330 @@
+{
+  "design": "prospective within-benchmark confirmation, five paired seeds",
+  "steps": 6000,
+  "evaluation_grid": 50,
+  "seed_results": [
+    {
+      "seed": 100,
+      "arm": "adamw",
+      "first_90_recorded_step": 3500,
+      "sustained_90_recorded_step": 4050,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.004775970242917538,
+      "training_seconds": 34.59577668970451,
+      "end_to_end_seconds": 37.19079455919564
+    },
+    {
+      "seed": 100,
+      "arm": "legacy",
+      "first_90_recorded_step": 2500,
+      "sustained_90_recorded_step": 2500,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.0003510418755467981,
+      "training_seconds": 57.94425293756649,
+      "end_to_end_seconds": 79.38945126906037
+    },
+    {
+      "seed": 100,
+      "arm": "stable",
+      "first_90_recorded_step": 3000,
+      "sustained_90_recorded_step": 5600,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.004294774029403925,
+      "training_seconds": 64.25047979364172,
+      "end_to_end_seconds": 83.05963301705196
+    },
+    {
+      "seed": 101,
+      "arm": "adamw",
+      "first_90_recorded_step": 4400,
+      "sustained_90_recorded_step": 4400,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.007483489345759153,
+      "training_seconds": 34.71752270497382,
+      "end_to_end_seconds": 37.291492133866996
+    },
+    {
+      "seed": 101,
+      "arm": "legacy",
+      "first_90_recorded_step": 3150,
+      "sustained_90_recorded_step": 3150,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.0007513383170589805,
+      "training_seconds": 57.80936587881297,
+      "end_to_end_seconds": 78.5038960990496
+    },
+    {
+      "seed": 101,
+      "arm": "stable",
+      "first_90_recorded_step": 4650,
+      "sustained_90_recorded_step": 4650,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.0184493325650692,
+      "training_seconds": 64.66811276460066,
+      "end_to_end_seconds": 82.37236889684573
+    },
+    {
+      "seed": 102,
+      "arm": "adamw",
+      "first_90_recorded_step": 4200,
+      "sustained_90_recorded_step": 4200,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.00010085265967063606,
+      "training_seconds": 35.08516123378649,
+      "end_to_end_seconds": 37.557168818078935
+    },
+    {
+      "seed": 102,
+      "arm": "legacy",
+      "first_90_recorded_step": 2950,
+      "sustained_90_recorded_step": 2950,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.004940211772918701,
+      "training_seconds": 58.96998883597553,
+      "end_to_end_seconds": 80.89302177680656
+    },
+    {
+      "seed": 102,
+      "arm": "stable",
+      "first_90_recorded_step": 3000,
+      "sustained_90_recorded_step": 3000,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.004382740706205368,
+      "training_seconds": 66.37406857311726,
+      "end_to_end_seconds": 86.30519840912893
+    },
+    {
+      "seed": 103,
+      "arm": "adamw",
+      "first_90_recorded_step": 3800,
+      "sustained_90_recorded_step": 3800,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.000301134743494913,
+      "training_seconds": 35.39885483821854,
+      "end_to_end_seconds": 37.844126584008336
+    },
+    {
+      "seed": 103,
+      "arm": "legacy",
+      "first_90_recorded_step": 2800,
+      "sustained_90_recorded_step": 2800,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.0026697556022554636,
+      "training_seconds": 57.26868887152523,
+      "end_to_end_seconds": 78.08071848610416
+    },
+    {
+      "seed": 103,
+      "arm": "stable",
+      "first_90_recorded_step": 3150,
+      "sustained_90_recorded_step": 3150,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.00925896130502224,
+      "training_seconds": 67.4886208656244,
+      "end_to_end_seconds": 86.80294195795432
+    },
+    {
+      "seed": 104,
+      "arm": "adamw",
+      "first_90_recorded_step": 3750,
+      "sustained_90_recorded_step": 3750,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.009248658083379269,
+      "training_seconds": 34.95808693021536,
+      "end_to_end_seconds": 37.43886962113902
+    },
+    {
+      "seed": 104,
+      "arm": "legacy",
+      "first_90_recorded_step": 2650,
+      "sustained_90_recorded_step": 2650,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.003063938347622752,
+      "training_seconds": 56.676238026469946,
+      "end_to_end_seconds": 78.2032974511385
+    },
+    {
+      "seed": 104,
+      "arm": "stable",
+      "first_90_recorded_step": 3500,
+      "sustained_90_recorded_step": 3500,
+      "final_test_accuracy": 1.0,
+      "final_test_loss": 0.010220225900411606,
+      "training_seconds": 62.51956011587754,
+      "end_to_end_seconds": 79.15368133690208
+    }
+  ],
+  "arms": {
+    "adamw": {
+      "n": 5,
+      "crossings": 5,
+      "mean_first_90_recorded_step": 3930,
+      "mean_final_test_accuracy": 1.0,
+      "mean_training_seconds": 34.95108047937974,
+      "mean_end_to_end_seconds": 37.464490343257786
+    },
+    "legacy": {
+      "n": 5,
+      "crossings": 5,
+      "mean_first_90_recorded_step": 2810,
+      "mean_final_test_accuracy": 1.0,
+      "mean_training_seconds": 57.73370691007003,
+      "mean_end_to_end_seconds": 79.01407701643184
+    },
+    "stable": {
+      "n": 5,
+      "crossings": 5,
+      "mean_first_90_recorded_step": 3460,
+      "mean_final_test_accuracy": 1.0,
+      "mean_training_seconds": 65.06016842257232,
+      "mean_end_to_end_seconds": 83.5387647235766
+    }
+  },
+  "paired_first_crossing_differences": {
+    "stable_minus_adamw": {
+      "seeds": [
+        100,
+        101,
+        102,
+        103,
+        104
+      ],
+      "differences_steps": [
+        -500,
+        250,
+        -1200,
+        -650,
+        -250
+      ],
+      "mean_steps": -470,
+      "standard_error_steps": 238.01260470823806,
+      "interpretation": "negative is earlier stable crossing; 50-step observation grid, n=5"
+    },
+    "stable_minus_legacy": {
+      "seeds": [
+        100,
+        101,
+        102,
+        103,
+        104
+      ],
+      "differences_steps": [
+        500,
+        1500,
+        50,
+        350,
+        850
+      ],
+      "mean_steps": 650,
+      "standard_error_steps": 248.49547279578354,
+      "interpretation": "negative is earlier stable crossing; 50-step observation grid, n=5"
+    }
+  },
+  "evidence": [
+    {
+      "seed": 100,
+      "arm": "adamw",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/adamw/metrics.json",
+      "sha256": "66a3901904b5b619411f0471a31fd96965046927bd9b6ff45ab9b37acc7eddaa",
+      "local_copy": "raw/seed100-adamw.json"
+    },
+    {
+      "seed": 100,
+      "arm": "legacy",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/legacy/metrics.json",
+      "sha256": "7d9f26e72160f767e5d44341f3ffc6efc3510a69ebae6277f79b609138e07a88",
+      "local_copy": "raw/seed100-legacy.json"
+    },
+    {
+      "seed": 100,
+      "arm": "stable",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/stable/metrics.json",
+      "sha256": "f2f555617f665d5973fc44404ac9571336937fd96e0160c6b9ec858e1da7730a",
+      "local_copy": "raw/seed100-stable.json"
+    },
+    {
+      "seed": 101,
+      "arm": "adamw",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed101/adamw/metrics.json",
+      "sha256": "955b6ab94118235e10702ce19dd007eb2ccfd1e9d8e15fd5ffb64d7b687cbb88",
+      "local_copy": "raw/seed101-adamw.json"
+    },
+    {
+      "seed": 101,
+      "arm": "legacy",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed101/legacy/metrics.json",
+      "sha256": "e9780e9e520680377722311a51013a7ad0c6c3c077946d4d9574fc901e9c8e92",
+      "local_copy": "raw/seed101-legacy.json"
+    },
+    {
+      "seed": 101,
+      "arm": "stable",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed101/stable/metrics.json",
+      "sha256": "74803803a93fbbb5413d5f02f79b513f2edbe13636d3f24850235919ad95efd9",
+      "local_copy": "raw/seed101-stable.json"
+    },
+    {
+      "seed": 102,
+      "arm": "adamw",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed102/adamw/metrics.json",
+      "sha256": "7840f0beece8715f0cb016eb16461ff3ebcabafbeaa9c23776a34c2637864f73",
+      "local_copy": "raw/seed102-adamw.json"
+    },
+    {
+      "seed": 102,
+      "arm": "legacy",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed102/legacy/metrics.json",
+      "sha256": "243ca6666af495b0e989347dd2b6bb0a37bf99644b9b89d405548c8e9d33ba54",
+      "local_copy": "raw/seed102-legacy.json"
+    },
+    {
+      "seed": 102,
+      "arm": "stable",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed102/stable/metrics.json",
+      "sha256": "963cc65ae4f103f32a0650bff31aeaf04ca918d3518de2da45123d5dc5003d1f",
+      "local_copy": "raw/seed102-stable.json"
+    },
+    {
+      "seed": 103,
+      "arm": "adamw",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed103/adamw/metrics.json",
+      "sha256": "b99877bf1f36b1d1b90bbc41b8ff6819de2b75fc35b5b2a31c13058aafa25c34",
+      "local_copy": "raw/seed103-adamw.json"
+    },
+    {
+      "seed": 103,
+      "arm": "legacy",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed103/legacy/metrics.json",
+      "sha256": "0bc5d3129f7c5adebddbaeb92ee06ec229a74ff2c97bd50a44b78514c5332c6a",
+      "local_copy": "raw/seed103-legacy.json"
+    },
+    {
+      "seed": 103,
+      "arm": "stable",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed103/stable/metrics.json",
+      "sha256": "da1f8780ff759d1caae7a369f205e2e41f2f0437f3f5e51ae1cf00a45be685a9",
+      "local_copy": "raw/seed103-stable.json"
+    },
+    {
+      "seed": 104,
+      "arm": "adamw",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed104/adamw/metrics.json",
+      "sha256": "9ee0b02363aa790b87ac3060e5602e2e5f9673dfd1ff9551dfa22bdf158e929a",
+      "local_copy": "raw/seed104-adamw.json"
+    },
+    {
+      "seed": 104,
+      "arm": "legacy",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed104/legacy/metrics.json",
+      "sha256": "6d4d68ab1de7cd076f17b05732ea2cc9938ae7edcca3d4d0cdc51d17e2e192b5",
+      "local_copy": "raw/seed104-legacy.json"
+    },
+    {
+      "seed": 104,
+      "arm": "stable",
+      "source": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed104/stable/metrics.json",
+      "sha256": "d76cef4615421151be890dba6f72a468b1f7df17238cc05ba97c219680cb1d11",
+      "local_copy": "raw/seed104-stable.json"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "i13_mean_analysis_audit_v1",
+  "status": "pass",
+  "checks": 1186651,
+  "errors": [],
+  "warnings": [],
+  "completion_and_external_hash_files_verified": 499,
+  "hash_bytes_streamed": 1514861366,
+  "complete_state_and_tensor_tree_digests_verified": 2748,
+  "maximum_train_residual_identity_error": 0.0,
+  "maximum_leakage_energy_identity_error": 4.336808689942018e-19,
+  "coverage": {
+    "new_branches": 36,
+    "inherited_references": 36,
+    "original_parents": 6,
+    "paired_step_probes": 18,
+    "physical_alignment_records": 258,
+    "alignment_records_with_full_state_basis_replay": 78,
+    "numerical_failures": 0,
+    "science_complete": true
+  },
+  "energy_weighted_leakage_definition": "within branch sum outside squared step energy / sum total squared step energy; cohort summaries retain equal parent then seed weighting",
+  "audit_limits": [
+    "Saved finite evaluations and loss changes were identity/schema checked; no model/data forward was replayed.",
+    "Per-step displacement leakage was audited from retained scalar energies; step vectors were not saved.",
+    "Intermediate alignment bases are digest-only, so their projections were not replayed; signed retained-vector arithmetic was recomputed.",
+    "Common h0 and retained final-state bases were digest checked and their saved mean projection replayed on CPU within declared tolerance.",
+    "Actual Adam proposals were checked through retained displacement vectors and scalar identities, not recomputed by an optimizer step."
+  ],
+  "analysis_source_sha256": "fd3256b4719c54a3abb89f2173cd9db463dc765aee78a7b75f4c6a4c1450135e"
+}

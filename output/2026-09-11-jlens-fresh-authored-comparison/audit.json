@@ -1,0 +1,127 @@
+{
+  "status": "PASS",
+  "grade_sha256": "8a71e6f09f7d73e6f09e18af1257e054aab71235a34a9a030ccfdbcc35cc4497",
+  "auditor_sha256": "465a17d648ea3e2b8e282077709e1e569308efec951e7f4be5089d97514280d3",
+  "exact_item_rows": 256,
+  "committed_response_blobs": 5,
+  "all_reference_and_target_bindings": true,
+  "all_summary_counts": true,
+  "primary": {
+    "axis": "PC4",
+    "A_minus_C_credit_out_of_32": 0.0,
+    "A_reader_credit_out_of_16": {
+      "rater1": 13.0,
+      "rater3": 13.0
+    },
+    "A_minus_C_by_cohort_out_of_16": {
+      "1": 0.0,
+      "2": 0.0
+    },
+    "each_A_reader_exceeds_8": true,
+    "A_minus_C_positive_each_cohort": false
+  },
+  "arms": {
+    "A": {
+      "credit": 108.0,
+      "total": 128,
+      "correct": 108,
+      "incorrect": 20,
+      "exact_ties": 0,
+      "constant_FIRST_credit": 64.0,
+      "constant_SECOND_credit": 64.0
+    },
+    "C": {
+      "credit": 106.0,
+      "total": 128,
+      "correct": 106,
+      "incorrect": 22,
+      "exact_ties": 0,
+      "constant_FIRST_credit": 64.0,
+      "constant_SECOND_credit": 64.0
+    }
+  },
+  "per_axis": {
+    "PC1": {
+      "A": {
+        "credit": 30.0,
+        "total": 32,
+        "correct": 30,
+        "incorrect": 2,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16.0,
+        "constant_SECOND_credit": 16.0
+      },
+      "C": {
+        "credit": 30.0,
+        "total": 32,
+        "correct": 30,
+        "incorrect": 2,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16.0,
+        "constant_SECOND_credit": 16.0
+      }
+    },
+    "PC2": {
+      "A": {
+        "credit": 24.0,
+        "total": 32,
+        "correct": 24,
+        "incorrect": 8,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16.0,
+        "constant_SECOND_credit": 16.0
+      },
+      "C": {
+        "credit": 22.0,
+        "total": 32,
+        "correct": 22,
+        "incorrect": 10,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16.0,
+        "constant_SECOND_credit": 16.0
+      }
+    },
+    "PC3": {
+      "A": {
+        "credit": 28.0,
+        "total": 32,
+        "correct": 28,
+        "incorrect": 4,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16.0,
+        "constant_SECOND_credit": 16.0
+      },
+      "C": {
+        "credit": 28.0,
+        "total": 32,
+        "correct": 28,
+        "incorrect": 4,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16.0,
+        "constant_SECOND_credit": 16.0
+      }
+    },
+    "PC4": {
+      "A": {
+        "credit": 26.0,
+        "total": 32,
+        "correct": 26,
+        "incorrect": 6,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16.0,
+        "constant_SECOND_credit": 16.0
+      },
+      "C": {
+        "credit": 26.0,
+        "total": 32,
+        "correct": 26,
+        "incorrect": 6,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16.0,
+        "constant_SECOND_credit": 16.0
+      }
+    }
+  },
+  "model_calls": 0,
+  "grader_imported": false
+}

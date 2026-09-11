@@ -1,0 +1,448 @@
+{
+  "schema": "jlens_natural_addon_check_results_v1",
+  "scalar_checks": 128,
+  "gap_checks": 64,
+  "max_scalar_error": 2.220446049250313e-16,
+  "scalar_tolerance": 1e-12,
+  "locations": [
+    "prefix_end"
+  ],
+  "axes": [
+    "PC1",
+    "PC2",
+    "PC3",
+    "PC4"
+  ],
+  "rows": [
+    {
+      "id": "N01-L",
+      "topic": "astronomy",
+      "prefix": "Pranav Sharma (Hindi: प्रणव शर्मा) is an astronomer and science historian known for his work on"
+    },
+    {
+      "id": "N01-R",
+      "topic": "astronomy",
+      "prefix": "Andean dark constellations (Quechua:yana phuyu, lit. 'black cloud'; (Aymara:ch'iyar warawara) are astronomical configurations identified by pre-Columbian"
+    },
+    {
+      "id": "N02-L",
+      "topic": "astronomy",
+      "prefix": "A synodic day (or synodic rotation period or solar day) is the period for a celestial"
+    },
+    {
+      "id": "N02-R",
+      "topic": "astronomy",
+      "prefix": "Radio Galaxy Zoo (RGZ) is an internet crowdsourced citizen science project that seeks to locate supermassive"
+    },
+    {
+      "id": "N03-L",
+      "topic": "programming",
+      "prefix": "A loop-switch sequence (also known as the for-case paradigm or Anti-Duff's Device) is a programming antipattern"
+    },
+    {
+      "id": "N03-R",
+      "topic": "programming",
+      "prefix": "JuMP is an algebraic modeling language and a collection of supporting packages for mathematical optimization embedded"
+    },
+    {
+      "id": "N04-L",
+      "topic": "programming",
+      "prefix": "Code Club is a voluntary initiative, founded in 2012. The initiative aims to provide opportunities for"
+    },
+    {
+      "id": "N04-R",
+      "topic": "programming",
+      "prefix": "Floyd's triangle is a triangular array of natural numbers used in computer science education. It is"
+    },
+    {
+      "id": "N05-L",
+      "topic": "programming",
+      "prefix": "The psychology of programming (PoP) is the field of research that deals with the psychological aspects"
+    },
+    {
+      "id": "N05-R",
+      "topic": "programming",
+      "prefix": "Codecademy is an American online interactive platform that offers free coding classes in 13 different programming"
+    },
+    {
+      "id": "N06-L",
+      "topic": "programming",
+      "prefix": "In software design, Procedural Design (SPD) converts and translates structural elements into procedural explanations. SPD starts"
+    },
+    {
+      "id": "N06-R",
+      "topic": "programming",
+      "prefix": "In computing science and informatics, nesting is where information is organized in layers, or where objects"
+    },
+    {
+      "id": "N07-L",
+      "topic": "programming",
+      "prefix": "In computer programming, unspecified behavior is behavior that may vary on different implementations of a programming"
+    },
+    {
+      "id": "N07-R",
+      "topic": "programming",
+      "prefix": "Copy-and-paste programming, sometimes referred to as just pasting, is the production of highly repetitive computer programming"
+    },
+    {
+      "id": "N08-L",
+      "topic": "programming",
+      "prefix": "The dangling else is a problem in programming of parser generators in which an optional else"
+    },
+    {
+      "id": "N08-R",
+      "topic": "programming",
+      "prefix": "Performance portability refers to the ability of computer programs and applications to operate effectively across different"
+    },
+    {
+      "id": "N09-L",
+      "topic": "cooking",
+      "prefix": "A pizza oven is an oven that is specially suited for making pizzas, especially Neapolitan pizza."
+    },
+    {
+      "id": "N09-R",
+      "topic": "cooking",
+      "prefix": "Mise en place (French pronunciation: [mi zɑ̃ ˈplas]) is a French culinary phrase which means \"putting"
+    },
+    {
+      "id": "N10-L",
+      "topic": "astronomy",
+      "prefix": "This is a list of galaxies sorted by surface brightness. Surface brightness is a measure of"
+    },
+    {
+      "id": "N10-R",
+      "topic": "astronomy",
+      "prefix": "The astronomy of Meitei civilisation deals with celestial objects, space, and the physical universe as a"
+    },
+    {
+      "id": "N11-L",
+      "topic": "programming",
+      "prefix": "Language-theoretic security, or LangSec, is an approach to software security that focuses on input handling, complexity,"
+    },
+    {
+      "id": "N11-R",
+      "topic": "programming",
+      "prefix": "Sonic Pi is a free open-source live coding environment based on Ruby, originally designed to support"
+    },
+    {
+      "id": "N12-L",
+      "topic": "programming",
+      "prefix": "In computer programming, a directive or pragma (from \"pragmatic\") is a language construct that specifies how"
+    },
+    {
+      "id": "N12-R",
+      "topic": "programming",
+      "prefix": "Rosalind is an educational resource and web project for learning bioinformatics through problem solving and computer"
+    },
+    {
+      "id": "N13-L",
+      "topic": "programming",
+      "prefix": "The Global Offset Table, or GOT, is a section of a computer program's (executables and shared"
+    },
+    {
+      "id": "N13-R",
+      "topic": "programming",
+      "prefix": "In computing, hand coding means editing the underlying representation of a document or a computer program,"
+    },
+    {
+      "id": "N14-L",
+      "topic": "cooking",
+      "prefix": "Pellet grills, sometimes referred to as pellet smokers, are outdoor cookers that combine elements of charcoal"
+    },
+    {
+      "id": "N14-R",
+      "topic": "cooking",
+      "prefix": "Doneness is a gauge of how thoroughly cooked a cut of meat is based on its"
+    },
+    {
+      "id": "N15-L",
+      "topic": "programming",
+      "prefix": "In computing, system time represents a computer system's notion of a point in time. System time"
+    },
+    {
+      "id": "N15-R",
+      "topic": "programming",
+      "prefix": "Hack Club is a global nonprofit network of high school computer programming clubs founded in 2014"
+    },
+    {
+      "id": "N16-L",
+      "topic": "programming",
+      "prefix": "An algorave (from an algorithm and rave) is an event where people dance to music generated"
+    },
+    {
+      "id": "N16-R",
+      "topic": "programming",
+      "prefix": "The identity transform is a data transformation that copies the source data into the destination data"
+    }
+  ],
+  "pairs": [
+    {
+      "id": "N01",
+      "left": "N01-L",
+      "right": "N01-R",
+      "topic": "astronomy",
+      "candidate_id": "K001",
+      "gaps64": [
+        [
+          -0.027907064527342262,
+          -0.015495106255994706,
+          0.23185861542837216,
+          -0.110988256341084
+        ]
+      ]
+    },
+    {
+      "id": "N02",
+      "left": "N02-L",
+      "right": "N02-R",
+      "topic": "astronomy",
+      "candidate_id": "K002",
+      "gaps64": [
+        [
+          0.41549493636756185,
+          0.20763926569020263,
+          0.20463949094900236,
+          -0.023431199205116163
+        ]
+      ]
+    },
+    {
+      "id": "N03",
+      "left": "N03-L",
+      "right": "N03-R",
+      "topic": "programming",
+      "candidate_id": "K003",
+      "gaps64": [
+        [
+          -0.2661055066903807,
+          -0.04213020800073597,
+          0.3610210008363346,
+          0.41583785646219085
+        ]
+      ]
+    },
+    {
+      "id": "N04",
+      "left": "N04-L",
+      "right": "N04-R",
+      "topic": "programming",
+      "candidate_id": "K004",
+      "gaps64": [
+        [
+          -0.07901789535897344,
+          0.23188466353582918,
+          -0.03201301424812253,
+          0.013320525489875223
+        ]
+      ]
+    },
+    {
+      "id": "N05",
+      "left": "N05-L",
+      "right": "N05-R",
+      "topic": "programming",
+      "candidate_id": "K006",
+      "gaps64": [
+        [
+          -0.03345508750943926,
+          0.014629200016996968,
+          0.11683700552197251,
+          -0.05980410306434128
+        ]
+      ]
+    },
+    {
+      "id": "N06",
+      "left": "N06-L",
+      "right": "N06-R",
+      "topic": "programming",
+      "candidate_id": "K007",
+      "gaps64": [
+        [
+          -0.1942752201845457,
+          -0.011635788330275676,
+          0.3543393710970344,
+          -0.2536756400306568
+        ]
+      ]
+    },
+    {
+      "id": "N07",
+      "left": "N07-L",
+      "right": "N07-R",
+      "topic": "programming",
+      "candidate_id": "K008",
+      "gaps64": [
+        [
+          0.15589440802200918,
+          -0.04422830068579919,
+          -0.01741962527265617,
+          -0.11214928977170427
+        ]
+      ]
+    },
+    {
+      "id": "N08",
+      "left": "N08-L",
+      "right": "N08-R",
+      "topic": "programming",
+      "candidate_id": "K009",
+      "gaps64": [
+        [
+          -0.36721610866877386,
+          0.13546895832113084,
+          -0.24568183334529703,
+          0.1229291919898251
+        ]
+      ]
+    },
+    {
+      "id": "N09",
+      "left": "N09-L",
+      "right": "N09-R",
+      "topic": "cooking",
+      "candidate_id": "K010",
+      "gaps64": [
+        [
+          0.36629186995125074,
+          0.22152406186974385,
+          0.24383527418922313,
+          0.0019441513755940332
+        ]
+      ]
+    },
+    {
+      "id": "N10",
+      "left": "N10-L",
+      "right": "N10-R",
+      "topic": "astronomy",
+      "candidate_id": "K011",
+      "gaps64": [
+        [
+          -0.053595940534123115,
+          0.1277207979087888,
+          0.12962235014502,
+          0.2103771187154505
+        ]
+      ]
+    },
+    {
+      "id": "N11",
+      "left": "N11-L",
+      "right": "N11-R",
+      "topic": "programming",
+      "candidate_id": "K012",
+      "gaps64": [
+        [
+          -0.06106155459945664,
+          -0.14665765666770006,
+          -0.17792314258493303,
+          0.0230907629886703
+        ]
+      ]
+    },
+    {
+      "id": "N12",
+      "left": "N12-L",
+      "right": "N12-R",
+      "topic": "programming",
+      "candidate_id": "K013",
+      "gaps64": [
+        [
+          -0.07249258995047592,
+          -0.0011131000816213543,
+          0.17166315033226098,
+          -0.1662857656282655
+        ]
+      ]
+    },
+    {
+      "id": "N13",
+      "left": "N13-L",
+      "right": "N13-R",
+      "topic": "programming",
+      "candidate_id": "K014",
+      "gaps64": [
+        [
+          -0.027610540245084136,
+          -0.019040568263594015,
+          -0.20872215514683212,
+          -0.10518185709363059
+        ]
+      ]
+    },
+    {
+      "id": "N14",
+      "left": "N14-L",
+      "right": "N14-R",
+      "topic": "cooking",
+      "candidate_id": "K015",
+      "gaps64": [
+        [
+          -0.2569184759634031,
+          0.06913554504102959,
+          -0.3599716468671279,
+          0.42901035930337217
+        ]
+      ]
+    },
+    {
+      "id": "N15",
+      "left": "N15-L",
+      "right": "N15-R",
+      "topic": "programming",
+      "candidate_id": "K016",
+      "gaps64": [
+        [
+          -0.008474373162419613,
+          -0.032589726763447874,
+          0.0047837982263274625,
+          -0.0505637486891867
+        ]
+      ]
+    },
+    {
+      "id": "N16",
+      "left": "N16-L",
+      "right": "N16-R",
+      "topic": "programming",
+      "candidate_id": "K017",
+      "gaps64": [
+        [
+          0.3394271738705632,
+          0.13362718347794242,
+          -0.15134933012461094,
+          -0.060460345671045745
+        ]
+      ]
+    }
+  ],
+  "summaries": {
+    "prefix_end": [
+      {
+        "axis": "PC1",
+        "positive": 4,
+        "zero": 0,
+        "negative": 12
+      },
+      {
+        "axis": "PC2",
+        "positive": 8,
+        "zero": 0,
+        "negative": 8
+      },
+      {
+        "axis": "PC3",
+        "positive": 9,
+        "zero": 0,
+        "negative": 7
+      },
+      {
+        "axis": "PC4",
+        "positive": 7,
+        "zero": 0,
+        "negative": 9
+      }
+    ]
+  }
+}

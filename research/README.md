@@ -1,7 +1,7 @@
 # Research index
 
-Notes, write-ups, and interactive figures from the project. **Start with the
-canonical write-up; everything else is supporting detail.**
+Notes, write-ups, and interactive figures from the project. Start with the
+current synthesis below; historical write-ups remain supporting evidence.
 
 For the maintained cross-experiment synthesis, decisions, and open questions,
 start with the [`knowledge/` index](../knowledge/index.md). This page remains the
@@ -9,9 +9,21 @@ catalog of experiment reports and figures.
 
 ## Start here
 
-- **[`spectral_filter_blog.html`](spectral_filter_blog.html)** — the canonical,
-  self-contained write-up: methodology, every hypothesis (H1–H7), and figures.
-  Open in a browser.
+- [September 11 final core report](spectral_final_core_report_2026-09-11.md)
+  — the conclusion, clearest paired evidence, mathematics and limitations.
+  [HTML reader](../output/2026-09-11-spectral-final-core/reader.html) ·
+  [PDF](../output/2026-09-11-spectral-final-core/report.pdf).
+- [Public snapshot scope](../PUBLICATION.md) — included evidence, omissions and
+  reproduction limitations. The earlier synthesis below is historical.
+
+- [September 7 current synthesis](spectral_optimizer_current_synthesis_2026-09-07.md)
+  (PDF (artifact not distributed in this public snapshot))
+  — integrated cross-repository findings, completed continuation experiments,
+  mathematical interpretation, contradictions and next tests.
+- Original September investigation (artifact not distributed in this public snapshot)
+  — preserved first-delivery narrative with discovery and application details.
+- [Historical spectral-filter blog](spectral_filter_blog.html) — the earlier
+  self-contained methodology, H1–H7 hypotheses and interactive figures.
 
 ## How the filter works (explainers)
 
@@ -23,6 +35,9 @@ catalog of experiment reports and figures.
 
 ## Findings (markdown)
 
+- [September 8 stable/legacy grokking confirmation](grokking_stable_confirmation_2026-09-08.md)
+  — five fresh paired seeds, all-seed plots, first versus sustained generalization,
+  measured timing, and the exploratory legacy within-span gain mechanism.
 - [`weight_covariance_v2_summary.md`](weight_covariance_v2_summary.md) — **best single summary** of the v2 filter results.
 - [`weight_covariance_v2_findings.md`](weight_covariance_v2_findings.md) — detailed v2 findings.
 - [`weight_covariance_directions.md`](weight_covariance_directions.md) — the follow-up research directions (A/B/C).

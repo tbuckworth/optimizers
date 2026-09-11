@@ -1,0 +1,52 @@
+{
+  "schema": "i15_report_corroboration_v1",
+  "status": "pass",
+  "inputs": {
+    "i15_collection": {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-015/raw-results-001",
+      "sha256": "b50bd33762ac58b77fc0755418934432e503f3a92343724f33cef6cfffa700fa"
+    },
+    "i14_collection": {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-014/raw-results-002",
+      "sha256": "7f528c5d8fe2b4376a719405f70e255d7ed84d32aaea09e4f073a32061217d4c"
+    },
+    "i15_summary": {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-015/analysis-001/summary.json",
+      "sha256": "4f782c7e0d2ba993ecd1d7333352f4f7c1379c0289c03eb2524ed4033b8b7793"
+    }
+  },
+  "scope": "Independent standard-library recomputation from collected JSON only; no tensor loading, forward pass, optimizer replay, or audit replay.",
+  "sections": {
+    "primary_endpoint_effects": {
+      "rows": 12,
+      "status": "pass"
+    },
+    "validation_selected_primary_effects": {
+      "rows": 24,
+      "status": "pass"
+    },
+    "validation_selected_auxiliary_outcomes": {
+      "rows": 60,
+      "status": "pass"
+    },
+    "all_policy_trajectories": {
+      "rows": 30,
+      "status": "pass"
+    },
+    "scheduled_metric_equal_seed_aggregates": {
+      "rows": 960,
+      "status": "pass"
+    },
+    "energy_weighted_current_action_complement": {
+      "rows": 40,
+      "status": "pass"
+    }
+  },
+  "complete_trajectories": 30,
+  "retained_scheduled_points": 180,
+  "expected_points_if_all_complete": 180,
+  "numeric_and_discrete_scalars_compared": 19558,
+  "maximum_absolute_numeric_difference": 0.0,
+  "no_survivor_averaging": true,
+  "errors": []
+}

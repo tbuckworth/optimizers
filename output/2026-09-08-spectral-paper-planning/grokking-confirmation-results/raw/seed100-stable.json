@@ -1,0 +1,3380 @@
+{
+  "checkpoints": [
+    {
+      "capture_and_write_seconds": 0.060801921878010035,
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/stable/checkpoint-step-000000.pt",
+      "sha256": "95dd1ff9b1264fb5997fd2f7feab983ced293672ee2a1a5170e1cbcf6f9f3c78",
+      "size_bytes": 925287,
+      "write_seconds": 0.05831990810111165
+    },
+    {
+      "capture_and_write_seconds": 1.0565567566081882,
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/stable/checkpoint-step-000100.pt",
+      "sha256": "c9a21e137f1eb08446dacbfb359e8c4b6899d48513cbe8952f1b02959abe3101",
+      "size_bytes": 80046460,
+      "write_seconds": 0.8866360341198742
+    },
+    {
+      "capture_and_write_seconds": 2.2954585128463805,
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/stable/checkpoint-step-000500.pt",
+      "sha256": "3c03734f904d1ebee9489a4e7705ae0734cfec158a8002a6f8f4691fee5bddba",
+      "size_bytes": 185522492,
+      "write_seconds": 1.9015006120316684
+    },
+    {
+      "capture_and_write_seconds": 1.6075955689884722,
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/stable/checkpoint-step-001000.pt",
+      "sha256": "10be9d2f5f4eb4c361eef6ac2d94a1bf3e4471ea061b5c1e125291f497b47f92",
+      "size_bytes": 124604348,
+      "write_seconds": 1.3386624571867287
+    },
+    {
+      "capture_and_write_seconds": 1.743988601025194,
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/stable/checkpoint-step-001500.pt",
+      "sha256": "121bb0e6606b34b18bd38052450880896e42d4b2906fc63bc6d3c3808f43fd4a",
+      "size_bytes": 140064060,
+      "write_seconds": 1.4479978601448238
+    },
+    {
+      "capture_and_write_seconds": 2.1676489170640707,
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/stable/checkpoint-step-002000.pt",
+      "sha256": "ad7d52daf9f42ef37af4cc050dc1ba7392f1c88730b1e258e95813a6c1d0355a",
+      "size_bytes": 170071932,
+      "write_seconds": 1.8054061927832663
+    },
+    {
+      "capture_and_write_seconds": 2.4224349660798907,
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/stable/checkpoint-step-002500.pt",
+      "sha256": "d1101b3ddd65d57b6fc4feca74cff2def375564bf8645fbf7e23ba7f5696e100",
+      "size_bytes": 185531708,
+      "write_seconds": 2.0230910959653556
+    },
+    {
+      "capture_and_write_seconds": 2.2976558776572347,
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/stable/checkpoint-step-003000.pt",
+      "sha256": "b9c2dd351ae77133015ca8d291bb2a08cd2d7c78c0d83f1041e977426139d5be",
+      "size_bytes": 185534012,
+      "write_seconds": 1.9044543472118676
+    },
+    {
+      "capture_and_write_seconds": 1.40346241556108,
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/stable/checkpoint-step-004000.pt",
+      "sha256": "5e43ae81726e8abf04fc8937e016875ae770cb1759fd130edd4377e4e3e6b506",
+      "size_bytes": 108251516,
+      "write_seconds": 1.1657554642297328
+    },
+    {
+      "capture_and_write_seconds": 1.8911694241687655,
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/stable/checkpoint-step-006000.pt",
+      "sha256": "f5adc60d7a93e004846e16b7bd0aea42d8b36113cc5b7974277ec8155a3b00c2",
+      "size_bytes": 150995900,
+      "write_seconds": 1.5675536468625069
+    }
+  ],
+  "completed_steps": 6000,
+  "config": {
+    "arm": "stable",
+    "checkpoint_steps": [
+      0,
+      100,
+      500,
+      1000,
+      1500,
+      2000,
+      2500,
+      3000,
+      4000,
+      6000
+    ],
+    "data": {
+      "full_batch": true,
+      "p": 113,
+      "train_frac": 0.3
+    },
+    "evaluation": {
+      "every_steps": 50,
+      "initial_step": 0,
+      "phase": "post_update",
+      "threshold": 0.9
+    },
+    "filter": {
+      "absolute_eig_floor": 0.0,
+      "adaptive": "none",
+      "alpha": 1.0,
+      "decay": 0.99,
+      "energy_threshold": null,
+      "filter_strength": 1.0,
+      "normalize": "none",
+      "rank": 200,
+      "relative_eig_tol": 1e-08,
+      "soft_residual": true,
+      "stabilize_every": 100,
+      "stable_update": true,
+      "warmup": 100,
+      "weighting": "hard"
+    },
+    "model": {
+      "d_mlp": 512,
+      "d_model": 128,
+      "n_heads": 4,
+      "p": 113
+    },
+    "optimizer": {
+      "amsgrad": false,
+      "betas": [
+        0.9,
+        0.98
+      ],
+      "eps": 1e-08,
+      "lr": 0.001,
+      "weight_decay": 1.0
+    },
+    "seed": 100,
+    "steps": 6000,
+    "threads": 1
+  },
+  "config_sha256": "786c7573177287df61ff04cad04e6fb49a08b0e34f39773203de2a758374bce9",
+  "environment": {
+    "cuda_capability": [
+      8,
+      6
+    ],
+    "cuda_device_name": "NVIDIA GeForce RTX 3090",
+    "cuda_runtime": "12.8",
+    "cudnn": 91900,
+    "device": "cuda",
+    "platform": "Linux-6.8.0-136-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "torch": "2.11.0+cu128",
+    "torch_cpu_threads": 1
+  },
+  "evaluation_rows": [
+    {
+      "cumulative_evaluation_seconds": 0.20871503883972764,
+      "cumulative_training_seconds": 0.0,
+      "phase": "initial",
+      "step": 0,
+      "test": {
+        "accuracy": 0.00861393939703703,
+        "count": 8939,
+        "loss": 4.872778415679932
+      },
+      "train": {
+        "accuracy": 0.008616187609732151,
+        "count": 3830,
+        "loss": 4.884642124176025
+      },
+      "training_loss_before_update": null
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2111866665072739,
+      "cumulative_training_seconds": 0.5459020435810089,
+      "filter": {
+        "basis_rank": 38,
+        "effective_rank": 1.9866240211204809,
+        "filtering_active": false,
+        "max_orthogonality_error": 7.725353157184145e-07,
+        "stabilization_count": 0,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 50,
+      "test": {
+        "accuracy": 0.0,
+        "count": 8939,
+        "loss": 5.667928695678711
+      },
+      "train": {
+        "accuracy": 0.13550913333892822,
+        "count": 3830,
+        "loss": 3.7027950286865234
+      },
+      "training_loss_before_update": 3.731367588043213
+    },
+    {
+      "cumulative_evaluation_seconds": 0.21361931459978223,
+      "cumulative_training_seconds": 0.9834215324372053,
+      "filter": {
+        "basis_rank": 84,
+        "effective_rank": 2.2857408357385216,
+        "filtering_active": false,
+        "max_orthogonality_error": 7.725353157184145e-07,
+        "stabilization_count": 1,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 100,
+      "test": {
+        "accuracy": 0.00011186933988938108,
+        "count": 8939,
+        "loss": 6.760396957397461
+      },
+      "train": {
+        "accuracy": 0.804699718952179,
+        "count": 3830,
+        "loss": 1.5759153366088867
+      },
+      "training_loss_before_update": 1.632590651512146
+    },
+    {
+      "cumulative_evaluation_seconds": 0.21609169663861394,
+      "cumulative_training_seconds": 1.4192475071176887,
+      "filter": {
+        "basis_rank": 131,
+        "effective_rank": 2.699384074732591,
+        "filtering_active": true,
+        "max_orthogonality_error": 7.736712746009289e-07,
+        "stabilization_count": 1,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 150,
+      "test": {
+        "accuracy": 0.0007830853573977947,
+        "count": 8939,
+        "loss": 7.350565433502197
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.19809821248054504
+      },
+      "training_loss_before_update": 0.20418758690357208
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2184958616271615,
+      "cumulative_training_seconds": 1.9849256230518222,
+      "filter": {
+        "basis_rank": 170,
+        "effective_rank": 2.09892323313614,
+        "filtering_active": true,
+        "max_orthogonality_error": 7.736712746009289e-07,
+        "stabilization_count": 2,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 200,
+      "test": {
+        "accuracy": 0.0008949547191150486,
+        "count": 8939,
+        "loss": 7.475746154785156
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.09610463678836823
+      },
+      "training_loss_before_update": 0.1000979095697403
+    },
+    {
+      "cumulative_evaluation_seconds": 0.22120034601539373,
+      "cumulative_training_seconds": 2.8845115397125483,
+      "filter": {
+        "basis_rank": 196,
+        "effective_rank": 2.147645338135944,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.9315964436827926e-06,
+        "stabilization_count": 2,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 250,
+      "test": {
+        "accuracy": 0.0012305626878514886,
+        "count": 8939,
+        "loss": 7.572917938232422
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.07186607271432877
+      },
+      "training_loss_before_update": 0.0722530409693718
+    },
+    {
+      "cumulative_evaluation_seconds": 0.22363435989245772,
+      "cumulative_training_seconds": 3.5576415872201324,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 2.722862225461856,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.9315964436827926e-06,
+        "stabilization_count": 3,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 300,
+      "test": {
+        "accuracy": 0.0011186933843418956,
+        "count": 8939,
+        "loss": 7.759393692016602
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.05324166268110275
+      },
+      "training_loss_before_update": 0.05337667465209961
+    },
+    {
+      "cumulative_evaluation_seconds": 0.22608271008357406,
+      "cumulative_training_seconds": 4.158436669968069,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 3.225523484732269,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.0148618204984814e-06,
+        "stabilization_count": 3,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 350,
+      "test": {
+        "accuracy": 0.002013648161664605,
+        "count": 8939,
+        "loss": 7.996364116668701
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.03945078328251839
+      },
+      "training_loss_before_update": 0.039763495326042175
+    },
+    {
+      "cumulative_evaluation_seconds": 0.22879583900794387,
+      "cumulative_training_seconds": 4.830609122291207,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.17094235752677,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.0148618204984814e-06,
+        "stabilization_count": 4,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 400,
+      "test": {
+        "accuracy": 0.0017899094382300973,
+        "count": 8939,
+        "loss": 8.315413475036621
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.027493616566061974
+      },
+      "training_loss_before_update": 0.028248269110918045
+    },
+    {
+      "cumulative_evaluation_seconds": 0.23123895982280374,
+      "cumulative_training_seconds": 5.4329995177686214,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.257545218572567,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.0148618204984814e-06,
+        "stabilization_count": 4,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 450,
+      "test": {
+        "accuracy": 0.002013648161664605,
+        "count": 8939,
+        "loss": 8.595026969909668
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.024029269814491272
+      },
+      "training_loss_before_update": 0.02410886436700821
+    },
+    {
+      "cumulative_evaluation_seconds": 0.233714843634516,
+      "cumulative_training_seconds": 6.103997788392007,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 1.6428322740548944,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.0148618204984814e-06,
+        "stabilization_count": 5,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 500,
+      "test": {
+        "accuracy": 0.002125517465174198,
+        "count": 8939,
+        "loss": 9.503707885742188
+      },
+      "train": {
+        "accuracy": 0.9707571864128113,
+        "count": 3830,
+        "loss": 0.24768082797527313
+      },
+      "training_loss_before_update": 0.02288774587213993
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2361510656774044,
+      "cumulative_training_seconds": 6.707062680739909,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 1.8212735977443717,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.0148618204984814e-06,
+        "stabilization_count": 5,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 550,
+      "test": {
+        "accuracy": 0.002237386768683791,
+        "count": 8939,
+        "loss": 9.092903137207031
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.015316498465836048
+      },
+      "training_loss_before_update": 0.015267767943441868
+    },
+    {
+      "cumulative_evaluation_seconds": 0.23856531037017703,
+      "cumulative_training_seconds": 7.378190806135535,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 1.825772314589605,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.0148618204984814e-06,
+        "stabilization_count": 6,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 600,
+      "test": {
+        "accuracy": 0.002349256072193384,
+        "count": 8939,
+        "loss": 9.12436294555664
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.015830649062991142
+      },
+      "training_loss_before_update": 0.015858028084039688
+    },
+    {
+      "cumulative_evaluation_seconds": 0.24101878935471177,
+      "cumulative_training_seconds": 7.976635851431638,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 1.8279821752254206,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.3174275156634394e-06,
+        "stabilization_count": 6,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 650,
+      "test": {
+        "accuracy": 0.002349256072193384,
+        "count": 8939,
+        "loss": 9.35492992401123
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.014131634496152401
+      },
+      "training_loss_before_update": 0.014170530252158642
+    },
+    {
+      "cumulative_evaluation_seconds": 0.24371629022061825,
+      "cumulative_training_seconds": 8.6494951848872,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 1.8306296659467325,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.3174275156634394e-06,
+        "stabilization_count": 7,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 700,
+      "test": {
+        "accuracy": 0.002125517465174198,
+        "count": 8939,
+        "loss": 9.701009750366211
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.011988493613898754
+      },
+      "training_loss_before_update": 0.012028193101286888
+    },
+    {
+      "cumulative_evaluation_seconds": 0.24616116425022483,
+      "cumulative_training_seconds": 9.242606645915657,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 1.9783354784532228,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.3174275156634394e-06,
+        "stabilization_count": 7,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 750,
+      "test": {
+        "accuracy": 0.002125517465174198,
+        "count": 8939,
+        "loss": 9.839556694030762
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.013385922648012638
+      },
+      "training_loss_before_update": 0.01359157357364893
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2486316873691976,
+      "cumulative_training_seconds": 9.920002764556557,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 1.9823568329228467,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.3174275156634394e-06,
+        "stabilization_count": 8,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 800,
+      "test": {
+        "accuracy": 0.002461125375702977,
+        "count": 8939,
+        "loss": 9.499527931213379
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.014526596292853355
+      },
+      "training_loss_before_update": 0.014501828700304031
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2510624835267663,
+      "cumulative_training_seconds": 10.519558861851692,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 1.98322648491836,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.3847369448048994e-06,
+        "stabilization_count": 8,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 850,
+      "test": {
+        "accuracy": 0.002684864215552807,
+        "count": 8939,
+        "loss": 9.5108060836792
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.013851212337613106
+      },
+      "training_loss_before_update": 0.01388859935104847
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2535382183268666,
+      "cumulative_training_seconds": 11.189547225367278,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 1.9840493750715122,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.3847369448048994e-06,
+        "stabilization_count": 9,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 900,
+      "test": {
+        "accuracy": 0.002684864215552807,
+        "count": 8939,
+        "loss": 9.68980598449707
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.011669847182929516
+      },
+      "training_loss_before_update": 0.011713827028870583
+    },
+    {
+      "cumulative_evaluation_seconds": 0.25597720220685005,
+      "cumulative_training_seconds": 11.748196336906403,
+      "filter": {
+        "basis_rank": 123,
+        "effective_rank": 2.5940569679384797,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.3847369448048994e-06,
+        "stabilization_count": 9,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 950,
+      "test": {
+        "accuracy": 0.0015661707147955894,
+        "count": 8939,
+        "loss": 9.929657936096191
+      },
+      "train": {
+        "accuracy": 0.9968668222427368,
+        "count": 3830,
+        "loss": 0.09529276937246323
+      },
+      "training_loss_before_update": 0.11723562330007553
+    },
+    {
+      "cumulative_evaluation_seconds": 0.25844108825549483,
+      "cumulative_training_seconds": 12.262004995718598,
+      "filter": {
+        "basis_rank": 133,
+        "effective_rank": 2.702672087395723,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.3847369448048994e-06,
+        "stabilization_count": 10,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1000,
+      "test": {
+        "accuracy": 0.0019017787417396903,
+        "count": 8939,
+        "loss": 9.495376586914062
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.01612887531518936
+      },
+      "training_loss_before_update": 0.016090767458081245
+    },
+    {
+      "cumulative_evaluation_seconds": 0.26106006605550647,
+      "cumulative_training_seconds": 12.73365743784234,
+      "filter": {
+        "basis_rank": 133,
+        "effective_rank": 2.7049548829003194,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.3847369448048994e-06,
+        "stabilization_count": 10,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1050,
+      "test": {
+        "accuracy": 0.0019017787417396903,
+        "count": 8939,
+        "loss": 9.110262870788574
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.018312789499759674
+      },
+      "training_loss_before_update": 0.018296778202056885
+    },
+    {
+      "cumulative_evaluation_seconds": 0.26351547986268997,
+      "cumulative_training_seconds": 13.266207222361118,
+      "filter": {
+        "basis_rank": 148,
+        "effective_rank": 2.705973883903513,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.3847369448048994e-06,
+        "stabilization_count": 11,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1100,
+      "test": {
+        "accuracy": 0.002013648161664605,
+        "count": 8939,
+        "loss": 8.989581108093262
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.017087582498788834
+      },
+      "training_loss_before_update": 0.017145883291959763
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2658941117115319,
+      "cumulative_training_seconds": 13.768481430597603,
+      "filter": {
+        "basis_rank": 157,
+        "effective_rank": 2.7068323477852605,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 11,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1150,
+      "test": {
+        "accuracy": 0.002013648161664605,
+        "count": 8939,
+        "loss": 8.998799324035645
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.013783786445856094
+      },
+      "training_loss_before_update": 0.013848084025084972
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2684454577974975,
+      "cumulative_training_seconds": 14.27043485455215,
+      "filter": {
+        "basis_rank": 98,
+        "effective_rank": 2.8949075661163084,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 12,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1200,
+      "test": {
+        "accuracy": 0.0013424321077764034,
+        "count": 8939,
+        "loss": 8.718878746032715
+      },
+      "train": {
+        "accuracy": 0.944908618927002,
+        "count": 3830,
+        "loss": 0.5185045003890991
+      },
+      "training_loss_before_update": 0.584204912185669
+    },
+    {
+      "cumulative_evaluation_seconds": 0.27087972266599536,
+      "cumulative_training_seconds": 14.690616447944194,
+      "filter": {
+        "basis_rank": 108,
+        "effective_rank": 3.0060646011927012,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 12,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1250,
+      "test": {
+        "accuracy": 0.0016780401347205043,
+        "count": 8939,
+        "loss": 8.759366989135742
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.03743322566151619
+      },
+      "training_loss_before_update": 0.03773682937026024
+    },
+    {
+      "cumulative_evaluation_seconds": 0.27344522485509515,
+      "cumulative_training_seconds": 15.15492615988478,
+      "filter": {
+        "basis_rank": 112,
+        "effective_rank": 3.010745800819815,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 13,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1300,
+      "test": {
+        "accuracy": 0.0015661707147955894,
+        "count": 8939,
+        "loss": 8.3334321975708
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.03446115925908089
+      },
+      "training_loss_before_update": 0.03447401896119118
+    },
+    {
+      "cumulative_evaluation_seconds": 0.27607111912220716,
+      "cumulative_training_seconds": 15.589926177635789,
+      "filter": {
+        "basis_rank": 124,
+        "effective_rank": 3.013262464870114,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 13,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1350,
+      "test": {
+        "accuracy": 0.0015661707147955894,
+        "count": 8939,
+        "loss": 8.0850191116333
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.032649699598550797
+      },
+      "training_loss_before_update": 0.032722506672143936
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2785539519973099,
+      "cumulative_training_seconds": 16.106664570514113,
+      "filter": {
+        "basis_rank": 144,
+        "effective_rank": 3.01497215058462,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 14,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1400,
+      "test": {
+        "accuracy": 0.002013648161664605,
+        "count": 8939,
+        "loss": 7.998362064361572
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.02681311033666134
+      },
+      "training_loss_before_update": 0.026954462751746178
+    },
+    {
+      "cumulative_evaluation_seconds": 0.28097459208220243,
+      "cumulative_training_seconds": 16.5928128445521,
+      "filter": {
+        "basis_rank": 148,
+        "effective_rank": 4.188588676524658,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 14,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1450,
+      "test": {
+        "accuracy": 0.0017899094382300973,
+        "count": 8939,
+        "loss": 8.082815170288086
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.04887884482741356
+      },
+      "training_loss_before_update": 0.050164513289928436
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2833740250207484,
+      "cumulative_training_seconds": 17.141035831533372,
+      "filter": {
+        "basis_rank": 150,
+        "effective_rank": 4.200822191144948,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 15,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1500,
+      "test": {
+        "accuracy": 0.0016780401347205043,
+        "count": 8939,
+        "loss": 7.789988040924072
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0368959978222847
+      },
+      "training_loss_before_update": 0.036886066198349
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2858014232479036,
+      "cumulative_training_seconds": 17.64353710692376,
+      "filter": {
+        "basis_rank": 159,
+        "effective_rank": 4.203597607293497,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 15,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1550,
+      "test": {
+        "accuracy": 0.0014543014112859964,
+        "count": 8939,
+        "loss": 7.632687568664551
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.03463384881615639
+      },
+      "training_loss_before_update": 0.034744054079055786
+    },
+    {
+      "cumulative_evaluation_seconds": 0.288245621137321,
+      "cumulative_training_seconds": 18.227756591513753,
+      "filter": {
+        "basis_rank": 172,
+        "effective_rank": 4.20539778345131,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 16,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1600,
+      "test": {
+        "accuracy": 0.0017899094382300973,
+        "count": 8939,
+        "loss": 7.608888149261475
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.027291160076856613
+      },
+      "training_loss_before_update": 0.027451520785689354
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2906759437173605,
+      "cumulative_training_seconds": 18.75081590656191,
+      "filter": {
+        "basis_rank": 148,
+        "effective_rank": 5.311241366123546,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 16,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1650,
+      "test": {
+        "accuracy": 0.0007830853573977947,
+        "count": 8939,
+        "loss": 7.835455894470215
+      },
+      "train": {
+        "accuracy": 0.9869451522827148,
+        "count": 3830,
+        "loss": 0.3100634515285492
+      },
+      "training_loss_before_update": 0.37699034810066223
+    },
+    {
+      "cumulative_evaluation_seconds": 0.29321742756292224,
+      "cumulative_training_seconds": 19.327886609826237,
+      "filter": {
+        "basis_rank": 168,
+        "effective_rank": 5.654245799931961,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 17,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1700,
+      "test": {
+        "accuracy": 0.0016780401347205043,
+        "count": 8939,
+        "loss": 7.644262313842773
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.03444007411599159
+      },
+      "training_loss_before_update": 0.03452718257904053
+    },
+    {
+      "cumulative_evaluation_seconds": 0.295610370580107,
+      "cumulative_training_seconds": 19.855421455111355,
+      "filter": {
+        "basis_rank": 174,
+        "effective_rank": 5.660488657111563,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 17,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1750,
+      "test": {
+        "accuracy": 0.002013648161664605,
+        "count": 8939,
+        "loss": 7.363645076751709
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.03593623265624046
+      },
+      "training_loss_before_update": 0.03591793775558472
+    },
+    {
+      "cumulative_evaluation_seconds": 0.2980411476455629,
+      "cumulative_training_seconds": 20.482059222180396,
+      "filter": {
+        "basis_rank": 190,
+        "effective_rank": 5.662956318822974,
+        "filtering_active": true,
+        "max_orthogonality_error": 2.8591759928531246e-06,
+        "stabilization_count": 18,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1800,
+      "test": {
+        "accuracy": 0.002237386768683791,
+        "count": 8939,
+        "loss": 7.264209270477295
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.032926034182310104
+      },
+      "training_loss_before_update": 0.0330536812543869
+    },
+    {
+      "cumulative_evaluation_seconds": 0.300488889683038,
+      "cumulative_training_seconds": 21.0755661604926,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 5.6648113756299106,
+        "filtering_active": true,
+        "max_orthogonality_error": 7.5594875852402765e-06,
+        "stabilization_count": 18,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1850,
+      "test": {
+        "accuracy": 0.002349256072193384,
+        "count": 8939,
+        "loss": 7.279839992523193
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.02519754134118557
+      },
+      "training_loss_before_update": 0.02535521239042282
+    },
+    {
+      "cumulative_evaluation_seconds": 0.30290931463241577,
+      "cumulative_training_seconds": 21.666694200132042,
+      "filter": {
+        "basis_rank": 167,
+        "effective_rank": 3.5285911265614547,
+        "filtering_active": true,
+        "max_orthogonality_error": 7.5594875852402765e-06,
+        "stabilization_count": 19,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1900,
+      "test": {
+        "accuracy": 0.002572994912043214,
+        "count": 8939,
+        "loss": 7.521160125732422
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.040198177099227905
+      },
+      "training_loss_before_update": 0.04138635843992233
+    },
+    {
+      "cumulative_evaluation_seconds": 0.30532814748585224,
+      "cumulative_training_seconds": 22.19412870844826,
+      "filter": {
+        "basis_rank": 170,
+        "effective_rank": 3.5363149280162887,
+        "filtering_active": true,
+        "max_orthogonality_error": 7.5594875852402765e-06,
+        "stabilization_count": 19,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 1950,
+      "test": {
+        "accuracy": 0.002125517465174198,
+        "count": 8939,
+        "loss": 7.192253589630127
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.03371027857065201
+      },
+      "training_loss_before_update": 0.03360576927661896
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3077698778361082,
+      "cumulative_training_seconds": 22.803630456328392,
+      "filter": {
+        "basis_rank": 183,
+        "effective_rank": 3.5382011680855263,
+        "filtering_active": true,
+        "max_orthogonality_error": 7.5594875852402765e-06,
+        "stabilization_count": 20,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2000,
+      "test": {
+        "accuracy": 0.002684864215552807,
+        "count": 8939,
+        "loss": 7.007656097412109
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.034853048622608185
+      },
+      "training_loss_before_update": 0.034932833164930344
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3102542981505394,
+      "cumulative_training_seconds": 23.386462308932096,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 3.5392928042142637,
+        "filtering_active": true,
+        "max_orthogonality_error": 7.5594875852402765e-06,
+        "stabilization_count": 20,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2050,
+      "test": {
+        "accuracy": 0.0027967335190624,
+        "count": 8939,
+        "loss": 6.990789413452148
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.027630332857370377
+      },
+      "training_loss_before_update": 0.02777927555143833
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3126958152279258,
+      "cumulative_training_seconds": 24.05746168224141,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 3.566534394935112,
+        "filtering_active": true,
+        "max_orthogonality_error": 7.601008746860316e-06,
+        "stabilization_count": 21,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2100,
+      "test": {
+        "accuracy": 0.004251034930348396,
+        "count": 8939,
+        "loss": 6.98923921585083
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.03719558194279671
+      },
+      "training_loss_before_update": 0.026326319202780724
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3151118466630578,
+      "cumulative_training_seconds": 24.657172355335206,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.640274230202675,
+        "filtering_active": true,
+        "max_orthogonality_error": 9.014711395138875e-06,
+        "stabilization_count": 21,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2150,
+      "test": {
+        "accuracy": 0.00413916539400816,
+        "count": 8939,
+        "loss": 7.017672061920166
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.02791592851281166
+      },
+      "training_loss_before_update": 0.028098395094275475
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3175464477390051,
+      "cumulative_training_seconds": 25.328802401199937,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.646952286052277,
+        "filtering_active": true,
+        "max_orthogonality_error": 9.014711395138875e-06,
+        "stabilization_count": 22,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2200,
+      "test": {
+        "accuracy": 0.004698512144386768,
+        "count": 8939,
+        "loss": 6.664893627166748
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.03357209265232086
+      },
+      "training_loss_before_update": 0.03347301110625267
+    },
+    {
+      "cumulative_evaluation_seconds": 0.32002957072108984,
+      "cumulative_training_seconds": 25.930917740799487,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.648807494355636,
+        "filtering_active": true,
+        "max_orthogonality_error": 9.941650205291808e-06,
+        "stabilization_count": 22,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2250,
+      "test": {
+        "accuracy": 0.005481597501784563,
+        "count": 8939,
+        "loss": 6.536978721618652
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.029937146231532097
+      },
+      "training_loss_before_update": 0.03009331412613392
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3225558619014919,
+      "cumulative_training_seconds": 26.60410653334111,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.650403309504394,
+        "filtering_active": true,
+        "max_orthogonality_error": 9.941650205291808e-06,
+        "stabilization_count": 23,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2300,
+      "test": {
+        "accuracy": 0.006488421931862831,
+        "count": 8939,
+        "loss": 6.415416717529297
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.022808415815234184
+      },
+      "training_loss_before_update": 0.02292601577937603
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3250104608014226,
+      "cumulative_training_seconds": 27.20790173439309,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.652337572257891,
+        "filtering_active": true,
+        "max_orthogonality_error": 9.941650205291808e-06,
+        "stabilization_count": 23,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2350,
+      "test": {
+        "accuracy": 0.00962076336145401,
+        "count": 8939,
+        "loss": 6.1864423751831055
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.018100833520293236
+      },
+      "training_loss_before_update": 0.018173668533563614
+    },
+    {
+      "cumulative_evaluation_seconds": 0.32743558567017317,
+      "cumulative_training_seconds": 27.87860378716141,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 2.8212368815314144,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.0218323950539343e-05,
+        "stabilization_count": 24,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2400,
+      "test": {
+        "accuracy": 0.013871798291802406,
+        "count": 8939,
+        "loss": 6.0098114013671875
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.020534111186861992
+      },
+      "training_loss_before_update": 0.02085314691066742
+    },
+    {
+      "cumulative_evaluation_seconds": 0.32998344767838717,
+      "cumulative_training_seconds": 28.47978138970211,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 2.825413004530169,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.0218323950539343e-05,
+        "stabilization_count": 24,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2450,
+      "test": {
+        "accuracy": 0.014095536433160305,
+        "count": 8939,
+        "loss": 5.689219951629639
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.022616194561123848
+      },
+      "training_loss_before_update": 0.022513804957270622
+    },
+    {
+      "cumulative_evaluation_seconds": 0.33240231266245246,
+      "cumulative_training_seconds": 29.15212693111971,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 2.826433382001635,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.0218323950539343e-05,
+        "stabilization_count": 25,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2500,
+      "test": {
+        "accuracy": 0.018346572294831276,
+        "count": 8939,
+        "loss": 5.430551052093506
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.021729085594415665
+      },
+      "training_loss_before_update": 0.021820854395627975
+    },
+    {
+      "cumulative_evaluation_seconds": 0.33481462858617306,
+      "cumulative_training_seconds": 29.758841449860483,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 2.827177704320997,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.0701992323447485e-05,
+        "stabilization_count": 25,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2550,
+      "test": {
+        "accuracy": 0.027631726115942,
+        "count": 8939,
+        "loss": 5.073058605194092
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.017331842333078384
+      },
+      "training_loss_before_update": 0.01740982197225094
+    },
+    {
+      "cumulative_evaluation_seconds": 0.33752025570720434,
+      "cumulative_training_seconds": 30.42804098315537,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 2.8281686942476005,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.0701992323447485e-05,
+        "stabilization_count": 26,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2600,
+      "test": {
+        "accuracy": 0.04866316169500351,
+        "count": 8939,
+        "loss": 4.56072998046875
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0144883394241333
+      },
+      "training_loss_before_update": 0.014526024460792542
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3399493847973645,
+      "cumulative_training_seconds": 31.02814450720325,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 3.12391609871876,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.4951099728932604e-05,
+        "stabilization_count": 26,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2650,
+      "test": {
+        "accuracy": 0.07629489153623581,
+        "count": 8939,
+        "loss": 4.111610412597656
+      },
+      "train": {
+        "accuracy": 0.999738872051239,
+        "count": 3830,
+        "loss": 0.08813875168561935
+      },
+      "training_loss_before_update": 0.09658923745155334
+    },
+    {
+      "cumulative_evaluation_seconds": 0.34242127975448966,
+      "cumulative_training_seconds": 31.70375708770007,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 3.224172923326502,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.4951099728932604e-05,
+        "stabilization_count": 27,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2700,
+      "test": {
+        "accuracy": 0.14610135555267334,
+        "count": 8939,
+        "loss": 3.338218927383423
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.015766862779855728
+      },
+      "training_loss_before_update": 0.015680765733122826
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3448569308966398,
+      "cumulative_training_seconds": 32.302511994726956,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 3.226043553759879,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.4951099728932604e-05,
+        "stabilization_count": 27,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2750,
+      "test": {
+        "accuracy": 0.16422419250011444,
+        "count": 8939,
+        "loss": 3.165170431137085
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.019914772361516953
+      },
+      "training_loss_before_update": 0.019916417077183723
+    },
+    {
+      "cumulative_evaluation_seconds": 0.34730642894282937,
+      "cumulative_training_seconds": 32.97387501783669,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 3.2268809662266937,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.4951099728932604e-05,
+        "stabilization_count": 28,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2800,
+      "test": {
+        "accuracy": 0.2361561805009842,
+        "count": 8939,
+        "loss": 2.763397216796875
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.017185768112540245
+      },
+      "training_loss_before_update": 0.01725980080664158
+    },
+    {
+      "cumulative_evaluation_seconds": 0.34972584899514914,
+      "cumulative_training_seconds": 33.573807366658,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 3.227580012352827,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.4951099728932604e-05,
+        "stabilization_count": 28,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2850,
+      "test": {
+        "accuracy": 0.37845396995544434,
+        "count": 8939,
+        "loss": 2.175405979156494
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.013763216324150562
+      },
+      "training_loss_before_update": 0.01382439024746418
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3521576579660177,
+      "cumulative_training_seconds": 34.24362256843597,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 3.228489847601217,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.4951099728932604e-05,
+        "stabilization_count": 29,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2900,
+      "test": {
+        "accuracy": 0.58429354429245,
+        "count": 8939,
+        "loss": 1.5027167797088623
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.011017296463251114
+      },
+      "training_loss_before_update": 0.011051186360418797
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3546488080173731,
+      "cumulative_training_seconds": 34.84393514599651,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 2.1702870592407097,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.618102760403417e-05,
+        "stabilization_count": 29,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 2950,
+      "test": {
+        "accuracy": 0.5468173623085022,
+        "count": 8939,
+        "loss": 1.61288583278656
+      },
+      "train": {
+        "accuracy": 0.9934725761413574,
+        "count": 3830,
+        "loss": 0.09414610266685486
+      },
+      "training_loss_before_update": 0.22069008648395538
+    },
+    {
+      "cumulative_evaluation_seconds": 0.35710782231763005,
+      "cumulative_training_seconds": 35.51360351778567,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.06386577826634,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 30,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3000,
+      "test": {
+        "accuracy": 0.9259425401687622,
+        "count": 8939,
+        "loss": 0.49001774191856384
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.010150059126317501
+      },
+      "training_loss_before_update": 0.01012177299708128
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3596797762438655,
+      "cumulative_training_seconds": 36.11141282040626,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.067128327103094,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 30,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3050,
+      "test": {
+        "accuracy": 0.9567065834999084,
+        "count": 8939,
+        "loss": 0.4319819211959839
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.012180592864751816
+      },
+      "training_loss_before_update": 0.012203347869217396
+    },
+    {
+      "cumulative_evaluation_seconds": 0.36225716350600123,
+      "cumulative_training_seconds": 36.77994836261496,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.068344493493747,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 31,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3100,
+      "test": {
+        "accuracy": 0.9895961880683899,
+        "count": 8939,
+        "loss": 0.25779661536216736
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.010072803124785423
+      },
+      "training_loss_before_update": 0.01011949684470892
+    },
+    {
+      "cumulative_evaluation_seconds": 0.36468368815258145,
+      "cumulative_training_seconds": 37.38006906071678,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.0695410906664335,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 31,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3150,
+      "test": {
+        "accuracy": 0.9994406700134277,
+        "count": 8939,
+        "loss": 0.11237353086471558
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.00798339955508709
+      },
+      "training_loss_before_update": 0.008016266860067844
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3671213649213314,
+      "cumulative_training_seconds": 38.07863887352869,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.0712144287096095,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 32,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3200,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.04644259065389633
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0066457889042794704
+      },
+      "training_loss_before_update": 0.006668349262326956
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3695828728377819,
+      "cumulative_training_seconds": 38.67936593899503,
+      "filter": {
+        "basis_rank": 200,
+        "effective_rank": 4.073457872550675,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 32,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3250,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.02344895340502262
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.005855565425008535
+      },
+      "training_loss_before_update": 0.005868786014616489
+    },
+    {
+      "cumulative_evaluation_seconds": 0.37221398670226336,
+      "cumulative_training_seconds": 39.23994626943022,
+      "filter": {
+        "basis_rank": 146,
+        "effective_rank": 1.6928437801713345,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 33,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3300,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.02019769325852394
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.006485499441623688
+      },
+      "training_loss_before_update": 0.006485192105174065
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3746167798526585,
+      "cumulative_training_seconds": 39.74010495422408,
+      "filter": {
+        "basis_rank": 150,
+        "effective_rank": 1.6936778969346966,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 33,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3350,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.02184234745800495
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.008729151450097561
+      },
+      "training_loss_before_update": 0.008729581721127033
+    },
+    {
+      "cumulative_evaluation_seconds": 0.37727853702381253,
+      "cumulative_training_seconds": 40.30560201918706,
+      "filter": {
+        "basis_rank": 159,
+        "effective_rank": 1.6939606208765736,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 34,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3400,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.017284398898482323
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0077528320252895355
+      },
+      "training_loss_before_update": 0.007777241058647633
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3797175968065858,
+      "cumulative_training_seconds": 40.82340322714299,
+      "filter": {
+        "basis_rank": 164,
+        "effective_rank": 1.6942277160628687,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 34,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3450,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.01329196896404028
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.006579549051821232
+      },
+      "training_loss_before_update": 0.0066010309383273125
+    },
+    {
+      "cumulative_evaluation_seconds": 0.38231584802269936,
+      "cumulative_training_seconds": 41.40605150582269,
+      "filter": {
+        "basis_rank": 168,
+        "effective_rank": 1.6945419037365859,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 35,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3500,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.010234152898192406
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.005603338126093149
+      },
+      "training_loss_before_update": 0.005619161296635866
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3848624820820987,
+      "cumulative_training_seconds": 41.849105931818485,
+      "filter": {
+        "basis_rank": 119,
+        "effective_rank": 3.354646113934611,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 35,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3550,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.012107563205063343
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.006665228400379419
+      },
+      "training_loss_before_update": 0.006686210632324219
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3873467482626438,
+      "cumulative_training_seconds": 42.32916310150176,
+      "filter": {
+        "basis_rank": 120,
+        "effective_rank": 3.357197937877893,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 36,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3600,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.015345193445682526
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.009502078406512737
+      },
+      "training_loss_before_update": 0.009446199983358383
+    },
+    {
+      "cumulative_evaluation_seconds": 0.38976978696882725,
+      "cumulative_training_seconds": 42.78040310833603,
+      "filter": {
+        "basis_rank": 130,
+        "effective_rank": 3.3583586344957546,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 36,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3650,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.01463917177170515
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.009613380767405033
+      },
+      "training_loss_before_update": 0.009644079953432083
+    },
+    {
+      "cumulative_evaluation_seconds": 0.39225842989981174,
+      "cumulative_training_seconds": 43.30025388114154,
+      "filter": {
+        "basis_rank": 137,
+        "effective_rank": 3.359163752805867,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 37,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3700,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.011565462686121464
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.007804465014487505
+      },
+      "training_loss_before_update": 0.007840458303689957
+    },
+    {
+      "cumulative_evaluation_seconds": 0.39472249802201986,
+      "cumulative_training_seconds": 43.78408257011324,
+      "filter": {
+        "basis_rank": 143,
+        "effective_rank": 3.359813426053402,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 37,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3750,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.009092949330806732
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0062920087948441505
+      },
+      "training_loss_before_update": 0.006318065337836742
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3972343523055315,
+      "cumulative_training_seconds": 44.31981125008315,
+      "filter": {
+        "basis_rank": 145,
+        "effective_rank": 3.3603848770570934,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 38,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3800,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.007268688641488552
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.005167047958821058
+      },
+      "training_loss_before_update": 0.00518519664183259
+    },
+    {
+      "cumulative_evaluation_seconds": 0.3996699620038271,
+      "cumulative_training_seconds": 44.81900931708515,
+      "filter": {
+        "basis_rank": 149,
+        "effective_rank": 3.362860143402077,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 38,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3850,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.007040861062705517
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.005091863218694925
+      },
+      "training_loss_before_update": 0.004414709284901619
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4021618580445647,
+      "cumulative_training_seconds": 45.272852529771626,
+      "filter": {
+        "basis_rank": 102,
+        "effective_rank": 3.668883791367664,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 39,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3900,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.007876642979681492
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0054786112159490585
+      },
+      "training_loss_before_update": 0.005499344319105148
+    },
+    {
+      "cumulative_evaluation_seconds": 0.40462014032527804,
+      "cumulative_training_seconds": 45.6928209066391,
+      "filter": {
+        "basis_rank": 106,
+        "effective_rank": 3.6705166429931206,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 39,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 3950,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.010747293010354042
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.008032478392124176
+      },
+      "training_loss_before_update": 0.007983630523085594
+    },
+    {
+      "cumulative_evaluation_seconds": 0.40714009245857596,
+      "cumulative_training_seconds": 46.160585538484156,
+      "filter": {
+        "basis_rank": 115,
+        "effective_rank": 3.670975767495492,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 40,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4000,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.010474658571183681
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.008108670823276043
+      },
+      "training_loss_before_update": 0.00813672598451376
+    },
+    {
+      "cumulative_evaluation_seconds": 0.40957087744027376,
+      "cumulative_training_seconds": 46.600358593743294,
+      "filter": {
+        "basis_rank": 122,
+        "effective_rank": 3.6713023728553593,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 40,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4050,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.008323036134243011
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.006504769902676344
+      },
+      "training_loss_before_update": 0.006536232773214579
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4120072964578867,
+      "cumulative_training_seconds": 47.090251880697906,
+      "filter": {
+        "basis_rank": 125,
+        "effective_rank": 3.6715919182437413,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 41,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4100,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.006556512322276831
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.005146235693246126
+      },
+      "training_loss_before_update": 0.005169404670596123
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4145956030115485,
+      "cumulative_training_seconds": 47.54614869970828,
+      "filter": {
+        "basis_rank": 129,
+        "effective_rank": 3.671899214155896,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 41,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4150,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.005302279721945524
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0041737970896065235
+      },
+      "training_loss_before_update": 0.004190042614936829
+    },
+    {
+      "cumulative_evaluation_seconds": 0.41705819498747587,
+      "cumulative_training_seconds": 48.069531553890556,
+      "filter": {
+        "basis_rank": 131,
+        "effective_rank": 3.6722509384691446,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 42,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4200,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.004328988492488861
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.003413829253986478
+      },
+      "training_loss_before_update": 0.0034279203973710537
+    },
+    {
+      "cumulative_evaluation_seconds": 0.41950742807239294,
+      "cumulative_training_seconds": 48.4714806554839,
+      "filter": {
+        "basis_rank": 78,
+        "effective_rank": 2.846162754663257,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 42,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4250,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.010126078501343727
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.007151423022150993
+      },
+      "training_loss_before_update": 0.00732645345851779
+    },
+    {
+      "cumulative_evaluation_seconds": 0.42234518378973007,
+      "cumulative_training_seconds": 48.89345058333129,
+      "filter": {
+        "basis_rank": 80,
+        "effective_rank": 2.8479731055539785,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 43,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4300,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.009856040589511395
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.007562409155070782
+      },
+      "training_loss_before_update": 0.007511659059673548
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4249680368229747,
+      "cumulative_training_seconds": 49.28860693471506,
+      "filter": {
+        "basis_rank": 88,
+        "effective_rank": 2.8489023018692126,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 43,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4350,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.010825741104781628
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.008690604008734226
+      },
+      "training_loss_before_update": 0.008697737008333206
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4273762027733028,
+      "cumulative_training_seconds": 49.725897709839046,
+      "filter": {
+        "basis_rank": 95,
+        "effective_rank": 2.849443808972023,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 44,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4400,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.009012932889163494
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.007364489138126373
+      },
+      "training_loss_before_update": 0.007400583475828171
+    },
+    {
+      "cumulative_evaluation_seconds": 0.42984291864559054,
+      "cumulative_training_seconds": 50.132820054423064,
+      "filter": {
+        "basis_rank": 100,
+        "effective_rank": 2.849788169242331,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 44,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4450,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.006962782237678766
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.005709489807486534
+      },
+      "training_loss_before_update": 0.005738632287830114
+    },
+    {
+      "cumulative_evaluation_seconds": 0.432259360793978,
+      "cumulative_training_seconds": 50.58671723306179,
+      "filter": {
+        "basis_rank": 105,
+        "effective_rank": 2.8500741813659345,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 45,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4500,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.005640628281980753
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.004637871868908405
+      },
+      "training_loss_before_update": 0.004652456846088171
+    },
+    {
+      "cumulative_evaluation_seconds": 0.43485917849466205,
+      "cumulative_training_seconds": 51.01471544895321,
+      "filter": {
+        "basis_rank": 116,
+        "effective_rank": 2.850342637310827,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 45,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4550,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.0049413954839110374
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.00406374828889966
+      },
+      "training_loss_before_update": 0.004074882250279188
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4372615246102214,
+      "cumulative_training_seconds": 51.474871187936515,
+      "filter": {
+        "basis_rank": 93,
+        "effective_rank": 3.183599074130823,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 46,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4600,
+      "test": {
+        "accuracy": 0.9992169141769409,
+        "count": 8939,
+        "loss": 0.057388827204704285
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.03859269618988037
+      },
+      "training_loss_before_update": 0.04220827668905258
+    },
+    {
+      "cumulative_evaluation_seconds": 0.43980525340884924,
+      "cumulative_training_seconds": 51.886753782164305,
+      "filter": {
+        "basis_rank": 100,
+        "effective_rank": 3.2437451465500247,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 46,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4650,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.006193343549966812
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.004749727435410023
+      },
+      "training_loss_before_update": 0.004723039455711842
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4424547404050827,
+      "cumulative_training_seconds": 52.33226859057322,
+      "filter": {
+        "basis_rank": 104,
+        "effective_rank": 3.2442722443048613,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 47,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4700,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.008020437322556973
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.006487562786787748
+      },
+      "training_loss_before_update": 0.006480282172560692
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4449930195696652,
+      "cumulative_training_seconds": 52.7549824109301,
+      "filter": {
+        "basis_rank": 110,
+        "effective_rank": 3.244605310753168,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 47,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4750,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.0069496966898441315
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.005732689052820206
+      },
+      "training_loss_before_update": 0.005753843113780022
+    },
+    {
+      "cumulative_evaluation_seconds": 0.44770291447639465,
+      "cumulative_training_seconds": 53.224621161818504,
+      "filter": {
+        "basis_rank": 119,
+        "effective_rank": 3.244954138128684,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 48,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4800,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.005635617766529322
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.004658733960241079
+      },
+      "training_loss_before_update": 0.004678711760789156
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4502769922837615,
+      "cumulative_training_seconds": 53.6635935283266,
+      "filter": {
+        "basis_rank": 124,
+        "effective_rank": 3.245252971496259,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 48,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4850,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.0046155196614563465
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.003813068848103285
+      },
+      "training_loss_before_update": 0.0038263974711298943
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4528452721424401,
+      "cumulative_training_seconds": 54.157560580875725,
+      "filter": {
+        "basis_rank": 128,
+        "effective_rank": 3.245516777323509,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 49,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4900,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.0039278725162148476
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.003223293460905552
+      },
+      "training_loss_before_update": 0.003234297502785921
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4552783383987844,
+      "cumulative_training_seconds": 54.59447879018262,
+      "filter": {
+        "basis_rank": 109,
+        "effective_rank": 2.2576068263035665,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 49,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 4950,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.007875807583332062
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.005518404301255941
+      },
+      "training_loss_before_update": 0.005793532356619835
+    },
+    {
+      "cumulative_evaluation_seconds": 0.45768851740285754,
+      "cumulative_training_seconds": 55.05608288384974,
+      "filter": {
+        "basis_rank": 109,
+        "effective_rank": 2.2614120480299515,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 50,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5000,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.005559169687330723
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0043730176985263824
+      },
+      "training_loss_before_update": 0.004338982980698347
+    },
+    {
+      "cumulative_evaluation_seconds": 0.46014801738783717,
+      "cumulative_training_seconds": 55.483409827109426,
+      "filter": {
+        "basis_rank": 116,
+        "effective_rank": 2.262313001888004,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 50,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5050,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.0058250147849321365
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.004739748314023018
+      },
+      "training_loss_before_update": 0.004756237380206585
+    },
+    {
+      "cumulative_evaluation_seconds": 0.462564866989851,
+      "cumulative_training_seconds": 55.96349122794345,
+      "filter": {
+        "basis_rank": 125,
+        "effective_rank": 2.2628377900942196,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 51,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5100,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.004762853030115366
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0038843618240207434
+      },
+      "training_loss_before_update": 0.003900851123034954
+    },
+    {
+      "cumulative_evaluation_seconds": 0.46517663868144155,
+      "cumulative_training_seconds": 56.412396961357445,
+      "filter": {
+        "basis_rank": 127,
+        "effective_rank": 2.2632066639955917,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 51,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5150,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.003958624321967363
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0032142833806574345
+      },
+      "training_loss_before_update": 0.003226091153919697
+    },
+    {
+      "cumulative_evaluation_seconds": 0.467657005880028,
+      "cumulative_training_seconds": 56.91759760538116,
+      "filter": {
+        "basis_rank": 130,
+        "effective_rank": 2.2634935047083347,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 52,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5200,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.0033470294438302517
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.002696035895496607
+      },
+      "training_loss_before_update": 0.002705803606659174
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4702521958388388,
+      "cumulative_training_seconds": 57.3826449890621,
+      "filter": {
+        "basis_rank": 132,
+        "effective_rank": 2.2637964661195893,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 52,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5250,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.002745355712249875
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0021874764934182167
+      },
+      "training_loss_before_update": 0.00219845212996006
+    },
+    {
+      "cumulative_evaluation_seconds": 0.47274030465632677,
+      "cumulative_training_seconds": 57.850745466537774,
+      "filter": {
+        "basis_rank": 108,
+        "effective_rank": 2.6425457886150006,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 53,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5300,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.004006403964012861
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.002858782419934869
+      },
+      "training_loss_before_update": 0.0029050081502646208
+    },
+    {
+      "cumulative_evaluation_seconds": 0.475629654712975,
+      "cumulative_training_seconds": 58.27591525949538,
+      "filter": {
+        "basis_rank": 108,
+        "effective_rank": 2.6439981491741915,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 53,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5350,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.004938523750752211
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.003811181290075183
+      },
+      "training_loss_before_update": 0.0037862693425267935
+    },
+    {
+      "cumulative_evaluation_seconds": 0.478264972101897,
+      "cumulative_training_seconds": 58.74908393621445,
+      "filter": {
+        "basis_rank": 117,
+        "effective_rank": 2.644573492674976,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 54,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5400,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.004817659500986338
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0038618622347712517
+      },
+      "training_loss_before_update": 0.0038738504517823458
+    },
+    {
+      "cumulative_evaluation_seconds": 0.48068032413721085,
+      "cumulative_training_seconds": 59.189677466172725,
+      "filter": {
+        "basis_rank": 125,
+        "effective_rank": 2.644941347883859,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 54,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5450,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.003936808090656996
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0031757005490362644
+      },
+      "training_loss_before_update": 0.003189343959093094
+    },
+    {
+      "cumulative_evaluation_seconds": 0.48309245193377137,
+      "cumulative_training_seconds": 59.68379298225045,
+      "filter": {
+        "basis_rank": 128,
+        "effective_rank": 2.6452568418331848,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 55,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5500,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.0031981796491891146
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.002566225128248334
+      },
+      "training_loss_before_update": 0.002576962811872363
+    },
+    {
+      "cumulative_evaluation_seconds": 0.48549943370744586,
+      "cumulative_training_seconds": 60.14033705089241,
+      "filter": {
+        "basis_rank": 76,
+        "effective_rank": 1.1756292102566979,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 55,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5550,
+      "test": {
+        "accuracy": 0.8145206570625305,
+        "count": 8939,
+        "loss": 0.7413288354873657
+      },
+      "train": {
+        "accuracy": 0.8334203362464905,
+        "count": 3830,
+        "loss": 0.6764602065086365
+      },
+      "training_loss_before_update": 0.11892902106046677
+    },
+    {
+      "cumulative_evaluation_seconds": 0.48794880881905556,
+      "cumulative_training_seconds": 60.55049455072731,
+      "filter": {
+        "basis_rank": 74,
+        "effective_rank": 1.617185475079672,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 56,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5600,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.00528286537155509
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.00386267458088696
+      },
+      "training_loss_before_update": 0.0038742423057556152
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4903860189951956,
+      "cumulative_training_seconds": 60.939044911880046,
+      "filter": {
+        "basis_rank": 80,
+        "effective_rank": 1.6178459184335001,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 56,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5650,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.007038969546556473
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.005491769872605801
+      },
+      "training_loss_before_update": 0.0054564462043344975
+    },
+    {
+      "cumulative_evaluation_seconds": 0.49317807890474796,
+      "cumulative_training_seconds": 61.380686750635505,
+      "filter": {
+        "basis_rank": 89,
+        "effective_rank": 1.6182243407066743,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 57,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5700,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.0073431022465229034
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0059042940847575665
+      },
+      "training_loss_before_update": 0.005919122137129307
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4956319108605385,
+      "cumulative_training_seconds": 61.81326956208795,
+      "filter": {
+        "basis_rank": 92,
+        "effective_rank": 1.6184695344523847,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 57,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5750,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.005805188324302435
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.00470487168058753
+      },
+      "training_loss_before_update": 0.004729832988232374
+    },
+    {
+      "cumulative_evaluation_seconds": 0.4985066819936037,
+      "cumulative_training_seconds": 62.25734322145581,
+      "filter": {
+        "basis_rank": 100,
+        "effective_rank": 1.6186617267888657,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 58,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5800,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.004428906831890345
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.003611900843679905
+      },
+      "training_loss_before_update": 0.0036320150829851627
+    },
+    {
+      "cumulative_evaluation_seconds": 0.5011524050496519,
+      "cumulative_training_seconds": 62.67923545977101,
+      "filter": {
+        "basis_rank": 114,
+        "effective_rank": 1.6188544702668368,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 58,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5850,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.003908364102244377
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.003198083257302642
+      },
+      "training_loss_before_update": 0.0031980464700609446
+    },
+    {
+      "cumulative_evaluation_seconds": 0.5035777101293206,
+      "cumulative_training_seconds": 63.17946413671598,
+      "filter": {
+        "basis_rank": 138,
+        "effective_rank": 1.6191056551168763,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 59,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5900,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.0035880503710359335
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.00293906987644732
+      },
+      "training_loss_before_update": 0.002937690820544958
+    },
+    {
+      "cumulative_evaluation_seconds": 0.5060080513358116,
+      "cumulative_training_seconds": 63.678323262836784,
+      "filter": {
+        "basis_rank": 151,
+        "effective_rank": 2.4873065038825106,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 59,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 5950,
+      "test": {
+        "accuracy": 0.9996644258499146,
+        "count": 8939,
+        "loss": 0.0418272539973259
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.030324675142765045
+      },
+      "training_loss_before_update": 0.03132547810673714
+    },
+    {
+      "cumulative_evaluation_seconds": 0.5084112132899463,
+      "cumulative_training_seconds": 64.25047979364172,
+      "filter": {
+        "basis_rank": 162,
+        "effective_rank": 2.7451304808346877,
+        "filtering_active": true,
+        "max_orthogonality_error": 1.782029721653089e-05,
+        "stabilization_count": 60,
+        "stable_update": true
+      },
+      "phase": "post_update",
+      "step": 6000,
+      "test": {
+        "accuracy": 1.0,
+        "count": 8939,
+        "loss": 0.004294774029403925
+      },
+      "train": {
+        "accuracy": 1.0,
+        "count": 3830,
+        "loss": 0.0031814067624509335
+      },
+      "training_loss_before_update": 0.003165903501212597
+    }
+  ],
+  "parameter_identity": [
+    {
+      "dtype": "torch.float32",
+      "name": "tok_embed.weight",
+      "shape": [
+        113,
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "pos_embed.weight",
+      "shape": [
+        2,
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "ln1.weight",
+      "shape": [
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "ln1.bias",
+      "shape": [
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "W_Q.weight",
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "W_K.weight",
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "W_V.weight",
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "W_O.weight",
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "ln2.weight",
+      "shape": [
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "ln2.bias",
+      "shape": [
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "W_in.weight",
+      "shape": [
+        512,
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "W_in.bias",
+      "shape": [
+        512
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "W_out.weight",
+      "shape": [
+        128,
+        512
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "W_out.bias",
+      "shape": [
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "ln_final.weight",
+      "shape": [
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "ln_final.bias",
+      "shape": [
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "unembed.weight",
+      "shape": [
+        113,
+        128
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "name": "unembed.bias",
+      "shape": [
+        113
+      ]
+    }
+  ],
+  "schema": "grokking_confirmation_v1",
+  "source_identity": {
+    "files": {
+      "filter": {
+        "path": "spectral_filter.py",
+        "sha256": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943"
+      },
+      "harness": {
+        "path": "experiments/grokking_confirmation.py",
+        "sha256": "31bd8c9694e882c62b8184ed5cbf2d0f895ef67f255266dcf33abf0e2d0b92b6"
+      },
+      "model": {
+        "path": "experiments/grokking_model.py",
+        "sha256": "1407d0569cf2d8ffa93ba99bc9d8468d77c61bad983f01bb99bc15d3b4e5e0c5"
+      }
+    },
+    "repository_commit": "e36a0c3eec7aa5f8b4a9a65a888306d287c47f89"
+  },
+  "source_identity_sha256": "a8a453461abc46b865ac0317959b5c7050466bf010633ccb68c0148b3d9f30dc",
+  "split_identity": {
+    "layout": [
+      {
+        "dtype": "torch.int64",
+        "name": "train_X",
+        "shape": [
+          3830,
+          2
+        ]
+      },
+      {
+        "dtype": "torch.int64",
+        "name": "train_y",
+        "shape": [
+          3830
+        ]
+      },
+      {
+        "dtype": "torch.int64",
+        "name": "test_X",
+        "shape": [
+          8939,
+          2
+        ]
+      },
+      {
+        "dtype": "torch.int64",
+        "name": "test_y",
+        "shape": [
+          8939
+        ]
+      }
+    ],
+    "sha256": "cf3a2b1bd2836c4d6e03ecf5dc6e30103c34be25b69b6306b2813778ed7fdef6",
+    "test_count": 8939,
+    "train_count": 3830
+  },
+  "status": "complete",
+  "test_accuracy_90": {
+    "lower_step_exclusive": 2950,
+    "status": "interval_censored",
+    "sustained_attainment_step": 5600,
+    "threshold": 0.9,
+    "upper_step_inclusive": 3000
+  },
+  "timing": {
+    "checkpoint_capture_and_write_seconds": 16.946772961877286,
+    "end_to_end_seconds_before_final_json": 83.05963301705196,
+    "evaluation": "common synchronized post-update phase",
+    "evaluation_seconds": 0.5084112132899463,
+    "setup_checks_progress_and_other_seconds": 1.353969048243016,
+    "training_includes": "synchronization+forward+backward+filter_if_any+AdamW_update+finite_checks",
+    "training_seconds": 64.25047979364172
+  }
+}

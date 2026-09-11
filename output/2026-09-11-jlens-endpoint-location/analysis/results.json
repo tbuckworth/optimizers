@@ -1,0 +1,451 @@
+{
+  "status": "PASS",
+  "completed_utc": "2026-09-11T01:26:53.585529+00:00",
+  "source_sha256": "8e71bdd65af0b84d2536c95c532b188f6776657f1831d6374cbdafc6035ba2e5",
+  "new_receipt_sha256": "4d76cce26a352fc64cace96a01cf2f8db29e2761368962ba0cae875396c51103",
+  "input_pins": {
+    "output/2026-09-11-jlens-endpoint-location/dataset.json": "bda6dbefe07ebfa62cbf2efc483b6164cc819debfd1d124460e5153bdd2b7ee8",
+    "output/2026-09-11-jlens-endpoint-location/pairs.json": "d47d27b93e48b38deb5e4871596c906057ba46e18305e3849b02ad1b0e337ac0",
+    "output/2026-09-11-jlens-endpoint-location/protocol.md": "e426578248cd27f915f9e97862b48a1ebe4b978841b109dfee61f3699d8c39b3",
+    "/tmp/spectral-experiment-artifacts/j-lens-pilot-20260909-MMxZIs/worktree/output/2026-09-10-j-lens-fresh-content/preparation/directions.npz": "47dc955bafde649a86cdd44e2975637dbd24aac2443fdfca83214540149030fa",
+    "/tmp/spectral-experiment-artifacts/j-lens-pilot-20260909-MMxZIs/worktree/output/2026-09-11-j-lens-content-template/forwards/scores.json": "3d363e6a9ba927e79b7698d50a31115fe128762be8e1809be799b6025422c8eb",
+    "/tmp/spectral-experiment-artifacts/j-lens-pilot-20260909-MMxZIs/worktree/output/2026-09-11-j-lens-content-template/forwards/gaps.json": "e0ccddc94ef0144b44be2aefabaa7a48a01601cc8fe06de37502d15e160aa822"
+  },
+  "locations": [
+    "verb",
+    "sentence_end",
+    "old_full_end"
+  ],
+  "axes": [
+    "PC1",
+    "PC2",
+    "PC3",
+    "PC4"
+  ],
+  "new_scalar_scores_checked": 128,
+  "new_scalar_gaps_checked": 64,
+  "max_score_error": 5.551115123125783e-17,
+  "primary_all_eight_verb_PC4_positive": true,
+  "summaries": {
+    "verb": {
+      "PC1": {
+        "positive": 8,
+        "zero": 0,
+        "negative": 0,
+        "all_eight_positive": true,
+        "template_sign_changes": []
+      },
+      "PC2": {
+        "positive": 3,
+        "zero": 0,
+        "negative": 5,
+        "all_eight_positive": false,
+        "template_sign_changes": [
+          "01"
+        ]
+      },
+      "PC3": {
+        "positive": 6,
+        "zero": 0,
+        "negative": 2,
+        "all_eight_positive": false,
+        "template_sign_changes": [
+          "02",
+          "03"
+        ]
+      },
+      "PC4": {
+        "positive": 8,
+        "zero": 0,
+        "negative": 0,
+        "all_eight_positive": true,
+        "template_sign_changes": []
+      }
+    },
+    "sentence_end": {
+      "PC1": {
+        "positive": 8,
+        "zero": 0,
+        "negative": 0,
+        "all_eight_positive": true,
+        "template_sign_changes": []
+      },
+      "PC2": {
+        "positive": 4,
+        "zero": 0,
+        "negative": 4,
+        "all_eight_positive": false,
+        "template_sign_changes": []
+      },
+      "PC3": {
+        "positive": 8,
+        "zero": 0,
+        "negative": 0,
+        "all_eight_positive": true,
+        "template_sign_changes": []
+      },
+      "PC4": {
+        "positive": 8,
+        "zero": 0,
+        "negative": 0,
+        "all_eight_positive": true,
+        "template_sign_changes": []
+      }
+    },
+    "old_full_end": {
+      "PC1": {
+        "positive": 3,
+        "zero": 0,
+        "negative": 5,
+        "all_eight_positive": false,
+        "template_sign_changes": [
+          "03"
+        ]
+      },
+      "PC2": {
+        "positive": 6,
+        "zero": 0,
+        "negative": 2,
+        "all_eight_positive": false,
+        "template_sign_changes": [
+          "03",
+          "04"
+        ]
+      },
+      "PC3": {
+        "positive": 2,
+        "zero": 0,
+        "negative": 6,
+        "all_eight_positive": false,
+        "template_sign_changes": [
+          "01",
+          "02"
+        ]
+      },
+      "PC4": {
+        "positive": 1,
+        "zero": 0,
+        "negative": 7,
+        "all_eight_positive": false,
+        "template_sign_changes": [
+          "02"
+        ]
+      }
+    }
+  },
+  "pairs": [
+    {
+      "id": "01-active",
+      "content_pair": "01",
+      "template": "active",
+      "observation_id": "01-active-O",
+      "provision_id": "01-active-P",
+      "gaps_by_location": [
+        [
+          0.2713405263174422,
+          -0.010547747265178486,
+          0.5622150297673629,
+          0.18724730841317425
+        ],
+        [
+          0.06988289316242652,
+          0.020374081429094915,
+          0.12893755874808743,
+          0.08510437405955919
+        ],
+        [
+          0.014183272153265092,
+          0.019739961978731735,
+          0.010945028314723437,
+          -0.02103223636195173
+        ]
+      ],
+      "verb_minus_old": [
+        0.2571572541641771,
+        -0.03028770924391022,
+        0.5512700014526395,
+        0.20827954477512597
+      ],
+      "sentence_end_minus_old": [
+        0.055699621009161426,
+        0.0006341194503631797,
+        0.117992530433364,
+        0.10613661042151092
+      ]
+    },
+    {
+      "id": "01-passive",
+      "content_pair": "01",
+      "template": "passive",
+      "observation_id": "01-passive-O",
+      "provision_id": "01-passive-P",
+      "gaps_by_location": [
+        [
+          0.280916121778253,
+          0.24299374561234055,
+          0.39858157315976683,
+          0.18232651554254528
+        ],
+        [
+          0.03903081848687069,
+          0.0457021259868835,
+          0.11502880427969764,
+          0.14200394922936901
+        ],
+        [
+          0.012646860571646101,
+          0.019358161044055855,
+          -0.009113823360703321,
+          -0.003638144390395226
+        ]
+      ],
+      "verb_minus_old": [
+        0.2682692612066069,
+        0.2236355845682847,
+        0.40769539652047015,
+        0.1859646599329405
+      ],
+      "sentence_end_minus_old": [
+        0.02638395791522459,
+        0.026343964942827647,
+        0.12414262764040096,
+        0.14564209361976424
+      ]
+    },
+    {
+      "id": "02-active",
+      "content_pair": "02",
+      "template": "active",
+      "observation_id": "02-active-O",
+      "provision_id": "02-active-P",
+      "gaps_by_location": [
+        [
+          0.202803708637467,
+          -0.04137497935402701,
+          0.018706570214447105,
+          0.2975152324790189
+        ],
+        [
+          0.059300486973518085,
+          -0.15378476111145536,
+          0.08211073697098747,
+          0.08968228222283606
+        ],
+        [
+          -0.022660895726421604,
+          0.0021381529262534116,
+          0.008680311313977285,
+          -0.014417062534886699
+        ]
+      ],
+      "verb_minus_old": [
+        0.2254646043638886,
+        -0.04351313228028042,
+        0.01002625890046982,
+        0.3119322950139056
+      ],
+      "sentence_end_minus_old": [
+        0.08196138269993969,
+        -0.15592291403770878,
+        0.07343042565701019,
+        0.10409934475772276
+      ]
+    },
+    {
+      "id": "02-passive",
+      "content_pair": "02",
+      "template": "passive",
+      "observation_id": "02-passive-O",
+      "provision_id": "02-passive-P",
+      "gaps_by_location": [
+        [
+          0.20460494828312453,
+          -0.09283094927844007,
+          -0.11106985088519661,
+          0.233971287126143
+        ],
+        [
+          0.07963081911444947,
+          -0.05730439011465108,
+          0.005051815460658915,
+          0.03862409752386453
+        ],
+        [
+          -0.020033206398418324,
+          0.015040933409356416,
+          -0.0031192099141978957,
+          0.008167642942513265
+        ]
+      ],
+      "verb_minus_old": [
+        0.22463815468154286,
+        -0.10787188268779649,
+        -0.10795064097099871,
+        0.22580364418362975
+      ],
+      "sentence_end_minus_old": [
+        0.0996640255128678,
+        -0.0723453235240075,
+        0.00817102537485681,
+        0.030456454581351267
+      ]
+    },
+    {
+      "id": "03-active",
+      "content_pair": "03",
+      "template": "active",
+      "observation_id": "03-active-O",
+      "provision_id": "03-active-P",
+      "gaps_by_location": [
+        [
+          0.5127860039732857,
+          -0.36191775843491003,
+          -0.05493990075728927,
+          0.4759124162008207
+        ],
+        [
+          0.0756535018115051,
+          -0.09388129005893742,
+          0.08234017364016921,
+          0.04724074373485078
+        ],
+        [
+          -0.004942159637617682,
+          0.001171200569019426,
+          -0.0034318858920148188,
+          -0.017615716332292752
+        ]
+      ],
+      "verb_minus_old": [
+        0.5177281636109033,
+        -0.36308895900392946,
+        -0.051508014865274454,
+        0.49352813253311345
+      ],
+      "sentence_end_minus_old": [
+        0.08059566144912278,
+        -0.09505249062795684,
+        0.08577205953218403,
+        0.06485646006714353
+      ]
+    },
+    {
+      "id": "03-passive",
+      "content_pair": "03",
+      "template": "passive",
+      "observation_id": "03-passive-O",
+      "provision_id": "03-passive-P",
+      "gaps_by_location": [
+        [
+          0.2606399582544951,
+          -0.0762747253753,
+          0.1042261364924233,
+          0.4434407445644555
+        ],
+        [
+          0.02337476388776616,
+          -0.013074877335310653,
+          0.018338946576673898,
+          0.06774021710928135
+        ],
+        [
+          0.011725042189047796,
+          -0.006718748076024905,
+          -0.0005609841345446398,
+          -0.010234462778487163
+        ]
+      ],
+      "verb_minus_old": [
+        0.2489149160654473,
+        -0.0695559772992751,
+        0.10478712062696793,
+        0.45367520734294264
+      ],
+      "sentence_end_minus_old": [
+        0.011649721698718363,
+        -0.006356129259285748,
+        0.018899930711218538,
+        0.07797467988776852
+      ]
+    },
+    {
+      "id": "04-active",
+      "content_pair": "04",
+      "template": "active",
+      "observation_id": "04-active-O",
+      "provision_id": "04-active-P",
+      "gaps_by_location": [
+        [
+          0.2521946860993758,
+          0.08742349717046682,
+          0.2508657810861432,
+          0.2568430911301194
+        ],
+        [
+          0.12278667681998923,
+          0.03501845533214265,
+          0.08618385180571586,
+          0.016988041965991588
+        ],
+        [
+          -0.007597360896996586,
+          -0.004350589658737691,
+          -0.0015777065458850714,
+          -0.02559833275954171
+        ]
+      ],
+      "verb_minus_old": [
+        0.25979204699637237,
+        0.09177408682920452,
+        0.2524434876320283,
+        0.2824414238896611
+      ],
+      "sentence_end_minus_old": [
+        0.1303840377169858,
+        0.03936904499088034,
+        0.08776155835160093,
+        0.042586374725533296
+      ]
+    },
+    {
+      "id": "04-passive",
+      "content_pair": "04",
+      "template": "passive",
+      "observation_id": "04-passive-O",
+      "provision_id": "04-passive-P",
+      "gaps_by_location": [
+        [
+          0.16000678696958787,
+          0.12895720672019095,
+          0.21523907343388027,
+          0.053343478617497886
+        ],
+        [
+          0.05502050057887786,
+          0.06120834912215223,
+          0.06184608835324923,
+          0.009029496443474727
+        ],
+        [
+          -0.0034972690939569784,
+          0.002810732886452394,
+          -0.012822487885113532,
+          -0.02252045491118794
+        ]
+      ],
+      "verb_minus_old": [
+        0.16350405606354484,
+        0.12614647383373856,
+        0.2280615613189938,
+        0.07586393352868583
+      ],
+      "sentence_end_minus_old": [
+        0.05851776967283484,
+        0.058397616235699834,
+        0.07466857623836276,
+        0.03154995135466267
+      ]
+    }
+  ],
+  "scope": "Four reused contents/two templates. One new model run, two new locations; old final endpoints reused. Scalar corroboration, not semantic or causal validation."
+}

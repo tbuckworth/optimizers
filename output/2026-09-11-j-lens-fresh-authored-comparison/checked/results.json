@@ -1,0 +1,690 @@
+{
+  "schema": "jlens_fresh_authored_check_results_v1",
+  "scalar_checks": 128,
+  "gap_checks": 64,
+  "max_scalar_error": 2.220446049250313e-16,
+  "scalar_tolerance": 1e-12,
+  "descriptive_all_16_verb_PC4_positive": false,
+  "locations": [
+    "verb"
+  ],
+  "axes": [
+    "PC1",
+    "PC2",
+    "PC3",
+    "PC4"
+  ],
+  "rows": [
+    {
+      "id": "fa01-active-O",
+      "pair_id": "fa01",
+      "template": "active",
+      "pole": "O",
+      "text": "The technician monitored the generators.",
+      "verb": "monitored",
+      "verb_span": [
+        15,
+        24
+      ]
+    },
+    {
+      "id": "fa01-active-P",
+      "pair_id": "fa01",
+      "template": "active",
+      "pole": "P",
+      "text": "The technician repaired the generators.",
+      "verb": "repaired",
+      "verb_span": [
+        15,
+        23
+      ]
+    },
+    {
+      "id": "fa01-passive-O",
+      "pair_id": "fa01",
+      "template": "passive",
+      "pole": "O",
+      "text": "The generators were monitored by the technician.",
+      "verb": "monitored",
+      "verb_span": [
+        20,
+        29
+      ]
+    },
+    {
+      "id": "fa01-passive-P",
+      "pair_id": "fa01",
+      "template": "passive",
+      "pole": "P",
+      "text": "The generators were repaired by the technician.",
+      "verb": "repaired",
+      "verb_span": [
+        20,
+        28
+      ]
+    },
+    {
+      "id": "fa02-active-O",
+      "pair_id": "fa02",
+      "template": "active",
+      "pole": "O",
+      "text": "The carpenter scrutinized the chairs.",
+      "verb": "scrutinized",
+      "verb_span": [
+        14,
+        25
+      ]
+    },
+    {
+      "id": "fa02-active-P",
+      "pair_id": "fa02",
+      "template": "active",
+      "pole": "P",
+      "text": "The carpenter constructed the chairs.",
+      "verb": "constructed",
+      "verb_span": [
+        14,
+        25
+      ]
+    },
+    {
+      "id": "fa02-passive-O",
+      "pair_id": "fa02",
+      "template": "passive",
+      "pole": "O",
+      "text": "The chairs were scrutinized by the carpenter.",
+      "verb": "scrutinized",
+      "verb_span": [
+        16,
+        27
+      ]
+    },
+    {
+      "id": "fa02-passive-P",
+      "pair_id": "fa02",
+      "template": "passive",
+      "pole": "P",
+      "text": "The chairs were constructed by the carpenter.",
+      "verb": "constructed",
+      "verb_span": [
+        16,
+        27
+      ]
+    },
+    {
+      "id": "fa03-active-O",
+      "pair_id": "fa03",
+      "template": "active",
+      "pole": "O",
+      "text": "The curator documented the exhibits.",
+      "verb": "documented",
+      "verb_span": [
+        12,
+        22
+      ]
+    },
+    {
+      "id": "fa03-active-P",
+      "pair_id": "fa03",
+      "template": "active",
+      "pole": "P",
+      "text": "The curator arranged the exhibits.",
+      "verb": "arranged",
+      "verb_span": [
+        12,
+        20
+      ]
+    },
+    {
+      "id": "fa03-passive-O",
+      "pair_id": "fa03",
+      "template": "passive",
+      "pole": "O",
+      "text": "The exhibits were documented by the curator.",
+      "verb": "documented",
+      "verb_span": [
+        18,
+        28
+      ]
+    },
+    {
+      "id": "fa03-passive-P",
+      "pair_id": "fa03",
+      "template": "passive",
+      "pole": "P",
+      "text": "The exhibits were arranged by the curator.",
+      "verb": "arranged",
+      "verb_span": [
+        18,
+        26
+      ]
+    },
+    {
+      "id": "fa04-active-O",
+      "pair_id": "fa04",
+      "template": "active",
+      "pole": "O",
+      "text": "The nurse watched the instruments.",
+      "verb": "watched",
+      "verb_span": [
+        10,
+        17
+      ]
+    },
+    {
+      "id": "fa04-active-P",
+      "pair_id": "fa04",
+      "template": "active",
+      "pole": "P",
+      "text": "The nurse disinfected the instruments.",
+      "verb": "disinfected",
+      "verb_span": [
+        10,
+        21
+      ]
+    },
+    {
+      "id": "fa04-passive-O",
+      "pair_id": "fa04",
+      "template": "passive",
+      "pole": "O",
+      "text": "The instruments were watched by the nurse.",
+      "verb": "watched",
+      "verb_span": [
+        21,
+        28
+      ]
+    },
+    {
+      "id": "fa04-passive-P",
+      "pair_id": "fa04",
+      "template": "passive",
+      "pole": "P",
+      "text": "The instruments were disinfected by the nurse.",
+      "verb": "disinfected",
+      "verb_span": [
+        21,
+        32
+      ]
+    },
+    {
+      "id": "fa05-active-O",
+      "pair_id": "fa05",
+      "template": "active",
+      "pole": "O",
+      "text": "The quartermaster audited the rations.",
+      "verb": "audited",
+      "verb_span": [
+        18,
+        25
+      ]
+    },
+    {
+      "id": "fa05-active-P",
+      "pair_id": "fa05",
+      "template": "active",
+      "pole": "P",
+      "text": "The quartermaster distributed the rations.",
+      "verb": "distributed",
+      "verb_span": [
+        18,
+        29
+      ]
+    },
+    {
+      "id": "fa05-passive-O",
+      "pair_id": "fa05",
+      "template": "passive",
+      "pole": "O",
+      "text": "The rations were audited by the quartermaster.",
+      "verb": "audited",
+      "verb_span": [
+        17,
+        24
+      ]
+    },
+    {
+      "id": "fa05-passive-P",
+      "pair_id": "fa05",
+      "template": "passive",
+      "pole": "P",
+      "text": "The rations were distributed by the quartermaster.",
+      "verb": "distributed",
+      "verb_span": [
+        17,
+        28
+      ]
+    },
+    {
+      "id": "fa06-active-O",
+      "pair_id": "fa06",
+      "template": "active",
+      "pole": "O",
+      "text": "The chef surveyed the vegetables.",
+      "verb": "surveyed",
+      "verb_span": [
+        9,
+        17
+      ]
+    },
+    {
+      "id": "fa06-active-P",
+      "pair_id": "fa06",
+      "template": "active",
+      "pole": "P",
+      "text": "The chef minced the vegetables.",
+      "verb": "minced",
+      "verb_span": [
+        9,
+        15
+      ]
+    },
+    {
+      "id": "fa06-passive-O",
+      "pair_id": "fa06",
+      "template": "passive",
+      "pole": "O",
+      "text": "The vegetables were surveyed by the chef.",
+      "verb": "surveyed",
+      "verb_span": [
+        20,
+        28
+      ]
+    },
+    {
+      "id": "fa06-passive-P",
+      "pair_id": "fa06",
+      "template": "passive",
+      "pole": "P",
+      "text": "The vegetables were minced by the chef.",
+      "verb": "minced",
+      "verb_span": [
+        20,
+        26
+      ]
+    },
+    {
+      "id": "fa07-active-O",
+      "pair_id": "fa07",
+      "template": "active",
+      "pole": "O",
+      "text": "The jeweler noted the gemstones.",
+      "verb": "noted",
+      "verb_span": [
+        12,
+        17
+      ]
+    },
+    {
+      "id": "fa07-active-P",
+      "pair_id": "fa07",
+      "template": "active",
+      "pole": "P",
+      "text": "The jeweler polished the gemstones.",
+      "verb": "polished",
+      "verb_span": [
+        12,
+        20
+      ]
+    },
+    {
+      "id": "fa07-passive-O",
+      "pair_id": "fa07",
+      "template": "passive",
+      "pole": "O",
+      "text": "The gemstones were noted by the jeweler.",
+      "verb": "noted",
+      "verb_span": [
+        19,
+        24
+      ]
+    },
+    {
+      "id": "fa07-passive-P",
+      "pair_id": "fa07",
+      "template": "passive",
+      "pole": "P",
+      "text": "The gemstones were polished by the jeweler.",
+      "verb": "polished",
+      "verb_span": [
+        19,
+        27
+      ]
+    },
+    {
+      "id": "fa08-active-O",
+      "pair_id": "fa08",
+      "template": "active",
+      "pole": "O",
+      "text": "The scientist observed the specimens.",
+      "verb": "observed",
+      "verb_span": [
+        14,
+        22
+      ]
+    },
+    {
+      "id": "fa08-active-P",
+      "pair_id": "fa08",
+      "template": "active",
+      "pole": "P",
+      "text": "The scientist mounted the specimens.",
+      "verb": "mounted",
+      "verb_span": [
+        14,
+        21
+      ]
+    },
+    {
+      "id": "fa08-passive-O",
+      "pair_id": "fa08",
+      "template": "passive",
+      "pole": "O",
+      "text": "The specimens were observed by the scientist.",
+      "verb": "observed",
+      "verb_span": [
+        19,
+        27
+      ]
+    },
+    {
+      "id": "fa08-passive-P",
+      "pair_id": "fa08",
+      "template": "passive",
+      "pole": "P",
+      "text": "The specimens were mounted by the scientist.",
+      "verb": "mounted",
+      "verb_span": [
+        19,
+        26
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "id": "fa01-active",
+      "content_pair": "fa01",
+      "template": "active",
+      "observation_id": "fa01-active-O",
+      "provision_id": "fa01-active-P",
+      "gaps64": [
+        [
+          0.3645981702387737,
+          0.04669326995171108,
+          0.09455535437214824,
+          0.12653566917199566
+        ]
+      ]
+    },
+    {
+      "id": "fa01-passive",
+      "content_pair": "fa01",
+      "template": "passive",
+      "observation_id": "fa01-passive-O",
+      "provision_id": "fa01-passive-P",
+      "gaps64": [
+        [
+          0.3769882257175979,
+          -0.014862966055007004,
+          0.1297160748944446,
+          0.11138912976770274
+        ]
+      ]
+    },
+    {
+      "id": "fa02-active",
+      "content_pair": "fa02",
+      "template": "active",
+      "observation_id": "fa02-active-O",
+      "provision_id": "fa02-active-P",
+      "gaps64": [
+        [
+          0.009005459653391279,
+          -0.2893345854270264,
+          -0.13206585038064667,
+          0.2286798742949334
+        ]
+      ]
+    },
+    {
+      "id": "fa02-passive",
+      "content_pair": "fa02",
+      "template": "passive",
+      "observation_id": "fa02-passive-O",
+      "provision_id": "fa02-passive-P",
+      "gaps64": [
+        [
+          -0.07342219939495068,
+          -0.020327871332137537,
+          0.1236462771323481,
+          0.36215155779556585
+        ]
+      ]
+    },
+    {
+      "id": "fa03-active",
+      "content_pair": "fa03",
+      "template": "active",
+      "observation_id": "fa03-active-O",
+      "provision_id": "fa03-active-P",
+      "gaps64": [
+        [
+          0.4314112458298581,
+          0.16441592945339512,
+          0.1517214921064869,
+          0.5127220460953335
+        ]
+      ]
+    },
+    {
+      "id": "fa03-passive",
+      "content_pair": "fa03",
+      "template": "passive",
+      "observation_id": "fa03-passive-O",
+      "provision_id": "fa03-passive-P",
+      "gaps64": [
+        [
+          0.35409928696248427,
+          0.17784217918777748,
+          0.06326820740467909,
+          0.50147150761269
+        ]
+      ]
+    },
+    {
+      "id": "fa04-active",
+      "content_pair": "fa04",
+      "template": "active",
+      "observation_id": "fa04-active-O",
+      "provision_id": "fa04-active-P",
+      "gaps64": [
+        [
+          0.15766901899005337,
+          0.32026716054298277,
+          0.38246803307663235,
+          0.0980847730241462
+        ]
+      ]
+    },
+    {
+      "id": "fa04-passive",
+      "content_pair": "fa04",
+      "template": "passive",
+      "observation_id": "fa04-passive-O",
+      "provision_id": "fa04-passive-P",
+      "gaps64": [
+        [
+          0.2333888695928099,
+          0.38843885030524394,
+          0.1614056912918751,
+          0.05315499390715006
+        ]
+      ]
+    },
+    {
+      "id": "fa05-active",
+      "content_pair": "fa05",
+      "template": "active",
+      "observation_id": "fa05-active-O",
+      "provision_id": "fa05-active-P",
+      "gaps64": [
+        [
+          0.06666869742828463,
+          -0.29069074377804505,
+          -0.017072055309705014,
+          0.6830509294453413
+        ]
+      ]
+    },
+    {
+      "id": "fa05-passive",
+      "content_pair": "fa05",
+      "template": "passive",
+      "observation_id": "fa05-passive-O",
+      "provision_id": "fa05-passive-P",
+      "gaps64": [
+        [
+          0.1224887979101724,
+          -0.30416916162677,
+          0.044179590132875646,
+          0.6747242499449055
+        ]
+      ]
+    },
+    {
+      "id": "fa06-active",
+      "content_pair": "fa06",
+      "template": "active",
+      "observation_id": "fa06-active-O",
+      "provision_id": "fa06-active-P",
+      "gaps64": [
+        [
+          0.6923968306234094,
+          0.1991833462152555,
+          0.6115846843144741,
+          -0.07955362186142545
+        ]
+      ]
+    },
+    {
+      "id": "fa06-passive",
+      "content_pair": "fa06",
+      "template": "passive",
+      "observation_id": "fa06-passive-O",
+      "provision_id": "fa06-passive-P",
+      "gaps64": [
+        [
+          0.5298927870620461,
+          0.27583602968757415,
+          0.9312496530311025,
+          0.033473012467506
+        ]
+      ]
+    },
+    {
+      "id": "fa07-active",
+      "content_pair": "fa07",
+      "template": "active",
+      "observation_id": "fa07-active-O",
+      "provision_id": "fa07-active-P",
+      "gaps64": [
+        [
+          0.4856029039630274,
+          0.2768561251478213,
+          0.5551249401257414,
+          -0.4179291820292902
+        ]
+      ]
+    },
+    {
+      "id": "fa07-passive",
+      "content_pair": "fa07",
+      "template": "passive",
+      "observation_id": "fa07-passive-O",
+      "provision_id": "fa07-passive-P",
+      "gaps64": [
+        [
+          0.4242439334820034,
+          0.310896476087282,
+          0.5033446557103034,
+          -0.4380350102224019
+        ]
+      ]
+    },
+    {
+      "id": "fa08-active",
+      "content_pair": "fa08",
+      "template": "active",
+      "observation_id": "fa08-active-O",
+      "provision_id": "fa08-active-P",
+      "gaps64": [
+        [
+          0.04086847296610335,
+          0.09891614262948445,
+          0.5824887733296595,
+          0.31553603030764377
+        ]
+      ]
+    },
+    {
+      "id": "fa08-passive",
+      "content_pair": "fa08",
+      "template": "passive",
+      "observation_id": "fa08-passive-O",
+      "provision_id": "fa08-passive-P",
+      "gaps64": [
+        [
+          0.23939925350953428,
+          0.1651697335389564,
+          0.24365005394513117,
+          0.14492006411825864
+        ]
+      ]
+    }
+  ],
+  "summaries": {
+    "verb": [
+      {
+        "axis": "PC1",
+        "positive": 15,
+        "zero": 0,
+        "negative": 1,
+        "both_templates_positive": 7,
+        "template_sign_changes": [
+          "fa02"
+        ]
+      },
+      {
+        "axis": "PC2",
+        "positive": 11,
+        "zero": 0,
+        "negative": 5,
+        "both_templates_positive": 5,
+        "template_sign_changes": [
+          "fa01"
+        ]
+      },
+      {
+        "axis": "PC3",
+        "positive": 14,
+        "zero": 0,
+        "negative": 2,
+        "both_templates_positive": 6,
+        "template_sign_changes": [
+          "fa02",
+          "fa05"
+        ]
+      },
+      {
+        "axis": "PC4",
+        "positive": 13,
+        "zero": 0,
+        "negative": 3,
+        "both_templates_positive": 6,
+        "template_sign_changes": [
+          "fa06"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "i15_history_analysis_audit_v1",
+  "status": "pass",
+  "artifact_root": "/tmp/spectral-experiment-artifacts/spectral-i15-001.RTFjXq",
+  "phase_completion_sha256": {
+    "smoke": "ffcf9033ae5f38367f1d910a28603233c9ce6aa0b0312bd45dc25a60c3fcdb4a",
+    "confirmation": "2e28e146ef84d934bc33d41f30dfa92cfbcbe7cd19a9b506aec83a4ef7635be6"
+  },
+  "attempt_sha256": {
+    "smoke": "09b2bad1c8d54c521f052044c2a7b64494c77330d7714d7bc47708dfd68072a4",
+    "confirmation": "36c38642c306d56819d9b2942e069f376ae8f0e62a6a35fa4293b8ce21836228"
+  },
+  "runtime_inventory": {
+    "declared_name": "runtime",
+    "entries": [
+      {
+        "path": "torchinductor_titus",
+        "kind": "directory",
+        "bytes": 0,
+        "sha256": null
+      }
+    ],
+    "manifest_sha256": "6ef9bfb4fb59566107508594672f8f97ac3d712626af5b95baf0669222ff206c",
+    "regular_file_bytes": 0,
+    "logical_bytes_only": true
+  },
+  "checks": 4357895,
+  "errors": [],
+  "warnings": [],
+  "hash_files_verified": 395,
+  "hash_bytes_streamed": 1276734041,
+  "complete_state_tree_digests_verified": 30,
+  "maximum_saved_algebra_residual": 5.057483684669433e-07,
+  "maximum_leakage_identity_error": 2.220446049250313e-16,
+  "failure_state_tree_digests": {}
+}

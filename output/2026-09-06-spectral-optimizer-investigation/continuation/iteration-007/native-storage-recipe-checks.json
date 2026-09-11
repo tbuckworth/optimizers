@@ -1,0 +1,171 @@
+{
+  "schema": "i7_storage_recipe_implementation_checks_v1",
+  "evidence_role": "engineering_symbolic_and_tiny_cpu_tests_not_measurement",
+  "recovered_commit": "134dd87f7810c44669c9b7187726c0037181c646",
+  "goal_status": "active",
+  "implementation_commit": "94f4952fcaf26434b0bdee35c3ab8350db02aa50",
+  "postcommit_read_only_check": {
+    "status": "terminal_pass",
+    "commit": "94f4952fcaf26434b0bdee35c3ab8350db02aa50",
+    "source_members": 76,
+    "source_json_bytes": 23533,
+    "source_set_sha256": "8be858b90fc4e97a178870c99089faba6e15504c641077ede8e764d34d9987ac",
+    "diagnostic_environment_json_bytes": 1820,
+    "diagnostic_environment_sha256": "d04389867c3b2f2fc99756892af767dab5fc126ce044f887d19927f221eac6e1",
+    "check_wall_seconds": 1.137326704338193,
+    "wrapper_wall_seconds": 2.648265123832971,
+    "peak_runner_rss_bytes": 654991360,
+    "peak_sampled_group_plus_wrapper_rss_bytes": 683401216,
+    "cuda_initialized": false,
+    "python_numpy_torch_cpu_rng_preserved": true,
+    "violations": [],
+    "later_note_changes_repository_revision": true,
+    "future_execution_requires_fresh_frozen_bindings": true
+  },
+  "date": "2026-09-07",
+  "selected_distinct_checks": 87,
+  "new_test_methods": 40,
+  "selected_batches": [
+    {
+      "status": "terminal_pass",
+      "checks": 67,
+      "test_seconds": 46.243,
+      "wrapper_wall_seconds": 47.80538984807208,
+      "peak_observed_rss_bytes": 1229549568
+    },
+    {
+      "status": "terminal_pass",
+      "checks": 20,
+      "test_seconds": 53.13,
+      "wrapper_wall_seconds": 53.4969548038207,
+      "peak_observed_rss_bytes": 572530688
+    }
+  ],
+  "resources": {
+    "outer_timeout_seconds": 120,
+    "active_early_kill_wall_seconds": 115,
+    "rss_limit_bytes": 2147483648,
+    "rss_scope": "sampled_child_process_group_plus_wrapper_high_water",
+    "sampling_interval_ms": 50,
+    "kernel_memory_limit": false,
+    "violations": [],
+    "cuda_visible_devices": "",
+    "cuda_initialization_authorized": false,
+    "thread_variables": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+    "TMPDIR": "/tmp/spectral-experiment-artifacts",
+    "mount_device": "/dev/RECONFIGURE_FOR_LOCAL_STORAGE",
+    "mount_uuid": "00000000-0000-4000-8000-000000000000"
+  },
+  "preliminary_overlapping_batches": [
+    {
+      "checks": 37,
+      "passed": 35,
+      "errors": 2,
+      "test_seconds": 36.411,
+      "wrapper_wall_seconds": 36.81480774981901,
+      "peak_observed_rss_bytes": 1350619136,
+      "resolution": "test exception class and serializer spy corrected; production safeguards unchanged"
+    },
+    {
+      "checks": 9,
+      "passed": 9,
+      "test_seconds": 17.605,
+      "wrapper_wall_seconds": 17.678,
+      "peak_observed_rss_bytes": 43147264,
+      "scope": "leaf_process_group"
+    },
+    {
+      "chunk_id": "a4e7d0",
+      "checks": 8,
+      "passed": 6,
+      "wrapper_wall_seconds": 8.196369842,
+      "peak_observed_rss_bytes": 63148032,
+      "resolution": "widest branch reference literals"
+    },
+    {
+      "chunk_id": "371cb5",
+      "checks": 8,
+      "passed": 7,
+      "wrapper_wall_seconds": 10.67155409,
+      "peak_observed_rss_bytes": 63250432,
+      "resolution": "one-zero norm factor qualified"
+    },
+    {
+      "chunk_id": "e2ee33",
+      "checks": 0,
+      "passed": 0,
+      "wrapper_wall_seconds": 0.100394371,
+      "peak_observed_rss_bytes": 32329728,
+      "resolution": "test-only indentation typo"
+    },
+    {
+      "chunk_id": "ef20d9",
+      "checks": 8,
+      "passed": 8,
+      "wrapper_wall_seconds": 10.889534425,
+      "peak_observed_rss_bytes": 62050304,
+      "scope": "leaf_process_group"
+    }
+  ],
+  "source_manifest_members": 76,
+  "source_import_closure_pass": true,
+  "knowledge_lint": {
+    "pages": 14,
+    "indexed": 11,
+    "passed": true
+  },
+  "scientific_conclusions_changed": false,
+  "independent_static_review": {
+    "status": "pass_for_symbolic_recipe_checkpoint_only",
+    "reviewer": "i7_current_storage_count",
+    "production_files_reviewed": 8,
+    "measurement_or_launch_attested": false
+  },
+  "production_code_and_test_sha256": {
+    "native_storage_recipe_common.py": "ea37f4fba95c5b53967f34b7c6365eb611c477d3e955eec1045d86494f7107c3",
+    "native_storage_recipe_core.py": "1004cf78f4cbf97382a419020af7d716627a67731536e629e03465fe042e35dd",
+    "native_storage_recipe_branch_audit.py": "2fdf8699025178bc9f4b5467bfd3cd615e8e0e9477b7c1d7f74a96b2a277b151",
+    "native_storage_crosscheck.py": "b907429b780a47fdb7dcf9862ed28b363452551e0725944ee571ff3ff9aeeacb",
+    "native_storage_authority.py": "9b785cefa70aabdf9a8b4e179dd376ee768940a4532bd6cf73b59b1db5e4976a",
+    "source_environment.py": "ba8ad19247c3a28c3686ca522c2278ca2a7f57002498d2c3ad06f2055d910db1",
+    "source_environment_schema.py": "5f4a369633178f84ba71da8e2d69dc4b75ba5a510eace80404d61415d9a1a06b",
+    "final_storage_accounting.py": "b26a136bf8eb15ac57c8a996676dc69671382918946d8d84c0c85d8993feedea",
+    "test_native_storage_recipe_common.py": "f3dd9fe137a9ed6965da830e70085a26ca07ace128f07741b1988819230e8fb7",
+    "test_native_storage_recipe_core.py": "9f27ba0e50cf3251d4df9e730a8b14f1df3f49b8efbc82b7262dd4093721acb0",
+    "test_native_storage_recipe_branch_audit.py": "e25331946f8e7c5b59167e81d1e74095d8f92f4a2b30cf9568538e137eacf7ba",
+    "test_native_storage_crosscheck.py": "aa9722c987ab02d0470fbf70e473f1c538211cbdb8d999bee08a39e0da8977a1",
+    "test_storage_crosscheck_environment.py": "60d9d26ff4f8444e1972eb5468d63fae8612fc7ebf7c724f93febe5487c39232",
+    "test_native_storage_authority.py": "99ec106d974d092b66aca99228199ed8103b80af08557ce4e7069dd316b753a0",
+    "test_final_storage_accounting.py": "e23a8714efe9b33f1516172e4fdf37ecc825c352c6c8a5f93599af4b513b728b",
+    "test_cuda_identity.py": "87387064d64063aa5e13ce53bfc7d474d1ec6bbc9d85da4271da80f8b72adc35"
+  },
+  "preserved_sha256": {
+    "spectral_filter.py": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+    "inspection-marker.json": "88a825ca918a04d3417c319af664184995c8a391ffcb75589c0a8dccb069d83e",
+    "inspection-failure.json": "87ed567200f25761eeee13ff02ccd2c126a8cd52363961cc94fd2d50534260a9"
+  },
+  "production_attempt_absent": true,
+  "production_supervision_absent": true,
+  "frozen_checkout_absent": true,
+  "production_measurement_absent": true,
+  "production_admission_absent": true,
+  "full_width_tensor_materialization_performed": false,
+  "actual_eleven_component_measurement_performed": false,
+  "scientific_execution_certified": false,
+  "execution_authorized": false,
+  "worker_gate": "unconditionally_closed",
+  "reminder": {
+    "unit": "[private operational context omitted]",
+    "enabled": true,
+    "active": true,
+    "next_observed": "2026-09-07 09:24:37 BST",
+    "cadence_changed": false
+  },
+  "next_scope": "native-storage-crosscheck-controller-next-scope.md"
+}

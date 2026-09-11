@@ -1,0 +1,50 @@
+{
+  "status": "pass",
+  "source_files": 16,
+  "frozen_commit": "6c40f99",
+  "archive_roundtrips": 107,
+  "scalar_branches": 120,
+  "independent_primary_aggregation": [
+    {
+      "objective": "soft",
+      "metric": "clean_ce",
+      "seed_values": {
+        "100": 166.1290042195096,
+        "101": 92.72406681864025,
+        "102": 111.63770826162882
+      },
+      "mean": 123.49692643325956
+    },
+    {
+      "objective": "soft",
+      "metric": "clean_accuracy",
+      "seed_values": {
+        "100": 0.4161,
+        "101": 0.2653,
+        "102": 0.3292
+      },
+      "mean": 0.33686666666666665
+    },
+    {
+      "objective": "redraw",
+      "metric": "clean_ce",
+      "seed_values": {
+        "100": 1.2781715122977668,
+        "101": 83.42174356380131,
+        "102": 66.78203577053162
+      },
+      "mean": 50.49398361554357
+    },
+    {
+      "objective": "redraw",
+      "metric": "clean_accuracy",
+      "seed_values": {
+        "100": 0.28900000000000003,
+        "101": 0.2604,
+        "102": 0.3699
+      },
+      "mean": 0.30643333333333334
+    }
+  ],
+  "scope": "Source/commit and archive-byte checks; direct scalar aggregation, no independent forward or vector replay."
+}

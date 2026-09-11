@@ -1,0 +1,38 @@
+{
+  "schema": "i13_mean_report_audit_v1",
+  "status": "pass",
+  "i13_archive_roundtrips": 53,
+  "i10_reference_archive_roundtrips": 36,
+  "frozen_source_files_verified_in_worktree_and_commit": 23,
+  "frozen_commit": "d91dba8ebd278f9934589ff9cac6e3ab62a02dfc",
+  "expected_frozen_commit_prefix": "d91dba8",
+  "scalar_branches": 72,
+  "primary_max_abs_discrepancy": 0.0,
+  "table_counts": {
+    "primary_four_h500_mean32_minus_current32": 4,
+    "all_scalar_levels": 1512,
+    "all_horizon_clean_policy_contrasts": 504,
+    "absolute_auxiliary_and_validation_clean_progress": 336,
+    "fixed_target_training_risk_diagnostics": 224,
+    "within_branch_then_seed_first_leakage": 48,
+    "new_policy_component_norms": 48,
+    "h0_actual_and_matched_step_levels": 147,
+    "h0_actual_and_matched_step_loss_contrasts": 90,
+    "signed_alignment_h0_and_h500": 208
+  },
+  "analysis_inputs": {
+    "audit_sha256": "111de918e77bff38fe18c0c3efa37797e99c4926a12e8c9cbee16793d8e9b923",
+    "summary_sha256": "7bea6855dba4653431b05b6fafb6339bda2a31609b166383a0f9ae17372a1f99"
+  },
+  "scope_limits": [
+    "No model/data forward, optimizer update, training, GPU operation or tensor audit was rerun.",
+    "All report estimates use retained JSON scalars; the prior immutable analysis performs tensor checks.",
+    "The six h0 alignment records are common across objective/policy and are not treated as independent repeats.",
+    "These are conditional saved-state results, not an independent test-set replication or causal mediation proof."
+  ],
+  "safety_budget": {
+    "last_known_spend_usd": 0,
+    "authorized_budget_usd": 100,
+    "source": "I13 manifest plus user authorization"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "scope": "saved-response collection reconstruction; no acquisition or model replay",
+  "receipt_sha256": "cf86bce1a96099939434fca3c391568db3d802786aed05f04d66f6ad76d82776",
+  "manifest_sha256": "8287106e8e3238ccf18d0c60bc0a4b59de894c7a8fd038c6a870a2cd1e94ed63",
+  "audit_source_sha256": "936751d0ea5bd463987e88afc094674ad820ae438a79b6d1ead3e9a6d445e1ea",
+  "article_requests": 102,
+  "requested_pairs": 51,
+  "selected_rows": 96,
+  "accepted_pairs": {
+    "calibration": 32,
+    "evaluation": 16
+  },
+  "rejected_pairs": [
+    {
+      "candidate_id": "K020",
+      "role": "calibration",
+      "reason": "technical member exclusion"
+    },
+    {
+      "candidate_id": "K043",
+      "role": "calibration",
+      "reason": "technical member exclusion"
+    },
+    {
+      "candidate_id": "K047",
+      "role": "calibration",
+      "reason": "technical member exclusion"
+    }
+  ],
+  "role_topic_rows": {
+    "calibration": {
+      "programming": 42,
+      "astronomy": 8,
+      "cooking": 14
+    },
+    "evaluation": {
+      "programming": 18,
+      "astronomy": 12,
+      "cooking": 2
+    }
+  },
+  "total_artifact_bytes": 575135,
+  "maximum_observed_request_seconds": 0.85432,
+  "source_attribution_publication_review_pending": true,
+  "new_network_or_model_calls": 0
+}

@@ -1,0 +1,222 @@
+{
+  "status": "passed",
+  "started_utc": "2026-09-06T13:30:51.867337+00:00",
+  "source_sha256": "85fa7e1a952b6d2c5b7f9cc248c34ed8e6ac94e1d48aa5ff298439e56758eb0d",
+  "scope": "Saved tensors only; no producer/helper imports, dataset access, optimizer replay, training, or new scientific snapshot.",
+  "limits": "Historical unsaved parameter/gradient vectors and previous-basis ancestry are not independently replayed. Snapshot phase is checked against saved hash/counter links. Full bulk-file hashes are separately audited.",
+  "tolerances": {
+    "float64_absolute": 1e-11,
+    "float64_relative": 1e-09,
+    "native_float32_absolute": 1e-06,
+    "mean_and_row_hashes": "bitwise",
+    "wall_seconds": 300,
+    "gpu_allocated_bytes": 8589934592,
+    "rss_bytes": 12884901888
+  },
+  "comparisons": {
+    "float64": {
+      "checks": 972,
+      "elements": 36023352,
+      "null_checks": 0,
+      "max_absolute_error": 1.412203687323199e-13,
+      "max_tolerance_fraction": 0.004888213808727184,
+      "max_absolute_error_location": "seed3/step200/width128/metric/relative_covariance_error",
+      "max_tolerance_fraction_location": "seed3/step200/width128/metric/relative_covariance_error"
+    },
+    "native_float32": {
+      "checks": 456,
+      "elements": 456,
+      "null_checks": 0,
+      "max_absolute_error": 3.3306690738754696e-16,
+      "max_tolerance_fraction": 3.3306690738754696e-10,
+      "max_absolute_error_location": "seed5/step200/width32/metric/native_projected_clean_corruption_cosine",
+      "max_tolerance_fraction_location": "seed5/step200/width32/metric/native_projected_clean_corruption_cosine"
+    }
+  },
+  "residual_gates": {
+    "gram_symmetry": {
+      "count": 12,
+      "maximum": 0.0,
+      "limit": 1e-12
+    },
+    "full_rebuilt_dual_orthogonality": {
+      "count": 12,
+      "maximum": 1.3259791167938538e-13,
+      "limit": 1e-08
+    },
+    "saved_dual_eigen_residual": {
+      "count": 12,
+      "maximum": 1.5325898186050109e-15,
+      "limit": 1e-08
+    },
+    "saved_dual_orthogonality": {
+      "count": 12,
+      "maximum": 7.52164442644728e-15,
+      "limit": 1e-08
+    },
+    "rebuilt_mapped_orthogonality": {
+      "count": 12,
+      "maximum": 1.970177709541564e-14,
+      "limit": 1e-06
+    },
+    "rebuilt_mapped_covariance_residual": {
+      "count": 12,
+      "maximum": 1.04742293299409e-15,
+      "limit": 1e-08
+    },
+    "saved_mapped_orthogonality": {
+      "count": 12,
+      "maximum": 1.906589813775457e-14,
+      "limit": 1e-06
+    },
+    "saved_mapped_covariance_residual": {
+      "count": 12,
+      "maximum": 1.148646133029119e-15,
+      "limit": 1e-08
+    },
+    "spectral_trace": {
+      "count": 12,
+      "maximum": 4.2600577504002465e-16,
+      "limit": 1e-09
+    },
+    "spectral_frobenius": {
+      "count": 12,
+      "maximum": 5.291912348372863e-16,
+      "limit": 1e-09
+    },
+    "probe_energy_closure": {
+      "count": 48,
+      "maximum": 2.615899599902236e-08,
+      "limit": 1e-05
+    },
+    "native_represented_action": {
+      "count": 24,
+      "maximum": 1.7440157312521782e-07,
+      "limit": 1e-05
+    },
+    "native_full_basis_orthogonality": {
+      "count": 24,
+      "maximum": 2.050502604546115e-06,
+      "limit": 0.005
+    },
+    "qr_span_orthogonality": {
+      "count": 24,
+      "maximum": 2.517163801218745e-15,
+      "limit": 1e-10
+    }
+  },
+  "completed_seeds": [
+    3,
+    4,
+    5
+  ],
+  "completed_snapshots": [
+    {
+      "seed": 3,
+      "step": 200,
+      "positive_rank": 199,
+      "boundary_relative_gap": 0.001282768199072405
+    },
+    {
+      "seed": 3,
+      "step": 500,
+      "positive_rank": 499,
+      "boundary_relative_gap": 0.0016399374775414443
+    },
+    {
+      "seed": 3,
+      "step": 1000,
+      "positive_rank": 999,
+      "boundary_relative_gap": 0.0019205430956207913
+    },
+    {
+      "seed": 3,
+      "step": 2000,
+      "positive_rank": 1750,
+      "boundary_relative_gap": 0.0017923111213616076
+    },
+    {
+      "seed": 4,
+      "step": 200,
+      "positive_rank": 199,
+      "boundary_relative_gap": 0.00041054245964521676
+    },
+    {
+      "seed": 4,
+      "step": 500,
+      "positive_rank": 499,
+      "boundary_relative_gap": 0.002008208071577617
+    },
+    {
+      "seed": 4,
+      "step": 1000,
+      "positive_rank": 999,
+      "boundary_relative_gap": 0.0012552428893102393
+    },
+    {
+      "seed": 4,
+      "step": 2000,
+      "positive_rank": 1752,
+      "boundary_relative_gap": 0.0016111368927560791
+    },
+    {
+      "seed": 5,
+      "step": 200,
+      "positive_rank": 199,
+      "boundary_relative_gap": 0.0010156546914106823
+    },
+    {
+      "seed": 5,
+      "step": 500,
+      "positive_rank": 499,
+      "boundary_relative_gap": 0.0018240516433491178
+    },
+    {
+      "seed": 5,
+      "step": 1000,
+      "positive_rank": 999,
+      "boundary_relative_gap": 0.0011762479881327384
+    },
+    {
+      "seed": 5,
+      "step": 2000,
+      "positive_rank": 1746,
+      "boundary_relative_gap": 0.001616254663003401
+    }
+  ],
+  "row_hashes_checked": 12000,
+  "sequential_mean_innovation_steps_checked": 6000,
+  "snapshot_hash_phase_mean_checks": 12,
+  "observer_metric_values_checked": 384,
+  "reference_metric_values_checked": 96,
+  "occupancy_before": {
+    "gpu": "NVIDIA GeForce RTX 3090, 23467",
+    "compute_processes": "2101, /usr/libexec/gnome-remote-desktop-daemon, 260 MiB\n8861, stremio, 55 MiB",
+    "available_ram_bytes": 52697092096
+  },
+  "bulk_root": "/tmp/spectral-experiment-artifacts/spectral-iteration005-full-p3hptw75",
+  "original_execution_sha256": "b8368fe5ee628dee648a2167e909a0380c6abc2b3fcc7d11976a707dd86e3478",
+  "environment": {
+    "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+    "torch": "2.11.0+cu128",
+    "numpy": "1.26.4",
+    "cuda": "12.8",
+    "cpu_threads": 1,
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "TF32": false,
+    "deterministic": true
+  },
+  "separate_byte_binding_audit": {
+    "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-005/raw-summary-audit.json",
+    "sha256": "e1ba8337806a17620a1308662db0fe2c4919b3ba263d7a3f98b75f031dcc9cf0"
+  },
+  "active": "seed5/step2000/observer128",
+  "resources": {
+    "elapsed_seconds": 21.33564403373748,
+    "peak_rss_bytes": 2312978432,
+    "peak_gpu_allocated_bytes": 2373529088,
+    "peak_gpu_reserved_bytes": 2455764992,
+    "final_elapsed_seconds": 21.335950395092368
+  },
+  "finished_utc": "2026-09-06T13:31:13.203406+00:00"
+}

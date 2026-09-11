@@ -1,0 +1,472 @@
+{
+  "schema": "jlens_transfer_geometry_v1",
+  "panels": {
+    "fit": {
+      "rows": 32,
+      "width": 1024,
+      "covariance_divisor": 32,
+      "trace_covariance": 2.0669985898965066,
+      "axes": [
+        {
+          "axis": "PC1",
+          "variance": 0.28445108688627446,
+          "u_squared_norm": 1.0000000041180057,
+          "cosine_u_Cu": 1.0,
+          "relative_off_axis": 2.5464913868146893e-08,
+          "normalized_direction_variance_fraction": 0.13761551996469698,
+          "between_group_fraction": 0.616659834384972,
+          "within_group_fraction": 0.38334016561502826,
+          "variance_ratio_to_fit": 1.0
+        },
+        {
+          "axis": "PC2",
+          "variance": 0.25257163058878956,
+          "u_squared_norm": 0.9999999986532406,
+          "cosine_u_Cu": 1.000000000000001,
+          "relative_off_axis": 2.273984113172768e-08,
+          "normalized_direction_variance_fraction": 0.12219245439426683,
+          "between_group_fraction": 0.8535474365534397,
+          "within_group_fraction": 0.14645256344656069,
+          "variance_ratio_to_fit": 1.0
+        },
+        {
+          "axis": "PC3",
+          "variance": 0.18900121377169024,
+          "u_squared_norm": 0.9999999989164579,
+          "cosine_u_Cu": 0.9999999999999987,
+          "relative_off_axis": 2.3633898765055347e-08,
+          "normalized_direction_variance_fraction": 0.09143751471351715,
+          "between_group_fraction": 0.10559570743225243,
+          "within_group_fraction": 0.8944042925677482,
+          "variance_ratio_to_fit": 1.0
+        },
+        {
+          "axis": "PC4",
+          "variance": 0.16508292848065895,
+          "u_squared_norm": 1.0000000042341322,
+          "cosine_u_Cu": 1.0000000000000004,
+          "relative_off_axis": 2.5722940601302322e-08,
+          "normalized_direction_variance_fraction": 0.07986600890228068,
+          "between_group_fraction": 0.15100051822694976,
+          "within_group_fraction": 0.84899948177305,
+          "variance_ratio_to_fit": 1.0
+        }
+      ],
+      "score_correlation": [
+        [
+          1.0,
+          3.0914643458572857e-09,
+          -1.6300841295083168e-10,
+          1.3952639089502148e-09
+        ],
+        [
+          3.0914643458572857e-09,
+          1.0,
+          -2.6089419509903706e-09,
+          3.0045491813827027e-09
+        ],
+        [
+          -1.6300841295083168e-10,
+          -2.6089419509903706e-09,
+          1.0,
+          3.7856626429094453e-10
+        ],
+        [
+          1.3952639089502148e-09,
+          3.0045491813827027e-09,
+          3.7856626429094453e-10,
+          1.0
+        ]
+      ],
+      "groups": [
+        {
+          "group": "astronomy",
+          "rows": 8,
+          "centered_mean_scores": [
+            0.5754495931188859,
+            0.3319881145453284,
+            0.050729476046764616,
+            0.18470116614012044
+          ]
+        },
+        {
+          "group": "cooking",
+          "rows": 8,
+          "centered_mean_scores": [
+            -0.3108879137917044,
+            -0.43226627197440753,
+            -0.16650867178074286,
+            -0.24954484897233892
+          ]
+        },
+        {
+          "group": "football",
+          "rows": 8,
+          "centered_mean_scores": [
+            -0.4778588122493751,
+            0.5793977011412481,
+            -0.08844877525252812,
+            0.007714282044153309
+          ]
+        },
+        {
+          "group": "programming",
+          "rows": 8,
+          "centered_mean_scores": [
+            0.2132971329221936,
+            -0.47911954371216897,
+            0.20422797098650652,
+            0.057129400788065166
+          ]
+        }
+      ],
+      "ids": [
+        "astronomy-0-plain",
+        "astronomy-0-note",
+        "astronomy-1-plain",
+        "astronomy-1-note",
+        "astronomy-2-plain",
+        "astronomy-2-note",
+        "astronomy-3-plain",
+        "astronomy-3-note",
+        "cooking-0-plain",
+        "cooking-0-note",
+        "cooking-1-plain",
+        "cooking-1-note",
+        "cooking-2-plain",
+        "cooking-2-note",
+        "cooking-3-plain",
+        "cooking-3-note",
+        "football-0-plain",
+        "football-0-note",
+        "football-1-plain",
+        "football-1-note",
+        "football-2-plain",
+        "football-2-note",
+        "football-3-plain",
+        "football-3-note",
+        "programming-0-plain",
+        "programming-0-note",
+        "programming-1-plain",
+        "programming-1-note",
+        "programming-2-plain",
+        "programming-2-note",
+        "programming-3-plain",
+        "programming-3-note"
+      ],
+      "scalar_check": {
+        "checks": 4104,
+        "largest_absolute_difference": 1.1102230246251565e-16,
+        "relative_tolerance": 2e-11,
+        "absolute_tolerance": 2e-12
+      },
+      "max_saved_score_difference": 0.0
+    },
+    "authored": {
+      "rows": 24,
+      "width": 1024,
+      "covariance_divisor": 24,
+      "trace_covariance": 2.4346810249527255,
+      "axes": [
+        {
+          "axis": "PC1",
+          "variance": 0.07598719304546922,
+          "u_squared_norm": 1.0000000041180057,
+          "cosine_u_Cu": 0.5365196582366416,
+          "relative_off_axis": 1.5728926408688704,
+          "normalized_direction_variance_fraction": 0.031210327740583174,
+          "between_group_fraction": 0.7613100934835844,
+          "within_group_fraction": 0.23868990651641575,
+          "variance_ratio_to_fit": 0.26713623729569164
+        },
+        {
+          "axis": "PC2",
+          "variance": 0.09691141932000286,
+          "u_squared_norm": 0.9999999986532406,
+          "cosine_u_Cu": 0.5968060349255832,
+          "relative_off_axis": 1.3444661987518876,
+          "normalized_direction_variance_fraction": 0.039804565139041556,
+          "between_group_fraction": 0.7724557396538673,
+          "within_group_fraction": 0.2275442603461326,
+          "variance_ratio_to_fit": 0.3836987514951107
+        },
+        {
+          "axis": "PC3",
+          "variance": 0.0881702944824234,
+          "u_squared_norm": 0.9999999989164579,
+          "cosine_u_Cu": 0.5747179542276597,
+          "relative_off_axis": 1.4239185540511428,
+          "normalized_direction_variance_fraction": 0.03621431048844341,
+          "between_group_fraction": 0.5941867810261594,
+          "within_group_fraction": 0.4058132189738404,
+          "variance_ratio_to_fit": 0.46650649867747085
+        },
+        {
+          "axis": "PC4",
+          "variance": 0.0183072783409545,
+          "u_squared_norm": 1.0000000042341322,
+          "cosine_u_Cu": 0.3443922727469565,
+          "relative_off_axis": 2.7260363160081176,
+          "normalized_direction_variance_fraction": 0.007519374437887419,
+          "between_group_fraction": 0.19807425102905585,
+          "within_group_fraction": 0.801925748970944,
+          "variance_ratio_to_fit": 0.11089746534935849
+        }
+      ],
+      "score_correlation": [
+        [
+          1.0,
+          0.5365580426047852,
+          0.4673102286690887,
+          -0.48934971577564396
+        ],
+        [
+          0.5365580426047852,
+          1.0,
+          -0.22858440513576203,
+          -0.25696751864944894
+        ],
+        [
+          0.4673102286690887,
+          -0.22858440513576203,
+          1.0,
+          -0.17939080601218635
+        ],
+        [
+          -0.48934971577564396,
+          -0.25696751864944894,
+          -0.17939080601218635,
+          1.0
+        ]
+      ],
+      "groups": [
+        {
+          "group": "astronomy",
+          "rows": 6,
+          "centered_mean_scores": [
+            0.3501642409558962,
+            0.23478020595726154,
+            0.030618303459041735,
+            -0.07313079807219192
+          ]
+        },
+        {
+          "group": "cooking",
+          "rows": 6,
+          "centered_mean_scores": [
+            -0.32172886581221616,
+            -0.315844487379406,
+            -0.2012010334611484,
+            0.09449081910153001
+          ]
+        },
+        {
+          "group": "football",
+          "rows": 6,
+          "centered_mean_scores": [
+            -0.06356606213063652,
+            0.30630830046624796,
+            -0.19182767402597645,
+            -0.010525070656310734
+          ]
+        },
+        {
+          "group": "programming",
+          "rows": 6,
+          "centered_mean_scores": [
+            0.03513068698695663,
+            -0.22524401904410343,
+            0.36241040402808306,
+            -0.010834950373027355
+          ]
+        }
+      ],
+      "ids": [
+        "astronomy-new-0",
+        "astronomy-new-1",
+        "astronomy-new-2",
+        "astronomy-new-3",
+        "astronomy-new-4",
+        "astronomy-new-5",
+        "cooking-new-0",
+        "cooking-new-1",
+        "cooking-new-2",
+        "cooking-new-3",
+        "cooking-new-4",
+        "cooking-new-5",
+        "football-new-0",
+        "football-new-1",
+        "football-new-2",
+        "football-new-3",
+        "football-new-4",
+        "football-new-5",
+        "programming-new-0",
+        "programming-new-1",
+        "programming-new-2",
+        "programming-new-3",
+        "programming-new-4",
+        "programming-new-5"
+      ],
+      "scalar_check": {
+        "checks": 4104,
+        "largest_absolute_difference": 2.7755575615628914e-17,
+        "relative_tolerance": 2e-11,
+        "absolute_tolerance": 2e-12
+      },
+      "max_saved_score_difference": 0.0
+    },
+    "wiki": {
+      "rows": 24,
+      "width": 1024,
+      "covariance_divisor": 24,
+      "trace_covariance": 3.0586832860235016,
+      "axes": [
+        {
+          "axis": "PC1",
+          "variance": 0.022157512385021522,
+          "u_squared_norm": 1.0000000041180057,
+          "cosine_u_Cu": 0.34911499478137437,
+          "relative_off_axis": 2.6841582404128523,
+          "normalized_direction_variance_fraction": 0.007244134230903994,
+          "between_group_fraction": 0.12142189937753102,
+          "within_group_fraction": 0.878578100622469,
+          "variance_ratio_to_fit": 0.07789568543248439
+        },
+        {
+          "axis": "PC2",
+          "variance": 0.01433545609885638,
+          "u_squared_norm": 0.9999999986532406,
+          "cosine_u_Cu": 0.28675081841553873,
+          "relative_off_axis": 3.340897884290787,
+          "normalized_direction_variance_fraction": 0.00468680630769061,
+          "between_group_fraction": 0.40515844590191136,
+          "within_group_fraction": 0.5948415540980889,
+          "variance_ratio_to_fit": 0.05675798214327504
+        },
+        {
+          "axis": "PC3",
+          "variance": 0.01367118990058732,
+          "u_squared_norm": 0.9999999989164579,
+          "cosine_u_Cu": 0.21587669321000405,
+          "relative_off_axis": 4.5230479440866,
+          "normalized_direction_variance_fraction": 0.004469632399624519,
+          "between_group_fraction": 0.14889168623580493,
+          "within_group_fraction": 0.8511083137641949,
+          "variance_ratio_to_fit": 0.07233387356497006
+        },
+        {
+          "axis": "PC4",
+          "variance": 0.019408231356396497,
+          "u_squared_norm": 1.0000000042341322,
+          "cosine_u_Cu": 0.2924353166693582,
+          "relative_off_axis": 3.2700746148488666,
+          "normalized_direction_variance_fraction": 0.006345289609716838,
+          "between_group_fraction": 0.12380735646986582,
+          "within_group_fraction": 0.8761926435301343,
+          "variance_ratio_to_fit": 0.11756655600321725
+        }
+      ],
+      "score_correlation": [
+        [
+          1.0,
+          0.3918480956741018,
+          0.09105479034552066,
+          -0.3415962938529212
+        ],
+        [
+          0.3918480956741018,
+          1.0,
+          -0.25218042726201834,
+          0.1264678590514395
+        ],
+        [
+          0.09105479034552066,
+          -0.25218042726201834,
+          1.0,
+          -0.3004610535892495
+        ],
+        [
+          -0.3415962938529212,
+          0.1264678590514395,
+          -0.3004610535892495,
+          1.0
+        ]
+      ],
+      "groups": [
+        {
+          "group": "astronomy",
+          "rows": 6,
+          "centered_mean_scores": [
+            0.06384497724784166,
+            0.07953737824055758,
+            -0.04773965378145507,
+            0.0827792019380441
+          ]
+        },
+        {
+          "group": "cooking",
+          "rows": 6,
+          "centered_mean_scores": [
+            -0.05092287279275102,
+            -0.04399541247609235,
+            0.0603117088653403,
+            -0.04484368984827827
+          ]
+        },
+        {
+          "group": "football",
+          "rows": 6,
+          "centered_mean_scores": [
+            0.038309576939709315,
+            0.06690226535977906,
+            -0.039046529786616165,
+            -0.0227508064344223
+          ]
+        },
+        {
+          "group": "programming",
+          "rows": 6,
+          "centered_mean_scores": [
+            -0.05123168139479998,
+            -0.10244423112424433,
+            0.02647447470273095,
+            -0.015184705655343569
+          ]
+        }
+      ],
+      "ids": [
+        "astronomy-wiki-0",
+        "astronomy-wiki-1",
+        "astronomy-wiki-2",
+        "astronomy-wiki-3",
+        "astronomy-wiki-4",
+        "astronomy-wiki-5",
+        "cooking-wiki-0",
+        "cooking-wiki-1",
+        "cooking-wiki-2",
+        "cooking-wiki-3",
+        "cooking-wiki-4",
+        "cooking-wiki-5",
+        "football-wiki-0",
+        "football-wiki-1",
+        "football-wiki-2",
+        "football-wiki-3",
+        "football-wiki-4",
+        "football-wiki-5",
+        "programming-wiki-0",
+        "programming-wiki-1",
+        "programming-wiki-2",
+        "programming-wiki-3",
+        "programming-wiki-4",
+        "programming-wiki-5"
+      ],
+      "scalar_check": {
+        "checks": 4104,
+        "largest_absolute_difference": 5.204170427930421e-18,
+        "relative_tolerance": 2e-11,
+        "absolute_tolerance": 2e-12
+      },
+      "max_saved_score_difference": 0.0
+    }
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "schema": "i18_tracking_audit_v1",
+  "status": "pass",
+  "artifact_root": "/tmp/spectral-experiment-artifacts/spectral-i18-001.bAQSuU",
+  "attempt_sha256": "de6123a1144fa36108ac9be8fe0e5b70e31ed4cd27bc06acb0da6e47293dc0b5",
+  "completion_sha256": "40f07cf8b2b737de20721f356f11a0e262ab79a335a3e0946505d7aef09f6ff0",
+  "input_provenance": {
+    "acquisition_commit": "23a2fda1f26781cf3a5966dd719d6774ade218d4",
+    "acquisition_sources": [
+      {
+        "path": "spectral_filter.py",
+        "sha256": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+        "size": 25418
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-018/tracking_core.py",
+        "sha256": "43c33683b5e40ac17d8b975fbc895e588e9a4982200c12484f0ae4a571124841",
+        "size": 15190
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-018/test_tracking_core.py",
+        "sha256": "82cac986fe04474629c305566e1076040d5cc4f752ecb7aa28cec566968f3bd0",
+        "size": 8744
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-018/run_tracking.py",
+        "sha256": "5374a4e42b2e0015e148cffa08aa329215b1b9471343dc5df49f9cc00505afaf",
+        "size": 10029
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-018/test_tracking_runner.py",
+        "sha256": "b91361966f3092f2dec78a7375415a3631377004700bff50142b0d99ce2a5742",
+        "size": 3207
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-018/protocol.md",
+        "sha256": "4b3cf0d7e3ab2cd8cb31723a0a2c31a348435535825c9088f785f053c0926ac9",
+        "size": 10285
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-018/best-practices-check.md",
+        "sha256": "2975605f471a1050eb70cb72b3b2389a1ec3b72b9be11651a1d7d308947cebbd",
+        "size": 1298
+      }
+    ],
+    "analysis_commit": "31417b83108685feb7a14f7a4dc41cf2f8f177ee",
+    "analysis_sources": [
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-018/audit_tracking.py",
+        "size": 43185,
+        "sha256": "89599674f70f141b7524f051d15ff218a4f621fc53f976b0a95cca5822a67996"
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-018/test_audit_tracking.py",
+        "size": 29245,
+        "sha256": "c370b0ef94c96052904d0a6131128226d53c74635f1b9f013fba4e397fb60d63"
+      }
+    ]
+  },
+  "checks": 39825,
+  "numeric_values_checked": 79358016,
+  "errors": [],
+  "maximum_absolute_error_by_relation": {
+    "signal construction": 0.0,
+    "rotation-applied disturbance": 8.881784197001252e-16,
+    "signal plus disturbance": 0.0,
+    "first native mean": 0.0,
+    "post-ingest mean recurrence": 1.4210854715202004e-14,
+    "native action from saved basis/fallback": 0.0,
+    "absent native basis zero fill": 0.0,
+    "absent native singular value zero fill": 0.0,
+    "native basis unit length": 7.771561172376096e-15,
+    "native represented leading eigenvalue": 9.592326932761353e-14,
+    "native represented leading eigenvector": 8.881784197001252e-14,
+    "native raw delivery": 2.842170943040401e-14,
+    "native delivery residual": 0.0,
+    "mean-restored native input": 2.842170943040401e-14,
+    "full residual moment recurrence": 0.0,
+    "full moment saved residual": 0.0,
+    "full moment symmetry": 0.0,
+    "full moment eigenvalue gap": 0.0,
+    "full moment leading action": 0.0,
+    "full action from saved eigenvector": 0.0,
+    "unavailable full direction zero fill": 0.0,
+    "raw control": 0.0,
+    "ema_q0p9 recurrence": 0.0,
+    "ema_q0p99 recurrence": 0.0,
+    "ema_q0p999 recurrence": 0.0,
+    "scalar initial buffers": 0.0,
+    "scalar buffer recurrence": 0.0,
+    "scalar saved residual": 0.0,
+    "scalar initial residual": 0.0,
+    "scalar_k0 normalized delivery": 0.0,
+    "scalar_k0p5 normalized delivery": 4.440892098500626e-16,
+    "scalar_k0p9 normalized delivery": 4.440892098500626e-16,
+    "scalar_k1 normalized delivery": 4.440892098500626e-16,
+    "k0 slow EMA duplicate parity": 4.263256414560601e-14,
+    "k1 fast EMA duplicate parity": 9.947598300641403e-14,
+    "useful direction oracle construction": 2.842170943040401e-14,
+    "nuisance direction oracle construction": 1.4210854715202004e-14,
+    "native i17 initial solve": 8.881784197001252e-16,
+    "native i17 buffer recurrence": 2.2737367544323206e-13,
+    "native i17 normalized delivery": 8.881784197001252e-16,
+    "native CP recurrence": 2.842170943040401e-14,
+    "native i17 versus CP response transport identity": 2.679106936298581e-13,
+    "native_i17_response_residual": 2.2737367544323206e-13,
+    "native_i17_response_residual initialization": 0.0,
+    "native_cp_response_residual": 2.842170943040401e-14,
+    "native_cp_response_residual initialization": 0.0,
+    "native idempotence diagnostic": 1.4686870114880517e-16,
+    "native orthogonality diagnostic": 0.0,
+    "native generating-axis alignment": 2.220446049250313e-16,
+    "full generating-axis alignment": 2.220446049250313e-16,
+    "paired rotated disturbance construction": 8.881784197001252e-16,
+    "paired rotated gradient construction": 2.842170943040401e-14,
+    "paired rotated signal construction": 0.0,
+    "ema_optimal_oracle recurrence": 0.0
+  },
+  "hash_files_verified": 398,
+  "hash_bytes_streamed": 552989772,
+  "scope": "saved-array communication-independent audit; no native observer/RNG replay",
+  "summary_sha256": "122b840111cf6fc1cd1bbd09fcfa1b6aae6b8c4e5544796e13bf88daf1778348"
+}

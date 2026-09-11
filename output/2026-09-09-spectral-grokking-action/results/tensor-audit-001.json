@@ -1,0 +1,717 @@
+{
+  "batch_completion_sha256": "22bb866319fa2fa85771bd156eb406523a66abee4d0bc789cc6104d40ec86e45",
+  "checks": 685,
+  "elapsed_seconds": 60.81988658802584,
+  "errors": [],
+  "peak_rss_bytes": 2423230464,
+  "rows": [
+    {
+      "P": 227313,
+      "Q_orthogonality_max_abs": 4.440892098500626e-15,
+      "action_cosines": {
+        "native_norm_matched": 0.8550277902728054,
+        "native_orthogonal": 0.8550277901799438,
+        "orthogonal_norm_matched": 0.9999999999999706
+      },
+      "action_norms": {
+        "native": 2.769217725445156,
+        "norm_matched": 2.7692177268221805,
+        "orthogonal": 2.364412855706299
+      },
+      "adam": {
+        "native": {
+          "actual_displacement_norm": 0.0974575103509464,
+          "adaptive_direction_norm": 103.99592234737153,
+          "adaptive_movement_norm": 0.10399592234737182,
+          "decay_movement_norm": 0.03994150962299296,
+          "decomposition_residual_max_abs": 6.459937436299919e-08,
+          "decomposition_residual_norm": 1.5542315972485921e-06,
+          "m_norm": 0.7871561805991264,
+          "m_recurrence_relative_error": 2.766066561086972e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 1.0000000000000178,
+              "adaptive_direction_cosine": 1.0000000000000022
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 0.9793521431567085,
+              "adaptive_direction_cosine": 0.9818968118053778
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 0.9801899796776246,
+              "adaptive_direction_cosine": 0.9826951602958842
+            }
+          },
+          "v_norm": 1.459938281635462,
+          "v_recurrence_relative_error": 3.9938160140602435e-08
+        },
+        "norm_matched": {
+          "actual_displacement_norm": 0.09560427135708725,
+          "adaptive_direction_norm": 101.70348820282314,
+          "adaptive_movement_norm": 0.10170348820282299,
+          "decay_movement_norm": 0.03994150962299296,
+          "decomposition_residual_max_abs": 6.455472598129378e-08,
+          "decomposition_residual_norm": 1.5329202243959308e-06,
+          "m_norm": 0.7781161474418182,
+          "m_recurrence_relative_error": 2.7544051565536775e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 0.9793521431567085,
+              "adaptive_direction_cosine": 0.9818968118053778
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 1.000000000000017,
+              "adaptive_direction_cosine": 0.9999999999999986
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 0.9993030742258754,
+              "adaptive_direction_cosine": 0.9993890535819169
+            }
+          },
+          "v_norm": 1.4602335598997547,
+          "v_recurrence_relative_error": 3.82198827215694e-08
+        },
+        "orthogonal": {
+          "actual_displacement_norm": 0.09461433181860605,
+          "adaptive_direction_norm": 100.66505476783487,
+          "adaptive_movement_norm": 0.10066505476783495,
+          "decay_movement_norm": 0.03994150962299296,
+          "decomposition_residual_max_abs": 6.441412620162472e-08,
+          "decomposition_residual_norm": 1.5364700881185073e-06,
+          "m_norm": 0.7665621352674379,
+          "m_recurrence_relative_error": 2.7404872572552058e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 0.9801899796776246,
+              "adaptive_direction_cosine": 0.9826951602958842
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 0.9993030742258754,
+              "adaptive_direction_cosine": 0.9993890535819169
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 1.0000000000000189,
+              "adaptive_direction_cosine": 0.9999999999999998
+            }
+          },
+          "v_norm": 1.4598495782007042,
+          "v_recurrence_relative_error": 3.753506362803474e-08
+        }
+      },
+      "adam_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed100/first-step-adam-diagnostics.pt",
+        "sha256": "7176cb20f2efe7531b554a0a14c07eaf037afb2f6c7f1c2787c1a8b0bd348f26",
+        "size_bytes": 32740717,
+        "write_seconds": 0.3575893430970609
+      },
+      "completion_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed100/complete.json",
+        "seed": 100,
+        "sha256": "131edc787f84197d18f3c9240542597bc73ddb47499b590babcb2150f2c0eef6"
+      },
+      "k": 199,
+      "native_fp64_relative_error": 1.2454387466812488e-06,
+      "norm_match_scale": 1.1712073544017056,
+      "orthogonal_relative_error": 3.8465985311234633e-13,
+      "parent_receipt": {
+        "capture_and_write_seconds": 2.3941468922421336,
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/seed100-batch/seed100/legacy/checkpoint-step-001500.pt",
+        "sha256": "146f89fef52a5b1e8441c995e9bc02520ac7b0081982cd82b51bd7269f75d291",
+        "size_bytes": 185526268,
+        "write_seconds": 2.0001383433118463
+      },
+      "rank": 199,
+      "rank_tolerance": 1.0591788748310543e-09,
+      "seed": 100,
+      "shared_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed100/shared-first-action.pt",
+        "sha256": "7281dccaebc9df8072c09c139703d3ee2b8d29f9a9f82325b8e18b5c90235328",
+        "size_bytes": 365536194,
+        "write_seconds": 3.466202072799206
+      },
+      "singular_max": 20.98479887207435,
+      "singular_min": 0.12437598414545314,
+      "singular_relative_error": 9.121651542352087e-16,
+      "source_sha256": {
+        "experiments/grokking_action_intervention.py": "95200567f9c7eb50b76b563a554305f3ea7ccd03b6ab3525adf5d1dad388eb37",
+        "experiments/grokking_action_policy.py": "d3555d2e6816c031acc51f4939316eddba7e8b3fafcfaef47b0169310960ca1b",
+        "experiments/grokking_confirmation.py": "31bd8c9694e882c62b8184ed5cbf2d0f895ef67f255266dcf33abf0e2d0b92b6",
+        "experiments/grokking_model.py": "1407d0569cf2d8ffa93ba99bc9d8468d77c61bad983f01bb99bc15d3b4e5e0c5",
+        "experiments/measure_grokking_representations.py": "a8056c9d45b35cd5f188f6a3e64ecfb6896fef1734498e9d7365500c10046423",
+        "experiments/run_grokking_action_batch.py": "1dd7ab7d0e0672dcdc46559c463ed5c962aec94353ec08427febbe5880aa165b",
+        "output/2026-09-09-spectral-grokking-action/protocol.md": "dc9f99a81d0ecc451a52f6f9e4e106900e8ac4b3891308c14e25eb6defc94959",
+        "spectral_filter.py": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+        "tests/test_grokking_action_intervention.py": "9db009ebcd3fded0b25f701687b8b9e907732adaac95e5911e441ccca3319344",
+        "tests/test_grokking_action_policy.py": "90b077b36777db942de8d98f56aa5b3bc1250ef536f4022bbcba55fb726b99a8"
+      },
+      "span_reconstruction_relative_error": 2.5002991190981e-15
+    },
+    {
+      "P": 227313,
+      "Q_orthogonality_max_abs": 3.3306690738754696e-15,
+      "action_cosines": {
+        "native_norm_matched": 0.9309173733683179,
+        "native_orthogonal": 0.9309173733697551,
+        "orthogonal_norm_matched": 0.9999999999999586
+      },
+      "action_norms": {
+        "native": 0.10666562106423276,
+        "norm_matched": 0.10666562101951364,
+        "orthogonal": 0.0937829765785933
+      },
+      "adam": {
+        "native": {
+          "actual_displacement_norm": 0.04001727559328592,
+          "adaptive_direction_norm": 23.28511351479132,
+          "adaptive_movement_norm": 0.023285113514791345,
+          "decay_movement_norm": 0.04267105609395084,
+          "decomposition_residual_max_abs": 6.456058700864869e-08,
+          "decomposition_residual_norm": 1.6353663845363922e-06,
+          "m_norm": 0.07943238868215019,
+          "m_recurrence_relative_error": 2.5861557674476227e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 1.0000000000000115,
+              "adaptive_direction_cosine": 1.0000000000000018
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 0.9995652277983599,
+              "adaptive_direction_cosine": 0.9988047224994324
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 0.9995552971800552,
+              "adaptive_direction_cosine": 0.9989457586981433
+            }
+          },
+          "v_norm": 0.4284110510387093,
+          "v_recurrence_relative_error": 5.117113314678922e-08
+        },
+        "norm_matched": {
+          "actual_displacement_norm": 0.03984481768962698,
+          "adaptive_direction_norm": 22.90967507583173,
+          "adaptive_movement_norm": 0.022909675075831755,
+          "decay_movement_norm": 0.04267105609395084,
+          "decomposition_residual_max_abs": 6.18402493616642e-08,
+          "decomposition_residual_norm": 1.6577782120095742e-06,
+          "m_norm": 0.07866524394176204,
+          "m_recurrence_relative_error": 2.541855394225034e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 0.9995652277983599,
+              "adaptive_direction_cosine": 0.9988047224994324
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 1.0000000000000118,
+              "adaptive_direction_cosine": 0.9999999999999998
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 0.9999624597634781,
+              "adaptive_direction_cosine": 0.9999261159323782
+            }
+          },
+          "v_norm": 0.4284112035744081,
+          "v_recurrence_relative_error": 4.271621474190841e-08
+        },
+        "orthogonal": {
+          "actual_displacement_norm": 0.03982893251745302,
+          "adaptive_direction_norm": 22.70340795090045,
+          "adaptive_movement_norm": 0.02270340795090046,
+          "decay_movement_norm": 0.04267105609395084,
+          "decomposition_residual_max_abs": 6.66926080160335e-08,
+          "decomposition_residual_norm": 1.6521588658208408e-06,
+          "m_norm": 0.0778650937353363,
+          "m_recurrence_relative_error": 2.5503018237064632e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 0.9995552971800552,
+              "adaptive_direction_cosine": 0.9989457586981433
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 0.9999624597634781,
+              "adaptive_direction_cosine": 0.9999261159323782
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 1.0000000000000115,
+              "adaptive_direction_cosine": 1.0000000000000009
+            }
+          },
+          "v_norm": 0.42841085502072046,
+          "v_recurrence_relative_error": 4.128739024800036e-08
+        }
+      },
+      "adam_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed101/first-step-adam-diagnostics.pt",
+        "sha256": "9230f62823bf244175005c4a78026c940da412366af41c3f0e7956c2a4868785",
+        "size_bytes": 32740717,
+        "write_seconds": 0.3597600539214909
+      },
+      "completion_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed101/complete.json",
+        "seed": 101,
+        "sha256": "090560ea97ebdd603b92b4b9b4721cc23a96d41d21a62547e316ba338c84a656"
+      },
+      "k": 180,
+      "native_fp64_relative_error": 2.5057834265963425e-07,
+      "norm_match_scale": 1.137366555803903,
+      "orthogonal_relative_error": 0.0,
+      "parent_receipt": {
+        "capture_and_write_seconds": 2.155206528957933,
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed101/legacy/checkpoint-step-001500.pt",
+        "sha256": "79d0d76b1f560b65cf8ab26e085ef5ab1bf937b5a5ce912c026fca30bbbffbaa",
+        "size_bytes": 166431932,
+        "write_seconds": 1.8013807493261993
+      },
+      "rank": 180,
+      "rank_tolerance": 2.3069258292064407e-10,
+      "seed": 101,
+      "shared_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed101/shared-first-action.pt",
+        "sha256": "1e556ecbc1cf089d2927961eca432393e92070c86f61b259bca578e77ddd52cf",
+        "size_bytes": 330984130,
+        "write_seconds": 3.04277584888041
+      },
+      "singular_max": 4.570557031399655,
+      "singular_min": 0.00973517245295877,
+      "singular_relative_error": 1.1566829808792477e-15,
+      "source_sha256": {
+        "experiments/grokking_action_intervention.py": "95200567f9c7eb50b76b563a554305f3ea7ccd03b6ab3525adf5d1dad388eb37",
+        "experiments/grokking_action_policy.py": "d3555d2e6816c031acc51f4939316eddba7e8b3fafcfaef47b0169310960ca1b",
+        "experiments/grokking_confirmation.py": "31bd8c9694e882c62b8184ed5cbf2d0f895ef67f255266dcf33abf0e2d0b92b6",
+        "experiments/grokking_model.py": "1407d0569cf2d8ffa93ba99bc9d8468d77c61bad983f01bb99bc15d3b4e5e0c5",
+        "experiments/measure_grokking_representations.py": "a8056c9d45b35cd5f188f6a3e64ecfb6896fef1734498e9d7365500c10046423",
+        "experiments/run_grokking_action_batch.py": "1dd7ab7d0e0672dcdc46559c463ed5c962aec94353ec08427febbe5880aa165b",
+        "output/2026-09-09-spectral-grokking-action/protocol.md": "dc9f99a81d0ecc451a52f6f9e4e106900e8ac4b3891308c14e25eb6defc94959",
+        "spectral_filter.py": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+        "tests/test_grokking_action_intervention.py": "9db009ebcd3fded0b25f701687b8b9e907732adaac95e5911e441ccca3319344",
+        "tests/test_grokking_action_policy.py": "90b077b36777db942de8d98f56aa5b3bc1250ef536f4022bbcba55fb726b99a8"
+      },
+      "span_reconstruction_relative_error": 2.420638448825946e-15
+    },
+    {
+      "P": 227313,
+      "Q_orthogonality_max_abs": 3.552713678800501e-15,
+      "action_cosines": {
+        "native_norm_matched": 0.9843684666172259,
+        "native_orthogonal": 0.9843684666300909,
+        "orthogonal_norm_matched": 0.9999999999999613
+      },
+      "action_norms": {
+        "native": 0.1511002479289461,
+        "norm_matched": 0.15110024797584165,
+        "orthogonal": 0.14794524483348354
+      },
+      "adam": {
+        "native": {
+          "actual_displacement_norm": 0.04044670976157787,
+          "adaptive_direction_norm": 31.352865193816037,
+          "adaptive_movement_norm": 0.03135286519381609,
+          "decay_movement_norm": 0.04107094225821959,
+          "decomposition_residual_max_abs": 6.015030401670604e-08,
+          "decomposition_residual_norm": 1.5725148005346685e-06,
+          "m_norm": 0.08709689768650387,
+          "m_recurrence_relative_error": 2.61021816906858e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 1.0000000000000104,
+              "adaptive_direction_cosine": 1.0000000000000033
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 0.9997885495796726,
+              "adaptive_direction_cosine": 0.9996499460995271
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 0.9997896329021344,
+              "adaptive_direction_cosine": 0.9996546620727728
+            }
+          },
+          "v_norm": 0.07400771658425791,
+          "v_recurrence_relative_error": 4.0271566757036476e-08
+        },
+        "norm_matched": {
+          "actual_displacement_norm": 0.040399426808796074,
+          "adaptive_direction_norm": 31.269979334750026,
+          "adaptive_movement_norm": 0.03126997933475007,
+          "decay_movement_norm": 0.04107094225821959,
+          "decomposition_residual_max_abs": 6.085295634381633e-08,
+          "decomposition_residual_norm": 1.5769869702334559e-06,
+          "m_norm": 0.0868135922059936,
+          "m_recurrence_relative_error": 2.587731978467534e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 0.9997885495796726,
+              "adaptive_direction_cosine": 0.9996499460995271
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 1.0000000000000104,
+              "adaptive_direction_cosine": 1.0000000000000018
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 0.9999979651734704,
+              "adaptive_direction_cosine": 0.9999972633803926
+            }
+          },
+          "v_norm": 0.0740077331538227,
+          "v_recurrence_relative_error": 4.080733438585401e-08
+        },
+        "orthogonal": {
+          "actual_displacement_norm": 0.04038250197410357,
+          "adaptive_direction_norm": 31.230243254044506,
+          "adaptive_movement_norm": 0.031230243254044523,
+          "decay_movement_norm": 0.04107094225821959,
+          "decomposition_residual_max_abs": 6.176205040933224e-08,
+          "decomposition_residual_norm": 1.5794654391106104e-06,
+          "m_norm": 0.08668215774436674,
+          "m_recurrence_relative_error": 2.615703950695884e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 0.9997896329021344,
+              "adaptive_direction_cosine": 0.9996546620727728
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 0.9999979651734704,
+              "adaptive_direction_cosine": 0.9999972633803926
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 1.0000000000000124,
+              "adaptive_direction_cosine": 1.0000000000000009
+            }
+          },
+          "v_norm": 0.07400760273744948,
+          "v_recurrence_relative_error": 4.177190508900398e-08
+        }
+      },
+      "adam_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed102/first-step-adam-diagnostics.pt",
+        "sha256": "d60e7d1dda699e584e2063f4b2954965e9ed4cb190ae310efb892b248a460d96",
+        "size_bytes": 32740717,
+        "write_seconds": 0.36573541909456253
+      },
+      "completion_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed102/complete.json",
+        "seed": 102,
+        "sha256": "32743c5696b181f97ea6cc53192936f80153968175ea33e7a3c591944786761f"
+      },
+      "k": 200,
+      "native_fp64_relative_error": 4.256263600963532e-07,
+      "norm_match_scale": 1.0213254782133323,
+      "orthogonal_relative_error": 0.0,
+      "parent_receipt": {
+        "capture_and_write_seconds": 2.3339585070498288,
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed102/legacy/checkpoint-step-001500.pt",
+        "sha256": "4726fcc2f757985c93f3f963388a89b0b9ff020003e3e52d5f94cc5b428374e6",
+        "size_bytes": 185526268,
+        "write_seconds": 1.9379042838700116
+      },
+      "rank": 200,
+      "rank_tolerance": 1.8114767754474989e-10,
+      "seed": 102,
+      "shared_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed102/shared-first-action.pt",
+        "sha256": "044165cf1ae452f74bdf91a3ebff38b42ec1cba668df106ae19aed4f545082d6",
+        "size_bytes": 367354690,
+        "write_seconds": 3.376737153157592
+      },
+      "singular_max": 3.588957134389878,
+      "singular_min": 0.08312430789098343,
+      "singular_relative_error": 1.0492290852581619e-15,
+      "source_sha256": {
+        "experiments/grokking_action_intervention.py": "95200567f9c7eb50b76b563a554305f3ea7ccd03b6ab3525adf5d1dad388eb37",
+        "experiments/grokking_action_policy.py": "d3555d2e6816c031acc51f4939316eddba7e8b3fafcfaef47b0169310960ca1b",
+        "experiments/grokking_confirmation.py": "31bd8c9694e882c62b8184ed5cbf2d0f895ef67f255266dcf33abf0e2d0b92b6",
+        "experiments/grokking_model.py": "1407d0569cf2d8ffa93ba99bc9d8468d77c61bad983f01bb99bc15d3b4e5e0c5",
+        "experiments/measure_grokking_representations.py": "a8056c9d45b35cd5f188f6a3e64ecfb6896fef1734498e9d7365500c10046423",
+        "experiments/run_grokking_action_batch.py": "1dd7ab7d0e0672dcdc46559c463ed5c962aec94353ec08427febbe5880aa165b",
+        "output/2026-09-09-spectral-grokking-action/protocol.md": "dc9f99a81d0ecc451a52f6f9e4e106900e8ac4b3891308c14e25eb6defc94959",
+        "spectral_filter.py": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+        "tests/test_grokking_action_intervention.py": "9db009ebcd3fded0b25f701687b8b9e907732adaac95e5911e441ccca3319344",
+        "tests/test_grokking_action_policy.py": "90b077b36777db942de8d98f56aa5b3bc1250ef536f4022bbcba55fb726b99a8"
+      },
+      "span_reconstruction_relative_error": 2.456655019444542e-15
+    },
+    {
+      "P": 227313,
+      "Q_orthogonality_max_abs": 3.774758283725532e-15,
+      "action_cosines": {
+        "native_norm_matched": 0.8054309349323522,
+        "native_orthogonal": 0.8054309348624398,
+        "orthogonal_norm_matched": 0.9999999999999661
+      },
+      "action_norms": {
+        "native": 0.04665818690449061,
+        "norm_matched": 0.04665818692330433,
+        "orthogonal": 0.038657397915855346
+      },
+      "adam": {
+        "native": {
+          "actual_displacement_norm": 0.06307700831387827,
+          "adaptive_direction_norm": 63.37358412914109,
+          "adaptive_movement_norm": 0.06337358412914104,
+          "decay_movement_norm": 0.040864946534481875,
+          "decomposition_residual_max_abs": 6.439258678651643e-08,
+          "decomposition_residual_norm": 1.5545439021861542e-06,
+          "m_norm": 0.02694778445261217,
+          "m_recurrence_relative_error": 2.6160965843281168e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 1.0000000000000346,
+              "adaptive_direction_cosine": 0.999999999999998
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 0.997709773335864,
+              "adaptive_direction_cosine": 0.9977205806893653
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 0.997915290432815,
+              "adaptive_direction_cosine": 0.9980086081973011
+            }
+          },
+          "v_norm": 0.005242347072923312,
+          "v_recurrence_relative_error": 3.897786384290545e-08
+        },
+        "norm_matched": {
+          "actual_displacement_norm": 0.06201058285386292,
+          "adaptive_direction_norm": 62.354468521491874,
+          "adaptive_movement_norm": 0.062354468521491874,
+          "decay_movement_norm": 0.040864946534481875,
+          "decomposition_residual_max_abs": 5.9079779300686124e-08,
+          "decomposition_residual_norm": 1.5664583068990186e-06,
+          "m_norm": 0.026444051581632377,
+          "m_recurrence_relative_error": 2.5876637630175272e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 0.997709773335864,
+              "adaptive_direction_cosine": 0.9977205806893653
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 1.0000000000000362,
+              "adaptive_direction_cosine": 0.9999999999999984
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 0.9998694898678413,
+              "adaptive_direction_cosine": 0.9999146237487136
+            }
+          },
+          "v_norm": 0.005242358727929486,
+          "v_recurrence_relative_error": 3.8920353313310735e-08
+        },
+        "orthogonal": {
+          "actual_displacement_norm": 0.061337630012333985,
+          "adaptive_direction_norm": 61.46493649772044,
+          "adaptive_movement_norm": 0.06146493649772063,
+          "decay_movement_norm": 0.040864946534481875,
+          "decomposition_residual_max_abs": 6.43172847330782e-08,
+          "decomposition_residual_norm": 1.5624857911158041e-06,
+          "m_norm": 0.02602301684429738,
+          "m_recurrence_relative_error": 2.59287681879015e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 0.997915290432815,
+              "adaptive_direction_cosine": 0.9980086081973011
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 0.9998694898678413,
+              "adaptive_direction_cosine": 0.9999146237487136
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 1.000000000000037,
+              "adaptive_direction_cosine": 1.0000000000000002
+            }
+          },
+          "v_norm": 0.005242295295761919,
+          "v_recurrence_relative_error": 3.867567274158631e-08
+        }
+      },
+      "adam_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed103/first-step-adam-diagnostics.pt",
+        "sha256": "e1435d5416000f5cf2d763654d8925cef0b182129d9a6a7b02169beb196cae8e",
+        "size_bytes": 32740717,
+        "write_seconds": 0.3733597812242806
+      },
+      "completion_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed103/complete.json",
+        "seed": 103,
+        "sha256": "140431d6caf12c4e68993d08131967bb4881386f04abe3a1366774df9d501c9b"
+      },
+      "k": 199,
+      "native_fp64_relative_error": 1.9145157328641802e-07,
+      "norm_match_scale": 1.2069665683668207,
+      "orthogonal_relative_error": 0.0,
+      "parent_receipt": {
+        "capture_and_write_seconds": 2.338867241051048,
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed103/legacy/checkpoint-step-001500.pt",
+        "sha256": "a88286775b53f1a9f2230d897405d11333b3828f974664c08b78bf62abff8d92",
+        "size_bytes": 185526268,
+        "write_seconds": 1.9453827487304807
+      },
+      "rank": 199,
+      "rank_tolerance": 2.6155668752580065e-10,
+      "seed": 103,
+      "shared_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed103/shared-first-action.pt",
+        "sha256": "6c20cbdde5cc754b218c571078d419e773d669bd3749a7af3f0d818594d5bfe9",
+        "size_bytes": 365536194,
+        "write_seconds": 3.4492177912034094
+      },
+      "singular_max": 5.18204678341079,
+      "singular_min": 0.27044752512743303,
+      "singular_relative_error": 1.0858083206055962e-15,
+      "source_sha256": {
+        "experiments/grokking_action_intervention.py": "95200567f9c7eb50b76b563a554305f3ea7ccd03b6ab3525adf5d1dad388eb37",
+        "experiments/grokking_action_policy.py": "d3555d2e6816c031acc51f4939316eddba7e8b3fafcfaef47b0169310960ca1b",
+        "experiments/grokking_confirmation.py": "31bd8c9694e882c62b8184ed5cbf2d0f895ef67f255266dcf33abf0e2d0b92b6",
+        "experiments/grokking_model.py": "1407d0569cf2d8ffa93ba99bc9d8468d77c61bad983f01bb99bc15d3b4e5e0c5",
+        "experiments/measure_grokking_representations.py": "a8056c9d45b35cd5f188f6a3e64ecfb6896fef1734498e9d7365500c10046423",
+        "experiments/run_grokking_action_batch.py": "1dd7ab7d0e0672dcdc46559c463ed5c962aec94353ec08427febbe5880aa165b",
+        "output/2026-09-09-spectral-grokking-action/protocol.md": "dc9f99a81d0ecc451a52f6f9e4e106900e8ac4b3891308c14e25eb6defc94959",
+        "spectral_filter.py": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+        "tests/test_grokking_action_intervention.py": "9db009ebcd3fded0b25f701687b8b9e907732adaac95e5911e441ccca3319344",
+        "tests/test_grokking_action_policy.py": "90b077b36777db942de8d98f56aa5b3bc1250ef536f4022bbcba55fb726b99a8"
+      },
+      "span_reconstruction_relative_error": 2.451944985100296e-15
+    },
+    {
+      "P": 227313,
+      "Q_orthogonality_max_abs": 3.3306690738754696e-15,
+      "action_cosines": {
+        "native_norm_matched": 0.9188254637492759,
+        "native_orthogonal": 0.918825463675987,
+        "orthogonal_norm_matched": 0.9999999999999625
+      },
+      "action_norms": {
+        "native": 0.3524900052585065,
+        "norm_matched": 0.3524900050948163,
+        "orthogonal": 0.31553080492310964
+      },
+      "adam": {
+        "native": {
+          "actual_displacement_norm": 0.0475056914923919,
+          "adaptive_direction_norm": 40.754194791592106,
+          "adaptive_movement_norm": 0.04075419479159218,
+          "decay_movement_norm": 0.04180626903292739,
+          "decomposition_residual_max_abs": 6.768798000225673e-08,
+          "decomposition_residual_norm": 1.5998675412353153e-06,
+          "m_norm": 0.3307295706415325,
+          "m_recurrence_relative_error": 2.573969004400527e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 1.00000000000001,
+              "adaptive_direction_cosine": 1.000000000000002
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 0.9994290408133872,
+              "adaptive_direction_cosine": 0.9993197076141307
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 0.9994285659574972,
+              "adaptive_direction_cosine": 0.9993893240456753
+            }
+          },
+          "v_norm": 0.7694180238668327,
+          "v_recurrence_relative_error": 3.681219333028548e-08
+        },
+        "norm_matched": {
+          "actual_displacement_norm": 0.047274278874442306,
+          "adaptive_direction_norm": 40.12727412169592,
+          "adaptive_movement_norm": 0.04012727412169595,
+          "decay_movement_norm": 0.04180626903292739,
+          "decomposition_residual_max_abs": 6.624419619475502e-08,
+          "decomposition_residual_norm": 1.6099243516430343e-06,
+          "m_norm": 0.32682149577156777,
+          "m_recurrence_relative_error": 2.5348909981893243e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 0.9994290408133872,
+              "adaptive_direction_cosine": 0.9993197076141307
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 1.0000000000000082,
+              "adaptive_direction_cosine": 0.9999999999999994
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 0.9999688646050174,
+              "adaptive_direction_cosine": 0.9999655564495078
+            }
+          },
+          "v_norm": 0.7694198089624642,
+          "v_recurrence_relative_error": 4.024529219906015e-08
+        },
+        "orthogonal": {
+          "actual_displacement_norm": 0.0471504406261147,
+          "adaptive_direction_norm": 39.91801847038215,
+          "adaptive_movement_norm": 0.039918018470382254,
+          "decay_movement_norm": 0.04180626903292739,
+          "decomposition_residual_max_abs": 6.138686735031405e-08,
+          "decomposition_residual_norm": 1.6065698857716588e-06,
+          "m_norm": 0.32509066556950894,
+          "m_recurrence_relative_error": 2.525573383052534e-08,
+          "pairwise": {
+            "native": {
+              "actual_displacement_cosine": 0.9994285659574972,
+              "adaptive_direction_cosine": 0.9993893240456753
+            },
+            "norm_matched": {
+              "actual_displacement_cosine": 0.9999688646050174,
+              "adaptive_direction_cosine": 0.9999655564495078
+            },
+            "orthogonal": {
+              "actual_displacement_cosine": 1.0000000000000089,
+              "adaptive_direction_cosine": 1.0000000000000029
+            }
+          },
+          "v_norm": 0.7694176070938926,
+          "v_recurrence_relative_error": 3.6051449356745294e-08
+        }
+      },
+      "adam_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed104/first-step-adam-diagnostics.pt",
+        "sha256": "9aa2403ae0d2b6d261de19376ee2ea06e162cfdaa861d4b97faa123a7e0ecd44",
+        "size_bytes": 32740717,
+        "write_seconds": 0.3629430918954313
+      },
+      "completion_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed104/complete.json",
+        "seed": 104,
+        "sha256": "7a49da3841588976cd2b33898e770680f12f3a83bd13ab89c7523602fbaf1701"
+      },
+      "k": 175,
+      "native_fp64_relative_error": 2.1185368902132656e-07,
+      "norm_match_scale": 1.1171334137863442,
+      "orthogonal_relative_error": 0.0,
+      "parent_receipt": {
+        "capture_and_write_seconds": 2.130793266929686,
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-confirmation-20260908.aa2v66/remaining-batch/seed104/legacy/checkpoint-step-001500.pt",
+        "sha256": "f44e5fddb8f50df7df08eefc929f5aea25eea145c5371dc4ff240d3f834683d4",
+        "size_bytes": 162794812,
+        "write_seconds": 1.7837563981302083
+      },
+      "rank": 175,
+      "rank_tolerance": 2.624286266316185e-10,
+      "seed": 104,
+      "shared_receipt": {
+        "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed104/shared-first-action.pt",
+        "sha256": "3832963bc430411c63f1572fc6a16a5bdc68ae47e731f24b098491c5dd1d4f30",
+        "size_bytes": 321891330,
+        "write_seconds": 3.0719310250133276
+      },
+      "singular_max": 5.199321926636435,
+      "singular_min": 0.03058059194709462,
+      "singular_relative_error": 1.0834865894535458e-15,
+      "source_sha256": {
+        "experiments/grokking_action_intervention.py": "95200567f9c7eb50b76b563a554305f3ea7ccd03b6ab3525adf5d1dad388eb37",
+        "experiments/grokking_action_policy.py": "d3555d2e6816c031acc51f4939316eddba7e8b3fafcfaef47b0169310960ca1b",
+        "experiments/grokking_confirmation.py": "31bd8c9694e882c62b8184ed5cbf2d0f895ef67f255266dcf33abf0e2d0b92b6",
+        "experiments/grokking_model.py": "1407d0569cf2d8ffa93ba99bc9d8468d77c61bad983f01bb99bc15d3b4e5e0c5",
+        "experiments/measure_grokking_representations.py": "a8056c9d45b35cd5f188f6a3e64ecfb6896fef1734498e9d7365500c10046423",
+        "experiments/run_grokking_action_batch.py": "1dd7ab7d0e0672dcdc46559c463ed5c962aec94353ec08427febbe5880aa165b",
+        "output/2026-09-09-spectral-grokking-action/protocol.md": "dc9f99a81d0ecc451a52f6f9e4e106900e8ac4b3891308c14e25eb6defc94959",
+        "spectral_filter.py": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+        "tests/test_grokking_action_intervention.py": "9db009ebcd3fded0b25f701687b8b9e907732adaac95e5911e441ccca3319344",
+        "tests/test_grokking_action_policy.py": "90b077b36777db942de8d98f56aa5b3bc1250ef536f4022bbcba55fb726b99a8"
+      },
+      "span_reconstruction_relative_error": 2.272381156834005e-15
+    }
+  ],
+  "scope": "independent saved-tensor arithmetic; no training or inference replication",
+  "script_sha256": "f4511e99c9ded00cd0c7d3b4c207d93effcfc1df169851d1f64b811506681dea",
+  "status": "PASS"
+}

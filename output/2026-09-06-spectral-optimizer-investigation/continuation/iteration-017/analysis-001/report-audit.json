@@ -1,0 +1,60 @@
+{
+  "schema": "i17_gain_report_corroboration_v1",
+  "status": "pass",
+  "inputs": {
+    "i17_collection": {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-017/raw-results-001",
+      "sha256": "0f9342d471d6b9dc955cce7eb1d9b9c7d9a75b93d09fb8be357cc6478ae3d400"
+    },
+    "i16_collection": {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-016/raw-results-001",
+      "sha256": "cc112411fd23c43f0c87d876491fc8a91ecd8e018fd58488668a037420a0687a"
+    },
+    "i17_summary": {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-017/analysis-001/summary.json",
+      "sha256": "24902e326e920d5c9ba3690e41e77fc8f6e6846d3e357f83994a52cd99aecb1a"
+    },
+    "i17_audit": {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-017/analysis-001/audit.json",
+      "sha256": "39f198ccd3342d860bb4860289a1ec993652df719b289caf4f1c8496a7758440"
+    }
+  },
+  "scope": "Independent standard-library recomputation from lossless JSON only; no tensors, model forward, optimizer replay, or primary integrity-audit replay.",
+  "sections": {
+    "primary_validation_selected_spectral_minus_scalar": {
+      "rows": 8,
+      "status": "pass"
+    },
+    "validation_selected_choices": {
+      "rows": 12,
+      "status": "pass"
+    },
+    "validation_selected_spectral_minus_each_k": {
+      "rows": 32,
+      "status": "pass"
+    },
+    "fixed_k_endpoint_spectral_minus_scalar": {
+      "rows": 16,
+      "status": "pass"
+    },
+    "all_policy_trajectories": {
+      "rows": 30,
+      "status": "pass"
+    },
+    "scheduled_metric_equal_seed_aggregates": {
+      "rows": 960,
+      "status": "pass"
+    },
+    "path_and_displacement_geometry": {
+      "rows": 20,
+      "status": "pass"
+    }
+  },
+  "complete_trajectories": 30,
+  "retained_scheduled_points": 180,
+  "expected_points_if_all_complete": 180,
+  "numeric_and_discrete_scalars_compared": 21566,
+  "maximum_absolute_numeric_difference": 0.0,
+  "no_survivor_averaging": true,
+  "errors": []
+}

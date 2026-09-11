@@ -1,0 +1,1014 @@
+{
+  "analysis_sha256": "da06e6dde3ec2188f6041a54b176bc8ce8e8ebb2efcbc4bf9f9d25f61a7d6f17",
+  "batch_sha256": "8c0040c193a1f7d755004b002a3da70f315db3e41a959a5789d15844ad5b6f3b",
+  "checks": 24137,
+  "elapsed_seconds": 59.169802074786276,
+  "errors": [],
+  "input_receipts": [
+    {
+      "path": "output/2026-09-09-spectral-raw-direction/audit/audit_readouts.py",
+      "sha256": "5921ecd36365a1f5645bff03e2162b66c0340796224df4c8b892ab9518e3e534",
+      "size_bytes": 18121
+    },
+    {
+      "path": "output/2026-09-09-spectral-raw-direction/audit/audit_tensors_histories.py",
+      "sha256": "9e471fd96ef3cc989b016195b0810561c301fb06d20b5943ce1246252e8c060f",
+      "size_bytes": 17972
+    },
+    {
+      "path": "output/2026-09-09-spectral-raw-direction/audit/common.py",
+      "sha256": "66e66e1b9ff2b4234f19012147e056a11629c6b0fbaf4770f20e175d4a1e1d46",
+      "size_bytes": 10944
+    },
+    {
+      "path": "output/2026-09-09-spectral-raw-direction/audit/readout_math.py",
+      "sha256": "3c63aca810c61123c18a9a37c3dd663adf69f9c555b9a09afce5c5aced245235",
+      "size_bytes": 10115
+    },
+    {
+      "path": "output/2026-09-09-spectral-raw-direction/audit/test_audit.py",
+      "sha256": "de5b99273817344c1494076032654760e13a0a4b3fb7bc3699688436040f270a",
+      "size_bytes": 8773
+    },
+    {
+      "path": "output/2026-09-09-spectral-raw-direction/audit/plan.md",
+      "sha256": "223349cc8c6afa24ca59bf25110de2bed46d9cd345889aab8bef29b45bf93235",
+      "size_bytes": 4234
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/batch-complete.json",
+      "sha256": "8c0040c193a1f7d755004b002a3da70f315db3e41a959a5789d15844ad5b6f3b",
+      "size_bytes": 4762
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/batch-manifest.json",
+      "sha256": "38733e87af4afb5fee32d8117d5488bb0885096f9744c33776c63f1a61cbfb9a",
+      "size_bytes": 2590
+    },
+    {
+      "path": "experiments/grokking_action_intervention.py",
+      "sha256": "95200567f9c7eb50b76b563a554305f3ea7ccd03b6ab3525adf5d1dad388eb37",
+      "size_bytes": 20070
+    },
+    {
+      "path": "experiments/grokking_action_policy.py",
+      "sha256": "d3555d2e6816c031acc51f4939316eddba7e8b3fafcfaef47b0169310960ca1b",
+      "size_bytes": 13610
+    },
+    {
+      "path": "experiments/grokking_confirmation.py",
+      "sha256": "31bd8c9694e882c62b8184ed5cbf2d0f895ef67f255266dcf33abf0e2d0b92b6",
+      "size_bytes": 23931
+    },
+    {
+      "path": "experiments/grokking_model.py",
+      "sha256": "1407d0569cf2d8ffa93ba99bc9d8468d77c61bad983f01bb99bc15d3b4e5e0c5",
+      "size_bytes": 2260
+    },
+    {
+      "path": "experiments/grokking_raw_direction.py",
+      "sha256": "dbf5ad6d33c75f27c3a016499d60fa9a36e503543b946dcd313a707d91804f5a",
+      "size_bytes": 20517
+    },
+    {
+      "path": "experiments/grokking_raw_direction_policy.py",
+      "sha256": "d5c10674bc20aaf16adf9b7d3f9591a86d152e6d7fdee1f3c1767dc339611ec3",
+      "size_bytes": 6608
+    },
+    {
+      "path": "experiments/grokking_representation.py",
+      "sha256": "906ee280f42756351ef1439abf6061f7d2401272dae9006e99eb45ba3636b22f",
+      "size_bytes": 15498
+    },
+    {
+      "path": "experiments/measure_grokking_representations.py",
+      "sha256": "a8056c9d45b35cd5f188f6a3e64ecfb6896fef1734498e9d7365500c10046423",
+      "size_bytes": 17549
+    },
+    {
+      "path": "experiments/run_grokking_action_batch.py",
+      "sha256": "1dd7ab7d0e0672dcdc46559c463ed5c962aec94353ec08427febbe5880aa165b",
+      "size_bytes": 2590
+    },
+    {
+      "path": "experiments/run_grokking_raw_direction_batch.py",
+      "sha256": "0cd2f527a3a2c8a7dd22ce9c2b2504b86264ab04496caf921667c7f89f6d8b25",
+      "size_bytes": 3663
+    },
+    {
+      "path": "output/2026-09-09-spectral-grokking-action/protocol.md",
+      "sha256": "dc9f99a81d0ecc451a52f6f9e4e106900e8ac4b3891308c14e25eb6defc94959",
+      "size_bytes": 7380
+    },
+    {
+      "path": "output/2026-09-09-spectral-raw-direction/guarded_launch.py",
+      "sha256": "53f0ad44143cb54fa568831bd08488369c2cc69f5e48c052220cbdce69d53036",
+      "size_bytes": 3506
+    },
+    {
+      "path": "output/2026-09-09-spectral-raw-direction/protocol.md",
+      "sha256": "a361ca5de301262acd78f08063ed38f0dfe3fcd3f1983f10b3b37509fadfd893",
+      "size_bytes": 7267
+    },
+    {
+      "path": "spectral_filter.py",
+      "sha256": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+      "size_bytes": 25418
+    },
+    {
+      "path": "tests/test_grokking_action_intervention.py",
+      "sha256": "9db009ebcd3fded0b25f701687b8b9e907732adaac95e5911e441ccca3319344",
+      "size_bytes": 4614
+    },
+    {
+      "path": "tests/test_grokking_action_policy.py",
+      "sha256": "90b077b36777db942de8d98f56aa5b3bc1250ef536f4022bbcba55fb726b99a8",
+      "size_bytes": 9553
+    },
+    {
+      "path": "tests/test_grokking_raw_direction.py",
+      "sha256": "cfbab6b1c1458f19f65c96ce486e3237f1600ba9c35af20abf782333e5c84bab",
+      "size_bytes": 15000
+    },
+    {
+      "path": "tests/test_grokking_raw_direction_guard.py",
+      "sha256": "14e6c229f1031a7654ca0d18fbf0f17a3e33b751642c2b4fb2f1dbec8871b383",
+      "size_bytes": 1540
+    },
+    {
+      "path": "tests/test_grokking_raw_direction_policy.py",
+      "sha256": "dc099d31694cecc2cd36284a23829026b0fbf19117a57590706db45e2e328719",
+      "size_bytes": 7964
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/batch-complete.json",
+      "sha256": "22bb866319fa2fa85771bd156eb406523a66abee4d0bc789cc6104d40ec86e45",
+      "size_bytes": 1253
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed100/complete.json",
+      "sha256": "89341e33916a49bfba58b61d4a282c23213ff56c9f5f62d99e2554d9104c72e5",
+      "size_bytes": 18526
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed100/manifest.json",
+      "sha256": "21e02bbd938866f719dec9e219409f347bb8b37f89a6b7f2b869b905080f5141",
+      "size_bytes": 4291
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed100/first-step-tensors.pt",
+      "sha256": "e98afc17b29a8f36f19efe7de800e88d5c6610344939f80b41bde5e70691e2f1",
+      "size_bytes": 748391527
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed100/first-step-summary.json",
+      "sha256": "62138674f531194ffe5aed73a55859da8edcd87cc462d70a6d654b375b2bf7bd",
+      "size_bytes": 35024
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed100/raw_norm_matched-step-001501.pt",
+      "sha256": "d78dd94422cdd8a0d02b4bfe54e9705d941af05dd630179f8507b9afc0d4d4d3",
+      "size_bytes": 184613372
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed100/raw_norm_matched-through-001501.json",
+      "sha256": "4c0a4e0b38e22a49f61ab2bd36d21bb929f915f3863e71f59a4bee940268306e",
+      "size_bytes": 37434
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed100/raw_norm_matched-step-002000.pt",
+      "sha256": "776ae6c81922899549d5ff631a43bd75d658c3d9462f8b7484227de886a50e91",
+      "size_bytes": 185523900
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed100/raw_norm_matched-through-002000.json",
+      "sha256": "745f9f61565053a112512d131a5afb5c7ce237ea0083e1e9f38ff7ebfcbb7090",
+      "size_bytes": 13922127
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed100/raw_norm_matched-step-002500.pt",
+      "sha256": "6345803d01a951a050df6419f59e198746b1c3c59b89b9f7efd3d3c5dcda6421",
+      "size_bytes": 185525116
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed100/raw_norm_matched-through-002500.json",
+      "sha256": "861020c0bd2bb7e87e6b0ebb05232625213f5192a25224d7325facc52dafddac",
+      "size_bytes": 28100076
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed100/complete.json",
+      "sha256": "131edc787f84197d18f3c9240542597bc73ddb47499b590babcb2150f2c0eef6",
+      "size_bytes": 6217
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed101/complete.json",
+      "sha256": "38f2189d432ce947c0b1360a383f0f5494543e4f35bf07adb32b05fa710dd426",
+      "size_bytes": 18743
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed101/manifest.json",
+      "sha256": "40dcc47cc9d484da3953d471d393cb1ddc65e0b9dbbf63f7a0f48a23698a0ee2",
+      "size_bytes": 4505
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed101/first-step-tensors.pt",
+      "sha256": "d8bf23c6f84ecea52b2704350d05638a4fd6d33481b9b0745fa13b163826997b",
+      "size_bytes": 677469159
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed101/first-step-summary.json",
+      "sha256": "6081e17a13e91a533a0975fed4d0486b337d1fa6fd2295665b5c8ea50d2fdc55",
+      "size_bytes": 32601
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed101/raw_norm_matched-step-001501.pt",
+      "sha256": "dad5a796224fa32a55d5264876b02c3b81894db4f888dce359e543a85d9aa5fd",
+      "size_bytes": 167337532
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed101/raw_norm_matched-through-001501.json",
+      "sha256": "6f280a781ddebeb6b33e9c978544f2b0828cf4daa591f8ad6564defbfa5102f4",
+      "size_bytes": 34819
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed101/raw_norm_matched-step-002000.pt",
+      "sha256": "4e415e3052301c2115c46f35cf2b860c4f18fef9ff19a53237f28afa2bdf841f",
+      "size_bytes": 185523900
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed101/raw_norm_matched-through-002000.json",
+      "sha256": "f5ba779f01ccaf40ba21e729536696b414e900f23e119e4de89e2ed75d7a0538",
+      "size_bytes": 13791944
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed101/raw_norm_matched-step-002500.pt",
+      "sha256": "abef9275ec6f69688d2db6d38e34f1de29283be14495089ce8b8a263a4a7bc7a",
+      "size_bytes": 170067772
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed101/raw_norm_matched-through-002500.json",
+      "sha256": "72f4e0c45c3dcfab8a9f618c1fc49398c8db3ad716bd40fb9b93f77407c60277",
+      "size_bytes": 27458197
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed101/complete.json",
+      "sha256": "090560ea97ebdd603b92b4b9b4721cc23a96d41d21a62547e316ba338c84a656",
+      "size_bytes": 6215
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed102/complete.json",
+      "sha256": "1b55d55531899e250bd27f7d6f981899220688074a415c086bbe5406a6bc9cfb",
+      "size_bytes": 18742
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed102/manifest.json",
+      "sha256": "e8ae7021bc60b004ed7d0610170eebadda2a5f025cbe455f7c520f1b7c5ec056",
+      "size_bytes": 4506
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed102/first-step-tensors.pt",
+      "sha256": "aa9473e9f6dc5c8f3e5590cf3a408987c90875c98b4cb0b9d03c8120829cec46",
+      "size_bytes": 751119655
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed102/first-step-summary.json",
+      "sha256": "ed2dfba16858cff12d213d206f598923beb9317790e134f2284f79c17899e506",
+      "size_bytes": 35578
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed102/raw_norm_matched-step-001501.pt",
+      "sha256": "563c4e10812c28274a8fd1a5607581a5a5a5e37464e2ba9af3dbe4d8be7d5c84",
+      "size_bytes": 185522620
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed102/raw_norm_matched-through-001501.json",
+      "sha256": "1c183258576703d0ec816393a41cecb833202060d9aa215e10aa2d6a152ce11b",
+      "size_bytes": 37997
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed102/raw_norm_matched-step-002000.pt",
+      "sha256": "af5525667591b86d8a325988e5363ad65f7f55c91f5f1c24ddf45e2b65983ba0",
+      "size_bytes": 185523900
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed102/raw_norm_matched-through-002000.json",
+      "sha256": "2b069a8c1b867fcb977ea0aa650f998729ca664a290b82303b40a046f0089034",
+      "size_bytes": 13619034
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed102/raw_norm_matched-step-002500.pt",
+      "sha256": "36ee61837c5bfe7eec359550dcaf9034b82367a33ae50f04e586b09373345011",
+      "size_bytes": 153701180
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed102/raw_norm_matched-through-002500.json",
+      "sha256": "a95753e2c11ea4f8f49c482f2f03b66daf9a01a07958c6e8200f9dfec622a5d1",
+      "size_bytes": 27189090
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed102/complete.json",
+      "sha256": "32743c5696b181f97ea6cc53192936f80153968175ea33e7a3c591944786761f",
+      "size_bytes": 6219
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed103/complete.json",
+      "sha256": "6b649ea8de9562de1dc553aa44c4bf7504806f25e7a8ad9c3f4d81fbe7a274c4",
+      "size_bytes": 18739
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed103/manifest.json",
+      "sha256": "eb6db3db8814f1ebb7035ccd719bb688e9e5bed907008359db082b4b22688fd6",
+      "size_bytes": 4505
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed103/first-step-tensors.pt",
+      "sha256": "396dd39454f621257cd2d2bd7d9ae0807ea40ec339037b11302c8e248f5c08db",
+      "size_bytes": 748391527
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed103/first-step-summary.json",
+      "sha256": "ecb01f131a9653367faa4d5a17f98c09824f76569365749bf4e0ea81027179b5",
+      "size_bytes": 35533
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed103/raw_norm_matched-step-001501.pt",
+      "sha256": "b295f0faf2fe55b81ee0ec6514e9be3bf539e0d0dd43c18a4b9dc36826f60f0c",
+      "size_bytes": 184613372
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed103/raw_norm_matched-through-001501.json",
+      "sha256": "d78aa430fcc835e5781e914b4173f22d4babcf0081054cb4ef87b589f6766250",
+      "size_bytes": 37940
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed103/raw_norm_matched-step-002000.pt",
+      "sha256": "7002f9286b4ff5e3e9fed84f0ff1f6446704263f3065411ab70675953501b2eb",
+      "size_bytes": 185523900
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed103/raw_norm_matched-through-002000.json",
+      "sha256": "d771ee79745bfc9b81ce18cf3efdc92492db92184626efa8760a845a84e83f66",
+      "size_bytes": 13652475
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed103/raw_norm_matched-step-002500.pt",
+      "sha256": "d969c6c2817818ae178bdb2813f875c86e8254cea12a32a228af0eedaffa00bc",
+      "size_bytes": 143699324
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed103/raw_norm_matched-through-002500.json",
+      "sha256": "99245736b0a967e6fd0cdf2846f883c87d5f96be390a8c798336b4a5537c2430",
+      "size_bytes": 25840687
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed103/complete.json",
+      "sha256": "140431d6caf12c4e68993d08131967bb4881386f04abe3a1366774df9d501c9b",
+      "size_bytes": 6218
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed104/complete.json",
+      "sha256": "26423cb9606c01e12ed785d435c493d403afa35d876e83e0571f4afebd0b41c1",
+      "size_bytes": 18738
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed104/manifest.json",
+      "sha256": "699b5e906c91c3ffb3e0ef6e681628fcc2344d93b48cc08fe5ac733d7db0000f",
+      "size_bytes": 4505
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed104/first-step-tensors.pt",
+      "sha256": "ed320c4f42d63dde0aa0ce260ab40664df467bf88aa5fea7e62a01fdbc71f9ba",
+      "size_bytes": 660192807
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed104/first-step-summary.json",
+      "sha256": "8a19a25a1ac6c6d42598ed0100fa849236203292f4f082bdf5f6ae93433c12b8",
+      "size_bytes": 31567
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed104/raw_norm_matched-step-001501.pt",
+      "sha256": "c604371c7688cd08f81a4dedb83ff654b8e6ec1828212421f3d8f4a3bb6c9f65",
+      "size_bytes": 162791164
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed104/raw_norm_matched-through-001501.json",
+      "sha256": "9a985b60821148aee7dd3f64850bb93f63bf9109656d14b513d9a2c6be98a09d",
+      "size_bytes": 33736
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed104/raw_norm_matched-step-002000.pt",
+      "sha256": "883ffb5ac14f62ac737644b1823be02ecc58d2d94ff60151c1a4499a25d96b7e",
+      "size_bytes": 177340540
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed104/raw_norm_matched-through-002000.json",
+      "sha256": "c434bce958fc82548848e28785a4ecb01c7b47de358fd88b17a773be6d21d8c6",
+      "size_bytes": 13813053
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed104/raw_norm_matched-step-002500.pt",
+      "sha256": "cc9743f5eeffa5352b3fccede604619b2975c2b8ec6a4c110bf72a5cf558f971",
+      "size_bytes": 180069628
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/seed104/raw_norm_matched-through-002500.json",
+      "sha256": "4a0b466cf14476ab53ed854460aeb7db992acc381f06f87bc08828ccc8cbe00b",
+      "size_bytes": 27798596
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/seed104/complete.json",
+      "sha256": "7a49da3841588976cd2b33898e770680f12f3a83bd13ab89c7523602fbaf1701",
+      "size_bytes": 6219
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/complete.json",
+      "sha256": "ecbb06431733302f6d6b61b8770c781076676b9ca65f244e2bd9bc467d681d46",
+      "size_bytes": 25792
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/complete.json",
+      "sha256": "da06e6dde3ec2188f6041a54b176bc8ce8e8ebb2efcbc4bf9f9d25f61a7d6f17",
+      "size_bytes": 1246
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/manifest.json",
+      "sha256": "0a546734a810853191d23e655109b3c1b0a7887259f7f01de433ff4ef1c4a868",
+      "size_bytes": 21781
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/manifest.json",
+      "sha256": "41462144decc6de4c6c7fd22e26419124711ea2205736aaf270a40aec4eb97f3",
+      "size_bytes": 6075
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/summary.json",
+      "sha256": "23359c850a17c51d178b431594bafbdd40e57c2cc803267c69a066cd81352165",
+      "size_bytes": 1937451
+    },
+    {
+      "path": "output/2026-09-09-spectral-grokking-action/results/summary.json",
+      "sha256": "249a8b9f5b680f72f7e9a402f56a9a4734814d99dc7d8097442eac4c965aa237",
+      "size_bytes": 1516807
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/measurement-001/complete.json",
+      "sha256": "fe11e1404e8ab20c792d8d441477f325f48a2bb9fdc4c868620a3ffeeafbb9ee",
+      "size_bytes": 45751
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-action-20260909.ghvEvD/measurement-001/manifest.json",
+      "sha256": "619c842d2319ea89e50ff69f1e1177192ec067560aa24677a8a80cc91bdc6cf2",
+      "size_bytes": 17443
+    },
+    {
+      "path": "experiments/analyze_grokking_representations.py",
+      "sha256": "52b0c58f6e5f6f24496972b74cb99a84debb08e1550e3c9a09a0209c0947aa43",
+      "size_bytes": 26688
+    },
+    {
+      "path": "experiments/grokking_symmetry.py",
+      "sha256": "e7d2921499cdc7047337f309096e40e0f01ebcdb78d14e8fc7debbda87c93407",
+      "size_bytes": 14429
+    },
+    {
+      "path": "experiments/measure_grokking_action_states.py",
+      "sha256": "09743be2cc16f34c559b9d1b0f6813429fb832e0efe52340b3cf7d68b8d7c288",
+      "size_bytes": 38895
+    },
+    {
+      "path": "experiments/measure_grokking_raw_direction_states.py",
+      "sha256": "a6d01790fc54ddb1f913819a0d53fbbc5961e2913ea5ac54b820219d73ae9dd8",
+      "size_bytes": 23954
+    },
+    {
+      "path": "output/2026-09-09-spectral-grokking-action/measurement-protocol.md",
+      "sha256": "56cc9bd7af6f3e909cd250aacc57889f32a72801bf403f76b7e7cf31de82ba49",
+      "size_bytes": 2876
+    },
+    {
+      "path": "output/2026-09-09-spectral-grokking-mechanism/analysis-protocol.md",
+      "sha256": "7a0fad5ae8f29b5c96e7d5787b64771947551023c641e6f809e86a25ffbb6b90",
+      "size_bytes": 4752
+    },
+    {
+      "path": "output/2026-09-09-spectral-raw-direction/guarded_measurement.py",
+      "sha256": "a432f3786106898698870727d915265f74b4ce62de377864a00c2710ec9d15ed",
+      "size_bytes": 4572
+    },
+    {
+      "path": "output/2026-09-09-spectral-raw-direction/measurement-protocol.md",
+      "sha256": "7149d0d6e115b95341bc9d149db121dcbe168f24449177d929659e94f7e8c5aa",
+      "size_bytes": 5655
+    },
+    {
+      "path": "tests/test_grokking_action_measurement.py",
+      "sha256": "b00d82d4ad93ce03123abd50b16737e22c72238add3bf93560fd5fad3a5f0a2f",
+      "size_bytes": 12019
+    },
+    {
+      "path": "tests/test_grokking_raw_direction_measurement.py",
+      "sha256": "dce7d371b55e2d1eeca3b41cf1aa4f01e489abdb93d3ce00276026c3737c99e2",
+      "size_bytes": 15069
+    },
+    {
+      "path": "tests/test_grokking_raw_direction_measurement_guard.py",
+      "sha256": "a3480099636b5a687e66c7d3d140fc617101ed9f502df83895ecea4bcd8f8cf8",
+      "size_bytes": 1849
+    },
+    {
+      "path": "experiments/analyze_grokking_action_results.py",
+      "sha256": "e0a57f6ac5dfc0e6fb5638c0777efe1de5fba7b455c2421880514cfe28d2c628",
+      "size_bytes": 28970
+    },
+    {
+      "path": "experiments/analyze_grokking_raw_direction_results.py",
+      "sha256": "4c6a099a4c7608602d5b360a0553f445c68e7c5b7a66087d08c0c19b43234444",
+      "size_bytes": 31750
+    },
+    {
+      "path": "output/2026-09-09-spectral-raw-direction/paired-analysis-protocol.md",
+      "sha256": "12860d36b39a831e80a9d7041385da0289f837328e863b7d710ad32582b38e1d",
+      "size_bytes": 3124
+    },
+    {
+      "path": "tests/test_grokking_raw_direction_analysis.py",
+      "sha256": "8fac09034d0b4e012a4c1325fc72242add30a2bc2850320403ce0f8fd141fe84",
+      "size_bytes": 26017
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed100-raw_norm_matched-step001501.npz",
+      "sha256": "02bda76fa6c2a93bda7bdd339476cfd71f4a2f8f58aec6bc0dfdf873a00ed2f0",
+      "size_bytes": 18098323
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed100-raw_norm_matched-step001501.json",
+      "sha256": "73778399157fb4276a462b01eb98fc581558514302efb9cb1cb2f4e4043046ba",
+      "size_bytes": 707684
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed100-raw_norm_matched-step001501.json",
+      "sha256": "65ba38d881ec9a299331e198a24af0abae259c92380fe78d786895f118d98a06",
+      "size_bytes": 555927
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed100-raw_norm_matched-step002000.npz",
+      "sha256": "fa1388eba0fe4c7c80aa34a68466ca71210c7d0dc93f95e471f05a063281c890",
+      "size_bytes": 18134720
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed100-raw_norm_matched-step002000.json",
+      "sha256": "d5eaf29161ca831a664cb3146c174708ff1a319c36722510673d34448e5cbc1c",
+      "size_bytes": 707799
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed100-raw_norm_matched-step002000.json",
+      "sha256": "0e159589c4a4746a860c0eeb97177023e6ce58cbbc5753dda8c25c003d6a6d71",
+      "size_bytes": 555930
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed100-raw_norm_matched-step002500.npz",
+      "sha256": "ec386fa93ec123992fa3f0f95d3454d5793cffbe6323824071b9fa851bdd4382",
+      "size_bytes": 18106467
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed100-raw_norm_matched-step002500.json",
+      "sha256": "eec5d867f21ee90c137c18138b6206c25ddb8fdaafc0f3685ac39311d10ecf52",
+      "size_bytes": 707878
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed100-raw_norm_matched-step002500.json",
+      "sha256": "7c62d597f72738f6ca4e02793be20588194252767859c4cc0a77396a49f4bb1d",
+      "size_bytes": 555877
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed101-raw_norm_matched-step001501.npz",
+      "sha256": "285fef92708ac7ecf4e8c9875841b21790e177b4e2b7b32befdd0b21c794cd8e",
+      "size_bytes": 18089874
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed101-raw_norm_matched-step001501.json",
+      "sha256": "614a0116d976cee8e7fd9fcb1d98d31dac60f73fa5f62b56364b23f515316128",
+      "size_bytes": 707844
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed101-raw_norm_matched-step001501.json",
+      "sha256": "f3342db17c7777378f62052a155142da08641498282180bd4812865e48e310b7",
+      "size_bytes": 555905
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed101-raw_norm_matched-step002000.npz",
+      "sha256": "eb1f2886eabfcf63c9801421fb606e002f4ba1af03a65a81312ec24d055b09e0",
+      "size_bytes": 18127773
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed101-raw_norm_matched-step002000.json",
+      "sha256": "03969a878abd0008711487166d6dcf3c2b5c260297adf52ea5ce31e9ede8c325",
+      "size_bytes": 707861
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed101-raw_norm_matched-step002000.json",
+      "sha256": "b4eb0172ad9479b4050b46801ef36daf65396c8d7c1c1206eef3886300bdaf1c",
+      "size_bytes": 555972
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed101-raw_norm_matched-step002500.npz",
+      "sha256": "fdcc6b420805b24f60581a3a8b8f34d52883c4e404c3d2efd0ff70d4986a96c7",
+      "size_bytes": 18111103
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed101-raw_norm_matched-step002500.json",
+      "sha256": "3d35a118a7b8e99f88605be9c9ecce4fb29a9696fe88860c58715bcb4e3496cb",
+      "size_bytes": 707970
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed101-raw_norm_matched-step002500.json",
+      "sha256": "cc81fc216e38731cd717a29f44f3130736a5cbb4371e286b7441092fbec3a721",
+      "size_bytes": 555933
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed102-raw_norm_matched-step001501.npz",
+      "sha256": "b9dbb8181d0b5cb1910125e04348546c85013eebdaa74ddf8476dc86f595610c",
+      "size_bytes": 18094311
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed102-raw_norm_matched-step001501.json",
+      "sha256": "f33c76e67f8f97eb60136b0609d9ca344e80dde5febbb8f00614981db32a3523",
+      "size_bytes": 707846
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed102-raw_norm_matched-step001501.json",
+      "sha256": "aa8557a07a24f55967d27290f1c80a3ca55a3235dd00e4d01c34476d61c33764",
+      "size_bytes": 555892
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed102-raw_norm_matched-step002000.npz",
+      "sha256": "394143b41e8352f58b6cd079dde9c2fefff81f1c288068453a0755feb23a24fd",
+      "size_bytes": 18132150
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed102-raw_norm_matched-step002000.json",
+      "sha256": "992c373893ea90a933b49553643b630e055be43703397336c1fd331fbad1065a",
+      "size_bytes": 707915
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed102-raw_norm_matched-step002000.json",
+      "sha256": "36ad8e105462d84247575c451df1e38abd0aa6ba05bbb64d37c17428fe92fd93",
+      "size_bytes": 555923
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed102-raw_norm_matched-step002500.npz",
+      "sha256": "271517c91441fc855e77587bfa9bcf40c10885ea05ba828f4bc91d85d952bba0",
+      "size_bytes": 18109861
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed102-raw_norm_matched-step002500.json",
+      "sha256": "8fbd2c53040f34fb76d9d21201092a036709e783d8bdeb12a2406f348707944f",
+      "size_bytes": 707872
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed102-raw_norm_matched-step002500.json",
+      "sha256": "2568411191b0b4e5052a4453c1d5ef785b9a01132a6acee558c830538aede3d0",
+      "size_bytes": 555912
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed103-raw_norm_matched-step001501.npz",
+      "sha256": "82b1ed47f8f40f5e1d589ea05714e943eae5b3b16ad3dfe9555e7aa9ac124756",
+      "size_bytes": 18098583
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed103-raw_norm_matched-step001501.json",
+      "sha256": "fb456678cfb51d07763abbedaa023fec548407c9c33a274489c725652c57e095",
+      "size_bytes": 707603
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed103-raw_norm_matched-step001501.json",
+      "sha256": "a31d87870a5892158245db6b401f8d8424f9f78c6b00b5fcf2bbd165155d3f96",
+      "size_bytes": 555909
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed103-raw_norm_matched-step002000.npz",
+      "sha256": "d4a4a7f77f6baa8f5cc759e4678123ee017f24bbe05c533d21311cca3eca2f64",
+      "size_bytes": 18111567
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed103-raw_norm_matched-step002000.json",
+      "sha256": "27a0337204a2284fae7d0d232f91b7a16a2031c61bf8fc8c7c9ec89141528d9f",
+      "size_bytes": 707627
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed103-raw_norm_matched-step002000.json",
+      "sha256": "85630b8a13c85041e76f85fac0e855d9630d4ee8922864bcd173823a9cf61dc7",
+      "size_bytes": 555911
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed103-raw_norm_matched-step002500.npz",
+      "sha256": "a5dfb56ba7fe1f6bf9e00a015a15fc31feacfead3309b9bb7834825395e1f255",
+      "size_bytes": 18120197
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed103-raw_norm_matched-step002500.json",
+      "sha256": "eb149083f282f3b4ab6aea9057d8e72d633e864591c545820488a0d574a69414",
+      "size_bytes": 707814
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed103-raw_norm_matched-step002500.json",
+      "sha256": "1f0e41117f424b14a6cbea95a15fa06a065195049f78e323c3ed13715da02a5c",
+      "size_bytes": 555917
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed104-raw_norm_matched-step001501.npz",
+      "sha256": "034e328be32ad8e58d620c8178c7a042eea0fe3553006d3e76c934f1cf611944",
+      "size_bytes": 18092483
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed104-raw_norm_matched-step001501.json",
+      "sha256": "ee1b301b995e1fa09009c28915db41a1f5922cd4515fd25f6c340ffe285dd8c0",
+      "size_bytes": 707922
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed104-raw_norm_matched-step001501.json",
+      "sha256": "9a20bbf57d0b6d36112a6a98d7eeb15dc6a57ad7701b122cbe29425bf710dba6",
+      "size_bytes": 555916
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed104-raw_norm_matched-step002000.npz",
+      "sha256": "f7d4a2300b2b64f53e55ec9c58cb462d782e24dbda5e476b0cf26d969a0725b4",
+      "size_bytes": 18118777
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed104-raw_norm_matched-step002000.json",
+      "sha256": "c2127ecc4a57d3f8a064425e097f4162eb2ff3b75ee10cfc46978583ef420848",
+      "size_bytes": 707925
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed104-raw_norm_matched-step002000.json",
+      "sha256": "ff16bcae4c4f63175f0c5f869e805bbcdb42a47c86ca7cdeccfb31e224d909b1",
+      "size_bytes": 555925
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/raw/seed104-raw_norm_matched-step002500.npz",
+      "sha256": "6415bb6721030bff876e0e9e8134840d84d8285e0e8af7c99d5d3d908d20ce43",
+      "size_bytes": 18110140
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/scalars/seed104-raw_norm_matched-step002500.json",
+      "sha256": "79a559daa3cabd984473cf7908ba9e5b288813b53f2b46ba576a9e6607b3efa4",
+      "size_bytes": 708017
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/measurement-001/states/seed104-raw_norm_matched-step002500.json",
+      "sha256": "f426843428571af7086166bb177ed5b2b0d76621e4ee62531e6afc332fc46df9",
+      "size_bytes": 555915
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed100-raw_norm_matched-step001501.json",
+      "sha256": "73778399157fb4276a462b01eb98fc581558514302efb9cb1cb2f4e4043046ba",
+      "size_bytes": 707684
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed100-raw_norm_matched-step002000.json",
+      "sha256": "d5eaf29161ca831a664cb3146c174708ff1a319c36722510673d34448e5cbc1c",
+      "size_bytes": 707799
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed100-raw_norm_matched-step002500.json",
+      "sha256": "eec5d867f21ee90c137c18138b6206c25ddb8fdaafc0f3685ac39311d10ecf52",
+      "size_bytes": 707878
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed101-raw_norm_matched-step001501.json",
+      "sha256": "614a0116d976cee8e7fd9fcb1d98d31dac60f73fa5f62b56364b23f515316128",
+      "size_bytes": 707844
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed101-raw_norm_matched-step002000.json",
+      "sha256": "03969a878abd0008711487166d6dcf3c2b5c260297adf52ea5ce31e9ede8c325",
+      "size_bytes": 707861
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed101-raw_norm_matched-step002500.json",
+      "sha256": "3d35a118a7b8e99f88605be9c9ecce4fb29a9696fe88860c58715bcb4e3496cb",
+      "size_bytes": 707970
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed102-raw_norm_matched-step001501.json",
+      "sha256": "f33c76e67f8f97eb60136b0609d9ca344e80dde5febbb8f00614981db32a3523",
+      "size_bytes": 707846
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed102-raw_norm_matched-step002000.json",
+      "sha256": "992c373893ea90a933b49553643b630e055be43703397336c1fd331fbad1065a",
+      "size_bytes": 707915
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed102-raw_norm_matched-step002500.json",
+      "sha256": "8fbd2c53040f34fb76d9d21201092a036709e783d8bdeb12a2406f348707944f",
+      "size_bytes": 707872
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed103-raw_norm_matched-step001501.json",
+      "sha256": "fb456678cfb51d07763abbedaa023fec548407c9c33a274489c725652c57e095",
+      "size_bytes": 707603
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed103-raw_norm_matched-step002000.json",
+      "sha256": "27a0337204a2284fae7d0d232f91b7a16a2031c61bf8fc8c7c9ec89141528d9f",
+      "size_bytes": 707627
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed103-raw_norm_matched-step002500.json",
+      "sha256": "eb149083f282f3b4ab6aea9057d8e72d633e864591c545820488a0d574a69414",
+      "size_bytes": 707814
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed104-raw_norm_matched-step001501.json",
+      "sha256": "ee1b301b995e1fa09009c28915db41a1f5922cd4515fd25f6c340ffe285dd8c0",
+      "size_bytes": 707922
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed104-raw_norm_matched-step002000.json",
+      "sha256": "c2127ecc4a57d3f8a064425e097f4162eb2ff3b75ee10cfc46978583ef420848",
+      "size_bytes": 707925
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-scalars/seed104-raw_norm_matched-step002500.json",
+      "sha256": "79a559daa3cabd984473cf7908ba9e5b288813b53f2b46ba576a9e6607b3efa4",
+      "size_bytes": 708017
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed100-raw_norm_matched-step001501.json",
+      "sha256": "65ba38d881ec9a299331e198a24af0abae259c92380fe78d786895f118d98a06",
+      "size_bytes": 555927
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed100-raw_norm_matched-step002000.json",
+      "sha256": "0e159589c4a4746a860c0eeb97177023e6ce58cbbc5753dda8c25c003d6a6d71",
+      "size_bytes": 555930
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed100-raw_norm_matched-step002500.json",
+      "sha256": "7c62d597f72738f6ca4e02793be20588194252767859c4cc0a77396a49f4bb1d",
+      "size_bytes": 555877
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed101-raw_norm_matched-step001501.json",
+      "sha256": "f3342db17c7777378f62052a155142da08641498282180bd4812865e48e310b7",
+      "size_bytes": 555905
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed101-raw_norm_matched-step002000.json",
+      "sha256": "b4eb0172ad9479b4050b46801ef36daf65396c8d7c1c1206eef3886300bdaf1c",
+      "size_bytes": 555972
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed101-raw_norm_matched-step002500.json",
+      "sha256": "cc81fc216e38731cd717a29f44f3130736a5cbb4371e286b7441092fbec3a721",
+      "size_bytes": 555933
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed102-raw_norm_matched-step001501.json",
+      "sha256": "aa8557a07a24f55967d27290f1c80a3ca55a3235dd00e4d01c34476d61c33764",
+      "size_bytes": 555892
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed102-raw_norm_matched-step002000.json",
+      "sha256": "36ad8e105462d84247575c451df1e38abd0aa6ba05bbb64d37c17428fe92fd93",
+      "size_bytes": 555923
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed102-raw_norm_matched-step002500.json",
+      "sha256": "2568411191b0b4e5052a4453c1d5ef785b9a01132a6acee558c830538aede3d0",
+      "size_bytes": 555912
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed103-raw_norm_matched-step001501.json",
+      "sha256": "a31d87870a5892158245db6b401f8d8424f9f78c6b00b5fcf2bbd165155d3f96",
+      "size_bytes": 555909
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed103-raw_norm_matched-step002000.json",
+      "sha256": "85630b8a13c85041e76f85fac0e855d9630d4ee8922864bcd173823a9cf61dc7",
+      "size_bytes": 555911
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed103-raw_norm_matched-step002500.json",
+      "sha256": "1f0e41117f424b14a6cbea95a15fa06a065195049f78e323c3ed13715da02a5c",
+      "size_bytes": 555917
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed104-raw_norm_matched-step001501.json",
+      "sha256": "9a20bbf57d0b6d36112a6a98d7eeb15dc6a57ad7701b122cbe29425bf710dba6",
+      "size_bytes": 555916
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed104-raw_norm_matched-step002000.json",
+      "sha256": "ff16bcae4c4f63175f0c5f869e805bbcdb42a47c86ca7cdeccfb31e224d909b1",
+      "size_bytes": 555925
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/spectral-grokking-raw-direction-20260909.KzGtkl/analysis-001/source-states/seed104-raw_norm_matched-step002500.json",
+      "sha256": "f426843428571af7086166bb177ed5b2b0d76621e4ee62531e6afc332fc46df9",
+      "size_bytes": 555915
+    }
+  ],
+  "limitations": [
+    "Saved-readout numerical corroboration, not new inference/training replication.",
+    "Archived reference tensors/readouts not re-audited.",
+    "Small or mixed effects do not establish equivalence or semantic/safety claims."
+  ],
+  "maximum_absolute_errors": {
+    "Behavior": 3.552713678800501e-15,
+    "Compact": 1.8665624601510444e-15,
+    "Null": 1.8665624601510444e-15,
+    "Paired": 0,
+    "Probe scores": 9.103828801926284e-15,
+    "Probe selected": 3.2404634531246757e-15,
+    "Probe target": 7.441963711940502e-16,
+    "Probe transform": 1.1102230246251565e-16,
+    "RMS": 0,
+    "Scalar behavior": 3.552713678800501e-15,
+    "Symmetry": 1.4901161193847656e-08
+  },
+  "measurement_sha256": "ecbb06431733302f6d6b61b8770c781076676b9ca65f244e2bd9bc467d681d46",
+  "numpy_version": "1.26.4",
+  "peak_rss_bytes": 213266432,
+  "scope": "Independent NumPy equations on15 new NPZs and six fixed14-metric paired contrasts; archived values reused only",
+  "states": [
+    [
+      100,
+      "raw_norm_matched",
+      1501
+    ],
+    [
+      100,
+      "raw_norm_matched",
+      2000
+    ],
+    [
+      100,
+      "raw_norm_matched",
+      2500
+    ],
+    [
+      101,
+      "raw_norm_matched",
+      1501
+    ],
+    [
+      101,
+      "raw_norm_matched",
+      2000
+    ],
+    [
+      101,
+      "raw_norm_matched",
+      2500
+    ],
+    [
+      102,
+      "raw_norm_matched",
+      1501
+    ],
+    [
+      102,
+      "raw_norm_matched",
+      2000
+    ],
+    [
+      102,
+      "raw_norm_matched",
+      2500
+    ],
+    [
+      103,
+      "raw_norm_matched",
+      1501
+    ],
+    [
+      103,
+      "raw_norm_matched",
+      2000
+    ],
+    [
+      103,
+      "raw_norm_matched",
+      2500
+    ],
+    [
+      104,
+      "raw_norm_matched",
+      1501
+    ],
+    [
+      104,
+      "raw_norm_matched",
+      2000
+    ],
+    [
+      104,
+      "raw_norm_matched",
+      2500
+    ]
+  ],
+  "status": "PASS"
+}

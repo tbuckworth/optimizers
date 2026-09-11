@@ -1,0 +1,53 @@
+{
+  "status": "pass",
+  "source_commit": "dc452eabdd7d0ac9d15860778d24f71b82bb988c",
+  "source_files_match_worktree_and_commit": [
+    {
+      "path": "spectral_filter.py",
+      "sha256": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/neural_core.py",
+      "sha256": "706851828b7120bea0d7a41bd0fa75474ac800b2df71087941d0140c8d1970ec"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/run_neural_mechanism.py",
+      "sha256": "e5ceaa9c7e4f69f3b9c6376eb94aedbd14e7183dcb761dc04ca0cb625938c166"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/test_neural_core.py",
+      "sha256": "c377e38ff2e2d423c6c9a83deeebffef5d8cc9fba64b1d3692001cc690c49c74"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/test_runner.py",
+      "sha256": "cf33ca5a909d33c31eb73a788d821f796f193220d13c37ba86b98a50cfe87983"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/protocol.md",
+      "sha256": "5b915c82723ebe823fd5edd80064ac7fb5492b6aa857faed10b8bb3ecf148a36"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-010/run_branches.py",
+      "sha256": "a52d6274e55a842d0f81d52f7a00e469e67ff225f7648323039786dc2373c6f5"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-010/branch_core.py",
+      "sha256": "82db5f5a99a3f2c454f51355a4b286f64cd0135bc82eb1e96aaecec232b31a20"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-010/test_branch_core.py",
+      "sha256": "88af2948e07a871d949dd279e704c29e8222bf9aa0fd749e3a58a689fe972352"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-010/test_runner.py",
+      "sha256": "971cce25eb1079e6dec8d38ca0c9cfc4674ceed2e691637c37735907e2526317"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-010/protocol.md",
+      "sha256": "45bff5771acb070362f95d317d6e8c759f30b21e79a38e2b5d739eca2aa3e96e"
+    }
+  ],
+  "lossless_json_archives_checked": 205,
+  "finite_loss_replay": false,
+  "limitation": "Tables aggregate recorded evaluations; no independent forward pass or per-step tensor-vector recomputation."
+}

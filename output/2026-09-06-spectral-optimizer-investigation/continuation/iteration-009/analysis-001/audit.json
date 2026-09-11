@@ -1,0 +1,25 @@
+{
+  "schema": "i9_neural_analysis_audit_v1",
+  "status": "pass",
+  "checks": 8697,
+  "errors": [],
+  "warnings": [],
+  "maximum_absolute_discrepancy": {
+    "pair_identity": 8.881784197001252e-16,
+    "norm": 3.774758283725532e-15,
+    "utility_dot": 5.204170427930421e-18,
+    "gram": 1.7763568394002505e-15,
+    "projection": 4.093813502747956e-06,
+    "leakage": 6.369639926617765e-09
+  },
+  "maximum_relative_discrepancy": {
+    "pair_identity": 4.426553945792225e-16,
+    "norm": 5.816268811252557e-15,
+    "utility_dot": 2.5648232830520652e-14,
+    "gram": 5.6426474048502205e-15,
+    "projection": 5.815120075552465e-06,
+    "leakage": 9.737485187522016e-09
+  },
+  "hash_scope": "All completion-manifest artifacts plus every probe-referenced anchor and tensor payload; tree digests independently recomputed for analysed probes.",
+  "pair_audit_scope": "Saved scalar identity innovation=fresh+surprise checked. Individual pair gradients were not saved, so pair geometry cannot be tensor-recomputed."
+}

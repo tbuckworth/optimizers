@@ -1,0 +1,1358 @@
+{
+  "status": "PASS",
+  "started_utc": "2026-09-06T16:10:17.446367+00:00",
+  "verifier_sha256": "1d3fdb255c1be00668156d715723cec541afe691acaced7f6d0f4d2cb1fe3d19",
+  "tolerances": {
+    "ce_absolute": 5e-05,
+    "accuracy_examples": 1
+  },
+  "checkpoint_links": [
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "final",
+      "step": 2000,
+      "state_sha256": "690748093d52f9b80faa637757f203ca854b9736c9b7f1d770524e45d29a0d12",
+      "flat_parameter_sha256": "cc2c6fdb76d37889dfa4f93c360e16f32bb09c84a88dcd27541c388f982f9d7f"
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "min_val_ce",
+      "step": 2000,
+      "state_sha256": "690748093d52f9b80faa637757f203ca854b9736c9b7f1d770524e45d29a0d12",
+      "flat_parameter_sha256": "cc2c6fdb76d37889dfa4f93c360e16f32bb09c84a88dcd27541c388f982f9d7f"
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "max_val_accuracy",
+      "step": 2000,
+      "state_sha256": "690748093d52f9b80faa637757f203ca854b9736c9b7f1d770524e45d29a0d12",
+      "flat_parameter_sha256": "cc2c6fdb76d37889dfa4f93c360e16f32bb09c84a88dcd27541c388f982f9d7f"
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "warmup100",
+      "step": 100,
+      "state_sha256": "ce83717965ce85ef1bdfc0313c69e398a8a4e4a0ad97b89d6c0203ef6caf90aa",
+      "flat_parameter_sha256": "2cb9b5469920afa60ab9cb09d50b5c1bc1962429a63101e3ae89d76ed4d4208e"
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "final",
+      "step": 2000,
+      "state_sha256": "a9ea322950d8254bdae2861cac1edb3d8e2e5415523d705720ed545c4e0dd08d",
+      "flat_parameter_sha256": "4176c4760ca894ee825e04ee819beceeff72a9d235f3995461f83655b9cbe17b"
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "min_val_ce",
+      "step": 600,
+      "state_sha256": "74189ad95ca21d1d9b608a8f73c35a7b81c8c1d7e30b8b9efd6cca2662fbb8cd",
+      "flat_parameter_sha256": "e1316cec5d895258d9ea2e864d915ae6325384356d657f77221ab60e036f3c29"
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "max_val_accuracy",
+      "step": 800,
+      "state_sha256": "1b90791d08163c92df5fadceed9f68a0b2ac88ef622620cc126c168f2ae82e20",
+      "flat_parameter_sha256": "6dfec5ae378b41b8a408cc9762817ad81ea5f5ffc45da81f83e489c1cb709652"
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "warmup100",
+      "step": 100,
+      "state_sha256": "ce83717965ce85ef1bdfc0313c69e398a8a4e4a0ad97b89d6c0203ef6caf90aa",
+      "flat_parameter_sha256": "2cb9b5469920afa60ab9cb09d50b5c1bc1962429a63101e3ae89d76ed4d4208e"
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "final",
+      "step": 2000,
+      "state_sha256": "dec80e34b614c125b072bf14ff003a86954b33950a0a684a8ca2fd8b4ddb1715",
+      "flat_parameter_sha256": "feb0d192d2c64fa18c00237972e9d46cfa5390e845d2cb9e25d93c321c195760"
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "min_val_ce",
+      "step": 600,
+      "state_sha256": "245d6294b01cd49799be54eb492756d6967719ccd15d7d058e64aa8d22ad3e8e",
+      "flat_parameter_sha256": "e0c64e87b330403664b6f07ddc4db8d900cae041c99fa69ef9b8458ff839a49e"
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "max_val_accuracy",
+      "step": 800,
+      "state_sha256": "44f6394e7087bb4ac58241ef2ed877f7d3d977e5e2e905aca372517c88b3efb4",
+      "flat_parameter_sha256": "223ad7398a0f84c6a6323c605cb8401da4bced2202079c24fbf04f8f592925d4"
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "warmup100",
+      "step": 100,
+      "state_sha256": "ce83717965ce85ef1bdfc0313c69e398a8a4e4a0ad97b89d6c0203ef6caf90aa",
+      "flat_parameter_sha256": "2cb9b5469920afa60ab9cb09d50b5c1bc1962429a63101e3ae89d76ed4d4208e"
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "final",
+      "step": 2000,
+      "state_sha256": "7863f5b11dbc40787417da25fd3d909894367aef9722a23165c2ff6cd069bc4d",
+      "flat_parameter_sha256": "3cf423dfe46915229606b85b9240a5afeda034d03903e2fb961f4e229e7a4d19"
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "min_val_ce",
+      "step": 1500,
+      "state_sha256": "84fc8e4d86313fe2f4fa635d673631bf1c00e82f1797bae2aa52e6b95027b20c",
+      "flat_parameter_sha256": "a86cb0035d49c487d4756487702eb962808c0d2a8ce9367ed1713c67f745cae2"
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "max_val_accuracy",
+      "step": 1200,
+      "state_sha256": "9ca8439a237e06b839b4c6b3726344d6d2ce571f3e58193ebdd539f5738914a8",
+      "flat_parameter_sha256": "c4f5b1f80ec56209431916ed25405999171b325a001ec840ec4f60f45120f9a4"
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "warmup100",
+      "step": 100,
+      "state_sha256": "c1e97a7e362c8cf330b5bda3117c715603a816535cca8e189303a5b1fd9c0ad6",
+      "flat_parameter_sha256": "d54c85f7ac7fb72cc2c565b13060e9d2c7070efd094263fcad5f117b32e02496"
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "final",
+      "step": 2000,
+      "state_sha256": "95eeb888b8498736004faa36a42a45e427b9ea64086270fdb3319128125580b4",
+      "flat_parameter_sha256": "cdaefae7323b6c7f5b63a7e12ad58e58ec65772cfb661989b1bff505c8bcdade"
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "min_val_ce",
+      "step": 1500,
+      "state_sha256": "b7f886c5f484c2f1ac9a751a01f9f4bccce242fdf630d8777117fce3d4070b3a",
+      "flat_parameter_sha256": "9c37995a011736d73dbe3aeb445368234234e09fb7aebd329549c54515e2afdd"
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "max_val_accuracy",
+      "step": 1500,
+      "state_sha256": "b7f886c5f484c2f1ac9a751a01f9f4bccce242fdf630d8777117fce3d4070b3a",
+      "flat_parameter_sha256": "9c37995a011736d73dbe3aeb445368234234e09fb7aebd329549c54515e2afdd"
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "warmup100",
+      "step": 100,
+      "state_sha256": "c1e97a7e362c8cf330b5bda3117c715603a816535cca8e189303a5b1fd9c0ad6",
+      "flat_parameter_sha256": "d54c85f7ac7fb72cc2c565b13060e9d2c7070efd094263fcad5f117b32e02496"
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "final",
+      "step": 2000,
+      "state_sha256": "ebbf92affbef0ff5e83d30541566e9e111692745b835c2bff43333d6807d6624",
+      "flat_parameter_sha256": "411ca9a6d094c32af757a8f9e91cff781d8a45a0b3d47f5f113f5d8569ba7e3a"
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "min_val_ce",
+      "step": 1500,
+      "state_sha256": "78f02d987ab913462cfa27bd7133ff2dc71f114d60bd0016b21d48e043f9ba08",
+      "flat_parameter_sha256": "e64ceabda104a4cb0000b9e3af548f89f2a1d75f81550a8b19dede95c0608e14"
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "max_val_accuracy",
+      "step": 1300,
+      "state_sha256": "4954b89f72f804f126636c5ad6fac847fdbf9aebcf4ef07b26953778991f945f",
+      "flat_parameter_sha256": "5c42be9d45b0860c5f0a7acf372843d35a9e506b6d3d96d6102b57fd2405d09f"
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "warmup100",
+      "step": 100,
+      "state_sha256": "c1e97a7e362c8cf330b5bda3117c715603a816535cca8e189303a5b1fd9c0ad6",
+      "flat_parameter_sha256": "d54c85f7ac7fb72cc2c565b13060e9d2c7070efd094263fcad5f117b32e02496"
+    }
+  ],
+  "evaluations": [
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "final",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.42742627006634293,
+        "accuracy": 0.8842,
+        "correct": 8842,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.42742626571655273,
+        "accuracy": 0.8842,
+        "count": 10000
+      },
+      "ce_absolute_error": 4.349790194702052e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "final",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.4391843754870406,
+        "accuracy": 0.8734,
+        "correct": 4367,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 2000,
+        "cross_entropy": 0.4391843658447266,
+        "accuracy": 0.8734,
+        "count": 5000
+      },
+      "ce_absolute_error": 9.642314002800134e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "final",
+      "dataset": "training_clean",
+      "observed": {
+        "cross_entropy": 0.42130514924171114,
+        "accuracy": 0.8874,
+        "correct": 4437,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 0.42130515441894534,
+        "accuracy": 0.8874,
+        "count": 5000
+      },
+      "ce_absolute_error": 5.177234196906966e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "final",
+      "dataset": "training_noisy",
+      "observed": {
+        "cross_entropy": 0.42130514924171114,
+        "accuracy": 0.8874,
+        "correct": 4437,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 0.42130515441894534,
+        "accuracy": 0.8874,
+        "count": 5000
+      },
+      "ce_absolute_error": 5.177234196906966e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "min_val_ce",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.42742627006634293,
+        "accuracy": 0.8842,
+        "correct": 8842,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.42742626571655273,
+        "accuracy": 0.8842,
+        "count": 10000
+      },
+      "ce_absolute_error": 4.349790194702052e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "min_val_ce",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.4391843754870406,
+        "accuracy": 0.8734,
+        "correct": 4367,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 2000,
+        "cross_entropy": 0.4391843658447266,
+        "accuracy": 0.8734,
+        "count": 5000
+      },
+      "ce_absolute_error": 9.642314002800134e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.42742627006634293,
+        "accuracy": 0.8842,
+        "correct": 8842,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.42742626571655273,
+        "accuracy": 0.8842,
+        "count": 10000
+      },
+      "ce_absolute_error": 4.349790194702052e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.4391843754870406,
+        "accuracy": 0.8734,
+        "correct": 4367,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 2000,
+        "cross_entropy": 0.4391843658447266,
+        "accuracy": 0.8734,
+        "count": 5000
+      },
+      "ce_absolute_error": 9.642314002800134e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "warmup100",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.5275079366040009,
+        "accuracy": 0.8682,
+        "correct": 8682,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.527507942199707,
+        "accuracy": 0.8682,
+        "count": 10000
+      },
+      "ce_absolute_error": 5.5957061206868275e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-current32",
+      "checkpoint": "warmup100",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.5422337863827008,
+        "accuracy": 0.8612,
+        "correct": 4306,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 100,
+        "cross_entropy": 0.5422337829589844,
+        "accuracy": 0.8612,
+        "count": 5000
+      },
+      "ce_absolute_error": 3.423716421480094e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "final",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.4678779513827843,
+        "accuracy": 0.8643,
+        "correct": 8643,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.4678779479980469,
+        "accuracy": 0.8643,
+        "count": 10000
+      },
+      "ce_absolute_error": 3.384737434775076e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "final",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.47809557836306593,
+        "accuracy": 0.8544,
+        "correct": 4272,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 2000,
+        "cross_entropy": 0.4780955749511719,
+        "accuracy": 0.8544,
+        "count": 5000
+      },
+      "ce_absolute_error": 3.4118940450689195e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "final",
+      "dataset": "training_clean",
+      "observed": {
+        "cross_entropy": 0.4747430300675638,
+        "accuracy": 0.8682,
+        "correct": 4341,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 0.47474303283691405,
+        "accuracy": 0.8682,
+        "count": 5000
+      },
+      "ce_absolute_error": 2.769350249121061e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "final",
+      "dataset": "training_noisy",
+      "observed": {
+        "cross_entropy": 0.4747430300675638,
+        "accuracy": 0.8682,
+        "correct": 4341,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 0.47474303283691405,
+        "accuracy": 0.8682,
+        "count": 5000
+      },
+      "ce_absolute_error": 2.769350249121061e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "min_val_ce",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.4620887093810177,
+        "accuracy": 0.868,
+        "correct": 8680,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.4620887161254883,
+        "accuracy": 0.868,
+        "count": 10000
+      },
+      "ce_absolute_error": 6.7444705931229976e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "min_val_ce",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.47678585942557367,
+        "accuracy": 0.8574,
+        "correct": 4287,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 600,
+        "cross_entropy": 0.47678584899902343,
+        "accuracy": 0.8574,
+        "count": 5000
+      },
+      "ce_absolute_error": 1.0426550234310383e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.48059531070440326,
+        "accuracy": 0.863,
+        "correct": 8630,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.4805953262329102,
+        "accuracy": 0.863,
+        "count": 10000
+      },
+      "ce_absolute_error": 1.5528506924766816e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.4860050540685632,
+        "accuracy": 0.8654,
+        "correct": 4327,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 800,
+        "cross_entropy": 0.4860050537109375,
+        "accuracy": 0.8654,
+        "count": 5000
+      },
+      "ce_absolute_error": 3.576257068260702e-10,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "warmup100",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.5275079366040009,
+        "accuracy": 0.8682,
+        "correct": 8682,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.527507942199707,
+        "accuracy": 0.8682,
+        "count": 10000
+      },
+      "ce_absolute_error": 5.5957061206868275e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32",
+      "checkpoint": "warmup100",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.5422337863827008,
+        "accuracy": 0.8612,
+        "correct": 4306,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 100,
+        "cross_entropy": 0.5422337829589844,
+        "accuracy": 0.8612,
+        "count": 5000
+      },
+      "ce_absolute_error": 3.423716421480094e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "final",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.47040034680879,
+        "accuracy": 0.8647,
+        "correct": 8647,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.47040035247802736,
+        "accuracy": 0.8647,
+        "count": 10000
+      },
+      "ce_absolute_error": 5.6692373573419275e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "final",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.4822459261742828,
+        "accuracy": 0.8536,
+        "correct": 4268,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 2000,
+        "cross_entropy": 0.4822459197998047,
+        "accuracy": 0.8536,
+        "count": 5000
+      },
+      "ce_absolute_error": 6.374478112025628e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "final",
+      "dataset": "training_clean",
+      "observed": {
+        "cross_entropy": 0.4751612636075266,
+        "accuracy": 0.8654,
+        "correct": 4327,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 0.4751612548828125,
+        "accuracy": 0.8654,
+        "count": 5000
+      },
+      "ce_absolute_error": 8.724714062324779e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "final",
+      "dataset": "training_noisy",
+      "observed": {
+        "cross_entropy": 0.4751612636075266,
+        "accuracy": 0.8654,
+        "correct": 4327,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 0.4751612548828125,
+        "accuracy": 0.8654,
+        "count": 5000
+      },
+      "ce_absolute_error": 8.724714062324779e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "min_val_ce",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.46277033211692176,
+        "accuracy": 0.8679,
+        "correct": 8679,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.4627703338623047,
+        "accuracy": 0.8679,
+        "count": 10000
+      },
+      "ce_absolute_error": 1.7453829492808381e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "min_val_ce",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.4772955308957222,
+        "accuracy": 0.8546,
+        "correct": 4273,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 600,
+        "cross_entropy": 0.47729554138183594,
+        "accuracy": 0.8546,
+        "count": 5000
+      },
+      "ce_absolute_error": 1.0486113755092674e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.48094373833598575,
+        "accuracy": 0.8624,
+        "correct": 8624,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.48094374237060544,
+        "accuracy": 0.8624,
+        "count": 10000
+      },
+      "ce_absolute_error": 4.034619693893404e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.48646790486496794,
+        "accuracy": 0.8628,
+        "correct": 4314,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 800,
+        "cross_entropy": 0.48646790161132814,
+        "accuracy": 0.8628,
+        "count": 5000
+      },
+      "ce_absolute_error": 3.253639802025532e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "warmup100",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 0.5275079366040009,
+        "accuracy": 0.8682,
+        "correct": 8682,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 0.527507942199707,
+        "accuracy": 0.8682,
+        "count": 10000
+      },
+      "ce_absolute_error": 5.5957061206868275e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0-lagged32_current_norm",
+      "checkpoint": "warmup100",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 0.5422337863827008,
+        "accuracy": 0.8612,
+        "correct": 4306,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 100,
+        "cross_entropy": 0.5422337829589844,
+        "accuracy": 0.8612,
+        "count": 5000
+      },
+      "ce_absolute_error": 3.423716421480094e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "final",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 2.004320536148548,
+        "accuracy": 0.4891,
+        "correct": 4891,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 2.0043205627441405,
+        "accuracy": 0.4891,
+        "count": 10000
+      },
+      "ce_absolute_error": 2.6595592395040057e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "final",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 2.0127927760362625,
+        "accuracy": 0.4808,
+        "correct": 2404,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 2000,
+        "cross_entropy": 2.0127927368164062,
+        "accuracy": 0.4808,
+        "count": 5000
+      },
+      "ce_absolute_error": 3.921985625154889e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "final",
+      "dataset": "training_clean",
+      "observed": {
+        "cross_entropy": 2.014203644442558,
+        "accuracy": 0.4844,
+        "correct": 2422,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 2.0142036254882814,
+        "accuracy": 0.4844,
+        "count": 5000
+      },
+      "ce_absolute_error": 1.8954276814753257e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "final",
+      "dataset": "training_noisy",
+      "observed": {
+        "cross_entropy": 2.2563208154916765,
+        "accuracy": 0.1766,
+        "correct": 883,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 2.2563208251953126,
+        "accuracy": 0.1766,
+        "count": 5000
+      },
+      "ce_absolute_error": 9.703636116853431e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "min_val_ce",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 1.9689272396445274,
+        "accuracy": 0.5344,
+        "correct": 5344,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 1.96892724609375,
+        "accuracy": 0.5344,
+        "count": 10000
+      },
+      "ce_absolute_error": 6.449222489379736e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "min_val_ce",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 1.9805121081352235,
+        "accuracy": 0.5248,
+        "correct": 2624,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 1500,
+        "cross_entropy": 1.980512109375,
+        "accuracy": 0.5248,
+        "count": 5000
+      },
+      "ce_absolute_error": 1.2397765036809005e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 2.008796991157532,
+        "accuracy": 0.548,
+        "correct": 5480,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 2.008796990966797,
+        "accuracy": 0.548,
+        "count": 10000
+      },
+      "ce_absolute_error": 1.9073498336297234e-10,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 2.0192883555412293,
+        "accuracy": 0.5464,
+        "correct": 2732,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 1200,
+        "cross_entropy": 2.0192883911132813,
+        "accuracy": 0.5464,
+        "count": 5000
+      },
+      "ce_absolute_error": 3.5572051970689245e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "warmup100",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 2.0680861691594123,
+        "accuracy": 0.4564,
+        "correct": 4564,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 2.0680862060546876,
+        "accuracy": 0.4564,
+        "count": 10000
+      },
+      "ce_absolute_error": 3.6895275279391626e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-current32",
+      "checkpoint": "warmup100",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 2.0726014768362044,
+        "accuracy": 0.4512,
+        "correct": 2256,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 100,
+        "cross_entropy": 2.0726014892578126,
+        "accuracy": 0.4512,
+        "count": 5000
+      },
+      "ce_absolute_error": 1.2421608186485855e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "final",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 2.0432374736070633,
+        "accuracy": 0.4972,
+        "correct": 4972,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 2.0432374938964846,
+        "accuracy": 0.4972,
+        "count": 10000
+      },
+      "ce_absolute_error": 2.0289421254204854e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "final",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 2.0502760465621948,
+        "accuracy": 0.4882,
+        "correct": 2441,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 2000,
+        "cross_entropy": 2.0502760375976563,
+        "accuracy": 0.4882,
+        "count": 5000
+      },
+      "ce_absolute_error": 8.964538444899972e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "final",
+      "dataset": "training_clean",
+      "observed": {
+        "cross_entropy": 2.0476770538449287,
+        "accuracy": 0.4926,
+        "correct": 2463,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 2.0476770751953124,
+        "accuracy": 0.4926,
+        "count": 5000
+      },
+      "ce_absolute_error": 2.1350383683227392e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "final",
+      "dataset": "training_noisy",
+      "observed": {
+        "cross_entropy": 2.270446879243851,
+        "accuracy": 0.1584,
+        "correct": 792,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 2.2704469482421876,
+        "accuracy": 0.1584,
+        "count": 5000
+      },
+      "ce_absolute_error": 6.899833682183498e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "min_val_ce",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 2.011126061707735,
+        "accuracy": 0.5501,
+        "correct": 5501,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 2.0111260803222657,
+        "accuracy": 0.5501,
+        "count": 10000
+      },
+      "ce_absolute_error": 1.8614530805649565e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "min_val_ce",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 2.0190185972929,
+        "accuracy": 0.5548,
+        "correct": 2774,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 1500,
+        "cross_entropy": 2.019018603515625,
+        "accuracy": 0.5548,
+        "count": 5000
+      },
+      "ce_absolute_error": 6.222725001947538e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 2.011126061707735,
+        "accuracy": 0.5501,
+        "correct": 5501,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 2.0111260803222657,
+        "accuracy": 0.5501,
+        "count": 10000
+      },
+      "ce_absolute_error": 1.8614530805649565e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 2.0190185972929,
+        "accuracy": 0.5548,
+        "correct": 2774,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 1500,
+        "cross_entropy": 2.019018603515625,
+        "accuracy": 0.5548,
+        "count": 5000
+      },
+      "ce_absolute_error": 6.222725001947538e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "warmup100",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 2.0680861691594123,
+        "accuracy": 0.4564,
+        "correct": 4564,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 2.0680862060546876,
+        "accuracy": 0.4564,
+        "count": 10000
+      },
+      "ce_absolute_error": 3.6895275279391626e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32",
+      "checkpoint": "warmup100",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 2.0726014768362044,
+        "accuracy": 0.4512,
+        "correct": 2256,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 100,
+        "cross_entropy": 2.0726014892578126,
+        "accuracy": 0.4512,
+        "count": 5000
+      },
+      "ce_absolute_error": 1.2421608186485855e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "final",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 2.036797242552042,
+        "accuracy": 0.5209,
+        "correct": 5209,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 2.0367972595214843,
+        "accuracy": 0.5209,
+        "count": 10000
+      },
+      "ce_absolute_error": 1.6969442295788895e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "final",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 2.0442436167597773,
+        "accuracy": 0.5114,
+        "correct": 2557,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 2000,
+        "cross_entropy": 2.044243603515625,
+        "accuracy": 0.5114,
+        "count": 5000
+      },
+      "ce_absolute_error": 1.324415244141619e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "final",
+      "dataset": "training_clean",
+      "observed": {
+        "cross_entropy": 2.041852951955795,
+        "accuracy": 0.5204,
+        "correct": 2602,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 2.0418529541015626,
+        "accuracy": 0.5204,
+        "count": 5000
+      },
+      "ce_absolute_error": 2.1457675636327167e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "final",
+      "dataset": "training_noisy",
+      "observed": {
+        "cross_entropy": 2.2720817030072213,
+        "accuracy": 0.1618,
+        "correct": 809,
+        "count": 5000
+      },
+      "recorded": {
+        "cross_entropy": 2.2720817993164064,
+        "accuracy": 0.1618,
+        "count": 5000
+      },
+      "ce_absolute_error": 9.630918507141928e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "min_val_ce",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 1.9727064956784248,
+        "accuracy": 0.5663,
+        "correct": 5663,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 1.9727065002441406,
+        "accuracy": 0.5663,
+        "count": 10000
+      },
+      "ce_absolute_error": 4.565715805426862e-09,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "min_val_ce",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 1.9803824290275573,
+        "accuracy": 0.5696,
+        "correct": 2848,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 1500,
+        "cross_entropy": 1.9803824096679687,
+        "accuracy": 0.5696,
+        "count": 5000
+      },
+      "ce_absolute_error": 1.9359588598888422e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 2.01055572040081,
+        "accuracy": 0.5727,
+        "correct": 5727,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 2.010555743408203,
+        "accuracy": 0.5727,
+        "count": 10000
+      },
+      "ce_absolute_error": 2.3007392879748068e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "max_val_accuracy",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 2.019109922671318,
+        "accuracy": 0.5714,
+        "correct": 2857,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 1300,
+        "cross_entropy": 2.0191099609375,
+        "accuracy": 0.5714,
+        "count": 5000
+      },
+      "ce_absolute_error": 3.826618222291245e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "warmup100",
+      "dataset": "test",
+      "observed": {
+        "cross_entropy": 2.0680861691594123,
+        "accuracy": 0.4564,
+        "correct": 4564,
+        "count": 10000
+      },
+      "recorded": {
+        "cross_entropy": 2.0680862060546876,
+        "accuracy": 0.4564,
+        "count": 10000
+      },
+      "ce_absolute_error": 3.6895275279391626e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    },
+    {
+      "run_key": "seed60006-noise0.9-lagged32_current_norm",
+      "checkpoint": "warmup100",
+      "dataset": "validation",
+      "observed": {
+        "cross_entropy": 2.0726014768362044,
+        "accuracy": 0.4512,
+        "correct": 2256,
+        "count": 5000
+      },
+      "recorded": {
+        "step": 100,
+        "cross_entropy": 2.0726014892578126,
+        "accuracy": 0.4512,
+        "count": 5000
+      },
+      "ce_absolute_error": 1.2421608186485855e-08,
+      "accuracy_error_examples": 0,
+      "passed_tolerance": true
+    }
+  ],
+  "mode": "audit_reexecution",
+  "execution_sha256": "77c63fa4741eccbc884e63472d08932beb69075462297e5213526d73334f0799",
+  "numerical_environment": {
+    "torch": "2.11.0+cu128",
+    "numpy": "1.26.4",
+    "device": "cpu"
+  },
+  "artifact_bindings_verified": 17,
+  "independent_plans_verified": 1,
+  "exact_accuracy_evaluations": 60,
+  "max_ce_absolute_error": 9.630918507141928e-08,
+  "max_accuracy_error_examples": 0,
+  "elapsed_seconds": 2.4466354800388217
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "i12_moment_analysis_audit_v1",
+  "status": "pass",
+  "checks": 1434944,
+  "errors": [],
+  "warnings": [],
+  "completion_and_external_hash_files_verified": 328,
+  "hash_bytes_streamed": 1380376520,
+  "complete_state_tree_digests_verified": 150,
+  "maximum_train_residual_identity_error": 0.0,
+  "maximum_leakage_energy_identity_error": 2.220446049250313e-16,
+  "coverage": {
+    "new_branches": 96,
+    "inherited_references": 24,
+    "edited_parents": 24,
+    "original_parents": 6,
+    "first_gradient_groups": 24
+  },
+  "numerical_failures_are_retained_outcomes": 0,
+  "science_complete": true,
+  "energy_weighted_leakage_definition": "sum outside squared step energy / sum total squared step energy within branch, then equal parent and seed weights",
+  "audit_limits": [
+    "Recorded finite evaluations were schema/identity checked, not replayed from model/data forwards.",
+    "Per-step leakage used saved scalar norm/outside-energy identities; displacement vectors were not saved.",
+    "First-step gradient equality uses acquisition digests; gradient tensors were not stored for recomputation."
+  ]
+}

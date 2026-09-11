@@ -1,0 +1,46 @@
+{
+  "schema": "spectral_augmentation_audit_v1",
+  "status": "PASS",
+  "source_schema": "spectral_augmentation_boundary_v1",
+  "source_completion_sha256": "eaec0fc979f8e21b53b62933847633fb29e44e3d560ba9a83ca15f15b9bcf9b9",
+  "source_results_sha256": "c3d93c13abd20944ca1fd3def950934477a5abe5ec51bf5ddb214ffb65dac63a",
+  "source_pins": {
+    "spectral_filter.py": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/neural_core.py": "706851828b7120bea0d7a41bd0fa75474ac800b2df71087941d0140c8d1970ec",
+    "experiments/spectral_selectivity_boundary.py": "c851cb711e85a07aacad891cfd1122d5bf1a3f7d406142d1b98cca4cb2afac0f",
+    "tests/test_spectral_selectivity_boundary.py": "a4c2f6385747211df41d1d32d7ac711b7563af057db1de75f78e37eda98d2ccc",
+    "output/2026-09-09-spectral-selectivity-boundary/protocol.md": "2666a79a9afd6baca82a463ae793c62eeb76e2910c57d8b9a89f01d00ddb4d0a",
+    "experiments/spectral_augmentation_boundary.py": "7a4f6aab337551caea54d53333f48284e82a72702319238feffe234919333e2a",
+    "experiments/spectral_augmentation_masks.py": "3a17d98db89754e118b52722392fc3108d4de330211a0fe25e5b1f4471166f0f",
+    "output/2026-09-10-spectral-augmentation/protocol.md": "4aa4e7d9d5ba8ad718648980010412ed2f26e3e28abd8301ae9ac60603de4e9c",
+    "tests/test_spectral_augmentation_masks.py": "0ed9202dc225cf60e33cd11a14f027187402c2a434396068d1bd319defceb83b",
+    "tests/test_spectral_augmentation_boundary.py": "ff8b4b93547e9a8d8de06321c4b1be33fb1f4c7a3f382caa1bf648920ed7f96f",
+    "experiments/spectral_augmentation_analysis.py": "b9ac077d0d04c30046a6aeb02b1426b172e00d4fc2b90783fa401f1c9fab95f6",
+    "tests/test_spectral_augmentation_analysis.py": "bbf8f340bb596b515073d2c05f58d1dba9a6f758247c14218acd4f8ebb1e7b1b",
+    "experiments/spectral_augmentation_audit.py": "8f2bc33c22956177ce5223c1c20e6edb7cff5107385b8ab2e30c0023075647a9",
+    "tests/test_spectral_augmentation_audit.py": "760d66d947ca1563de7b82d0216ca721c0d5e59aa0790dbe39e6c0fbeb674e80"
+  },
+  "verified_artifacts": 315,
+  "input_bytes_read_once": 1282162288,
+  "logical_evaluation_records": 1512,
+  "trajectories": 72,
+  "paired_seeds": [
+    202609131,
+    202609132,
+    202609133
+  ],
+  "checks": 668052,
+  "metric_atol": 1e-10,
+  "metric_rtol": 1e-10,
+  "max_absolute_scalar_error": 1.4551915228366852e-11,
+  "limits": [
+    "No model, optimizer, gradient, or observer execution.",
+    "Checkpoint file bytes hashed; internal state tree hashes not independently recomputed.",
+    "State restores and first gradients checked as producer hash bindings.",
+    "Training IDX not read; true-label/source-ID association relies on acquisition pins.",
+    "Source pin equality checked between acquisition manifest and completion; no source replay.",
+    "Fixed contrasts use the shared pure analysis function; raw metrics are independently rebuilt."
+  ],
+  "wall_seconds": 22.18282845709473,
+  "process_high_water_rss_kib": 178568
+}

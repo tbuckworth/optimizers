@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "scope": "Executor self-audit; independent SVD and CPU weight readout, not independent-agent replication",
+  "checks": {
+    "gradient_11": {
+      "svd_and_report_checks": "PASS",
+      "readouts": {
+        "jlens": {
+          "max_score_error": 0.0,
+          "max_cosine_error": 1.2516975402832031e-06
+        },
+        "plain": {
+          "max_score_error": 0.0625,
+          "max_cosine_error": 1.9431114196777344e-05
+        }
+      }
+    },
+    "gradient_17": {
+      "svd_and_report_checks": "PASS",
+      "readouts": {
+        "jlens": {
+          "max_score_error": 0.0,
+          "max_cosine_error": 2.1457672119140625e-06
+        },
+        "plain": {
+          "max_score_error": 0.125,
+          "max_cosine_error": 1.6901642084121704e-05
+        }
+      }
+    },
+    "activation_11": {
+      "svd_and_report_checks": "PASS",
+      "readouts": {
+        "jlens": {
+          "max_score_error": 0.0,
+          "max_cosine_error": 1.0728836059570312e-06
+        },
+        "plain": {
+          "max_score_error": 0.0625,
+          "max_cosine_error": 1.4141201972961426e-05
+        }
+      }
+    },
+    "activation_17": {
+      "svd_and_report_checks": "PASS",
+      "readouts": {
+        "jlens": {
+          "max_score_error": 0.0,
+          "max_cosine_error": 4.112720489501953e-06
+        },
+        "plain": {
+          "max_score_error": 0.0625,
+          "max_cosine_error": 1.588277518749237e-05
+        }
+      }
+    }
+  },
+  "dataset_hash_verified": true,
+  "source_pins_verified": true,
+  "acquisition_provenance_verified": true
+}

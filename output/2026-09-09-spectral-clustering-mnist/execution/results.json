@@ -1,0 +1,486 @@
+{
+  "schema": "anchor_graph_mnist_results_v1",
+  "rows": [
+    {
+      "seed": 202609091,
+      "condition": "clean",
+      "arm": "adamw",
+      "curve_receipt": {
+        "path": "curve-s202609091-clean-adamw.json",
+        "size_bytes": 19467,
+        "sha256": "5712c6d063208084a63e2f9340732f2edd04817e8850072ac515ad5d3b1ce65e"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.9144,
+        "heldout_clean_ce": 0.3121773375602013,
+        "train_clean_accuracy": 0.9916,
+        "train_fixed_accuracy": 0.9916,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.04853815793663248,
+        "train_fixed_ce": 0.04853815793663248
+      },
+      "warmup_plus_branch_seconds": 4.275115084834397
+    },
+    {
+      "seed": 202609091,
+      "condition": "clean",
+      "arm": "hard32",
+      "curve_receipt": {
+        "path": "curve-s202609091-clean-hard32.json",
+        "size_bytes": 19569,
+        "sha256": "e36636274eb31fe970dd229f0171c448ec399160284f7f662eff713726fce986"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.8614,
+        "heldout_clean_ce": 0.4819293187365718,
+        "train_clean_accuracy": 0.8808,
+        "train_fixed_accuracy": 0.8808,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.41620839438540225,
+        "train_fixed_ce": 0.41620839438540225
+      },
+      "warmup_plus_branch_seconds": 7.121434037573636
+    },
+    {
+      "seed": 202609091,
+      "condition": "clean",
+      "arm": "cluster32",
+      "curve_receipt": {
+        "path": "curve-s202609091-clean-cluster32.json",
+        "size_bytes": 19746,
+        "sha256": "4a2d75b767c3e6cca20a9c793cfa946fa95d3f11f7bbb7d4528146585ea5d46e"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.846,
+        "heldout_clean_ce": 0.5218775188813959,
+        "train_clean_accuracy": 0.8736,
+        "train_fixed_accuracy": 0.8736,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.4650836459017305,
+        "train_fixed_ce": 0.4650836459017305
+      },
+      "warmup_plus_branch_seconds": 25.33481145557016
+    },
+    {
+      "seed": 202609091,
+      "condition": "clean",
+      "arm": "mixed32",
+      "curve_receipt": {
+        "path": "curve-s202609091-clean-mixed32.json",
+        "size_bytes": 19764,
+        "sha256": "3d217ee22b41017d673f614d55277ae4a91ab260d23bc4b87d7681d60dfb113a"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.9132,
+        "heldout_clean_ce": 0.3064402046395641,
+        "train_clean_accuracy": 0.9834,
+        "train_fixed_accuracy": 0.9834,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.0756792164060657,
+        "train_fixed_ce": 0.0756792164060657
+      },
+      "warmup_plus_branch_seconds": 25.189004400745034
+    },
+    {
+      "seed": 202609091,
+      "condition": "fixed_uniform_0p9",
+      "arm": "hard32",
+      "curve_receipt": {
+        "path": "curve-s202609091-fixed_uniform_0p9-hard32.json",
+        "size_bytes": 19992,
+        "sha256": "f7b3e3d035acc296826515175ed35b6771006451c35ca1715b6f511a9f179850"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.5194,
+        "heldout_clean_ce": 1.9615979166080026,
+        "train_clean_accuracy": 0.5284,
+        "train_fixed_accuracy": 0.1756,
+        "train_corrupted_accuracy": 0.07821366888724401,
+        "train_clean_ce": 1.9501681855547008,
+        "train_fixed_ce": 2.257838288258831
+      },
+      "warmup_plus_branch_seconds": 6.75085035758093
+    },
+    {
+      "seed": 202609091,
+      "condition": "fixed_uniform_0p9",
+      "arm": "cluster32",
+      "curve_receipt": {
+        "path": "curve-s202609091-fixed_uniform_0p9-cluster32.json",
+        "size_bytes": 20200,
+        "sha256": "05b5b8c803848a990aa12959788fd5472eff5202c71202dbf41c653e4aff8478"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.5058,
+        "heldout_clean_ce": 2.0274559637124625,
+        "train_clean_accuracy": 0.5154,
+        "train_fixed_accuracy": 0.172,
+        "train_corrupted_accuracy": 0.07920059215396003,
+        "train_clean_ce": 2.0140153606466336,
+        "train_fixed_ce": 2.2613849751328434
+      },
+      "warmup_plus_branch_seconds": 25.177288017701358
+    },
+    {
+      "seed": 202609091,
+      "condition": "fixed_uniform_0p9",
+      "arm": "mixed32",
+      "curve_receipt": {
+        "path": "curve-s202609091-fixed_uniform_0p9-mixed32.json",
+        "size_bytes": 20193,
+        "sha256": "47086ff1b708b37220c16e698cc15ea103d8c3046a93dbde16c3b91ea05c0c0b"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.3024,
+        "heldout_clean_ce": 2.023674948858951,
+        "train_clean_accuracy": 0.2984,
+        "train_fixed_accuracy": 0.399,
+        "train_corrupted_accuracy": 0.3427091043671355,
+        "train_clean_ce": 2.03252978982658,
+        "train_fixed_ce": 1.7597596415232204
+      },
+      "warmup_plus_branch_seconds": 26.230690888594836
+    },
+    {
+      "seed": 202609091,
+      "condition": "fixed_uniform_0p9",
+      "arm": "adamw",
+      "curve_receipt": {
+        "path": "curve-s202609091-fixed_uniform_0p9-adamw.json",
+        "size_bytes": 19907,
+        "sha256": "d7cb597af5aa749a941ec419cf633b678c21ea39e0140c4f3ea561dca72b5771"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.29,
+        "heldout_clean_ce": 2.0641410727461293,
+        "train_clean_accuracy": 0.2926,
+        "train_fixed_accuracy": 0.4448,
+        "train_corrupted_accuracy": 0.39476930668640514,
+        "train_clean_ce": 2.0782986887455057,
+        "train_fixed_ce": 1.6740550575701592
+      },
+      "warmup_plus_branch_seconds": 3.9642693451605737
+    },
+    {
+      "seed": 202609092,
+      "condition": "clean",
+      "arm": "hard32",
+      "curve_receipt": {
+        "path": "curve-s202609092-clean-hard32.json",
+        "size_bytes": 19575,
+        "sha256": "e15d2f723424faab229e080b765c9d8f9b7aec879edee8014684c4fbaf38972c"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.8744,
+        "heldout_clean_ce": 0.4614925246846138,
+        "train_clean_accuracy": 0.8876,
+        "train_fixed_accuracy": 0.8876,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.4244522773687266,
+        "train_fixed_ce": 0.4244522773687266
+      },
+      "warmup_plus_branch_seconds": 6.765864872839302
+    },
+    {
+      "seed": 202609092,
+      "condition": "clean",
+      "arm": "cluster32",
+      "curve_receipt": {
+        "path": "curve-s202609092-clean-cluster32.json",
+        "size_bytes": 19761,
+        "sha256": "bc289231a13f863914048a0a58e296f34e6d38b8ffcc54224e2b58b3df9c7290"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.8696,
+        "heldout_clean_ce": 0.49882657092774846,
+        "train_clean_accuracy": 0.8748,
+        "train_fixed_accuracy": 0.8748,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.4715527376000635,
+        "train_fixed_ce": 0.4715527376000635
+      },
+      "warmup_plus_branch_seconds": 24.887334519065917
+    },
+    {
+      "seed": 202609092,
+      "condition": "clean",
+      "arm": "mixed32",
+      "curve_receipt": {
+        "path": "curve-s202609092-clean-mixed32.json",
+        "size_bytes": 19739,
+        "sha256": "d9f307fc2d6a9824e64c55ac25a2ccfa0bbccc79293e049d2d0daa5560bb27fa"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.9302,
+        "heldout_clean_ce": 0.25003005712069115,
+        "train_clean_accuracy": 0.9868,
+        "train_fixed_accuracy": 0.9868,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.07160577753297384,
+        "train_fixed_ce": 0.07160577753297384
+      },
+      "warmup_plus_branch_seconds": 24.795806348323822
+    },
+    {
+      "seed": 202609092,
+      "condition": "clean",
+      "arm": "adamw",
+      "curve_receipt": {
+        "path": "curve-s202609092-clean-adamw.json",
+        "size_bytes": 19482,
+        "sha256": "d919190503d4561818c80f1f995647c9a5103c2a6568674830524aa4cd9c019d"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.9292,
+        "heldout_clean_ce": 0.2592430383218425,
+        "train_clean_accuracy": 0.9912,
+        "train_fixed_accuracy": 0.9912,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.049583027207264686,
+        "train_fixed_ce": 0.049583027207264686
+      },
+      "warmup_plus_branch_seconds": 4.008022386115044
+    },
+    {
+      "seed": 202609092,
+      "condition": "fixed_uniform_0p9",
+      "arm": "cluster32",
+      "curve_receipt": {
+        "path": "curve-s202609092-fixed_uniform_0p9-cluster32.json",
+        "size_bytes": 20198,
+        "sha256": "4310614e5dc5106f495a04f60ba0d8b7197c26b07b6d9be641f8f67809b321ba"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.539,
+        "heldout_clean_ce": 2.019893989391754,
+        "train_clean_accuracy": 0.5358,
+        "train_fixed_accuracy": 0.17,
+        "train_corrupted_accuracy": 0.07045398164227239,
+        "train_clean_ce": 2.016079940475242,
+        "train_fixed_ce": 2.2753832383009587
+      },
+      "warmup_plus_branch_seconds": 25.49160727672279
+    },
+    {
+      "seed": 202609092,
+      "condition": "fixed_uniform_0p9",
+      "arm": "mixed32",
+      "curve_receipt": {
+        "path": "curve-s202609092-fixed_uniform_0p9-mixed32.json",
+        "size_bytes": 20172,
+        "sha256": "e332e457511f730c025851218f31d32fe348e70f24b1224875c140a1cc0ca932"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.3338,
+        "heldout_clean_ce": 1.950359434286038,
+        "train_clean_accuracy": 0.3344,
+        "train_fixed_accuracy": 0.4088,
+        "train_corrupted_accuracy": 0.34532374100719426,
+        "train_clean_ce": 1.963556426493005,
+        "train_fixed_ce": 1.751484978289456
+      },
+      "warmup_plus_branch_seconds": 25.526775585021824
+    },
+    {
+      "seed": 202609092,
+      "condition": "fixed_uniform_0p9",
+      "arm": "adamw",
+      "curve_receipt": {
+        "path": "curve-s202609092-fixed_uniform_0p9-adamw.json",
+        "size_bytes": 19887,
+        "sha256": "0c7c64d5a6df435e47e0d5e6590837ea9b602ca5f04782cf50286f634acdfbca"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.305,
+        "heldout_clean_ce": 2.014383886859064,
+        "train_clean_accuracy": 0.3084,
+        "train_fixed_accuracy": 0.4348,
+        "train_corrupted_accuracy": 0.3783180352269908,
+        "train_clean_ce": 2.0368641379745243,
+        "train_fixed_ce": 1.6879378092400292
+      },
+      "warmup_plus_branch_seconds": 3.9926769668236375
+    },
+    {
+      "seed": 202609092,
+      "condition": "fixed_uniform_0p9",
+      "arm": "hard32",
+      "curve_receipt": {
+        "path": "curve-s202609092-fixed_uniform_0p9-hard32.json",
+        "size_bytes": 20004,
+        "sha256": "7c481f0368a652ee549835fb45f93403ac808e735573eadb6d386ffe38b002ac"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.5502,
+        "heldout_clean_ce": 1.9806820447459867,
+        "train_clean_accuracy": 0.5504,
+        "train_fixed_accuracy": 0.1762,
+        "train_corrupted_accuracy": 0.07243860084346317,
+        "train_clean_ce": 1.9806941900748836,
+        "train_fixed_ce": 2.268556890815876
+      },
+      "warmup_plus_branch_seconds": 6.8048376040533185
+    },
+    {
+      "seed": 202609093,
+      "condition": "clean",
+      "arm": "cluster32",
+      "curve_receipt": {
+        "path": "curve-s202609093-clean-cluster32.json",
+        "size_bytes": 19729,
+        "sha256": "3dcce8f848e77f869983152c6ecd6226667467897d54bb62fbdb6f6a9cddaf1c"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.863,
+        "heldout_clean_ce": 0.4861240132684454,
+        "train_clean_accuracy": 0.879,
+        "train_fixed_accuracy": 0.879,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.4603375044248869,
+        "train_fixed_ce": 0.4603375044248869
+      },
+      "warmup_plus_branch_seconds": 25.7830004892312
+    },
+    {
+      "seed": 202609093,
+      "condition": "clean",
+      "arm": "mixed32",
+      "curve_receipt": {
+        "path": "curve-s202609093-clean-mixed32.json",
+        "size_bytes": 19740,
+        "sha256": "38b185d40066beceefd37bac965a57cd831a0f23e6936587fe089afa3ad13ad5"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.9258,
+        "heldout_clean_ce": 0.24826132201428985,
+        "train_clean_accuracy": 0.9848,
+        "train_fixed_accuracy": 0.9848,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.06733140417813996,
+        "train_fixed_ce": 0.06733140417813996
+      },
+      "warmup_plus_branch_seconds": 25.261529184877872
+    },
+    {
+      "seed": 202609093,
+      "condition": "clean",
+      "arm": "adamw",
+      "curve_receipt": {
+        "path": "curve-s202609093-clean-adamw.json",
+        "size_bytes": 19470,
+        "sha256": "0b0b968ea3ccb446df95410367caf0348bab23caeb5d0e7668ff2ac43df23d33"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.9276,
+        "heldout_clean_ce": 0.2560262747396476,
+        "train_clean_accuracy": 0.9932,
+        "train_fixed_accuracy": 0.9932,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.04576299792755792,
+        "train_fixed_ce": 0.04576299792755792
+      },
+      "warmup_plus_branch_seconds": 3.972961133811623
+    },
+    {
+      "seed": 202609093,
+      "condition": "clean",
+      "arm": "hard32",
+      "curve_receipt": {
+        "path": "curve-s202609093-clean-hard32.json",
+        "size_bytes": 19566,
+        "sha256": "47073fb107f34fcaef3299c4a5fa9da7b392b952800e8750ed6aca0ac0ff0dc4"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.8724,
+        "heldout_clean_ce": 0.44794050412445496,
+        "train_clean_accuracy": 0.887,
+        "train_fixed_accuracy": 0.887,
+        "train_corrupted_accuracy": null,
+        "train_clean_ce": 0.4232928553475311,
+        "train_fixed_ce": 0.4232928553475311
+      },
+      "warmup_plus_branch_seconds": 6.774584363680333
+    },
+    {
+      "seed": 202609093,
+      "condition": "fixed_uniform_0p9",
+      "arm": "mixed32",
+      "curve_receipt": {
+        "path": "curve-s202609093-fixed_uniform_0p9-mixed32.json",
+        "size_bytes": 20173,
+        "sha256": "dad50c9959012bc84d11da5448642cb717ada97b0f381c667c1894dd8ee2b4d3"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.3232,
+        "heldout_clean_ce": 1.9856676465164633,
+        "train_clean_accuracy": 0.329,
+        "train_fixed_accuracy": 0.3932,
+        "train_corrupted_accuracy": 0.3281872509960159,
+        "train_clean_ce": 1.9805656518692,
+        "train_fixed_ce": 1.791806923841298
+      },
+      "warmup_plus_branch_seconds": 25.56964267650619
+    },
+    {
+      "seed": 202609093,
+      "condition": "fixed_uniform_0p9",
+      "arm": "adamw",
+      "curve_receipt": {
+        "path": "curve-s202609093-fixed_uniform_0p9-adamw.json",
+        "size_bytes": 19897,
+        "sha256": "74934859b256f2f69e2c5508751bce73c7777e0835fa088b26e88b6fbb84b960"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.2862,
+        "heldout_clean_ce": 2.0547831702913593,
+        "train_clean_accuracy": 0.3054,
+        "train_fixed_accuracy": 0.4338,
+        "train_corrupted_accuracy": 0.37699203187250996,
+        "train_clean_ce": 2.0589066150087465,
+        "train_fixed_ce": 1.6939166487007002
+      },
+      "warmup_plus_branch_seconds": 4.178253670223057
+    },
+    {
+      "seed": 202609093,
+      "condition": "fixed_uniform_0p9",
+      "arm": "hard32",
+      "curve_receipt": {
+        "path": "curve-s202609093-fixed_uniform_0p9-hard32.json",
+        "size_bytes": 19986,
+        "sha256": "e4297375c40abe5496429fce6c5e07b60acd8b1ae79e9ed6d871de6c9dae2639"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.4544,
+        "heldout_clean_ce": 2.0162015605923336,
+        "train_clean_accuracy": 0.467,
+        "train_fixed_accuracy": 0.1742,
+        "train_corrupted_accuracy": 0.087898406374502,
+        "train_clean_ce": 2.016453152225415,
+        "train_fixed_ce": 2.2644505082667967
+      },
+      "warmup_plus_branch_seconds": 6.705685926135629
+    },
+    {
+      "seed": 202609093,
+      "condition": "fixed_uniform_0p9",
+      "arm": "cluster32",
+      "curve_receipt": {
+        "path": "curve-s202609093-fixed_uniform_0p9-cluster32.json",
+        "size_bytes": 20196,
+        "sha256": "094210f2685e8ae542fca7694ca6c26adf377641c82b3f4757192be01dd25004"
+      },
+      "endpoint": {
+        "heldout_clean_accuracy": 0.4232,
+        "heldout_clean_ce": 2.0488282859402807,
+        "train_clean_accuracy": 0.4334,
+        "train_fixed_accuracy": 0.1626,
+        "train_corrupted_accuracy": 0.0824203187250996,
+        "train_clean_ce": 2.048212824185633,
+        "train_fixed_ce": 2.2710687239906497
+      },
+      "warmup_plus_branch_seconds": 25.436293443199247
+    }
+  ],
+  "selection": "fixed_step_2000_no_checkpoint_selection"
+}

@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "grade_sha256": "4bae97cd90fb3de288a56624d919e57e739c90add2ac17519df5593a702dfe63",
+  "auditor_sha256": "7c27e8be4bf0b97587581c86703c49d6d3118acabf20a7f3b0afa71135edba5e",
+  "exact_item_rows": 256,
+  "committed_response_blobs": 5,
+  "all_summaries": true,
+  "all_reference_target_joins": true,
+  "primary": {
+    "scope": "all_four_axes",
+    "EA_minus_E_credit_out_of_128": -1,
+    "EA_minus_E_by_cohort_out_of_64": {
+      "1": 0,
+      "2": -1
+    },
+    "reader_controls": {
+      "rater1": {
+        "arm": "EA",
+        "credit_out_of_64": 37,
+        "constant_FIRST_credit": 29,
+        "constant_SECOND_credit": 35,
+        "stronger_constant_credit": 35,
+        "exceeds_stronger_constant": true
+      },
+      "rater2": {
+        "arm": "E",
+        "credit_out_of_64": 37,
+        "constant_FIRST_credit": 29,
+        "constant_SECOND_credit": 35,
+        "stronger_constant_credit": 35,
+        "exceeds_stronger_constant": true
+      },
+      "rater3": {
+        "arm": "EA",
+        "credit_out_of_64": 37,
+        "constant_FIRST_credit": 35,
+        "constant_SECOND_credit": 29,
+        "stronger_constant_credit": 35,
+        "exceeds_stronger_constant": true
+      },
+      "rater4": {
+        "arm": "E",
+        "credit_out_of_64": 38,
+        "constant_FIRST_credit": 35,
+        "constant_SECOND_credit": 29,
+        "stronger_constant_credit": 35,
+        "exceeds_stronger_constant": true
+      }
+    },
+    "EA_minus_E_positive_each_cohort": false,
+    "each_EA_reader_exceeds_stronger_constant": true,
+    "incremental_pilot_criterion_met": false
+  },
+  "arms": {
+    "EA": {
+      "credit": 74,
+      "total": 128,
+      "correct": 74,
+      "incorrect": 54,
+      "exact_ties": 0,
+      "constant_FIRST_credit": 64,
+      "constant_SECOND_credit": 64
+    },
+    "E": {
+      "credit": 75,
+      "total": 128,
+      "correct": 75,
+      "incorrect": 53,
+      "exact_ties": 0,
+      "constant_FIRST_credit": 64,
+      "constant_SECOND_credit": 64
+    }
+  },
+  "model_calls": 0,
+  "grader_imported": false
+}

@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-09-06T21:51:49Z",
+  "project": "Spectral Optimizer Investigation",
+  "agent": "Codex",
+  "evidence_role": "dataset_free_cpu_engineering",
+  "base_commit": "56ae8d71b55ef5348d9a9156a11e6126f757a075",
+  "source_sha256": {
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/anchor-schema.md": "9dcb65a6645659f3e57c1ee15d4e253676825fe3117a47532317d73b11a00f75",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/envelope-closure-review.md": "14230875f513485d4d5f858c6d467628d28a5c6b0520444e6a29b4a93711474f",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/envelope_fixture.py": "3d21f36067a77a86f6a06a00e5125685459a34209790a9837ed64584820881c0",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/identity-binding-contract.md": "f4c8d79ca7d4f94e022574fc6e2fbc6a943df8433e26cc094f86b2cb8ff0466e",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/identity_codec.py": "e47c5de57e3bccb47fd96cc5183e35f614577a16867f7caf04819e562df15f5d",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/measurement-schema.md": "2de7bdd5648bd14661e845a9f890a57b8213d1cc53ef14e57fea48a3d1ee9ba7",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/source-environment-decision.md": "e58d4036752a9ce226a5c932ffb8d82499244699e007359a7f20a78fc7073017",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/source_environment.py": "ff966b0faf95ca64b9ac57384dec695937db5fc5b571de3b3151faeb6a7b72f5",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/test_source_environment.py": "2a23b41d23214e7aa30976f9c8ebeca3f30214252183967aedda24a6b3daa42c",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/audit-envelope-contract.md": "3d61ba06ee589266c563d902193c0cfb5a04f72cfcccd21152546d9a369b6527",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/audit-envelope-review.md": "275108444487043a7b11f4e0f1b35d2b20c1025ff5ad77b5dc0b85e9e81a606b",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/audit_diagnostics.py": "ce9ef09a47f44f074ec7eb5b56659681931b36ebfa617be344c961f15797c2db",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/audit_envelope.py": "a28c9af72b7c46a57d80516594c675eef5bdaaed0f3c2a89a1badaf5cb122cc9",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/test_audit_diagnostics.py": "a0cd7145025a62a30209a2bac3e834a2d9c77619ce3cf2426399394f2da416ad",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/test_audit_envelope.py": "5146d7a2115f98b686947c3b44f80b30c5a1293a317192c682bf0d5dd15a9307",
+    "output/2026-09-06-spectral-optimizer-investigation/state.md": "588e6f53d2652d96179deffe37f481545edec5785b063a889ee3df7a6aa58f9c",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/anchor_envelope.py": "d2290e07044d5ef26cef3b72e5427b00216848680f36b709fa547d944081fc17",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/artifact_envelopes.py": "dfe3558f5930acfcf24f2458c7186ab62f283076854b8743959e8ef7925bb441",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/artifact_store.py": "ab07956d78b4b18988c78afebb932845bd36c5baa9a969f12671844d81efa55a",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/branch_execution.py": "dc2af544781c231ba16d76f7f02c27a4a803d7be7d8be04a56e0933c23ccf582",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/data_probe_bindings.py": "bc005f5152bfa636570beb6c9cbde9b31ee44ec7fcf26ee3109d5dee048e7d0b",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/independent_numerics.py": "27031928fb17ceacb3fc5dc4c3413d0233e5139d177d14fd96fb296134b8ca80",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/loss_measurements.py": "eca1a3b7c0eb2366b6db7b3c2fb124c0fb89a8b0cd8844219cd679e7d5b15b71",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/measurement_assembly.py": "0b8c305e60a97eb5a0483588be3d0962b8afeed512c13ac495e9ed487d49fba8",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/measurement_audit.py": "100dd76c60115e927fea4083bdd637972aba47168e0a090640f68ca6d55995ba",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/plan_bindings.py": "c7094402e0fcd4f1c16c2483701fef6000a93bc028912b7447a4f235f58f0cb8",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/response_math.py": "7645ca1b65d29c4278ccd1795e817ec6e8438ed8e6fa418e1d02e3d1d5b2276b",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/runtime_guard.py": "9e39b333c1debeefc4912d126c518dd5e5a0420261056ba1938ee1486fc1e390",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/source_capture.py": "087d348b75e70976acb66210ef3970fff12bb0915be6d3472b578093b8e53bba",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/state_core.py": "118254075ff62940d515ceef6c1e906bd2d59e1130a740cac68576d391e5de5d",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/verified_plan_load.py": "7a23757828a6e734efcf35d66cb37d3d83a07a45a0d0ea1ffd6f3f45ecaa9021",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/anchor-envelope-contract.md": "0311b591dc46315e4bf397da5ce4084b03b44d9d71ee92966df3f8a708c97fb4",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/branch-envelope-contract.md": "d3568f0c0172dbd9ea270ff602ce825a47be36535df5d712dbfd9ae91720558f",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/data-probe-contract.md": "d7ac0ac964a306f53f251404ad840c3947bfcf476f189a0b00f80a13a190df6f",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/numerical-contract.md": "5b9981dbd9c394c772efcc8888ac8aa5496c4b33d4af5f0217e718dd6f9ca388",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/assembly-roundoff.md": "a9e41bbe30b5ee36d21e0c81065ecf2129f93049c54bd63ff8b0bd72ab53c9fd",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/resource-contract.md": "022330f14f9b446febcebc163d7c1a7f7cb73f416adf6c699096e1160b2e7fae",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/storage-ledger.md": "83b3cfbdf6bfe00e85e81d8e68ed63dbc87c19a14f5abae4ca4eb1577912350a",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007/storage-shape-measurements.json": "e14376d6f5c0b32665933d967b75a2eabf69e1f0a2dc05dd353c3c41aa12618f",
+    "output/2026-09-06-spectral-optimizer-investigation/goal_reminder.py": "65a5def5f5d44f4c92189c50066d6f75edef752c8a4e124add133e2ef78a9b3e",
+    "output/2026-09-06-spectral-optimizer-investigation/test_goal_reminder.py": "bd1bad655d8e9f8903f53dc6db41da398efca139c5be3da2f035051d89e2fea2",
+    "spectral_filter.py": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+    "scripts/lint_knowledge.py": "49db7d635e80176d91f58f14af026af2df73f2b19e4ed0a2f2346f4d122ef7b4"
+  },
+  "verification": {
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "",
+      "OPENBLAS_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "suites": [
+      {
+        "command": "python3 -m unittest discover -s output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007 -p 'test_*.py'",
+        "tests": 256,
+        "seconds": 126.67,
+        "result": "pass"
+      },
+      {
+        "command": "python3 -m unittest discover -s tests",
+        "tests": 17,
+        "seconds": 1.341,
+        "result": "pass"
+      },
+      {
+        "command": "python3 -m unittest discover -s output/2026-09-06-spectral-optimizer-investigation -p test_goal_reminder.py",
+        "tests": 6,
+        "seconds": 4.239,
+        "result": "pass"
+      }
+    ],
+    "total_tests": 279,
+    "new_i7_tests": {
+      "audit_envelope": 10,
+      "audit_diagnostics": 10,
+      "total": 20
+    },
+    "source_binding_regression": {
+      "command": "python3 -m unittest discover -s output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-007 -p test_source_environment.py",
+      "tests": 13,
+      "seconds": 8.1,
+      "result": "pass"
+    },
+    "knowledge_lint": {
+      "command": "python3 scripts/lint_knowledge.py",
+      "result": "pass",
+      "pages": 14,
+      "indexed_content_pages": 11
+    },
+    "whitespace": {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    "all_test_handles_terminal": true,
+    "cuda_initialized": false,
+    "unchanged_independent_numerics": {
+      "adam_moment_ratio": 0.02602085168472214,
+      "adam_theta_ratio": 0.0470917987343265,
+      "adam_variance_ratio": 0.03904982630025768,
+      "ce_error": 1.1102230246251565e-16,
+      "gradient_error": 1.8041124150158794e-16,
+      "projection_error": 4.883103280201029e-07,
+      "projection_ratio": 0.0016247353209465183
+    }
+  },
+  "implemented": {
+    "schema_name": "i7_anchor_numerical_audit",
+    "schema_version": 1,
+    "artifact_kind": "independent-audit",
+    "payload_keys": [
+      "input_bindings",
+      "exact_validation",
+      "candidate_operator_audit",
+      "branch_audits",
+      "measurement_audits",
+      "comparison_audits",
+      "overall_status",
+      "fatal_failures"
+    ],
+    "pinned_files": [
+      "frozen-plan",
+      "anchor",
+      "source-step-witness",
+      "branch-results"
+    ],
+    "indexed_receipts_verified": true,
+    "restricted_cpu_load": true,
+    "existing_safe_global_policy_unchanged": true,
+    "exact_plan_values_and_binding_checked": true,
+    "idx_bytes_and_probe_binding_checked": true,
+    "actual_sources_rechecked": true,
+    "separate_observed_cpu_auditor_environment": true,
+    "same_store_anchor_witness_branch_and_audit": true,
+    "closed_separate_plan_store": true,
+    "numerical_references": [
+      "independent_numerics.py",
+      "measurement_audit.py"
+    ],
+    "independent_scope": "numerical_reference_independence_not_module_or_process_isolation",
+    "producer_attestation_scope": "saved_value_consistency_not_history",
+    "ordinary_fixture": {
+      "profile": "fixture_tiny_mlp_cpu_v1",
+      "warm_updates": 4,
+      "actual_source_step": 5,
+      "defined_branches": 6,
+      "represented_projection_checks": 2,
+      "delivery_rows": 6,
+      "adam_parameter_checks": 24,
+      "adam_tensor_screens": 72,
+      "independent_contrast_checks": 390,
+      "measurement_counts": {
+        "before_probes": 4,
+        "branch_probes": 24,
+        "defined_branches": 6,
+        "pairs": 15,
+        "contrasts": 15,
+        "defined_contrasts": 15,
+        "auxiliary_before_chunks": 10,
+        "auxiliary_branch_chunks": 60,
+        "auxiliary_contrast_chunks": 150
+      }
+    },
+    "engineered_null_fixture": {
+      "constructed_starting_state_not_warm_trajectory": true,
+      "undefined_branch": "restored",
+      "reason": "positive_current_norm_zero_lagged_direction",
+      "defined_branches": 5,
+      "adam_parameter_checks": 20,
+      "adam_tensor_screens": 60,
+      "independent_contrast_checks": 260
+    },
+    "coordinate_diagnostics": {
+      "encoding": "flat_bitset_hex_lsb0_v1",
+      "lossless": true,
+      "all_failing_indices_retained": true,
+      "maximum_dimension": 50890,
+      "all_failure_roundtrip_count": 50890,
+      "all_failure_hex_characters": 12724,
+      "exact_types_order_lowercase_width_count_and_padding_checked": true
+    },
+    "rejection_limits": {
+      "max_primitive_nodes": 200000,
+      "max_depth": 32,
+      "max_utf8_string_bytes": 4194304,
+      "max_json_bytes": 8388608
+    },
+    "rejected_oversize_is_not_domain_null": true,
+    "no_full_attempt_fit_claim": true
+  },
+  "regression_evidence": {
+    "actual_saved_adam_moment_fault": {
+      "producer_attestations_rehashed": true,
+      "saved_structure_passes": true,
+      "failing_parameter": "0.weight",
+      "failing_moment_flat_indices": [
+        0
+      ],
+      "diagnostics_sealed": true,
+      "subsequent_measurement_stage": "not_run",
+      "store_terminal": true
+    },
+    "actual_saved_loss_fault": {
+      "fatal_not_domain_null": true,
+      "partial_or_complete_report_retained": true,
+      "completion_matches_actual_measurement_audit_complete": true,
+      "retry_refused_before_numerical_work": true
+    },
+    "candidate_norm_and_leverage_corruption": {
+      "producer_attestations_rehashed": true,
+      "saved_structure_passes": true,
+      "independent_delivery_fails": true
+    },
+    "tiny_norm_scale": {
+      "current_coordinate_scale": 1e-20,
+      "uncorrupted_metadata_passes": true,
+      "doubled_norm_and_ratio_rejected": true
+    },
+    "wrong_plan_handle_or_supplied_value_rejected_before_numerical_audit": true,
+    "resource_guard": {
+      "invoked_inside_measurement": true,
+      "numerical_work_stops": true,
+      "completed_prefix_sealed": true,
+      "interrupted_stage_incomplete": true,
+      "historical_resource_event_independently_proven": false,
+      "validator_recomputes_completed_prefix_without_replaying_transient_event": true,
+      "corrupted_completed_prefix_rejected": true
+    },
+    "post_seal_rng_fault": {
+      "audit_file_and_receipt_retained": true,
+      "caller_rng_restored": true,
+      "store_terminal": true
+    },
+    "original_live_source_state_unchanged": true,
+    "filesystem_regression": {
+      "observed_failure": "Existing test required unchanged ctime after renaming same file inode; ctime advanced while all other recorded leaf fields/bytes were unchanged.",
+      "fix": "Test compares unchanged leaf metadata excluding ctime and explicitly isolates changed directory identities.",
+      "production_timestamp_checks_unchanged": true
+    }
+  },
+  "intermediate_failures": [
+    {
+      "tests": 6,
+      "errors": 4,
+      "failures": 1,
+      "cause": "New adapter used i7_source_witness instead of actual i7_source_step_witness; corrected without changing thresholds."
+    },
+    {
+      "tests": 256,
+      "failures": 1,
+      "seconds": 126.233,
+      "cause": "Pre-existing rename/ctime test assumption; test corrected, production check unchanged."
+    }
+  ],
+  "review": {
+    "independent_contract_review": true,
+    "fresh_independent_code_review": true,
+    "parent_source_and_test_review": true,
+    "incorporated_findings": [
+      "Existing frozen schema/payload order",
+      "Explicit pinned plan and CPU auditor environment",
+      "Independent nc/nl/leverage checks",
+      "Exact completion membership",
+      "Explicit undefined Adam rows",
+      "Guard propagation and retained abort prefix",
+      "Fatal-stage stopping",
+      "Transient-guard validation semantics",
+      "Partial measurement completion"
+    ],
+    "corrected_reviewer_assumption": "Existing environment collector already supported scientific cpu_audit; no replacement schema was needed.",
+    "skill_influence": {
+      "research_workflow": "Continued the existing mechanism-study component without changing the research objective or launch gate.",
+      "best_practices_validator": "Primary documentation informed strict hexadecimal decoding and restricted-loading boundaries.",
+      "assumption_debugger": "Isolated the witness-schema typo and observed rename/ctime test assumption before scoped corrections."
+    }
+  },
+  "scope": {
+    "goal_status": "active",
+    "previous_turn_classification": "progress",
+    "no_scientific_data_or_plan": true,
+    "no_native_pilot_or_gpu_work": true,
+    "no_experiment_restart": true,
+    "no_paid_compute": true,
+    "no_public_push_or_email": true,
+    "no_live_scientific_job_observed": true,
+    "unrelated_processes_untouched": true,
+    "production_optimizer_and_existing_numerical_modules_unchanged": true,
+    "prior_results_delivered_report_and_historical_check_files_unchanged": true,
+    "scientific_execution_certified": false,
+    "limitations": [
+      "No independent native32 forward reexecution",
+      "No independent observer/capture/control-flow history",
+      "No independent resource-event history",
+      "No seeded plan-generation history or scientific phase enforcement",
+      "No full-width adverse-inclusive all-phase storage/runtime certificate",
+      "Pure APIs cannot authenticate supplied receipt declarations",
+      "Numerical-reference independence is not module/process isolation"
+    ],
+    "next": [
+      "Single-root phase controller and immutable manifests",
+      "Runner entrypoints and phase membership/gates",
+      "Complete full-width adverse-inclusive serialization/resource measurement",
+      "Separate native-pilot review"
+    ],
+    "reminder": {
+      "timer": "[private operational context omitted]",
+      "active": true,
+      "cadence_hours": 2,
+      "last_verified_utc": "2026-09-06T21:49:48Z",
+      "last_trigger_local": "2026-09-06 21:19:37 BST",
+      "next_trigger_local": "2026-09-06 23:19:37 BST",
+      "service_result": "success",
+      "service_exec_main_status": 0,
+      "modified": false,
+      "manually_queued": false
+    },
+    "future_email_style": "Identify Codex and Spectral Optimizer Investigation; lead with senior-manager-level findings, implications, confidence and next steps."
+  }
+}

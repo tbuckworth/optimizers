@@ -2,8 +2,9 @@
 title: Current recommendations
 type: decision
 status: current
-updated: 2026-08-12
+updated: 2026-09-11
 sources:
+  - research/spectral_final_core_report_2026-09-11.md
   - README.md
   - spectral_filter.py
   - matrix_spectral_filter.py
@@ -13,6 +14,19 @@ sources:
 ---
 
 # Current recommendations
+
+The core investigation is complete. Its defensible output is an empirical and
+mathematical characterization, not a general optimizer or safety-defense claim.
+No archived experiment should be relaunched automatically. Public distribution
+does not authorize new compute or make archived machine-specific launchers
+portable; see [publication scope](../../PUBLICATION.md).
+
+For future evaluations, include a strong ordinary training recipe, separate
+clean validation selection from final reporting, and report accuracy **and**
+loss. The strongest recent comparison favors augmentation over filtering and
+finds their combination adverse. Check actual parameter-step geometry when
+reasoning about Adam: projected input is not a projected Adam step.
+[Final evidence](../../research/spectral_final_core_report_2026-09-11.md).
 
 ## Defaults
 
@@ -53,7 +67,8 @@ retained.
 1. Always include the unfiltered base optimizer with the same learning rate and
    weight decay.
 2. Report train and test curves, not only endpoints; memorization is temporal.
-3. Record peak, final, and late-window test accuracy.
+3. Record fixed and late outcomes; use validation rather than test outcomes for
+   checkpoint selection, and report loss alongside accuracy.
 4. Separate hyperparameter-selection seeds from confirmation seeds.
 5. Use multiple seeds before claiming one spectral layout beats another.
 6. Record basis memory and wall time for global/per-matrix comparisons.
@@ -62,4 +77,3 @@ retained.
 See [Noise memorization](../findings/noise-memorization.md) for the model
 comparison that motivates these rules and [Boundary conditions](../findings/boundary-conditions.md)
 for cases where filtering should not be expected to help.
-

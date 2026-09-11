@@ -1,0 +1,73 @@
+{
+  "status": "pass",
+  "source_commit": "b02de57c56cad059e6ecb67b1293ea0f71aa0988",
+  "source_files_match_worktree_and_commit": [
+    {
+      "path": "spectral_filter.py",
+      "sha256": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/neural_core.py",
+      "sha256": "706851828b7120bea0d7a41bd0fa75474ac800b2df71087941d0140c8d1970ec"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/run_neural_mechanism.py",
+      "sha256": "e5ceaa9c7e4f69f3b9c6376eb94aedbd14e7183dcb761dc04ca0cb625938c166"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/test_neural_core.py",
+      "sha256": "c377e38ff2e2d423c6c9a83deeebffef5d8cc9fba64b1d3692001cc690c49c74"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/test_runner.py",
+      "sha256": "cf33ca5a909d33c31eb73a788d821f796f193220d13c37ba86b98a50cfe87983"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/protocol.md",
+      "sha256": "5b915c82723ebe823fd5edd80064ac7fb5492b6aa857faed10b8bb3ecf148a36"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-010/run_branches.py",
+      "sha256": "a52d6274e55a842d0f81d52f7a00e469e67ff225f7648323039786dc2373c6f5"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-010/branch_core.py",
+      "sha256": "82db5f5a99a3f2c454f51355a4b286f64cd0135bc82eb1e96aaecec232b31a20"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-010/test_branch_core.py",
+      "sha256": "88af2948e07a871d949dd279e704c29e8222bf9aa0fd749e3a58a689fe972352"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-010/test_runner.py",
+      "sha256": "971cce25eb1079e6dec8d38ca0c9cfc4674ceed2e691637c37735907e2526317"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-010/protocol.md",
+      "sha256": "45bff5771acb070362f95d317d6e8c759f30b21e79a38e2b5d739eca2aa3e96e"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-011/run_continuation.py",
+      "sha256": "db432b2959371d89f890fe54d7f8daa1d79852a466c5491b44bfdca2f50000a0"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-011/continue_core.py",
+      "sha256": "c0d4c946fab87269bcd648f7b696468637352abe24533a920500e827c9250463"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-011/test_continue_core.py",
+      "sha256": "008041b34e523b4c10069bb9e47c75e09e5f20ea3be1aa42c341a276e18f9fa4"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-011/test_runner.py",
+      "sha256": "59556169a3e423a74860a13f9da1f83c1fbd1aec104e53744d5f1c878e6b0c76"
+    },
+    {
+      "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-011/protocol.md",
+      "sha256": "56dfbfdb5cbb8f59e3466c674ad297f58387ac71f97520d5f05bdde2e923b3de"
+    }
+  ],
+  "lossless_json_archives_checked": 79,
+  "finite_loss_replay": false,
+  "limitation": "Recorded evaluations and scalar diagnostics; no independent forward/vector replay"
+}
