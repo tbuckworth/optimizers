@@ -1,0 +1,7 @@
+{
+  "status": "pass",
+  "checks": 243,
+  "maximum_relative_realized_norm_error": 7.37254934803017e-08,
+  "maximum_absolute_float32_reapplication_error": 0.0,
+  "scope": "144 exact common-decay identities,48 reciprocal norm and48 direct-reapplication checks,3 exact warmup digests; no optimizer or model step executed."
+}

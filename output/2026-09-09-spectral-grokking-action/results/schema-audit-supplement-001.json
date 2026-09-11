@@ -1,0 +1,10 @@
+{
+  "analysis_summary_sha256": "249a8b9f5b680f72f7e9a402f56a9a4734814d99dc7d8097442eac4c965aa237",
+  "checks": 896,
+  "elapsed_seconds": 1.7231065169908106,
+  "errors": [],
+  "original_raw_audit_sha256": "1ae2f3d60d15a4f6f87c5818ddd1befdcee541f9fcc3d4e2d1816f106b116425",
+  "scope": "JSON-only correction of one auditor schema mismatch; no numerical replay",
+  "script_sha256": "2f1274e0ce35578fab7a47273072863e6f414cac72e83fb56e653e9f38bb047d",
+  "status": "PASS"
+}

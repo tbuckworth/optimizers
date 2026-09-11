@@ -1,12 +1,33 @@
 # Spectral Gradient Filter
 
-A one-file, drop-in wrapper for any PyTorch optimizer that makes it **resist
-memorizing noise**. Before each update it projects the gradient onto the top
-eigen-directions of a streaming estimate of the gradient covariance — so the
-optimizer only steps in directions the gradient has been *consistently* pointing.
-It's a *coherence amplifier*: it keeps whatever the gradient agrees about across
-steps and drops the rest. Cost is ~2× a bare Adam step (no `p×p` matrix is ever
-formed).
+A one-file PyTorch optimizer wrapper that filters gradients through a learned
+subspace of recent, centered gradient variation. It can substantially restrict
+noisy-label memorization while still permitting useful learning, but the effect
+is task-dependent. Covariance measures variation, not truth or signed agreement;
+filtering before Adam does not confine Adam's actual parameter updates.
+
+## September 2026 investigation: start here
+
+Read the [final core report](research/spectral_final_core_report_2026-09-11.md),
+the [offline HTML with plots](output/2026-09-11-spectral-final-core/reader.html),
+or the [PDF](output/2026-09-11-spectral-final-core/report.pdf).
+The [technical working manuscript](output/2026-09-10-spectral-manuscript/paper/manuscript.tex)
+contains the methods and mathematical qualifications.
+
+In a three-seed MNIST study with approximately 81% actually wrong labels,
+stable rank 200 filtering reaches 79.8% clean held-out accuracy versus 32.0%
+for unaugmented AdamW. It learns substantially after warmup. Ordinary image
+translation reaches 85.0%, while adding filtering to it reduces accuracy to 66.8%.
+The [complete result](output/2026-09-10-spectral-strong-augmentation/results.md)
+keeps all seeds, validation-selected checkpoints, loss and runtime beside those
+means. This is a useful conditional learning effect, not a general optimizer
+advantage, wall-clock speedup or demonstrated safety defense.
+
+This public snapshot includes scientific source, fixtures, reports and scalar
+results from the main investigation and its archived clustering/J-Lens branches.
+Private correspondence, operational records, raw source-text corpora and the
+private Git history are not published. See [publication scope](PUBLICATION.md)
+for redactions, source-hash semantics and reproducibility limits.
 
 ## The core, in one file
 
@@ -98,7 +119,7 @@ refuses to memorize (train stays flat) and **holds ~0.61 test accuracy**.
 | `relative_eig_tol` | `1e-8` | discard numerically negligible covariance directions relative to the leading eigenvalue |
 | `stabilize_every` | `100` | periodically re-orthogonalize the streaming basis (`None` disables scheduled repair) |
 
-## Findings from the research
+## Historical findings (read alongside the September report)
 
 The repo is also a full research project on how this filter behaves. Full
 write-up with figures: **[`research/spectral_filter_blog.html`](research/spectral_filter_blog.html)**
@@ -115,10 +136,11 @@ write-up with figures: **[`research/spectral_filter_blog.html`](research/spectra
 | H6 | Supervised ablation removes a planted "hack" | backdoor (linear / MLP) | ⚖️ Works on a linear model (ASR 99.9→8%), fails on an MLP at any subspace size — the backdoor is distributed. |
 | H7 | Normalizing the basis (correlation/spectral) beats raw covariance | MNIST 50% noise | ❌ Raw covariance wins (92.1% vs 86.6/86.0) — variance magnitude is informative, not a nuisance. |
 
-**Unifying mechanism:** the filter keeps whatever the gradient is coherent about.
-That helps when the useful signal *is* the coherent thing (noise robustness,
-grokking on modular addition) and hurts when the useful signal is weak and not
-yet dominant (sparse parity).
+**Current interpretation:** history-dependent restriction changes which learning
+is easy. Temporal response, direction, numerical gains and base-optimizer state
+all matter. The historical table is not a universal claim: stable and legacy
+grokking results differ, and a leading covariance direction is not a semantic
+feature or a certificate of useful information. See the final report above.
 
 ## Repo map
 

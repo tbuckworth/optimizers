@@ -2,8 +2,9 @@
 title: Noise memorization
 type: finding
 status: current
-updated: 2026-08-12
+updated: 2026-09-11
 sources:
+  - output/2026-09-10-spectral-strong-augmentation/results.md
   - research/weight_covariance_v2_summary.md
   - research/noisy_mnist_hard_curves.md
   - results/weight_covariance_v2/noise90_long
@@ -16,7 +17,23 @@ sources:
 The repository's strongest conclusion is that temporal gradient-covariance
 filtering can prevent late memorization of corrupted training labels.
 
-## Established evidence
+## Strongest recent controlled comparison (three paired seeds)
+
+With approximately 81% actually wrong fixed training labels, final clean held-out
+accuracy was 32.0% (AdamW), 79.8% (spectral + AdamW), 85.0% (AdamW + translations),
+and 66.8% (both interventions). The filter tracked rank 200 across all 235,146
+model parameters. It improved from 36.7% at activation to 79.8%, demonstrating
+continued useful learning. It fit only 2.5% of actually wrong assigned labels,
+versus 39.2% for unaugmented AdamW.
+
+The important contrary evidence: augmentation outperformed the combination in
+every seed on accuracy and loss at fixed, validation-selected and late readouts.
+Filtering beat unaugmented early stopping on selected accuracy but lost on
+selected cross-entropy. Data roles were disjoint subsets of the official
+training split; these are not official-test-set results or independent training
+replications. [All seeds and audits](../../output/2026-09-10-spectral-strong-augmentation/results.md).
+
+## Earlier evidence
 
 On MNIST with 20% and 40% label corruption, the global filter retained higher
 final clean-test accuracy than Adam after Adam's early peak decayed. At 90%
@@ -54,10 +71,9 @@ seed, so relative global-versus-matrix ordering remains provisional.
 
 ## Mechanism and limits
 
-The supported interpretation is that useful mini-batch directions recur while
-individual corrupted-label gradients are comparatively transient. Projection
-therefore blocks much of the late memorization phase. It does not follow that
+The evidence supports conditional restriction of learning, not a universal
+division into useful recurrent and harmful transient gradients. Centering,
+sampling, optimizer state and directional alignment all matter. It does not follow that
 the filter detects incorrect labels, that top directions are intrinsically
 good, or that it improves clean-data training. See
 [Boundary conditions](boundary-conditions.md).
-

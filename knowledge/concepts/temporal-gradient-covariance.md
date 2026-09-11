@@ -2,8 +2,9 @@
 title: Temporal gradient-covariance filtering
 type: concept
 status: current
-updated: 2026-08-12
+updated: 2026-09-11
 sources:
+  - research/spectral_final_core_report_2026-09-11.md
   - spectral_filter.py
   - research/weight_covariance_v2_summary.md
   - research/weight_covariance_v2_findings.md
@@ -42,12 +43,18 @@ workload-dependent projection policies, not competing covariance estimators.
 
 ## Mechanistic interpretation
 
-The filter preserves gradient directions that recur across steps. In
-mini-batch label-noise training, useful structure is comparatively persistent
-while individual corrupted examples contribute transient directions, so the
-filter can improve late clean-test accuracy. This is an inference supported by
-the results, not a proof that top covariance directions always encode useful
-features.
+The observer tracks centered gradient variation across steps. At fixed weights,
+if `g = s + noise` with constant shared component `s`, then `Cov(g) = Cov(noise)`:
+the shared component itself disappears. Coordinated variation can nevertheless
+span useful directions, conditionally. A changing wrong association can also
+dominate. The current gradient updates the observer before projection.
+
+Moreover, Adam's inherited momentum, coordinatewise scaling and weight decay
+mean that projecting its input does **not** confine the actual parameter step
+to that subspace. A zero supplied gradient is not necessarily a frozen model.
+The legacy nonorthogonal basis can change gains within the retained span;
+the stable policy repairs its basis. These versions must be reported separately.
+[Code-grounded account](../../research/spectral_final_core_report_2026-09-11.md).
 
 Persistence can also describe memorization or a coherent unwanted feature.
 That is why the method's scope is defined by [Boundary conditions and negative
@@ -59,4 +66,3 @@ eigendirections are beneficial.
 - [Stable streaming covariance update](stable-streaming-update.md)
 - [Per-weight-matrix filtering](per-matrix-filtering.md)
 - [Noise memorization](../findings/noise-memorization.md)
-

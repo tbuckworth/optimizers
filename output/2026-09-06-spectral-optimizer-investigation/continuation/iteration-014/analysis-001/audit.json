@@ -1,0 +1,51 @@
+{
+  "schema": "i14_cross_optimizer_analysis_audit_v1",
+  "status": "fail",
+  "checks": 1199605,
+  "errors": [
+    "artifact root contains an unlisted, partial, or missing entry"
+  ],
+  "warnings": [],
+  "source_provenance": {
+    "frozen_commit": "d48f20a76f32d5b717dd797678f276a16ec57f22",
+    "source_files_verified": [
+      "spectral_filter.py",
+      "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/neural_core.py",
+      "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-014/optimizer_core.py",
+      "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-014/data_plan.py",
+      "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-014/run_cross_optimizer.py",
+      "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-014/test_optimizer_core.py",
+      "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-014/test_data_plan.py",
+      "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-014/test_cross_optimizer_runner.py",
+      "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-014/protocol.md"
+    ]
+  },
+  "analysis_source_provenance": {
+    "git_commit": "314ffc5a71a3529ff3bdde631f2812140aa7e06f",
+    "source_hashes": {
+      "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-014/analyse_cross_optimizer.py": "b8654e32113bd5d177b44a523a80328ff1f4f36ef8fc08f0dbb11bb244726d8c",
+      "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-014/test_analyse_cross_optimizer.py": "b2dab287de5fa119616073d930f7a5cb26e806ff75e52aa82daff6dda1464118"
+    }
+  },
+  "completion_hash_files_verified": 502,
+  "hash_bytes_streamed": 1198339589,
+  "complete_state_tree_digests_verified": 162,
+  "maximum_training_residual_identity_error": 0.0,
+  "maximum_leakage_energy_identity_error": 1.734723475976807e-18,
+  "plan_checks": {
+    "saved_plans": 5,
+    "within_plan_split_uniqueness": true,
+    "calibration_confirmation_indices_disjoint": true
+  },
+  "coverage": {
+    "calibration": 18,
+    "confirmation": 36,
+    "primary_estimands": 12
+  },
+  "audit_boundaries": [
+    "Artifact SHA256 and saved full-state tree digests were independently recomputed on CPU.",
+    "Saved scalar evaluations were not rerun against MNIST or the model.",
+    "Intermediate model checkpoints were file-hashed but not semantically replayed.",
+    "Per-step tensors were not retained; leakage and displacement checks are scalar identities only."
+  ]
+}

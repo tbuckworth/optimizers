@@ -1,0 +1,823 @@
+{
+  "schema": "jlens_new_verb_transfer_check_results_v1",
+  "scalar_checks": 256,
+  "gap_checks": 128,
+  "max_scalar_error": 1.1102230246251565e-16,
+  "scalar_tolerance": 1e-12,
+  "primary_all_16_verb_PC4_positive": true,
+  "locations": [
+    "verb",
+    "sentence_end"
+  ],
+  "axes": [
+    "PC1",
+    "PC2",
+    "PC3",
+    "PC4"
+  ],
+  "rows": [
+    {
+      "id": "nv01-active-O",
+      "pair_id": "nv01",
+      "template": "active",
+      "pole": "O",
+      "text": "The attendant counted the tickets.",
+      "verb": "counted",
+      "verb_span": [
+        14,
+        21
+      ]
+    },
+    {
+      "id": "nv01-active-P",
+      "pair_id": "nv01",
+      "template": "active",
+      "pole": "P",
+      "text": "The attendant issued the tickets.",
+      "verb": "issued",
+      "verb_span": [
+        14,
+        20
+      ]
+    },
+    {
+      "id": "nv01-passive-O",
+      "pair_id": "nv01",
+      "template": "passive",
+      "pole": "O",
+      "text": "The tickets were counted by the attendant.",
+      "verb": "counted",
+      "verb_span": [
+        17,
+        24
+      ]
+    },
+    {
+      "id": "nv01-passive-P",
+      "pair_id": "nv01",
+      "template": "passive",
+      "pole": "P",
+      "text": "The tickets were issued by the attendant.",
+      "verb": "issued",
+      "verb_span": [
+        17,
+        23
+      ]
+    },
+    {
+      "id": "nv02-active-O",
+      "pair_id": "nv02",
+      "template": "active",
+      "pole": "O",
+      "text": "The chemist analysed the solutions.",
+      "verb": "analysed",
+      "verb_span": [
+        12,
+        20
+      ]
+    },
+    {
+      "id": "nv02-active-P",
+      "pair_id": "nv02",
+      "template": "active",
+      "pole": "P",
+      "text": "The chemist mixed the solutions.",
+      "verb": "mixed",
+      "verb_span": [
+        12,
+        17
+      ]
+    },
+    {
+      "id": "nv02-passive-O",
+      "pair_id": "nv02",
+      "template": "passive",
+      "pole": "O",
+      "text": "The solutions were analysed by the chemist.",
+      "verb": "analysed",
+      "verb_span": [
+        19,
+        27
+      ]
+    },
+    {
+      "id": "nv02-passive-P",
+      "pair_id": "nv02",
+      "template": "passive",
+      "pole": "P",
+      "text": "The solutions were mixed by the chemist.",
+      "verb": "mixed",
+      "verb_span": [
+        19,
+        24
+      ]
+    },
+    {
+      "id": "nv03-active-O",
+      "pair_id": "nv03",
+      "template": "active",
+      "pole": "O",
+      "text": "The clerk copied the documents.",
+      "verb": "copied",
+      "verb_span": [
+        10,
+        16
+      ]
+    },
+    {
+      "id": "nv03-active-P",
+      "pair_id": "nv03",
+      "template": "active",
+      "pole": "P",
+      "text": "The clerk supplied the documents.",
+      "verb": "supplied",
+      "verb_span": [
+        10,
+        18
+      ]
+    },
+    {
+      "id": "nv03-passive-O",
+      "pair_id": "nv03",
+      "template": "passive",
+      "pole": "O",
+      "text": "The documents were copied by the clerk.",
+      "verb": "copied",
+      "verb_span": [
+        19,
+        25
+      ]
+    },
+    {
+      "id": "nv03-passive-P",
+      "pair_id": "nv03",
+      "template": "passive",
+      "pole": "P",
+      "text": "The documents were supplied by the clerk.",
+      "verb": "supplied",
+      "verb_span": [
+        19,
+        27
+      ]
+    },
+    {
+      "id": "nv04-active-O",
+      "pair_id": "nv04",
+      "template": "active",
+      "pole": "O",
+      "text": "The chef filmed the meals.",
+      "verb": "filmed",
+      "verb_span": [
+        9,
+        15
+      ]
+    },
+    {
+      "id": "nv04-active-P",
+      "pair_id": "nv04",
+      "template": "active",
+      "pole": "P",
+      "text": "The chef cooked the meals.",
+      "verb": "cooked",
+      "verb_span": [
+        9,
+        15
+      ]
+    },
+    {
+      "id": "nv04-passive-O",
+      "pair_id": "nv04",
+      "template": "passive",
+      "pole": "O",
+      "text": "The meals were filmed by the chef.",
+      "verb": "filmed",
+      "verb_span": [
+        15,
+        21
+      ]
+    },
+    {
+      "id": "nv04-passive-P",
+      "pair_id": "nv04",
+      "template": "passive",
+      "pole": "P",
+      "text": "The meals were cooked by the chef.",
+      "verb": "cooked",
+      "verb_span": [
+        15,
+        21
+      ]
+    },
+    {
+      "id": "nv05-active-O",
+      "pair_id": "nv05",
+      "template": "active",
+      "pole": "O",
+      "text": "The caretaker inspected the rooms.",
+      "verb": "inspected",
+      "verb_span": [
+        14,
+        23
+      ]
+    },
+    {
+      "id": "nv05-active-P",
+      "pair_id": "nv05",
+      "template": "active",
+      "pole": "P",
+      "text": "The caretaker furnished the rooms.",
+      "verb": "furnished",
+      "verb_span": [
+        14,
+        23
+      ]
+    },
+    {
+      "id": "nv05-passive-O",
+      "pair_id": "nv05",
+      "template": "passive",
+      "pole": "O",
+      "text": "The rooms were inspected by the caretaker.",
+      "verb": "inspected",
+      "verb_span": [
+        15,
+        24
+      ]
+    },
+    {
+      "id": "nv05-passive-P",
+      "pair_id": "nv05",
+      "template": "passive",
+      "pole": "P",
+      "text": "The rooms were furnished by the caretaker.",
+      "verb": "furnished",
+      "verb_span": [
+        15,
+        24
+      ]
+    },
+    {
+      "id": "nv06-active-O",
+      "pair_id": "nv06",
+      "template": "active",
+      "pole": "O",
+      "text": "The curator described the displays.",
+      "verb": "described",
+      "verb_span": [
+        12,
+        21
+      ]
+    },
+    {
+      "id": "nv06-active-P",
+      "pair_id": "nv06",
+      "template": "active",
+      "pole": "P",
+      "text": "The curator assembled the displays.",
+      "verb": "assembled",
+      "verb_span": [
+        12,
+        21
+      ]
+    },
+    {
+      "id": "nv06-passive-O",
+      "pair_id": "nv06",
+      "template": "passive",
+      "pole": "O",
+      "text": "The displays were described by the curator.",
+      "verb": "described",
+      "verb_span": [
+        18,
+        27
+      ]
+    },
+    {
+      "id": "nv06-passive-P",
+      "pair_id": "nv06",
+      "template": "passive",
+      "pole": "P",
+      "text": "The displays were assembled by the curator.",
+      "verb": "assembled",
+      "verb_span": [
+        18,
+        27
+      ]
+    },
+    {
+      "id": "nv07-active-O",
+      "pair_id": "nv07",
+      "template": "active",
+      "pole": "O",
+      "text": "The assistant transcribed the letters.",
+      "verb": "transcribed",
+      "verb_span": [
+        14,
+        25
+      ]
+    },
+    {
+      "id": "nv07-active-P",
+      "pair_id": "nv07",
+      "template": "active",
+      "pole": "P",
+      "text": "The assistant mailed the letters.",
+      "verb": "mailed",
+      "verb_span": [
+        14,
+        20
+      ]
+    },
+    {
+      "id": "nv07-passive-O",
+      "pair_id": "nv07",
+      "template": "passive",
+      "pole": "O",
+      "text": "The letters were transcribed by the assistant.",
+      "verb": "transcribed",
+      "verb_span": [
+        17,
+        28
+      ]
+    },
+    {
+      "id": "nv07-passive-P",
+      "pair_id": "nv07",
+      "template": "passive",
+      "pole": "P",
+      "text": "The letters were mailed by the assistant.",
+      "verb": "mailed",
+      "verb_span": [
+        17,
+        23
+      ]
+    },
+    {
+      "id": "nv08-active-O",
+      "pair_id": "nv08",
+      "template": "active",
+      "pole": "O",
+      "text": "The technician scanned the samples.",
+      "verb": "scanned",
+      "verb_span": [
+        15,
+        22
+      ]
+    },
+    {
+      "id": "nv08-active-P",
+      "pair_id": "nv08",
+      "template": "active",
+      "pole": "P",
+      "text": "The technician sterilized the samples.",
+      "verb": "sterilized",
+      "verb_span": [
+        15,
+        25
+      ]
+    },
+    {
+      "id": "nv08-passive-O",
+      "pair_id": "nv08",
+      "template": "passive",
+      "pole": "O",
+      "text": "The samples were scanned by the technician.",
+      "verb": "scanned",
+      "verb_span": [
+        17,
+        24
+      ]
+    },
+    {
+      "id": "nv08-passive-P",
+      "pair_id": "nv08",
+      "template": "passive",
+      "pole": "P",
+      "text": "The samples were sterilized by the technician.",
+      "verb": "sterilized",
+      "verb_span": [
+        17,
+        27
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "id": "nv01-active",
+      "content_pair": "nv01",
+      "template": "active",
+      "observation_id": "nv01-active-O",
+      "provision_id": "nv01-active-P",
+      "gaps64": [
+        [
+          0.03994613866518104,
+          -0.22154928104920812,
+          0.09736787781211653,
+          0.3854949641472136
+        ],
+        [
+          0.051358477054063933,
+          -0.07139952211488776,
+          0.09594067654933092,
+          0.10713898186594453
+        ]
+      ]
+    },
+    {
+      "id": "nv01-passive",
+      "content_pair": "nv01",
+      "template": "passive",
+      "observation_id": "nv01-passive-O",
+      "provision_id": "nv01-passive-P",
+      "gaps64": [
+        [
+          0.07163417725651357,
+          -0.1776488651837647,
+          0.16563823733324678,
+          0.2556021340509441
+        ],
+        [
+          -0.03620744497569639,
+          -0.07422649938506479,
+          0.0689741785184328,
+          0.09595442093274166
+        ]
+      ]
+    },
+    {
+      "id": "nv02-active",
+      "content_pair": "nv02",
+      "template": "active",
+      "observation_id": "nv02-active-O",
+      "provision_id": "nv02-active-P",
+      "gaps64": [
+        [
+          0.38375131474007407,
+          0.21969369954341111,
+          0.3346344524487481,
+          0.248833210277021
+        ],
+        [
+          0.10202571134758222,
+          -0.0038626742778511414,
+          0.2204923838123385,
+          0.1396686022040389
+        ]
+      ]
+    },
+    {
+      "id": "nv02-passive",
+      "content_pair": "nv02",
+      "template": "passive",
+      "observation_id": "nv02-passive-O",
+      "provision_id": "nv02-passive-P",
+      "gaps64": [
+        [
+          0.31200589321924926,
+          0.2003774811069592,
+          0.5142805760780718,
+          0.22354333221284053
+        ],
+        [
+          0.09296622957716855,
+          0.01011643241816973,
+          0.1348616999506138,
+          0.1351524826186599
+        ]
+      ]
+    },
+    {
+      "id": "nv03-active",
+      "content_pair": "nv03",
+      "template": "active",
+      "observation_id": "nv03-active-O",
+      "provision_id": "nv03-active-P",
+      "gaps64": [
+        [
+          -0.13938881407727147,
+          -0.23642447780008793,
+          0.06717142798575004,
+          0.4188926947313498
+        ],
+        [
+          0.0013619688028487786,
+          -0.09096173715731348,
+          0.02192608649419281,
+          0.052344544369659976
+        ]
+      ]
+    },
+    {
+      "id": "nv03-passive",
+      "content_pair": "nv03",
+      "template": "passive",
+      "observation_id": "nv03-passive-O",
+      "provision_id": "nv03-passive-P",
+      "gaps64": [
+        [
+          -0.07143054113693814,
+          -0.26723871733371185,
+          -0.21354535545519227,
+          0.30101316972296965
+        ],
+        [
+          -0.017474318433842395,
+          -0.02234074492039853,
+          -0.022853897019379232,
+          0.06519582965378357
+        ]
+      ]
+    },
+    {
+      "id": "nv04-active",
+      "content_pair": "nv04",
+      "template": "active",
+      "observation_id": "nv04-active-O",
+      "provision_id": "nv04-active-P",
+      "gaps64": [
+        [
+          0.6087213716046918,
+          0.24070922285624488,
+          0.14365691562697558,
+          0.42483658733404484
+        ],
+        [
+          0.05918192255246446,
+          0.006330189405995945,
+          0.0383052341782113,
+          0.07046689689971335
+        ]
+      ]
+    },
+    {
+      "id": "nv04-passive",
+      "content_pair": "nv04",
+      "template": "passive",
+      "observation_id": "nv04-passive-O",
+      "provision_id": "nv04-passive-P",
+      "gaps64": [
+        [
+          0.5118612625880079,
+          0.34190317713204954,
+          0.24591446882614054,
+          0.39217720365163333
+        ],
+        [
+          0.061525700400500316,
+          0.007049834538450206,
+          0.03017508646087741,
+          0.050215546832257596
+        ]
+      ]
+    },
+    {
+      "id": "nv05-active",
+      "content_pair": "nv05",
+      "template": "active",
+      "observation_id": "nv05-active-O",
+      "provision_id": "nv05-active-P",
+      "gaps64": [
+        [
+          0.08771899833351171,
+          -0.15725379520724284,
+          0.4382143158520453,
+          0.5831168015416721
+        ],
+        [
+          0.050692086878473486,
+          -0.11214693302114198,
+          0.21504774326440845,
+          0.1376051362141051
+        ]
+      ]
+    },
+    {
+      "id": "nv05-passive",
+      "content_pair": "nv05",
+      "template": "passive",
+      "observation_id": "nv05-passive-O",
+      "provision_id": "nv05-passive-P",
+      "gaps64": [
+        [
+          0.2452916932238094,
+          -0.016528017695179642,
+          0.4093566023391597,
+          0.5397924788316248
+        ],
+        [
+          0.0374695496423878,
+          -0.022251829174065207,
+          0.08316401706346177,
+          0.07005562734807359
+        ]
+      ]
+    },
+    {
+      "id": "nv06-active",
+      "content_pair": "nv06",
+      "template": "active",
+      "observation_id": "nv06-active-O",
+      "provision_id": "nv06-active-P",
+      "gaps64": [
+        [
+          0.17603259297197393,
+          -0.01624996603204165,
+          0.2942884375720407,
+          0.20581669637829883
+        ],
+        [
+          0.16494543068640571,
+          0.0026205847574729546,
+          0.06966388496586706,
+          0.08582768204538962
+        ]
+      ]
+    },
+    {
+      "id": "nv06-passive",
+      "content_pair": "nv06",
+      "template": "passive",
+      "observation_id": "nv06-passive-O",
+      "provision_id": "nv06-passive-P",
+      "gaps64": [
+        [
+          0.17632599905041102,
+          0.21343080287627372,
+          0.26034336512191114,
+          0.06520984176045136
+        ],
+        [
+          0.06760811256938494,
+          0.01883663850145667,
+          0.07780424645891948,
+          0.06465399453037704
+        ]
+      ]
+    },
+    {
+      "id": "nv07-active",
+      "content_pair": "nv07",
+      "template": "active",
+      "observation_id": "nv07-active-O",
+      "provision_id": "nv07-active-P",
+      "gaps64": [
+        [
+          0.1593711130104295,
+          -0.47271978560801475,
+          0.16608364073366566,
+          0.2876817101640977
+        ],
+        [
+          0.17895692804365926,
+          -0.15116166905701747,
+          0.20110436902174955,
+          0.0677827446517534
+        ]
+      ]
+    },
+    {
+      "id": "nv07-passive",
+      "content_pair": "nv07",
+      "template": "passive",
+      "observation_id": "nv07-passive-O",
+      "provision_id": "nv07-passive-P",
+      "gaps64": [
+        [
+          0.13106890026208795,
+          -0.2850892717708269,
+          0.17236670550209432,
+          0.1500522166677147
+        ],
+        [
+          0.045324840525897026,
+          -0.0603930952665597,
+          0.09216114426982713,
+          0.04622612965020911
+        ]
+      ]
+    },
+    {
+      "id": "nv08-active",
+      "content_pair": "nv08",
+      "template": "active",
+      "observation_id": "nv08-active-O",
+      "provision_id": "nv08-active-P",
+      "gaps64": [
+        [
+          0.2908432322953045,
+          0.23319562390056142,
+          0.22266034605527096,
+          0.14077518429507174
+        ],
+        [
+          0.03003891327693115,
+          0.015412676533272496,
+          0.09833267613852392,
+          0.07765446424643363
+        ]
+      ]
+    },
+    {
+      "id": "nv08-passive",
+      "content_pair": "nv08",
+      "template": "passive",
+      "observation_id": "nv08-passive-O",
+      "provision_id": "nv08-passive-P",
+      "gaps64": [
+        [
+          0.3785232825917825,
+          0.4032938974209631,
+          0.2710912130185168,
+          0.1653025458964493
+        ],
+        [
+          0.06273948487834234,
+          0.07467775762962692,
+          0.06701322553556643,
+          0.08050923438544434
+        ]
+      ]
+    }
+  ],
+  "summaries": {
+    "verb": [
+      {
+        "axis": "PC1",
+        "positive": 14,
+        "zero": 0,
+        "negative": 2,
+        "both_templates_positive": 7,
+        "template_sign_changes": []
+      },
+      {
+        "axis": "PC2",
+        "positive": 7,
+        "zero": 0,
+        "negative": 9,
+        "both_templates_positive": 3,
+        "template_sign_changes": [
+          "nv06"
+        ]
+      },
+      {
+        "axis": "PC3",
+        "positive": 15,
+        "zero": 0,
+        "negative": 1,
+        "both_templates_positive": 7,
+        "template_sign_changes": [
+          "nv03"
+        ]
+      },
+      {
+        "axis": "PC4",
+        "positive": 16,
+        "zero": 0,
+        "negative": 0,
+        "both_templates_positive": 8,
+        "template_sign_changes": []
+      }
+    ],
+    "sentence_end": [
+      {
+        "axis": "PC1",
+        "positive": 14,
+        "zero": 0,
+        "negative": 2,
+        "both_templates_positive": 6,
+        "template_sign_changes": [
+          "nv01",
+          "nv03"
+        ]
+      },
+      {
+        "axis": "PC2",
+        "positive": 7,
+        "zero": 0,
+        "negative": 9,
+        "both_templates_positive": 3,
+        "template_sign_changes": [
+          "nv02"
+        ]
+      },
+      {
+        "axis": "PC3",
+        "positive": 15,
+        "zero": 0,
+        "negative": 1,
+        "both_templates_positive": 7,
+        "template_sign_changes": [
+          "nv03"
+        ]
+      },
+      {
+        "axis": "PC4",
+        "positive": 16,
+        "zero": 0,
+        "negative": 0,
+        "both_templates_positive": 8,
+        "template_sign_changes": []
+      }
+    ]
+  }
+}

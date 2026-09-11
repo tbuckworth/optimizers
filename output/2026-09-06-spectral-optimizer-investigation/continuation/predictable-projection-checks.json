@@ -1,0 +1,120 @@
+{
+  "scope": "Exact rational checks only; no datasets, stochastic runs, Torch or GPU.",
+  "source_sha256": "ec7da8d480c5ca0a3b22d17655e54c202a5712d1b7b734f1cae66906ee143a80",
+  "general_operator_cases": 15,
+  "orthogonal_projector_cases": 12,
+  "exact_quadratic_cases": 15,
+  "records": [
+    {
+      "case": 0,
+      "operator": 0,
+      "orthogonal_projector": true,
+      "risk_difference": "0",
+      "expected_quadratic_loss_change": "-1/200"
+    },
+    {
+      "case": 0,
+      "operator": 1,
+      "orthogonal_projector": true,
+      "risk_difference": "-4",
+      "expected_quadratic_loss_change": "0"
+    },
+    {
+      "case": 0,
+      "operator": 2,
+      "orthogonal_projector": true,
+      "risk_difference": "-5",
+      "expected_quadratic_loss_change": "-9/100"
+    },
+    {
+      "case": 0,
+      "operator": 3,
+      "orthogonal_projector": true,
+      "risk_difference": "-2",
+      "expected_quadratic_loss_change": "-3/100"
+    },
+    {
+      "case": 0,
+      "operator": 4,
+      "orthogonal_projector": false,
+      "risk_difference": "-331/100",
+      "expected_quadratic_loss_change": "-277/4000"
+    },
+    {
+      "case": 1,
+      "operator": 0,
+      "orthogonal_projector": true,
+      "risk_difference": "0",
+      "expected_quadratic_loss_change": "-3/20"
+    },
+    {
+      "case": 1,
+      "operator": 1,
+      "orthogonal_projector": true,
+      "risk_difference": "-13",
+      "expected_quadratic_loss_change": "0"
+    },
+    {
+      "case": 1,
+      "operator": 2,
+      "orthogonal_projector": true,
+      "risk_difference": "-6",
+      "expected_quadratic_loss_change": "3/20"
+    },
+    {
+      "case": 1,
+      "operator": 3,
+      "orthogonal_projector": true,
+      "risk_difference": "-9/2",
+      "expected_quadratic_loss_change": "-37/800"
+    },
+    {
+      "case": 1,
+      "operator": 4,
+      "orthogonal_projector": false,
+      "risk_difference": "-259/50",
+      "expected_quadratic_loss_change": "-271/10000"
+    },
+    {
+      "case": 2,
+      "operator": 0,
+      "orthogonal_projector": true,
+      "risk_difference": "0",
+      "expected_quadratic_loss_change": "-103/100"
+    },
+    {
+      "case": 2,
+      "operator": 1,
+      "orthogonal_projector": true,
+      "risk_difference": "9",
+      "expected_quadratic_loss_change": "0"
+    },
+    {
+      "case": 2,
+      "operator": 2,
+      "orthogonal_projector": true,
+      "risk_difference": "0",
+      "expected_quadratic_loss_change": "-81/100"
+    },
+    {
+      "case": 2,
+      "operator": 3,
+      "orthogonal_projector": true,
+      "risk_difference": "-3/2",
+      "expected_quadratic_loss_change": "-797/800"
+    },
+    {
+      "case": 2,
+      "operator": 4,
+      "orthogonal_projector": false,
+      "risk_difference": "-63/25",
+      "expected_quadratic_loss_change": "-1111/1000"
+    }
+  ],
+  "sample_dependent_restoration_risks": {
+    "current": "4",
+    "lagged": "4",
+    "restored": "6"
+  },
+  "all_exact_assertions_passed": true
+}

@@ -1,0 +1,4774 @@
+{
+  "schema": "spectral_general_augmentation_audit_v1",
+  "status": "PASS",
+  "input_results_sha256": "7c4f31d0a3bf2b89aa5fbb7be0e5bbe62a2e713faa75afd3241c6fab1db63a5e",
+  "input_dir": "/tmp/spectral-experiment-artifacts/spectral-general-augmentation-20260910.lSSdQP/acquisition-001",
+  "source_pins": {
+    "spectral_filter.py": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-009/neural_core.py": "706851828b7120bea0d7a41bd0fa75474ac800b2df71087941d0140c8d1970ec",
+    "experiments/spectral_general_augmentation.py": "6bdd23fbc78ed47415124f85c9f209d86cd46b6f42751201339fbf9b7c600106",
+    "experiments/spectral_general_augmentation_data.py": "4404d59fe79e294abc946cd3a58963d1b6e84d65e47d29c33bcebbde7003396a",
+    "output/2026-09-10-spectral-general-augmentation/protocol.md": "952d1fe6d783e0f31a072165c24cf22a3ea66f5d61c832845b79d247804d48fe",
+    "output/2026-09-10-spectral-general-augmentation/implementation-check.md": "4648cb4d416abde9a4ee6052a55b84e9d28e4223feb51d8776c203245656378b",
+    "output/2026-09-10-spectral-general-augmentation/visual-review.md": "6fb4607a205890c09e3f88baf88ad37aede0729a5f4967618a16d20c123648c8",
+    "output/2026-09-10-spectral-general-augmentation/preview.json": "5ee4a4037650d0411aa33d25758bf484d757ba19c6e0eff0a507305b81379b33",
+    "output/2026-09-10-spectral-general-augmentation/preview-1.png": "33a4ca62858197e5db34a16018d3d79d2c2d12f9016894a64b98eef625f05183",
+    "output/2026-09-10-spectral-general-augmentation/preview-2.png": "bda1ff2ac07a8a0e6c0b7a607d8a89068e527f9eef446b1c810ae9aeeff6daa2",
+    "output/2026-09-10-spectral-general-augmentation/preview-3.png": "f9b3b81c52c9dfc066e711ae8a0f8b58881b13e8306789409e01bcc66f05bb59",
+    "experiments/spectral_general_augmentation_audit.py": "f7d44dc5a4dc89fa9a93df76914f8b1c6aaac8e71cf9a028106fe62b2338038c",
+    "experiments/spectral_general_augmentation_preview.py": "72ae5b8faf055321097349040242c2f96e18be706443f6bcd1bcf4d0a74c05a7",
+    "tests/test_spectral_general_augmentation.py": "7a2f97937caf295221832f1ac800af64c1014d275beb8519e48022de07e83578",
+    "tests/test_spectral_general_augmentation_data.py": "9ff85b80ad366c1e972027a5f1e0e8c3903d6a017327e28bf26d5952920186ce",
+    "tests/test_spectral_general_augmentation_audit.py": "3c7d64372b0b2f90ca859d45c8eaf1354afec397c100f5be7a14466bbf71f471"
+  },
+  "data_pins": {
+    "train-images-idx3-ubyte": "ba891046e6505d7aadcbbe25680a0738ad16aec93bde7f9b65e87a2fc25776db",
+    "train-labels-idx1-ubyte": "65a50cbbf4e906d70832878ad85ccda5333a97f0f4c3dd2ef09a8a9eef7101c5"
+  },
+  "verified_artifacts": 58,
+  "input_bytes_read_once": 215525618,
+  "trajectories": 12,
+  "logical_evaluation_records": 264,
+  "metric_atol": 1e-10,
+  "metric_rtol": 1e-10,
+  "max_absolute_scalar_error": 3.637978807091713e-12,
+  "summary": {
+    "seeds": [
+      202609141,
+      202609142,
+      202609143
+    ],
+    "endpoint_step": 4000,
+    "independent_units": "three paired training seeds; branches are not independent replicates",
+    "uncertainty": "descriptive values and arithmetic means; no significance or epoch selection",
+    "benefit_conventions": {
+      "accuracy": "translate minus none",
+      "ce": "none minus translate",
+      "interaction": "native32 benefit minus raw benefit"
+    },
+    "groups": {
+      "raw/none": {
+        "accuracy": {
+          "values": [
+            0.9258,
+            0.9234,
+            0.9386
+          ],
+          "mean": 0.9292666666666666
+        },
+        "ce": {
+          "values": [
+            0.35665469963293656,
+            0.3702021886550021,
+            0.26451235962770386
+          ],
+          "mean": 0.33045641597188086
+        }
+      },
+      "raw/translate": {
+        "accuracy": {
+          "values": [
+            0.956,
+            0.9514,
+            0.9622
+          ],
+          "mean": 0.9565333333333333
+        },
+        "ce": {
+          "values": [
+            0.15300051508086657,
+            0.17530446912685527,
+            0.13234635536805872
+          ],
+          "mean": 0.15355044652526018
+        }
+      },
+      "native32/none": {
+        "accuracy": {
+          "values": [
+            0.8712,
+            0.8632,
+            0.8764
+          ],
+          "mean": 0.8702666666666666
+        },
+        "ce": {
+          "values": [
+            0.45693817610522836,
+            0.46661106281598524,
+            0.44793373482273446
+          ],
+          "mean": 0.45716099124798265
+        }
+      },
+      "native32/translate": {
+        "accuracy": {
+          "values": [
+            0.8086,
+            0.8164,
+            0.8454
+          ],
+          "mean": 0.8234666666666667
+        },
+        "ce": {
+          "values": [
+            0.6832159610878682,
+            0.6537719318843196,
+            0.6333359323123997
+          ],
+          "mean": 0.6567746084281958
+        }
+      }
+    },
+    "augmentation_benefits": {
+      "raw": {
+        "accuracy": {
+          "values": [
+            0.030200000000000005,
+            0.028000000000000025,
+            0.023600000000000065
+          ],
+          "mean": 0.0272666666666667
+        },
+        "ce": {
+          "values": [
+            0.20365418455207,
+            0.19489771952814683,
+            0.13216600425964514
+          ],
+          "mean": 0.17690596944662065
+        }
+      },
+      "native32": {
+        "accuracy": {
+          "values": [
+            -0.06259999999999999,
+            -0.04679999999999995,
+            -0.030999999999999917
+          ],
+          "mean": -0.04679999999999995
+        },
+        "ce": {
+          "values": [
+            -0.22627778498263984,
+            -0.18716086906833435,
+            -0.18540219748966524
+          ],
+          "mean": -0.19961361718021312
+        }
+      }
+    },
+    "interaction": {
+      "accuracy": {
+        "values": [
+          -0.0928,
+          -0.07479999999999998,
+          -0.05459999999999998
+        ],
+        "mean": -0.07406666666666666
+      },
+      "ce": {
+        "values": [
+          -0.4299319695347098,
+          -0.3820585885964812,
+          -0.3175682017493104
+        ],
+        "mean": -0.3765195866268338
+      }
+    }
+  },
+  "branches": [
+    {
+      "name": "s202609141-raw-none",
+      "seed": 202609141,
+      "policy": "raw",
+      "augmentation": "none",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 414,
+            "accuracy": 0.0828,
+            "ce_sum": 11549.702739043345,
+            "ce": 2.309940547808669
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 403,
+            "accuracy": 0.0806,
+            "ce_sum": 11546.651109050372,
+            "ce": 2.3093302218100744
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 4308,
+            "accuracy": 0.8616,
+            "ce_sum": 2705.3171646633305,
+            "ce": 0.5410634329326661
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4264,
+            "accuracy": 0.8528,
+            "ce_sum": 2803.236306603848,
+            "ce": 0.5606472613207696
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4522,
+            "accuracy": 0.9044,
+            "ce_sum": 1824.8173210630137,
+            "ce": 0.36496346421260273
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4451,
+            "accuracy": 0.8902,
+            "ce_sum": 2053.186314604884,
+            "ce": 0.4106372629209768
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4632,
+            "accuracy": 0.9264,
+            "ce_sum": 1344.9174331261897,
+            "ce": 0.26898348662523797
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4498,
+            "accuracy": 0.8996,
+            "ce_sum": 1781.8054774545142,
+            "ce": 0.35636109549090283
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4698,
+            "accuracy": 0.9396,
+            "ce_sum": 1056.1205303354725,
+            "ce": 0.2112241060670945
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4537,
+            "accuracy": 0.9074,
+            "ce_sum": 1622.9957318869062,
+            "ce": 0.32459914637738124
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4741,
+            "accuracy": 0.9482,
+            "ce_sum": 899.247359469239,
+            "ce": 0.17984947189384778
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4543,
+            "accuracy": 0.9086,
+            "ce_sum": 1603.2022002892252,
+            "ce": 0.32064044005784503
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4802,
+            "accuracy": 0.9604,
+            "ce_sum": 742.383155438182,
+            "ce": 0.1484766310876364
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4567,
+            "accuracy": 0.9134,
+            "ce_sum": 1528.6544563748628,
+            "ce": 0.30573089127497255
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4830,
+            "accuracy": 0.966,
+            "ce_sum": 641.9600244478072,
+            "ce": 0.12839200488956143
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4584,
+            "accuracy": 0.9168,
+            "ce_sum": 1508.6949832332216,
+            "ce": 0.30173899664664433
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4864,
+            "accuracy": 0.9728,
+            "ce_sum": 520.311602473966,
+            "ce": 0.10406232049479319
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4577,
+            "accuracy": 0.9154,
+            "ce_sum": 1507.9887188039343,
+            "ce": 0.30159774376078685
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 4888,
+            "accuracy": 0.9776,
+            "ce_sum": 451.8208403354627,
+            "ce": 0.09036416806709255
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4586,
+            "accuracy": 0.9172,
+            "ce_sum": 1532.4020856128739,
+            "ce": 0.3064804171225748
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4924,
+            "accuracy": 0.9848,
+            "ce_sum": 362.7305805233842,
+            "ce": 0.07254611610467684
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4600,
+            "accuracy": 0.92,
+            "ce_sum": 1491.6050467073537,
+            "ce": 0.29832100934147077
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4938,
+            "accuracy": 0.9876,
+            "ce_sum": 311.58611111536067,
+            "ce": 0.062317222223072136
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4571,
+            "accuracy": 0.9142,
+            "ce_sum": 1584.3164191508624,
+            "ce": 0.3168632838301725
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4950,
+            "accuracy": 0.99,
+            "ce_sum": 259.70786896119455,
+            "ce": 0.05194157379223891
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4602,
+            "accuracy": 0.9204,
+            "ce_sum": 1568.5765998327438,
+            "ce": 0.3137153199665488
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4978,
+            "accuracy": 0.9956,
+            "ce_sum": 202.42062876883168,
+            "ce": 0.04048412575376634
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4606,
+            "accuracy": 0.9212,
+            "ce_sum": 1550.090351904156,
+            "ce": 0.3100180703808312
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4984,
+            "accuracy": 0.9968,
+            "ce_sum": 163.56706118221905,
+            "ce": 0.03271341223644381
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4603,
+            "accuracy": 0.9206,
+            "ce_sum": 1585.539366042542,
+            "ce": 0.3171078732085084
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4992,
+            "accuracy": 0.9984,
+            "ce_sum": 137.61982607598384,
+            "ce": 0.027523965215196768
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4606,
+            "accuracy": 0.9212,
+            "ce_sum": 1598.4340855208463,
+            "ce": 0.31968681710416924
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4994,
+            "accuracy": 0.9988,
+            "ce_sum": 107.84638230548377,
+            "ce": 0.021569276461096753
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4614,
+            "accuracy": 0.9228,
+            "ce_sum": 1618.5544420521212,
+            "ce": 0.3237108884104242
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4994,
+            "accuracy": 0.9988,
+            "ce_sum": 99.43460745973674,
+            "ce": 0.01988692149194735
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4610,
+            "accuracy": 0.922,
+            "ce_sum": 1690.0964740546835,
+            "ce": 0.33801929481093673
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4999,
+            "accuracy": 0.9998,
+            "ce_sum": 79.41015090858464,
+            "ce": 0.015882030181716928
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4603,
+            "accuracy": 0.9206,
+            "ce_sum": 1717.056654938224,
+            "ce": 0.3434113309876448
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4998,
+            "accuracy": 0.9996,
+            "ce_sum": 64.152226358152,
+            "ce": 0.012830445271630402
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4610,
+            "accuracy": 0.922,
+            "ce_sum": 1745.8917308417494,
+            "ce": 0.34917834616834986
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 4998,
+            "accuracy": 0.9996,
+            "ce_sum": 61.091371165716865,
+            "ce": 0.012218274233143372
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4615,
+            "accuracy": 0.923,
+            "ce_sum": 1776.9703513841903,
+            "ce": 0.35539407027683806
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 5000,
+            "accuracy": 1.0,
+            "ce_sum": 45.41849949306772,
+            "ce": 0.009083699898613544
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4629,
+            "accuracy": 0.9258,
+            "ce_sum": 1783.273498164683,
+            "ce": 0.35665469963293656
+          }
+        }
+      ]
+    },
+    {
+      "name": "s202609141-native32-none",
+      "seed": 202609141,
+      "policy": "native32",
+      "augmentation": "none",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 414,
+            "accuracy": 0.0828,
+            "ce_sum": 11549.702739043345,
+            "ce": 2.309940547808669
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 403,
+            "accuracy": 0.0806,
+            "ce_sum": 11546.651109050372,
+            "ce": 2.3093302218100744
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 4308,
+            "accuracy": 0.8616,
+            "ce_sum": 2705.3171646633305,
+            "ce": 0.5410634329326661
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4264,
+            "accuracy": 0.8528,
+            "ce_sum": 2803.236306603848,
+            "ce": 0.5606472613207696
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4349,
+            "accuracy": 0.8698,
+            "ce_sum": 2347.798025407649,
+            "ce": 0.46955960508152983
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4330,
+            "accuracy": 0.866,
+            "ce_sum": 2485.113132625986,
+            "ce": 0.4970226265251972
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4318,
+            "accuracy": 0.8636,
+            "ce_sum": 2396.6638905670497,
+            "ce": 0.47933277811340996
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4276,
+            "accuracy": 0.8552,
+            "ce_sum": 2517.608746193202,
+            "ce": 0.5035217492386405
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4347,
+            "accuracy": 0.8694,
+            "ce_sum": 2300.015939295068,
+            "ce": 0.4600031878590136
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4316,
+            "accuracy": 0.8632,
+            "ce_sum": 2403.772603126748,
+            "ce": 0.4807545206253496
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4386,
+            "accuracy": 0.8772,
+            "ce_sum": 2272.2471770029056,
+            "ce": 0.45444943540058114
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4336,
+            "accuracy": 0.8672,
+            "ce_sum": 2403.0389812057506,
+            "ce": 0.48060779624115013
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4338,
+            "accuracy": 0.8676,
+            "ce_sum": 2340.2190642792893,
+            "ce": 0.4680438128558579
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4285,
+            "accuracy": 0.857,
+            "ce_sum": 2442.9256608523365,
+            "ce": 0.4885851321704673
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4384,
+            "accuracy": 0.8768,
+            "ce_sum": 2264.18499198401,
+            "ce": 0.452836998396802
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4334,
+            "accuracy": 0.8668,
+            "ce_sum": 2371.9060067331247,
+            "ce": 0.4743812013466249
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4348,
+            "accuracy": 0.8696,
+            "ce_sum": 2277.3780764039334,
+            "ce": 0.45547561528078667
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4310,
+            "accuracy": 0.862,
+            "ce_sum": 2407.6269313364446,
+            "ce": 0.4815253862672889
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 4394,
+            "accuracy": 0.8788,
+            "ce_sum": 2221.1043939066735,
+            "ce": 0.4442208787813347
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4351,
+            "accuracy": 0.8702,
+            "ce_sum": 2349.7971290849723,
+            "ce": 0.46995942581699446
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4429,
+            "accuracy": 0.8858,
+            "ce_sum": 2182.9713963664367,
+            "ce": 0.4365942792732873
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4391,
+            "accuracy": 0.8782,
+            "ce_sum": 2301.198108113544,
+            "ce": 0.4602396216227088
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4389,
+            "accuracy": 0.8778,
+            "ce_sum": 2228.0627109930783,
+            "ce": 0.4456125421986157
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4319,
+            "accuracy": 0.8638,
+            "ce_sum": 2383.903879888477,
+            "ce": 0.4767807759776954
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4418,
+            "accuracy": 0.8836,
+            "ce_sum": 2179.5374998008056,
+            "ce": 0.4359074999601611
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4351,
+            "accuracy": 0.8702,
+            "ce_sum": 2328.2728342935216,
+            "ce": 0.4656545668587043
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4401,
+            "accuracy": 0.8802,
+            "ce_sum": 2209.5507423697495,
+            "ce": 0.4419101484739499
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4367,
+            "accuracy": 0.8734,
+            "ce_sum": 2319.082665807117,
+            "ce": 0.46381653316142335
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4442,
+            "accuracy": 0.8884,
+            "ce_sum": 2184.7229314242845,
+            "ce": 0.4369445862848569
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4365,
+            "accuracy": 0.873,
+            "ce_sum": 2312.323493412028,
+            "ce": 0.4624646986824056
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4418,
+            "accuracy": 0.8836,
+            "ce_sum": 2173.120441747263,
+            "ce": 0.43462408834945265
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4377,
+            "accuracy": 0.8754,
+            "ce_sum": 2279.085197961716,
+            "ce": 0.4558170395923432
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4437,
+            "accuracy": 0.8874,
+            "ce_sum": 2157.527163486406,
+            "ce": 0.43150543269728125
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4391,
+            "accuracy": 0.8782,
+            "ce_sum": 2276.5461065733375,
+            "ce": 0.4553092213146675
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4443,
+            "accuracy": 0.8886,
+            "ce_sum": 2167.0177483654998,
+            "ce": 0.43340354967309996
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4378,
+            "accuracy": 0.8756,
+            "ce_sum": 2289.2913331842774,
+            "ce": 0.45785826663685547
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4452,
+            "accuracy": 0.8904,
+            "ce_sum": 2153.0861528459,
+            "ce": 0.43061723056918
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4383,
+            "accuracy": 0.8766,
+            "ce_sum": 2261.343811037032,
+            "ce": 0.4522687622074064
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4441,
+            "accuracy": 0.8882,
+            "ce_sum": 2136.8563774435297,
+            "ce": 0.42737127548870596
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4380,
+            "accuracy": 0.876,
+            "ce_sum": 2265.2720810087867,
+            "ce": 0.45305441620175735
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 4420,
+            "accuracy": 0.884,
+            "ce_sum": 2171.75892963199,
+            "ce": 0.43435178592639806
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4336,
+            "accuracy": 0.8672,
+            "ce_sum": 2304.208470841559,
+            "ce": 0.46084169416831183
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 4414,
+            "accuracy": 0.8828,
+            "ce_sum": 2169.9178457515936,
+            "ce": 0.4339835691503187
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4356,
+            "accuracy": 0.8712,
+            "ce_sum": 2284.690880526142,
+            "ce": 0.45693817610522836
+          }
+        }
+      ]
+    },
+    {
+      "name": "s202609141-native32-translate",
+      "seed": 202609141,
+      "policy": "native32",
+      "augmentation": "translate",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 414,
+            "accuracy": 0.0828,
+            "ce_sum": 11549.702739043345,
+            "ce": 2.309940547808669
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 403,
+            "accuracy": 0.0806,
+            "ce_sum": 11546.651109050372,
+            "ce": 2.3093302218100744
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 3905,
+            "accuracy": 0.781,
+            "ce_sum": 3997.8840184664073,
+            "ce": 0.7995768036932814
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 3860,
+            "accuracy": 0.772,
+            "ce_sum": 4062.026487873892,
+            "ce": 0.8124052975747784
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4100,
+            "accuracy": 0.82,
+            "ce_sum": 3618.8226921273153,
+            "ce": 0.7237645384254631
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4102,
+            "accuracy": 0.8204,
+            "ce_sum": 3665.514345907764,
+            "ce": 0.7331028691815528
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4076,
+            "accuracy": 0.8152,
+            "ce_sum": 3652.011766733014,
+            "ce": 0.7304023533466029
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4044,
+            "accuracy": 0.8088,
+            "ce_sum": 3683.6569818422417,
+            "ce": 0.7367313963684483
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4052,
+            "accuracy": 0.8104,
+            "ce_sum": 3529.811701012478,
+            "ce": 0.7059623402024956
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4039,
+            "accuracy": 0.8078,
+            "ce_sum": 3582.2085824812116,
+            "ce": 0.7164417164962423
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4035,
+            "accuracy": 0.807,
+            "ce_sum": 3564.3293386662644,
+            "ce": 0.7128658677332529
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4025,
+            "accuracy": 0.805,
+            "ce_sum": 3629.202877476696,
+            "ce": 0.7258405754953392
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4038,
+            "accuracy": 0.8076,
+            "ce_sum": 3515.841245735192,
+            "ce": 0.7031682491470383
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4012,
+            "accuracy": 0.8024,
+            "ce_sum": 3563.0197087562296,
+            "ce": 0.712603941751246
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4053,
+            "accuracy": 0.8106,
+            "ce_sum": 3429.935728186253,
+            "ce": 0.6859871456372506
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4021,
+            "accuracy": 0.8042,
+            "ce_sum": 3485.467808990611,
+            "ce": 0.6970935617981222
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4094,
+            "accuracy": 0.8188,
+            "ce_sum": 3429.438554013359,
+            "ce": 0.6858877108026717
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4044,
+            "accuracy": 0.8088,
+            "ce_sum": 3472.810923883534,
+            "ce": 0.6945621847767068
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 4053,
+            "accuracy": 0.8106,
+            "ce_sum": 3448.276853451774,
+            "ce": 0.6896553706903548
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4014,
+            "accuracy": 0.8028,
+            "ce_sum": 3501.776257887429,
+            "ce": 0.7003552515774858
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4087,
+            "accuracy": 0.8174,
+            "ce_sum": 3479.685154311723,
+            "ce": 0.6959370308623446
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4039,
+            "accuracy": 0.8078,
+            "ce_sum": 3514.8574654774884,
+            "ce": 0.7029714930954977
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4116,
+            "accuracy": 0.8232,
+            "ce_sum": 3385.705783078008,
+            "ce": 0.6771411566156016
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4079,
+            "accuracy": 0.8158,
+            "ce_sum": 3454.966537357998,
+            "ce": 0.6909933074715996
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4132,
+            "accuracy": 0.8264,
+            "ce_sum": 3341.2853327960024,
+            "ce": 0.6682570665592005
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4120,
+            "accuracy": 0.824,
+            "ce_sum": 3396.3512087732533,
+            "ce": 0.6792702417546507
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4113,
+            "accuracy": 0.8226,
+            "ce_sum": 3409.264044076722,
+            "ce": 0.6818528088153444
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4095,
+            "accuracy": 0.819,
+            "ce_sum": 3457.639225597777,
+            "ce": 0.6915278451195555
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4091,
+            "accuracy": 0.8182,
+            "ce_sum": 3401.4007447542954,
+            "ce": 0.6802801489508591
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4070,
+            "accuracy": 0.814,
+            "ce_sum": 3443.1232697500814,
+            "ce": 0.6886246539500163
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4112,
+            "accuracy": 0.8224,
+            "ce_sum": 3353.8472869885463,
+            "ce": 0.6707694573977092
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4064,
+            "accuracy": 0.8128,
+            "ce_sum": 3407.671220608024,
+            "ce": 0.6815342441216048
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4070,
+            "accuracy": 0.814,
+            "ce_sum": 3424.475817810505,
+            "ce": 0.684895163562101
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4047,
+            "accuracy": 0.8094,
+            "ce_sum": 3468.7600765596894,
+            "ce": 0.6937520153119379
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4098,
+            "accuracy": 0.8196,
+            "ce_sum": 3352.264711290585,
+            "ce": 0.670452942258117
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4067,
+            "accuracy": 0.8134,
+            "ce_sum": 3420.9774374816398,
+            "ce": 0.684195487496328
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4153,
+            "accuracy": 0.8306,
+            "ce_sum": 3347.0522117222986,
+            "ce": 0.6694104423444597
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4085,
+            "accuracy": 0.817,
+            "ce_sum": 3414.084349664654,
+            "ce": 0.6828168699329308
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4127,
+            "accuracy": 0.8254,
+            "ce_sum": 3367.160826877288,
+            "ce": 0.6734321653754576
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4068,
+            "accuracy": 0.8136,
+            "ce_sum": 3426.928815117795,
+            "ce": 0.6853857630235589
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 4078,
+            "accuracy": 0.8156,
+            "ce_sum": 3392.3578314513366,
+            "ce": 0.6784715662902673
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4013,
+            "accuracy": 0.8026,
+            "ce_sum": 3460.81388461646,
+            "ce": 0.6921627769232921
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 4071,
+            "accuracy": 0.8142,
+            "ce_sum": 3356.234183647593,
+            "ce": 0.6712468367295186
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4043,
+            "accuracy": 0.8086,
+            "ce_sum": 3416.079805439341,
+            "ce": 0.6832159610878682
+          }
+        }
+      ]
+    },
+    {
+      "name": "s202609141-raw-translate",
+      "seed": 202609141,
+      "policy": "raw",
+      "augmentation": "translate",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 414,
+            "accuracy": 0.0828,
+            "ce_sum": 11549.702739043345,
+            "ce": 2.309940547808669
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 403,
+            "accuracy": 0.0806,
+            "ce_sum": 11546.651109050372,
+            "ce": 2.3093302218100744
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 3905,
+            "accuracy": 0.781,
+            "ce_sum": 3997.8840184664073,
+            "ce": 0.7995768036932814
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 3860,
+            "accuracy": 0.772,
+            "ce_sum": 4062.026487873892,
+            "ce": 0.8124052975747784
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4248,
+            "accuracy": 0.8496,
+            "ce_sum": 2904.434241967065,
+            "ce": 0.5808868483934131
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4215,
+            "accuracy": 0.843,
+            "ce_sum": 2985.5447879113094,
+            "ce": 0.5971089575822619
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4440,
+            "accuracy": 0.888,
+            "ce_sum": 2183.116653869356,
+            "ce": 0.4366233307738712
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4388,
+            "accuracy": 0.8776,
+            "ce_sum": 2293.0057054396284,
+            "ce": 0.45860114108792566
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4523,
+            "accuracy": 0.9046,
+            "ce_sum": 1817.898807936157,
+            "ce": 0.36357976158723143
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4493,
+            "accuracy": 0.8986,
+            "ce_sum": 1921.7944074354637,
+            "ce": 0.38435888148709274
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4606,
+            "accuracy": 0.9212,
+            "ce_sum": 1561.660297576734,
+            "ce": 0.31233205951534676
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4546,
+            "accuracy": 0.9092,
+            "ce_sum": 1698.7929026627821,
+            "ce": 0.3397585805325564
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4647,
+            "accuracy": 0.9294,
+            "ce_sum": 1391.4793388795586,
+            "ce": 0.2782958677759117
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4599,
+            "accuracy": 0.9198,
+            "ce_sum": 1497.4263653688108,
+            "ce": 0.29948527307376216
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4702,
+            "accuracy": 0.9404,
+            "ce_sum": 1191.6605589821127,
+            "ce": 0.23833211179642252
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4671,
+            "accuracy": 0.9342,
+            "ce_sum": 1297.2211204959349,
+            "ce": 0.259444224099187
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4688,
+            "accuracy": 0.9376,
+            "ce_sum": 1122.8809482088443,
+            "ce": 0.22457618964176887
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4643,
+            "accuracy": 0.9286,
+            "ce_sum": 1252.3688798791147,
+            "ce": 0.25047377597582293
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 4745,
+            "accuracy": 0.949,
+            "ce_sum": 1016.9701691513658,
+            "ce": 0.20339403383027316
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4683,
+            "accuracy": 0.9366,
+            "ce_sum": 1138.9874837705424,
+            "ce": 0.22779749675410849
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4749,
+            "accuracy": 0.9498,
+            "ce_sum": 957.505678080818,
+            "ce": 0.1915011356161636
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4713,
+            "accuracy": 0.9426,
+            "ce_sum": 1072.8638647694129,
+            "ce": 0.21457277295388258
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4746,
+            "accuracy": 0.9492,
+            "ce_sum": 945.9072009717834,
+            "ce": 0.18918144019435668
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4698,
+            "accuracy": 0.9396,
+            "ce_sum": 1098.2472324130056,
+            "ce": 0.21964944648260112
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4777,
+            "accuracy": 0.9554,
+            "ce_sum": 856.6063622459642,
+            "ce": 0.17132127244919285
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4712,
+            "accuracy": 0.9424,
+            "ce_sum": 1030.9148066546682,
+            "ce": 0.20618296133093364
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4782,
+            "accuracy": 0.9564,
+            "ce_sum": 787.820387509658,
+            "ce": 0.1575640775019316
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4718,
+            "accuracy": 0.9436,
+            "ce_sum": 952.0891428223672,
+            "ce": 0.19041782856447345
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4816,
+            "accuracy": 0.9632,
+            "ce_sum": 784.6833332870863,
+            "ce": 0.15693666665741726
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4717,
+            "accuracy": 0.9434,
+            "ce_sum": 964.6684805666885,
+            "ce": 0.1929336961133377
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4792,
+            "accuracy": 0.9584,
+            "ce_sum": 764.3378135514265,
+            "ce": 0.15286756271028532
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4733,
+            "accuracy": 0.9466,
+            "ce_sum": 934.2555679201106,
+            "ce": 0.18685111358402212
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4811,
+            "accuracy": 0.9622,
+            "ce_sum": 690.8480418131732,
+            "ce": 0.13816960836263464
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4755,
+            "accuracy": 0.951,
+            "ce_sum": 868.5436973153395,
+            "ce": 0.1737087394630679
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4842,
+            "accuracy": 0.9684,
+            "ce_sum": 615.828771915674,
+            "ce": 0.1231657543831348
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4766,
+            "accuracy": 0.9532,
+            "ce_sum": 819.4775719360772,
+            "ce": 0.16389551438721545
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4844,
+            "accuracy": 0.9688,
+            "ce_sum": 598.3976056417131,
+            "ce": 0.11967952112834261
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4752,
+            "accuracy": 0.9504,
+            "ce_sum": 814.7768510123525,
+            "ce": 0.1629553702024705
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4835,
+            "accuracy": 0.967,
+            "ce_sum": 610.7006822470446,
+            "ce": 0.12214013644940892
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4756,
+            "accuracy": 0.9512,
+            "ce_sum": 829.2281363014872,
+            "ce": 0.16584562726029745
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 4829,
+            "accuracy": 0.9658,
+            "ce_sum": 591.559890098773,
+            "ce": 0.11831197801975461
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4745,
+            "accuracy": 0.949,
+            "ce_sum": 827.4255932544676,
+            "ce": 0.16548511865089352
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 4845,
+            "accuracy": 0.969,
+            "ce_sum": 539.6626678390443,
+            "ce": 0.10793253356780885
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4780,
+            "accuracy": 0.956,
+            "ce_sum": 765.0025754043328,
+            "ce": 0.15300051508086657
+          }
+        }
+      ]
+    },
+    {
+      "name": "s202609142-native32-none",
+      "seed": 202609142,
+      "policy": "native32",
+      "augmentation": "none",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 727,
+            "accuracy": 0.1454,
+            "ce_sum": 11486.143020768073,
+            "ce": 2.2972286041536147
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 761,
+            "accuracy": 0.1522,
+            "ce_sum": 11481.127116018904,
+            "ce": 2.296225423203781
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 4374,
+            "accuracy": 0.8748,
+            "ce_sum": 2600.175717281188,
+            "ce": 0.5200351434562376
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4284,
+            "accuracy": 0.8568,
+            "ce_sum": 2777.502112331097,
+            "ce": 0.5555004224662194
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4374,
+            "accuracy": 0.8748,
+            "ce_sum": 2306.0492455475687,
+            "ce": 0.46120984910951374
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4326,
+            "accuracy": 0.8652,
+            "ce_sum": 2479.4282978463934,
+            "ce": 0.4958856595692787
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4363,
+            "accuracy": 0.8726,
+            "ce_sum": 2235.72839790099,
+            "ce": 0.44714567958019796
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4286,
+            "accuracy": 0.8572,
+            "ce_sum": 2437.9740106957256,
+            "ce": 0.48759480213914513
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4354,
+            "accuracy": 0.8708,
+            "ce_sum": 2266.0256586470705,
+            "ce": 0.4532051317294141
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4279,
+            "accuracy": 0.8558,
+            "ce_sum": 2443.9722170758782,
+            "ce": 0.48879444341517564
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4396,
+            "accuracy": 0.8792,
+            "ce_sum": 2205.0658686506554,
+            "ce": 0.44101317373013105
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4310,
+            "accuracy": 0.862,
+            "ce_sum": 2417.2954847753363,
+            "ce": 0.4834590969550673
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4392,
+            "accuracy": 0.8784,
+            "ce_sum": 2203.8490559099623,
+            "ce": 0.4407698111819925
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4309,
+            "accuracy": 0.8618,
+            "ce_sum": 2408.677638388239,
+            "ce": 0.48173552767764777
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4391,
+            "accuracy": 0.8782,
+            "ce_sum": 2208.281664899635,
+            "ce": 0.441656332979927
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4308,
+            "accuracy": 0.8616,
+            "ce_sum": 2395.216695607033,
+            "ce": 0.4790433391214066
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4414,
+            "accuracy": 0.8828,
+            "ce_sum": 2160.140864365713,
+            "ce": 0.43202817287314255
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4306,
+            "accuracy": 0.8612,
+            "ce_sum": 2360.9067304755176,
+            "ce": 0.47218134609510354
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 4410,
+            "accuracy": 0.882,
+            "ce_sum": 2156.0148468691364,
+            "ce": 0.4312029693738273
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4316,
+            "accuracy": 0.8632,
+            "ce_sum": 2350.6490657298846,
+            "ce": 0.4701298131459769
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4441,
+            "accuracy": 0.8882,
+            "ce_sum": 2152.03294796529,
+            "ce": 0.430406589593058
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4318,
+            "accuracy": 0.8636,
+            "ce_sum": 2352.6520384963505,
+            "ce": 0.4705304076992701
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4432,
+            "accuracy": 0.8864,
+            "ce_sum": 2146.739477962604,
+            "ce": 0.4293478955925208
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4315,
+            "accuracy": 0.863,
+            "ce_sum": 2352.28294977662,
+            "ce": 0.470456589955324
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4446,
+            "accuracy": 0.8892,
+            "ce_sum": 2122.040819598826,
+            "ce": 0.4244081639197652
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4345,
+            "accuracy": 0.869,
+            "ce_sum": 2339.4274445317756,
+            "ce": 0.4678854889063551
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4429,
+            "accuracy": 0.8858,
+            "ce_sum": 2142.385320499155,
+            "ce": 0.428477064099831
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4332,
+            "accuracy": 0.8664,
+            "ce_sum": 2342.1039648334217,
+            "ce": 0.4684207929666844
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4439,
+            "accuracy": 0.8878,
+            "ce_sum": 2151.6061537786486,
+            "ce": 0.4303212307557297
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4317,
+            "accuracy": 0.8634,
+            "ce_sum": 2372.201283208948,
+            "ce": 0.4744402566417896
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4401,
+            "accuracy": 0.8802,
+            "ce_sum": 2209.1804392041763,
+            "ce": 0.4418360878408353
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4290,
+            "accuracy": 0.858,
+            "ce_sum": 2436.6358621145373,
+            "ce": 0.48732717242290746
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4382,
+            "accuracy": 0.8764,
+            "ce_sum": 2238.7931923223605,
+            "ce": 0.4477586384644721
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4275,
+            "accuracy": 0.855,
+            "ce_sum": 2456.9409406885884,
+            "ce": 0.4913881881377177
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4455,
+            "accuracy": 0.891,
+            "ce_sum": 2087.974797607841,
+            "ce": 0.4175949595215682
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4338,
+            "accuracy": 0.8676,
+            "ce_sum": 2303.7871528282103,
+            "ce": 0.46075743056564206
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4438,
+            "accuracy": 0.8876,
+            "ce_sum": 2136.893641341973,
+            "ce": 0.42737872826839457
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4336,
+            "accuracy": 0.8672,
+            "ce_sum": 2356.0681389175757,
+            "ce": 0.4712136277835151
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4436,
+            "accuracy": 0.8872,
+            "ce_sum": 2147.302949787504,
+            "ce": 0.4294605899575008
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4332,
+            "accuracy": 0.8664,
+            "ce_sum": 2368.7902104256227,
+            "ce": 0.47375804208512456
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 4455,
+            "accuracy": 0.891,
+            "ce_sum": 2086.856997349691,
+            "ce": 0.41737139946993823
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4340,
+            "accuracy": 0.868,
+            "ce_sum": 2308.636348233171,
+            "ce": 0.46172726964663413
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 4426,
+            "accuracy": 0.8852,
+            "ce_sum": 2106.5161582757733,
+            "ce": 0.42130323165515465
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4316,
+            "accuracy": 0.8632,
+            "ce_sum": 2333.055314079926,
+            "ce": 0.46661106281598524
+          }
+        }
+      ]
+    },
+    {
+      "name": "s202609142-raw-none",
+      "seed": 202609142,
+      "policy": "raw",
+      "augmentation": "none",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 727,
+            "accuracy": 0.1454,
+            "ce_sum": 11486.143020768073,
+            "ce": 2.2972286041536147
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 761,
+            "accuracy": 0.1522,
+            "ce_sum": 11481.127116018904,
+            "ce": 2.296225423203781
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 4374,
+            "accuracy": 0.8748,
+            "ce_sum": 2600.175717281188,
+            "ce": 0.5200351434562376
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4284,
+            "accuracy": 0.8568,
+            "ce_sum": 2777.502112331097,
+            "ce": 0.5555004224662194
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4539,
+            "accuracy": 0.9078,
+            "ce_sum": 1772.946799906586,
+            "ce": 0.3545893599813172
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4455,
+            "accuracy": 0.891,
+            "ce_sum": 2051.8846447722112,
+            "ce": 0.4103769289544422
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4636,
+            "accuracy": 0.9272,
+            "ce_sum": 1265.077377432109,
+            "ce": 0.2530154754864218
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4502,
+            "accuracy": 0.9004,
+            "ce_sum": 1751.777371546976,
+            "ce": 0.3503554743093952
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4740,
+            "accuracy": 0.948,
+            "ce_sum": 954.5390974175914,
+            "ce": 0.1909078194835183
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4548,
+            "accuracy": 0.9096,
+            "ce_sum": 1582.5495254584318,
+            "ce": 0.31650990509168636
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4818,
+            "accuracy": 0.9636,
+            "ce_sum": 753.4152926223983,
+            "ce": 0.15068305852447966
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4584,
+            "accuracy": 0.9168,
+            "ce_sum": 1490.1813632895994,
+            "ce": 0.2980362726579199
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4838,
+            "accuracy": 0.9676,
+            "ce_sum": 634.835572103179,
+            "ce": 0.1269671144206358
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4589,
+            "accuracy": 0.9178,
+            "ce_sum": 1494.077427867465,
+            "ce": 0.298815485573493
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4876,
+            "accuracy": 0.9752,
+            "ce_sum": 517.4749781845419,
+            "ce": 0.10349499563690838
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4596,
+            "accuracy": 0.9192,
+            "ce_sum": 1475.843421425495,
+            "ce": 0.295168684285099
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4914,
+            "accuracy": 0.9828,
+            "ce_sum": 413.48936366680806,
+            "ce": 0.08269787273336161
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4599,
+            "accuracy": 0.9198,
+            "ce_sum": 1477.2186769674079,
+            "ce": 0.29544373539348157
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 4917,
+            "accuracy": 0.9834,
+            "ce_sum": 349.428165392113,
+            "ce": 0.0698856330784226
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4606,
+            "accuracy": 0.9212,
+            "ce_sum": 1476.3417786655139,
+            "ce": 0.2952683557331028
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4948,
+            "accuracy": 0.9896,
+            "ce_sum": 282.097589287898,
+            "ce": 0.05641951785757961
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4622,
+            "accuracy": 0.9244,
+            "ce_sum": 1479.0597040142923,
+            "ce": 0.29581194080285844
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4962,
+            "accuracy": 0.9924,
+            "ce_sum": 238.19497391351445,
+            "ce": 0.04763899478270289
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4613,
+            "accuracy": 0.9226,
+            "ce_sum": 1533.8393512863488,
+            "ce": 0.30676787025726976
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4972,
+            "accuracy": 0.9944,
+            "ce_sum": 199.79893198841918,
+            "ce": 0.039959786397683834
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4595,
+            "accuracy": 0.919,
+            "ce_sum": 1620.1474065621694,
+            "ce": 0.32402948131243386
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4981,
+            "accuracy": 0.9962,
+            "ce_sum": 163.41651539128887,
+            "ce": 0.03268330307825777
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4609,
+            "accuracy": 0.9218,
+            "ce_sum": 1586.1820215891298,
+            "ce": 0.31723640431782596
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4985,
+            "accuracy": 0.997,
+            "ce_sum": 141.72379200686862,
+            "ce": 0.028344758401373724
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4612,
+            "accuracy": 0.9224,
+            "ce_sum": 1636.5547102825392,
+            "ce": 0.32731094205650785
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4993,
+            "accuracy": 0.9986,
+            "ce_sum": 107.56081134275041,
+            "ce": 0.021512162268550083
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4617,
+            "accuracy": 0.9234,
+            "ce_sum": 1634.4324040661525,
+            "ce": 0.3268864808132305
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4993,
+            "accuracy": 0.9986,
+            "ce_sum": 96.29023294279139,
+            "ce": 0.01925804658855828
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4618,
+            "accuracy": 0.9236,
+            "ce_sum": 1708.9118340923296,
+            "ce": 0.3417823668184659
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4998,
+            "accuracy": 0.9996,
+            "ce_sum": 75.38375257781175,
+            "ce": 0.01507675051556235
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4626,
+            "accuracy": 0.9252,
+            "ce_sum": 1705.9319165781253,
+            "ce": 0.34118638331562506
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4998,
+            "accuracy": 0.9996,
+            "ce_sum": 66.76464467688844,
+            "ce": 0.013352928935377687
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4624,
+            "accuracy": 0.9248,
+            "ce_sum": 1748.0928988237517,
+            "ce": 0.34961857976475036
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4999,
+            "accuracy": 0.9998,
+            "ce_sum": 55.71333641968721,
+            "ce": 0.011142667283937441
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4623,
+            "accuracy": 0.9246,
+            "ce_sum": 1755.0987362207738,
+            "ce": 0.35101974724415475
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 5000,
+            "accuracy": 1.0,
+            "ce_sum": 47.967469827317046,
+            "ce": 0.009593493965463409
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4619,
+            "accuracy": 0.9238,
+            "ce_sum": 1822.1831255918153,
+            "ce": 0.36443662511836306
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 5000,
+            "accuracy": 1.0,
+            "ce_sum": 43.573807481471,
+            "ce": 0.0087147614962942
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4617,
+            "accuracy": 0.9234,
+            "ce_sum": 1851.0109432750105,
+            "ce": 0.3702021886550021
+          }
+        }
+      ]
+    },
+    {
+      "name": "s202609142-raw-translate",
+      "seed": 202609142,
+      "policy": "raw",
+      "augmentation": "translate",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 727,
+            "accuracy": 0.1454,
+            "ce_sum": 11486.143020768073,
+            "ce": 2.2972286041536147
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 761,
+            "accuracy": 0.1522,
+            "ce_sum": 11481.127116018904,
+            "ce": 2.296225423203781
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 4118,
+            "accuracy": 0.8236,
+            "ce_sum": 3798.8402588073754,
+            "ce": 0.7597680517614751
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4025,
+            "accuracy": 0.805,
+            "ce_sum": 3917.5441468738177,
+            "ce": 0.7835088293747635
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4270,
+            "accuracy": 0.854,
+            "ce_sum": 2873.67424860355,
+            "ce": 0.57473484972071
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4180,
+            "accuracy": 0.836,
+            "ce_sum": 3049.9866007874616,
+            "ce": 0.6099973201574923
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4368,
+            "accuracy": 0.8736,
+            "ce_sum": 2277.4281597636877,
+            "ce": 0.45548563195273756
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4328,
+            "accuracy": 0.8656,
+            "ce_sum": 2478.6215888845686,
+            "ce": 0.4957243177769137
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4508,
+            "accuracy": 0.9016,
+            "ce_sum": 1848.7729431092725,
+            "ce": 0.3697545886218545
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4436,
+            "accuracy": 0.8872,
+            "ce_sum": 2075.888764223104,
+            "ce": 0.4151777528446208
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4599,
+            "accuracy": 0.9198,
+            "ce_sum": 1524.8156908543158,
+            "ce": 0.3049631381708632
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4527,
+            "accuracy": 0.9054,
+            "ce_sum": 1748.566664326908,
+            "ce": 0.3497133328653816
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4659,
+            "accuracy": 0.9318,
+            "ce_sum": 1343.0845406266549,
+            "ce": 0.26861690812533096
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4575,
+            "accuracy": 0.915,
+            "ce_sum": 1553.9192907482106,
+            "ce": 0.31078385814964216
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4688,
+            "accuracy": 0.9376,
+            "ce_sum": 1204.378685912445,
+            "ce": 0.240875737182489
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4616,
+            "accuracy": 0.9232,
+            "ce_sum": 1423.3174842213198,
+            "ce": 0.28466349684426395
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4714,
+            "accuracy": 0.9428,
+            "ce_sum": 1104.2546992613427,
+            "ce": 0.22085093985226853
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4641,
+            "accuracy": 0.9282,
+            "ce_sum": 1324.2523842446042,
+            "ce": 0.2648504768489208
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 4736,
+            "accuracy": 0.9472,
+            "ce_sum": 1013.6095992842681,
+            "ce": 0.20272191985685362
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4666,
+            "accuracy": 0.9332,
+            "ce_sum": 1235.078079529805,
+            "ce": 0.24701561590596102
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4744,
+            "accuracy": 0.9488,
+            "ce_sum": 958.4265549275965,
+            "ce": 0.1916853109855193
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4687,
+            "accuracy": 0.9374,
+            "ce_sum": 1168.7664329994318,
+            "ce": 0.23375328659988637
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4732,
+            "accuracy": 0.9464,
+            "ce_sum": 931.7909828138606,
+            "ce": 0.18635819656277214
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4666,
+            "accuracy": 0.9332,
+            "ce_sum": 1156.339337597257,
+            "ce": 0.23126786751945141
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4761,
+            "accuracy": 0.9522,
+            "ce_sum": 881.2986474617143,
+            "ce": 0.17625972949234286
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4679,
+            "accuracy": 0.9358,
+            "ce_sum": 1137.7733145707357,
+            "ce": 0.22755466291414714
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4770,
+            "accuracy": 0.954,
+            "ce_sum": 863.5996779619527,
+            "ce": 0.17271993559239054
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4675,
+            "accuracy": 0.935,
+            "ce_sum": 1125.074099636275,
+            "ce": 0.22501481992725497
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4799,
+            "accuracy": 0.9598,
+            "ce_sum": 759.1907715403461,
+            "ce": 0.1518381543080692
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4708,
+            "accuracy": 0.9416,
+            "ce_sum": 1000.1958800267009,
+            "ce": 0.20003917600534019
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4773,
+            "accuracy": 0.9546,
+            "ce_sum": 775.8159891297134,
+            "ce": 0.15516319782594268
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4708,
+            "accuracy": 0.9416,
+            "ce_sum": 990.7112758680167,
+            "ce": 0.19814225517360334
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4804,
+            "accuracy": 0.9608,
+            "ce_sum": 719.2791113883276,
+            "ce": 0.14385582227766552
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4707,
+            "accuracy": 0.9414,
+            "ce_sum": 1020.2529871345499,
+            "ce": 0.20405059742690998
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4809,
+            "accuracy": 0.9618,
+            "ce_sum": 709.3585632651243,
+            "ce": 0.14187171265302487
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4711,
+            "accuracy": 0.9422,
+            "ce_sum": 978.7251991685372,
+            "ce": 0.19574503983370745
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4826,
+            "accuracy": 0.9652,
+            "ce_sum": 650.209598317335,
+            "ce": 0.130041919663467
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4740,
+            "accuracy": 0.948,
+            "ce_sum": 910.0104262731779,
+            "ce": 0.1820020852546356
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4811,
+            "accuracy": 0.9622,
+            "ce_sum": 644.0217039810832,
+            "ce": 0.12880434079621664
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4726,
+            "accuracy": 0.9452,
+            "ce_sum": 911.6221366560044,
+            "ce": 0.18232442733120088
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 4834,
+            "accuracy": 0.9668,
+            "ce_sum": 589.0196691769216,
+            "ce": 0.11780393383538433
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4758,
+            "accuracy": 0.9516,
+            "ce_sum": 874.3984441374096,
+            "ce": 0.17487968882748192
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 4846,
+            "accuracy": 0.9692,
+            "ce_sum": 574.8637175395818,
+            "ce": 0.11497274350791635
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4757,
+            "accuracy": 0.9514,
+            "ce_sum": 876.5223456342763,
+            "ce": 0.17530446912685527
+          }
+        }
+      ]
+    },
+    {
+      "name": "s202609142-native32-translate",
+      "seed": 202609142,
+      "policy": "native32",
+      "augmentation": "translate",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 727,
+            "accuracy": 0.1454,
+            "ce_sum": 11486.143020768073,
+            "ce": 2.2972286041536147
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 761,
+            "accuracy": 0.1522,
+            "ce_sum": 11481.127116018904,
+            "ce": 2.296225423203781
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 4118,
+            "accuracy": 0.8236,
+            "ce_sum": 3798.8402588073754,
+            "ce": 0.7597680517614751
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4025,
+            "accuracy": 0.805,
+            "ce_sum": 3917.5441468738177,
+            "ce": 0.7835088293747635
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4151,
+            "accuracy": 0.8302,
+            "ce_sum": 3515.8952006087807,
+            "ce": 0.7031790401217561
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4083,
+            "accuracy": 0.8166,
+            "ce_sum": 3628.937154029581,
+            "ce": 0.7257874308059162
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4083,
+            "accuracy": 0.8166,
+            "ce_sum": 3594.3439751228,
+            "ce": 0.71886879502456
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4050,
+            "accuracy": 0.81,
+            "ce_sum": 3696.170164670709,
+            "ce": 0.7392340329341418
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4124,
+            "accuracy": 0.8248,
+            "ce_sum": 3513.7806501615864,
+            "ce": 0.7027561300323173
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4060,
+            "accuracy": 0.812,
+            "ce_sum": 3621.2126566759293,
+            "ce": 0.7242425313351859
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4157,
+            "accuracy": 0.8314,
+            "ce_sum": 3469.40906077686,
+            "ce": 0.6938818121553719
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4115,
+            "accuracy": 0.823,
+            "ce_sum": 3562.9864818169995,
+            "ce": 0.7125972963633999
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4136,
+            "accuracy": 0.8272,
+            "ce_sum": 3448.1751830683015,
+            "ce": 0.6896350366136603
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4088,
+            "accuracy": 0.8176,
+            "ce_sum": 3539.8979433939794,
+            "ce": 0.7079795886787958
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4197,
+            "accuracy": 0.8394,
+            "ce_sum": 3384.9837312878904,
+            "ce": 0.6769967462575781
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4144,
+            "accuracy": 0.8288,
+            "ce_sum": 3476.3067743213624,
+            "ce": 0.6952613548642724
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4164,
+            "accuracy": 0.8328,
+            "ce_sum": 3350.6479409724484,
+            "ce": 0.6701295881944896
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4116,
+            "accuracy": 0.8232,
+            "ce_sum": 3466.38239146947,
+            "ce": 0.6932764782938939
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 4129,
+            "accuracy": 0.8258,
+            "ce_sum": 3375.2623566027587,
+            "ce": 0.6750524713205518
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4054,
+            "accuracy": 0.8108,
+            "ce_sum": 3493.894697477147,
+            "ce": 0.6987789394954294
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4190,
+            "accuracy": 0.838,
+            "ce_sum": 3346.9568868345696,
+            "ce": 0.6693913773669139
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4130,
+            "accuracy": 0.826,
+            "ce_sum": 3457.073797613451,
+            "ce": 0.6914147595226902
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4095,
+            "accuracy": 0.819,
+            "ce_sum": 3407.5611523361513,
+            "ce": 0.6815122304672303
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4051,
+            "accuracy": 0.8102,
+            "ce_sum": 3497.461763266712,
+            "ce": 0.6994923526533424
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4159,
+            "accuracy": 0.8318,
+            "ce_sum": 3326.5865646714783,
+            "ce": 0.6653173129342956
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4078,
+            "accuracy": 0.8156,
+            "ce_sum": 3423.251534748381,
+            "ce": 0.6846503069496762
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4157,
+            "accuracy": 0.8314,
+            "ce_sum": 3352.160142607757,
+            "ce": 0.6704320285215514
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4072,
+            "accuracy": 0.8144,
+            "ce_sum": 3458.9511277458146,
+            "ce": 0.6917902255491629
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4102,
+            "accuracy": 0.8204,
+            "ce_sum": 3312.3586373184635,
+            "ce": 0.6624717274636927
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4042,
+            "accuracy": 0.8084,
+            "ce_sum": 3427.7142098313266,
+            "ce": 0.6855428419662654
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4091,
+            "accuracy": 0.8182,
+            "ce_sum": 3348.212571049773,
+            "ce": 0.6696425142099546
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4029,
+            "accuracy": 0.8058,
+            "ce_sum": 3450.867378763641,
+            "ce": 0.6901734757527282
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4069,
+            "accuracy": 0.8138,
+            "ce_sum": 3385.7945586866445,
+            "ce": 0.6771589117373289
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4021,
+            "accuracy": 0.8042,
+            "ce_sum": 3524.6377768252883,
+            "ce": 0.7049275553650577
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4147,
+            "accuracy": 0.8294,
+            "ce_sum": 3295.5078460190184,
+            "ce": 0.6591015692038037
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4100,
+            "accuracy": 0.82,
+            "ce_sum": 3418.944304849045,
+            "ce": 0.683788860969809
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4112,
+            "accuracy": 0.8224,
+            "ce_sum": 3301.3997379952275,
+            "ce": 0.6602799475990455
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4074,
+            "accuracy": 0.8148,
+            "ce_sum": 3415.920420417171,
+            "ce": 0.6831840840834342
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4173,
+            "accuracy": 0.8346,
+            "ce_sum": 3236.1279830319563,
+            "ce": 0.6472255966063912
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4108,
+            "accuracy": 0.8216,
+            "ce_sum": 3356.690165513018,
+            "ce": 0.6713380331026036
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 4139,
+            "accuracy": 0.8278,
+            "ce_sum": 3245.95624836085,
+            "ce": 0.64919124967217
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4076,
+            "accuracy": 0.8152,
+            "ce_sum": 3378.656984517046,
+            "ce": 0.6757313969034092
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 4153,
+            "accuracy": 0.8306,
+            "ce_sum": 3149.6643641247324,
+            "ce": 0.6299328728249465
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4082,
+            "accuracy": 0.8164,
+            "ce_sum": 3268.859659421598,
+            "ce": 0.6537719318843196
+          }
+        }
+      ]
+    },
+    {
+      "name": "s202609143-raw-none",
+      "seed": 202609143,
+      "policy": "raw",
+      "augmentation": "none",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 588,
+            "accuracy": 0.1176,
+            "ce_sum": 11529.109267467671,
+            "ce": 2.3058218534935344
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 628,
+            "accuracy": 0.1256,
+            "ce_sum": 11522.733543860673,
+            "ce": 2.3045467087721345
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 4323,
+            "accuracy": 0.8646,
+            "ce_sum": 2803.455114755322,
+            "ce": 0.5606910229510644
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4305,
+            "accuracy": 0.861,
+            "ce_sum": 2848.664422268092,
+            "ce": 0.5697328844536184
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4513,
+            "accuracy": 0.9026,
+            "ce_sum": 1847.0891601178025,
+            "ce": 0.3694178320235605
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4452,
+            "accuracy": 0.8904,
+            "ce_sum": 1975.1272469829707,
+            "ce": 0.3950254493965942
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4609,
+            "accuracy": 0.9218,
+            "ce_sum": 1380.2319065536083,
+            "ce": 0.2760463813107217
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4529,
+            "accuracy": 0.9058,
+            "ce_sum": 1635.7406394065172,
+            "ce": 0.32714812788130343
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4713,
+            "accuracy": 0.9426,
+            "ce_sum": 1028.7273694076794,
+            "ce": 0.20574547388153588
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4595,
+            "accuracy": 0.919,
+            "ce_sum": 1418.326346721103,
+            "ce": 0.2836652693442206
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4781,
+            "accuracy": 0.9562,
+            "ce_sum": 853.227803483387,
+            "ce": 0.1706455606966774
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4627,
+            "accuracy": 0.9254,
+            "ce_sum": 1338.767836452272,
+            "ce": 0.2677535672904544
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4836,
+            "accuracy": 0.9672,
+            "ce_sum": 688.0182373497453,
+            "ce": 0.13760364746994905
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4631,
+            "accuracy": 0.9262,
+            "ce_sum": 1288.0039037771105,
+            "ce": 0.2576007807554221
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4872,
+            "accuracy": 0.9744,
+            "ce_sum": 560.5569604179003,
+            "ce": 0.11211139208358006
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4645,
+            "accuracy": 0.929,
+            "ce_sum": 1234.3642144087555,
+            "ce": 0.2468728428817511
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4886,
+            "accuracy": 0.9772,
+            "ce_sum": 480.1228692663238,
+            "ce": 0.09602457385326475
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4639,
+            "accuracy": 0.9278,
+            "ce_sum": 1249.6317953544599,
+            "ce": 0.24992635907089197
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 4916,
+            "accuracy": 0.9832,
+            "ce_sum": 385.03522708642095,
+            "ce": 0.07700704541728419
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4656,
+            "accuracy": 0.9312,
+            "ce_sum": 1205.2362910631516,
+            "ce": 0.24104725821263032
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4946,
+            "accuracy": 0.9892,
+            "ce_sum": 304.29025440156323,
+            "ce": 0.060858050880312646
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4664,
+            "accuracy": 0.9328,
+            "ce_sum": 1195.0916984156113,
+            "ce": 0.23901833968312225
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4958,
+            "accuracy": 0.9916,
+            "ce_sum": 255.89474076144646,
+            "ce": 0.051178948152289294
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4669,
+            "accuracy": 0.9338,
+            "ce_sum": 1207.2169602149577,
+            "ce": 0.24144339204299153
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4970,
+            "accuracy": 0.994,
+            "ce_sum": 205.564269323511,
+            "ce": 0.041112853864702203
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4675,
+            "accuracy": 0.935,
+            "ce_sum": 1211.3952026385716,
+            "ce": 0.24227904052771432
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4987,
+            "accuracy": 0.9974,
+            "ce_sum": 167.3103354349429,
+            "ce": 0.03346206708698858
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4667,
+            "accuracy": 0.9334,
+            "ce_sum": 1223.3476535102586,
+            "ce": 0.24466953070205172
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4990,
+            "accuracy": 0.998,
+            "ce_sum": 134.89791579054526,
+            "ce": 0.02697958315810905
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4683,
+            "accuracy": 0.9366,
+            "ce_sum": 1180.29875743642,
+            "ce": 0.23605975148728398
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4993,
+            "accuracy": 0.9986,
+            "ce_sum": 110.2052852932631,
+            "ce": 0.02204105705865262
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4677,
+            "accuracy": 0.9354,
+            "ce_sum": 1221.2296563023087,
+            "ce": 0.24424593126046173
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4994,
+            "accuracy": 0.9988,
+            "ce_sum": 95.27462537292129,
+            "ce": 0.01905492507458426
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4678,
+            "accuracy": 0.9356,
+            "ce_sum": 1256.7406443997643,
+            "ce": 0.25134812887995284
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4999,
+            "accuracy": 0.9998,
+            "ce_sum": 72.94372772304791,
+            "ce": 0.014588745544609583
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4681,
+            "accuracy": 0.9362,
+            "ce_sum": 1252.6403147024503,
+            "ce": 0.25052806294049007
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4998,
+            "accuracy": 0.9996,
+            "ce_sum": 66.01129772777257,
+            "ce": 0.013202259545554514
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4670,
+            "accuracy": 0.934,
+            "ce_sum": 1281.743268000578,
+            "ce": 0.2563486536001156
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4999,
+            "accuracy": 0.9998,
+            "ce_sum": 54.438970013601406,
+            "ce": 0.010887794002720282
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4688,
+            "accuracy": 0.9376,
+            "ce_sum": 1280.6519371022434,
+            "ce": 0.2561303874204487
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 4999,
+            "accuracy": 0.9998,
+            "ce_sum": 46.90059975934859,
+            "ce": 0.009380119951869718
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4681,
+            "accuracy": 0.9362,
+            "ce_sum": 1318.6308319879397,
+            "ce": 0.26372616639758795
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 4999,
+            "accuracy": 0.9998,
+            "ce_sum": 40.663596437672986,
+            "ce": 0.008132719287534597
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4693,
+            "accuracy": 0.9386,
+            "ce_sum": 1322.5617981385192,
+            "ce": 0.26451235962770386
+          }
+        }
+      ]
+    },
+    {
+      "name": "s202609143-native32-none",
+      "seed": 202609143,
+      "policy": "native32",
+      "augmentation": "none",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 588,
+            "accuracy": 0.1176,
+            "ce_sum": 11529.109267467671,
+            "ce": 2.3058218534935344
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 628,
+            "accuracy": 0.1256,
+            "ce_sum": 11522.733543860673,
+            "ce": 2.3045467087721345
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 4323,
+            "accuracy": 0.8646,
+            "ce_sum": 2803.455114755322,
+            "ce": 0.5606910229510644
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4305,
+            "accuracy": 0.861,
+            "ce_sum": 2848.664422268092,
+            "ce": 0.5697328844536184
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4348,
+            "accuracy": 0.8696,
+            "ce_sum": 2391.8611125060024,
+            "ce": 0.4783722225012005
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4338,
+            "accuracy": 0.8676,
+            "ce_sum": 2427.263181846261,
+            "ce": 0.4854526363692522
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4296,
+            "accuracy": 0.8592,
+            "ce_sum": 2448.5256523029943,
+            "ce": 0.4897051304605989
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4286,
+            "accuracy": 0.8572,
+            "ce_sum": 2455.322535537566,
+            "ce": 0.49106450710751326
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4353,
+            "accuracy": 0.8706,
+            "ce_sum": 2337.4911210636524,
+            "ce": 0.46749822421273046
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4327,
+            "accuracy": 0.8654,
+            "ce_sum": 2367.0261693402017,
+            "ce": 0.47340523386804034
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4345,
+            "accuracy": 0.869,
+            "ce_sum": 2341.3916136766165,
+            "ce": 0.4682783227353233
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4307,
+            "accuracy": 0.8614,
+            "ce_sum": 2374.2983321354677,
+            "ce": 0.47485966642709354
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4360,
+            "accuracy": 0.872,
+            "ce_sum": 2288.7555899878666,
+            "ce": 0.45775111799757334
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4334,
+            "accuracy": 0.8668,
+            "ce_sum": 2321.6390837916256,
+            "ce": 0.46432781675832513
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4359,
+            "accuracy": 0.8718,
+            "ce_sum": 2331.148940315272,
+            "ce": 0.4662297880630544
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4323,
+            "accuracy": 0.8646,
+            "ce_sum": 2379.1389578085586,
+            "ce": 0.47582779156171173
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4399,
+            "accuracy": 0.8798,
+            "ce_sum": 2298.8277134313053,
+            "ce": 0.4597655426862611
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4368,
+            "accuracy": 0.8736,
+            "ce_sum": 2362.0905970768504,
+            "ce": 0.4724181194153701
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 4362,
+            "accuracy": 0.8724,
+            "ce_sum": 2276.3662114758836,
+            "ce": 0.45527324229517674
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4344,
+            "accuracy": 0.8688,
+            "ce_sum": 2316.860208583248,
+            "ce": 0.46337204171664964
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4362,
+            "accuracy": 0.8724,
+            "ce_sum": 2280.3062621452473,
+            "ce": 0.45606125242904944
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4297,
+            "accuracy": 0.8594,
+            "ce_sum": 2344.0727623500816,
+            "ce": 0.4688145524700163
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4396,
+            "accuracy": 0.8792,
+            "ce_sum": 2246.03740694425,
+            "ce": 0.44920748138885
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4370,
+            "accuracy": 0.874,
+            "ce_sum": 2289.34066964639,
+            "ce": 0.457868133929278
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4418,
+            "accuracy": 0.8836,
+            "ce_sum": 2215.0893370899994,
+            "ce": 0.44301786741799987
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4374,
+            "accuracy": 0.8748,
+            "ce_sum": 2263.42131498917,
+            "ce": 0.45268426299783393
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4411,
+            "accuracy": 0.8822,
+            "ce_sum": 2243.6152641061494,
+            "ce": 0.4487230528212299
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4362,
+            "accuracy": 0.8724,
+            "ce_sum": 2322.756179938314,
+            "ce": 0.4645512359876628
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4408,
+            "accuracy": 0.8816,
+            "ce_sum": 2213.5992027355564,
+            "ce": 0.4427198405471113
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4370,
+            "accuracy": 0.874,
+            "ce_sum": 2233.7172593385267,
+            "ce": 0.4467434518677053
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4423,
+            "accuracy": 0.8846,
+            "ce_sum": 2166.1597954772624,
+            "ce": 0.4332319590954525
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4376,
+            "accuracy": 0.8752,
+            "ce_sum": 2194.0496780872027,
+            "ce": 0.4388099356174405
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4409,
+            "accuracy": 0.8818,
+            "ce_sum": 2204.9558461956713,
+            "ce": 0.44099116923913423
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4374,
+            "accuracy": 0.8748,
+            "ce_sum": 2255.588067790707,
+            "ce": 0.4511176135581414
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4425,
+            "accuracy": 0.885,
+            "ce_sum": 2193.949486835593,
+            "ce": 0.43878989736711854
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4386,
+            "accuracy": 0.8772,
+            "ce_sum": 2240.8373010890086,
+            "ce": 0.44816746021780174
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4413,
+            "accuracy": 0.8826,
+            "ce_sum": 2161.4246306408204,
+            "ce": 0.4322849261281641
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4365,
+            "accuracy": 0.873,
+            "ce_sum": 2219.83303576986,
+            "ce": 0.443966607153972
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4436,
+            "accuracy": 0.8872,
+            "ce_sum": 2169.5446442155235,
+            "ce": 0.43390892884310467
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4403,
+            "accuracy": 0.8806,
+            "ce_sum": 2211.1287454318795,
+            "ce": 0.4422257490863759
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 4402,
+            "accuracy": 0.8804,
+            "ce_sum": 2224.06001681348,
+            "ce": 0.44481200336269605
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4362,
+            "accuracy": 0.8724,
+            "ce_sum": 2277.386829368754,
+            "ce": 0.4554773658737508
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 4437,
+            "accuracy": 0.8874,
+            "ce_sum": 2188.165282355991,
+            "ce": 0.4376330564711982
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4382,
+            "accuracy": 0.8764,
+            "ce_sum": 2239.6686741136723,
+            "ce": 0.44793373482273446
+          }
+        }
+      ]
+    },
+    {
+      "name": "s202609143-native32-translate",
+      "seed": 202609143,
+      "policy": "native32",
+      "augmentation": "translate",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 588,
+            "accuracy": 0.1176,
+            "ce_sum": 11529.109267467671,
+            "ce": 2.3058218534935344
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 628,
+            "accuracy": 0.1256,
+            "ce_sum": 11522.733543860673,
+            "ce": 2.3045467087721345
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 4022,
+            "accuracy": 0.8044,
+            "ce_sum": 4017.796238364511,
+            "ce": 0.8035592476729022
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4072,
+            "accuracy": 0.8144,
+            "ce_sum": 3913.0735338825098,
+            "ce": 0.7826147067765019
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4065,
+            "accuracy": 0.813,
+            "ce_sum": 3696.2600134679124,
+            "ce": 0.7392520026935825
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4098,
+            "accuracy": 0.8196,
+            "ce_sum": 3588.8187854832795,
+            "ce": 0.7177637570966559
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4032,
+            "accuracy": 0.8064,
+            "ce_sum": 3713.2835126692735,
+            "ce": 0.7426567025338547
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4039,
+            "accuracy": 0.8078,
+            "ce_sum": 3606.9839637275013,
+            "ce": 0.7213967927455003
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4137,
+            "accuracy": 0.8274,
+            "ce_sum": 3541.6720902331576,
+            "ce": 0.7083344180466316
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4166,
+            "accuracy": 0.8332,
+            "ce_sum": 3454.861943100379,
+            "ce": 0.6909723886200758
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4100,
+            "accuracy": 0.82,
+            "ce_sum": 3560.70879800879,
+            "ce": 0.712141759601758
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4145,
+            "accuracy": 0.829,
+            "ce_sum": 3461.6429821545585,
+            "ce": 0.6923285964309117
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4016,
+            "accuracy": 0.8032,
+            "ce_sum": 3588.933274702897,
+            "ce": 0.7177866549405794
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4076,
+            "accuracy": 0.8152,
+            "ce_sum": 3464.0639654965694,
+            "ce": 0.6928127930993139
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4063,
+            "accuracy": 0.8126,
+            "ce_sum": 3487.644603856536,
+            "ce": 0.6975289207713072
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4105,
+            "accuracy": 0.821,
+            "ce_sum": 3367.759491930573,
+            "ce": 0.6735518983861146
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4142,
+            "accuracy": 0.8284,
+            "ce_sum": 3447.1906178068602,
+            "ce": 0.689438123561372
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4156,
+            "accuracy": 0.8312,
+            "ce_sum": 3335.78899543926,
+            "ce": 0.667157799087852
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 3939,
+            "accuracy": 0.7878,
+            "ce_sum": 3592.5810189747885,
+            "ce": 0.7185162037949577
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 3996,
+            "accuracy": 0.7992,
+            "ce_sum": 3473.297840711116,
+            "ce": 0.6946595681422232
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4055,
+            "accuracy": 0.811,
+            "ce_sum": 3398.448592216811,
+            "ce": 0.6796897184433622
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4100,
+            "accuracy": 0.82,
+            "ce_sum": 3282.878124263884,
+            "ce": 0.6565756248527768
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4157,
+            "accuracy": 0.8314,
+            "ce_sum": 3420.3160536043606,
+            "ce": 0.6840632107208722
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4179,
+            "accuracy": 0.8358,
+            "ce_sum": 3301.522718427933,
+            "ce": 0.6603045436855866
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4063,
+            "accuracy": 0.8126,
+            "ce_sum": 3512.9104365968974,
+            "ce": 0.7025820873193794
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4094,
+            "accuracy": 0.8188,
+            "ce_sum": 3389.237101238363,
+            "ce": 0.6778474202476725
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4112,
+            "accuracy": 0.8224,
+            "ce_sum": 3469.8055715524424,
+            "ce": 0.6939611143104885
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4160,
+            "accuracy": 0.832,
+            "ce_sum": 3367.6570097152785,
+            "ce": 0.6735314019430557
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4116,
+            "accuracy": 0.8232,
+            "ce_sum": 3433.31550072661,
+            "ce": 0.6866631001453221
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4148,
+            "accuracy": 0.8296,
+            "ce_sum": 3332.2370201305357,
+            "ce": 0.6664474040261071
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4143,
+            "accuracy": 0.8286,
+            "ce_sum": 3350.1932408251387,
+            "ce": 0.6700386481650278
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4181,
+            "accuracy": 0.8362,
+            "ce_sum": 3240.9627253090384,
+            "ce": 0.6481925450618077
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4106,
+            "accuracy": 0.8212,
+            "ce_sum": 3392.39082450912,
+            "ce": 0.678478164901824
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4149,
+            "accuracy": 0.8298,
+            "ce_sum": 3288.3845907618165,
+            "ce": 0.6576769181523633
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4136,
+            "accuracy": 0.8272,
+            "ce_sum": 3384.4305610092174,
+            "ce": 0.6768861122018435
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4179,
+            "accuracy": 0.8358,
+            "ce_sum": 3283.224567450257,
+            "ce": 0.6566449134900514
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4065,
+            "accuracy": 0.813,
+            "ce_sum": 3375.1051688676575,
+            "ce": 0.6750210337735315
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4095,
+            "accuracy": 0.819,
+            "ce_sum": 3266.412504933341,
+            "ce": 0.6532825009866682
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4045,
+            "accuracy": 0.809,
+            "ce_sum": 3396.9345122776135,
+            "ce": 0.6793869024555227
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4095,
+            "accuracy": 0.819,
+            "ce_sum": 3266.915457202926,
+            "ce": 0.6533830914405853
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 4122,
+            "accuracy": 0.8244,
+            "ce_sum": 3379.2895344356893,
+            "ce": 0.6758579068871379
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4172,
+            "accuracy": 0.8344,
+            "ce_sum": 3255.9697327713166,
+            "ce": 0.6511939465542633
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 4208,
+            "accuracy": 0.8416,
+            "ce_sum": 3278.339230428764,
+            "ce": 0.6556678460857528
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4227,
+            "accuracy": 0.8454,
+            "ce_sum": 3166.6796615619987,
+            "ce": 0.6333359323123997
+          }
+        }
+      ]
+    },
+    {
+      "name": "s202609143-raw-translate",
+      "seed": 202609143,
+      "policy": "raw",
+      "augmentation": "translate",
+      "metrics": [
+        {
+          "step": 0,
+          "train": {
+            "count": 5000,
+            "correct": 588,
+            "accuracy": 0.1176,
+            "ce_sum": 11529.109267467671,
+            "ce": 2.3058218534935344
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 628,
+            "accuracy": 0.1256,
+            "ce_sum": 11522.733543860673,
+            "ce": 2.3045467087721345
+          }
+        },
+        {
+          "step": 100,
+          "train": {
+            "count": 5000,
+            "correct": 4022,
+            "accuracy": 0.8044,
+            "ce_sum": 4017.796238364511,
+            "ce": 0.8035592476729022
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4072,
+            "accuracy": 0.8144,
+            "ce_sum": 3913.0735338825098,
+            "ce": 0.7826147067765019
+          }
+        },
+        {
+          "step": 200,
+          "train": {
+            "count": 5000,
+            "correct": 4203,
+            "accuracy": 0.8406,
+            "ce_sum": 3005.9357918413916,
+            "ce": 0.6011871583682783
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4245,
+            "accuracy": 0.849,
+            "ce_sum": 2910.36139544252,
+            "ce": 0.582072279088504
+          }
+        },
+        {
+          "step": 400,
+          "train": {
+            "count": 5000,
+            "correct": 4270,
+            "accuracy": 0.854,
+            "ce_sum": 2560.9593445688047,
+            "ce": 0.5121918689137609
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4327,
+            "accuracy": 0.8654,
+            "ce_sum": 2479.868361327269,
+            "ce": 0.49597367226545386
+          }
+        },
+        {
+          "step": 600,
+          "train": {
+            "count": 5000,
+            "correct": 4494,
+            "accuracy": 0.8988,
+            "ce_sum": 1957.157827373706,
+            "ce": 0.39143156547474117
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4520,
+            "accuracy": 0.904,
+            "ce_sum": 1916.0623070575323,
+            "ce": 0.38321246141150644
+          }
+        },
+        {
+          "step": 800,
+          "train": {
+            "count": 5000,
+            "correct": 4579,
+            "accuracy": 0.9158,
+            "ce_sum": 1725.0223148475818,
+            "ce": 0.34500446296951637
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4578,
+            "accuracy": 0.9156,
+            "ce_sum": 1727.6869729429463,
+            "ce": 0.3455373945885893
+          }
+        },
+        {
+          "step": 1000,
+          "train": {
+            "count": 5000,
+            "correct": 4600,
+            "accuracy": 0.92,
+            "ce_sum": 1542.683138837821,
+            "ce": 0.3085366277675642
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4603,
+            "accuracy": 0.9206,
+            "ce_sum": 1544.121491855426,
+            "ce": 0.3088242983710852
+          }
+        },
+        {
+          "step": 1200,
+          "train": {
+            "count": 5000,
+            "correct": 4699,
+            "accuracy": 0.9398,
+            "ce_sum": 1275.7907800948335,
+            "ce": 0.2551581560189667
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4709,
+            "accuracy": 0.9418,
+            "ce_sum": 1282.087354656012,
+            "ce": 0.2564174709312024
+          }
+        },
+        {
+          "step": 1400,
+          "train": {
+            "count": 5000,
+            "correct": 4735,
+            "accuracy": 0.947,
+            "ce_sum": 1153.6967825440163,
+            "ce": 0.23073935650880326
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4734,
+            "accuracy": 0.9468,
+            "ce_sum": 1161.9523586268758,
+            "ce": 0.23239047172537516
+          }
+        },
+        {
+          "step": 1600,
+          "train": {
+            "count": 5000,
+            "correct": 4731,
+            "accuracy": 0.9462,
+            "ce_sum": 1049.1574489545105,
+            "ce": 0.2098314897909021
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4748,
+            "accuracy": 0.9496,
+            "ce_sum": 1050.1634229202232,
+            "ce": 0.21003268458404464
+          }
+        },
+        {
+          "step": 1800,
+          "train": {
+            "count": 5000,
+            "correct": 4742,
+            "accuracy": 0.9484,
+            "ce_sum": 977.4762829650131,
+            "ce": 0.19549525659300263
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4738,
+            "accuracy": 0.9476,
+            "ce_sum": 1001.3416723378375,
+            "ce": 0.2002683344675675
+          }
+        },
+        {
+          "step": 2000,
+          "train": {
+            "count": 5000,
+            "correct": 4773,
+            "accuracy": 0.9546,
+            "ce_sum": 914.6065884511298,
+            "ce": 0.18292131769022596
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4746,
+            "accuracy": 0.9492,
+            "ce_sum": 972.0416933832079,
+            "ce": 0.19440833867664156
+          }
+        },
+        {
+          "step": 2200,
+          "train": {
+            "count": 5000,
+            "correct": 4770,
+            "accuracy": 0.954,
+            "ce_sum": 858.4473612385391,
+            "ce": 0.1716894722477078
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4743,
+            "accuracy": 0.9486,
+            "ce_sum": 925.2500303562404,
+            "ce": 0.18505000607124808
+          }
+        },
+        {
+          "step": 2400,
+          "train": {
+            "count": 5000,
+            "correct": 4799,
+            "accuracy": 0.9598,
+            "ce_sum": 799.6834906241902,
+            "ce": 0.15993669812483804
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4779,
+            "accuracy": 0.9558,
+            "ce_sum": 857.7710045006258,
+            "ce": 0.17155420090012516
+          }
+        },
+        {
+          "step": 2600,
+          "train": {
+            "count": 5000,
+            "correct": 4793,
+            "accuracy": 0.9586,
+            "ce_sum": 749.1340344487161,
+            "ce": 0.1498268068897432
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4786,
+            "accuracy": 0.9572,
+            "ce_sum": 800.6175321072915,
+            "ce": 0.16012350642145828
+          }
+        },
+        {
+          "step": 2800,
+          "train": {
+            "count": 5000,
+            "correct": 4787,
+            "accuracy": 0.9574,
+            "ce_sum": 721.4490129674786,
+            "ce": 0.14428980259349572
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4779,
+            "accuracy": 0.9558,
+            "ce_sum": 791.9916513091694,
+            "ce": 0.15839833026183386
+          }
+        },
+        {
+          "step": 3000,
+          "train": {
+            "count": 5000,
+            "correct": 4809,
+            "accuracy": 0.9618,
+            "ce_sum": 680.4354229001727,
+            "ce": 0.13608708458003455
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4789,
+            "accuracy": 0.9578,
+            "ce_sum": 765.100770291484,
+            "ce": 0.1530201540582968
+          }
+        },
+        {
+          "step": 3200,
+          "train": {
+            "count": 5000,
+            "correct": 4820,
+            "accuracy": 0.964,
+            "ce_sum": 639.957242504612,
+            "ce": 0.12799144850092242
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4798,
+            "accuracy": 0.9596,
+            "ce_sum": 755.9382093396744,
+            "ce": 0.15118764186793487
+          }
+        },
+        {
+          "step": 3400,
+          "train": {
+            "count": 5000,
+            "correct": 4822,
+            "accuracy": 0.9644,
+            "ce_sum": 633.240775477272,
+            "ce": 0.1266481550954544
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4793,
+            "accuracy": 0.9586,
+            "ce_sum": 726.5859416510701,
+            "ce": 0.14531718833021404
+          }
+        },
+        {
+          "step": 3600,
+          "train": {
+            "count": 5000,
+            "correct": 4832,
+            "accuracy": 0.9664,
+            "ce_sum": 624.0429638127055,
+            "ce": 0.1248085927625411
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4779,
+            "accuracy": 0.9558,
+            "ce_sum": 735.9321933159814,
+            "ce": 0.14718643866319628
+          }
+        },
+        {
+          "step": 3800,
+          "train": {
+            "count": 5000,
+            "correct": 4832,
+            "accuracy": 0.9664,
+            "ce_sum": 590.6270934378621,
+            "ce": 0.11812541868757241
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4795,
+            "accuracy": 0.959,
+            "ce_sum": 699.4158694502642,
+            "ce": 0.13988317389005284
+          }
+        },
+        {
+          "step": 4000,
+          "train": {
+            "count": 5000,
+            "correct": 4844,
+            "accuracy": 0.9688,
+            "ce_sum": 565.6163757778437,
+            "ce": 0.11312327515556873
+          },
+          "heldout": {
+            "count": 5000,
+            "correct": 4811,
+            "accuracy": 0.9622,
+            "ce_sum": 661.7317768402936,
+            "ce": 0.13234635536805872
+          }
+        }
+      ]
+    }
+  ],
+  "wall_seconds": 1.3268631296232343,
+  "limits": [
+    "No model, optimizer, observer or training replay.",
+    "State digests are producer assertions checked for paired identity; checkpoint bytes are hash-checked only.",
+    "Existing pinned training-label IDX verifies source IDs/labels; image IDX bytes are not reread.",
+    "Saved shifts and occurrences independently regenerated; their actual use during training is not replayed.",
+    "Three paired seeds; descriptive endpoint comparison, no significance or best-epoch selection."
+  ]
+}

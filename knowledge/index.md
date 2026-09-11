@@ -4,6 +4,13 @@ This is the maintained synthesis layer for the repository. It compiles the
 current view from code, raw result JSON, and experiment reports so later work
 does not have to reconstruct the project from scratch.
 
+**September 11 conclusion:** filtering can support useful learning through
+corrupted labels, but the strongest paired comparison favors ordinary image
+augmentation. Combining the two is harmful in that regime. Start with the
+[final core report](../research/spectral_final_core_report_2026-09-11.md).
+This public snapshot preserves scientific evidence, not private correspondence
+or execution records; see [publication scope](../PUBLICATION.md).
+
 Start with [Project synthesis](overview.md). For maintenance conventions, see
 [Schema and workflows](schema.md). For chronology, see the append-only
 [Knowledge log](log.md).
@@ -19,8 +26,8 @@ Start with [Project synthesis](overview.md). For maintenance conventions, see
 
 ## Findings
 
-- [Noise memorization](findings/noise-memorization.md) — the strongest result:
-  filtering prevents late training-label memorization on MNIST and CIFAR-10.
+- [Noise memorization](findings/noise-memorization.md) — useful learning under
+  corruption, with augmentation and early-stopping qualifications.
 - [Grokking is task-dependent](findings/grokking.md) — faster modular addition,
   slower sparse parity, and the role of weight decay.
 - [Boundary conditions and negative results](findings/boundary-conditions.md) —
@@ -30,8 +37,8 @@ Start with [Project synthesis](overview.md). For maintenance conventions, see
 
 - [Current recommendations](decisions/current-recommendations.md) — defaults,
   configuration choices, and when not to use the method.
-- [Open questions](questions/open-questions.md) — unresolved empirical and
-  scaling questions, ordered by expected information value.
+- [Open questions](questions/open-questions.md) — unresolved scientific limits,
+  not an active experiment queue.
 - [Evidence map](sources/evidence-map.md) — canonical reports, raw results,
   implementations, and historical documents.
 
@@ -42,4 +49,3 @@ Start with [Project synthesis](overview.md). For maintenance conventions, see
 - **Provisional:** design rationale or an empirical pattern awaiting stronger
   replication.
 - **Historical:** superseded work retained for provenance, not current truth.
-

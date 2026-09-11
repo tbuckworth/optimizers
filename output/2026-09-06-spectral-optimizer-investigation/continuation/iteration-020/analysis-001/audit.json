@@ -1,0 +1,206 @@
+{
+  "schema": "i20_response_audit_v1",
+  "created_utc": "2026-09-08T13:36:24.840539+00:00",
+  "status": "pass",
+  "artifact_root": "/tmp/spectral-experiment-artifacts/spectral-i20-001.Dbxc88",
+  "attempt_sha256": "127aa4aadd5f531c16351047163e5d8a096e62c96410e424fc2f360c79231d09",
+  "completion_sha256": "19efe452674d97c897fa9218cb02a5c63d8af1c4823e14690e978c16e75fc44f",
+  "summary_sha256": "d8aee4475c0b18e85f09e2daa63aad84cfd0e484eda0f37fd0c90fb6c3daed69",
+  "input_provenance": {
+    "acquisition_commit": "11c428f2347137377563c69a4f629c1e75192198",
+    "acquisition_sources": [
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-020/response_core.py",
+        "sha256": "6f42886f0d1c0d3a362a9af3a5bddd6930c90cfab4c1781ed6d154342f1817e4",
+        "size": 12245
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-020/test_response_core.py",
+        "sha256": "f804e65c89ef81fb73f806fc0c9590b699882903eab6b25b1d461b3ad166e3c9",
+        "size": 12483
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-020/run_response.py",
+        "sha256": "cd86f74f817a44baca03bb38a5cbac5b985eb601222e9417d362f47e21146655",
+        "size": 17111
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-020/test_run_response.py",
+        "sha256": "02c82cb027cc2c315fc71f81ebc4500351df178b49d7024bb9b2727a5bf6c6e0",
+        "size": 11985
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-020/protocol.md",
+        "sha256": "4a1dde4d973cee19a052d3ad76aeef8e60549ae3d5b50d6fd896d11e93149310",
+        "size": 8299
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-020/best-practices-check.md",
+        "sha256": "40c3a9bd17f06ec79de257007c162f7ac7762a187410765e1de5fd39abc88f52",
+        "size": 1654
+      }
+    ],
+    "analysis_commit": "e5e4fc6574788b27895694a10e700555fc2c4600",
+    "analysis_sources": [
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-020/audit_response.py",
+        "size": 43854,
+        "sha256": "f0316f160df6a30c513a05e28875a876ec8077e1e6fb4a46b7aa3267a5332ef7"
+      },
+      {
+        "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-020/test_audit_response.py",
+        "size": 15465,
+        "sha256": "e04d603321d6a1e0608ce91e52efa97ca6816f16295eea4fc995c0cce83bd27f"
+      }
+    ],
+    "parent": {
+      "root": "/tmp/spectral-experiment-artifacts/spectral-i19-001.wnMmy7",
+      "files": [
+        {
+          "path": "/tmp/spectral-experiment-artifacts/spectral-i19-001.wnMmy7/attempt.json",
+          "size": 2728,
+          "sha256": "3ed5bfe9d66e94a0193e7881d7aa6bd11b61e80eb0d477aeb9cf89c3cfb2a1c1"
+        },
+        {
+          "path": "/tmp/spectral-experiment-artifacts/spectral-i19-001.wnMmy7/completion.json",
+          "size": 77150,
+          "sha256": "6a69b9f96f81dcd1066954f53f703280794c88ea29c32beed0c01fa329b4740e"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/analysis-001/audit.json",
+          "size": 9480,
+          "sha256": "c549fc5d10dec4d644c857821e6e1e67a26ad6469e821f0d7cae4588671b28f2"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/analysis-001/summary.json",
+          "size": 13986932,
+          "sha256": "135502cc7fc6a69bba7c16fd0ddcf53d10255a78065c0d2198fbe156fb76ba9f"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/report-check-001/report-audit.json",
+          "size": 218533,
+          "sha256": "32b1629079ab5db14809f4448a2d5432afedfb11f2e51f0b201476a536f3d867"
+        }
+      ],
+      "sources": [
+        {
+          "path": "spectral_filter.py",
+          "sha256": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943",
+          "size": 25418,
+          "frozen_commit": "840383aa5ae1c145f33c70d05793950f55b53862"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/stochastic_tracking_core.py",
+          "sha256": "7e89cf23d3903992e0937ea5bb89019572f27924cb74716b4aaffc7287786799",
+          "size": 27754,
+          "frozen_commit": "840383aa5ae1c145f33c70d05793950f55b53862"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/test_stochastic_tracking_core.py",
+          "sha256": "c5f449ccaf241df42d4068ce9152fd5de43fd9a1af52e2b1a4b095505e443475",
+          "size": 12416,
+          "frozen_commit": "840383aa5ae1c145f33c70d05793950f55b53862"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/run_stochastic_tracking.py",
+          "sha256": "6eec2cda3513c2065c3f2b3a72e9e6405504214a62150d61041a3cf720dc0cec",
+          "size": 10143,
+          "frozen_commit": "840383aa5ae1c145f33c70d05793950f55b53862"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/test_stochastic_tracking_runner.py",
+          "sha256": "1d34595acfe84e0c3922b9fd8d0070f46c73b8fb5fef5da27bc505abfe92e742",
+          "size": 6197,
+          "frozen_commit": "840383aa5ae1c145f33c70d05793950f55b53862"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/protocol.md",
+          "sha256": "959fec105b29f6c7437492106cad85f11af4eb3d8965614b233aee66ab5ba28b",
+          "size": 8623,
+          "frozen_commit": "840383aa5ae1c145f33c70d05793950f55b53862"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/best-practices-check.md",
+          "sha256": "ab5e91f7255f99fb04e311648a67e1c75a5ba95737fccfbf3c771eeccbe931c5",
+          "size": 1455,
+          "frozen_commit": "840383aa5ae1c145f33c70d05793950f55b53862"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/audit_stochastic_tracking.py",
+          "size": 52152,
+          "sha256": "68915d8a4dc3c7811ad070645ab16029b84e51a6fbdae9b422135db29722680c",
+          "frozen_commit": "0e85b29e323df8b5dcd7bb274345b9920260dcad"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/test_audit_stochastic_tracking.py",
+          "size": 39345,
+          "sha256": "e09fd9f758fb6e2226a65683655bb5dae820d56bf5466bbbf43fa88f4121282c",
+          "frozen_commit": "0e85b29e323df8b5dcd7bb274345b9920260dcad"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/check_stochastic_report.py",
+          "sha256": "8e7ec1dbd6087a332375071d7b7b2c1d7190e16f5c6044f369f199e9878064ff",
+          "size": 24950,
+          "frozen_commit": "48c297433f694a35e3139de5101806e091c18d33"
+        },
+        {
+          "path": "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-019/test_stochastic_report.py",
+          "sha256": "7ee59f1445be52ac67c07708b33bb1722d5af13bba777b421c55e91226872898",
+          "size": 23321,
+          "frozen_commit": "48c297433f694a35e3139de5101806e091c18d33"
+        }
+      ]
+    }
+  },
+  "checks": 42444,
+  "numeric_values_checked": 155125424,
+  "errors": [],
+  "maximum_absolute_error_by_relation": {
+    "parent native absent-basis identity": 0.0,
+    "zero-start weighted moment recurrence": 0.0,
+    "zero-start weight-mass recurrence": 0.0,
+    "normalized weighted moments": 0.0,
+    "ascending normalized-moment eigenvalues": 0.0,
+    "normalized-moment eigengaps": 0.0,
+    "saved action semantics": 0.0,
+    "action symmetry": 0.0,
+    "action idempotence": 6.5503158452884236e-15,
+    "masked useful squared alignment": 0.0,
+    "action-change Frobenius norm": 0.0,
+    "literal CP saved-predecessor recurrence": 0.0,
+    "rec99 saved-predecessor recurrence": 0.0,
+    "rec9 saved-predecessor recurrence": 7.105427357601002e-15,
+    "accepted parent CP closure: native/r0p9/cp": 2.842170943040401e-14,
+    "accepted parent CP closure: native/rstar/cp": 2.1316282072803006e-14,
+    "accepted parent CP closure: oracle_useful/r0p9/cp": 3.197442310920451e-14,
+    "accepted parent CP closure: oracle_useful/rstar/cp": 1.4210854715202004e-14,
+    "accepted parent CP closure: oracle_nuisance/r0p9/cp": 2.842170943040401e-14,
+    "rho=.9 rec9 parent EMA closure: native": 0.0,
+    "rho=.9 rec9 parent EMA closure: full_legacy": 0.0,
+    "rho=.9 rec9 parent EMA closure: ew99": 0.0,
+    "rho=.9 rec9 parent EMA closure: ew999": 0.0,
+    "rho=.9 rec9 parent EMA closure: oracle_useful": 0.0,
+    "rho=.9 rec9 parent EMA closure: oracle_nuisance": 0.0,
+    "parent control MSE binding: ema_q0p9": 0.0,
+    "parent control MSE binding: common_kalman": 0.0,
+    "parent mean arithmetic: mean": 0.0,
+    "parent mean arithmetic: standard_error": 0.0
+  },
+  "hash_files_verified": 1208,
+  "hash_bytes_streamed": 3087581798,
+  "analysis_runtime": {
+    "python": "3.12.3",
+    "numpy": "1.26.4",
+    "platform": "Linux-6.8.0-136-generic-x86_64-with-glibc2.39",
+    "elapsed_seconds": 21.666416585911065,
+    "cooperative_limit_seconds": 280,
+    "service_hard_limit_seconds": 300,
+    "cuda_visible_devices": "",
+    "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    }
+  },
+  "scope": "independent saved-array algebra/risk audit; no producer numerical import"
+}

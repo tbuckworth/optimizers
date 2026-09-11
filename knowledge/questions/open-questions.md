@@ -2,8 +2,9 @@
 title: Open questions
 type: question
 status: provisional
-updated: 2026-08-12
+updated: 2026-09-11
 sources:
+  - research/spectral_final_core_report_2026-09-11.md
   - research/weight_covariance_directions.md
   - research/per_matrix_spectral_evaluation.md
   - research/noisy_mnist_hard_curves.md
@@ -12,7 +13,18 @@ sources:
 
 # Open questions
 
-## Highest information value
+These are scientific unknowns, **not an active experiment queue**. The core
+investigation is complete. Its most important unresolved bridge is predicting
+when dominant centered variation selects useful learning rather than a shared
+error or excludes a legitimate rare case. Unique accumulated mediation, broad
+safety efficacy and practical superiority remain unestablished.
+
+The augmentation question below is partly answered: on the three-seed strong
+MNIST comparison, ordinary augmentation wins and adding filtering harms it.
+This settles that recipe, not every task or augmentation.
+[Final report](../../research/spectral_final_core_report_2026-09-11.md).
+
+## Historical candidate questions (not authorized follow-up work)
 
 1. **Does per-matrix hard filtering replicate across seeds?** Repeat the
    60-epoch 90%-noise MNIST comparison with rank selection separated from
@@ -51,4 +63,3 @@ sources:
 
 Resolved questions should move into a finding or decision page, and the
 resolution should be recorded in the [knowledge log](../log.md).
-

@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "scope": "independent saved-array arithmetic and provenance; no remeasurement or redecoding",
+  "audit_source_sha256": "cc4b12d7c983ad56f7a29f95b6949672a6a12737c8095365ff7000a8812523a9",
+  "receipt_sha256": "d4ab847e8239093536f2124e40507cb2b2f56a431aeb2eb1006278a7532cbf15",
+  "producer_sha256": "79b1d1a042a717ea6d691234d25c2dbcfbfb7e87bfd4224105afb3b1bf0bf37d",
+  "moments": {
+    "axes": 4,
+    "pairs": 32,
+    "width": 1024,
+    "maximum_identity_error": 8.881784197001252e-16
+  },
+  "cutoff_ties": [
+    {
+      "pole": 0,
+      "strictly_above_cutoff_count": 11,
+      "cutoff_tie_count": 2,
+      "selected_at_cutoff_count": 1
+    },
+    {
+      "pole": 1,
+      "strictly_above_cutoff_count": 11,
+      "cutoff_tie_count": 1,
+      "selected_at_cutoff_count": 1
+    },
+    {
+      "pole": 2,
+      "strictly_above_cutoff_count": 11,
+      "cutoff_tie_count": 1,
+      "selected_at_cutoff_count": 1
+    },
+    {
+      "pole": 3,
+      "strictly_above_cutoff_count": 10,
+      "cutoff_tie_count": 4,
+      "selected_at_cutoff_count": 2
+    },
+    {
+      "pole": 4,
+      "strictly_above_cutoff_count": 10,
+      "cutoff_tie_count": 2,
+      "selected_at_cutoff_count": 2
+    },
+    {
+      "pole": 5,
+      "strictly_above_cutoff_count": 11,
+      "cutoff_tie_count": 1,
+      "selected_at_cutoff_count": 1
+    },
+    {
+      "pole": 6,
+      "strictly_above_cutoff_count": 10,
+      "cutoff_tie_count": 2,
+      "selected_at_cutoff_count": 2
+    },
+    {
+      "pole": 7,
+      "strictly_above_cutoff_count": 11,
+      "cutoff_tie_count": 1,
+      "selected_at_cutoff_count": 1
+    }
+  ],
+  "max_single_pair_energy_share64": [
+    0.24829672118666607,
+    0.2933832231130694,
+    0.3030054310430837,
+    0.19514099329003917
+  ],
+  "direction_energy_fraction64": [
+    0.0025070025383123313,
+    0.0029825963302177517,
+    0.006662106802242736,
+    0.004055847575281724
+  ],
+  "evaluation_files_opened": 0,
+  "new_model_lens_tokenizer_or_network_calls": 0,
+  "limitation": "Raw decoded strings are source/receipt-bound, not independently re-decoded; reader benefit untested."
+}

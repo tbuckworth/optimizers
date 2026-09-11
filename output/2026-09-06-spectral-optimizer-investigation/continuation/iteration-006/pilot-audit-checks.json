@@ -1,0 +1,293 @@
+{
+  "status": "runtime_invariance_evidence_passed",
+  "started_utc": "2026-09-06T14:47:49.155456+00:00",
+  "completed_utc": "2026-09-06T14:47:49.327584+00:00",
+  "audit_elapsed_seconds": 0.1721458388492465,
+  "audit_source_sha256": "937fea85fa6dcaa1e6f61d45f65622563c1bb23a0dc4a4bf8ae6f5cbda06d4bd",
+  "pilot_execution_sha256": "99699b1da8253d2b58295c88a9528870b490f5fb6cb6ce8e21ed9ed0955c77ec",
+  "pilot_log_sha256": "0819e753419e58df2c18e614f0f4e1411d3c14d5c0550cf87af0679a86dc2d15",
+  "pilot_decision_sha256": "2d307c3d17f2430104312fe4d03e15cf85f12d0c3bc18003d6adee6e103ac909",
+  "scientific_source_sha256": {
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/delivery_order_harness.py": "4604dd33cc82ffb1a26aa58502323b145586d72ab30d15b579477caa3598aa28",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/policy_math.py": "543e458f7d1471c5463850bfcf37e987b84d934bc1ce946cda14414b64631361",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/test_policy.py": "2b5cc5f416dfb91450d8ab3151cde87e6f30860ff998a937e982fe8b50fe78ab",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/test_harness.py": "24732535b94095a681d9a236c6335c1c579ccb82e821036d681813fb24628677",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/artifact_store.py": "1a4cba14795dd3ab03a548b6c22cdbc015310e76200f3f48fb1a2336f07e5350",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/protocol.md": "29e1368490284a1041fa1f20c64679925889feb1e050c0488ce7081bad902da1",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/result-schema.md": "9a1a3ee8e960708fd226ba2fd84da5bfb488ae83f6efa8830e8433e075e65126",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/design-intent.md": "7d6084173c22e47a59df594c871df3d2c3c169898afdc5d13bc021d4b2234352",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/analysis-plan.md": "5c8a483bae28e3722f54fde960640eb370446fc2fcbfdbe8e83f8cb23a346b04",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/summarize_results.py": "8aa8ff1df1d73c57a173cf61c362cfdc1ab19dc791fa46adba617136fa5e8886",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/test_summary.py": "bfa520e20c04f4a902835587fd1f0cf6a19093bb0cf0089e86788519e90bd173",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/best-practices-check.md": "feca4c695499d882cbfcbf551529ec36e6c07ed768e3bac1d379e93a4d855c03",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/challenge/decision.md": "ad551c32862413d869893dc117c3ff1ad4d074692315a2162ee7e49860adfd0d",
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-003/neural_harness.py": "5c0bb4bdbf0c561eef43686aaf86f9608d564f4df46cda8c7f4ebf8d7f7bb1b7",
+    "spectral_filter.py": "9280c7d360aef4c775baf0d781a5afd56e016e9cfb93ef829c3ae4b8cc3df943"
+  },
+  "commit_chronology": {
+    "1221d70f1d95c8c8b60e701a08c9cedd3c3b5772": "2026-09-06T15:37:06+01:00",
+    "141fc7fef4dea613124a803b857de1514d1d4cba": "2026-09-06T15:40:30+01:00"
+  },
+  "freeze_to_execution_changed_paths": [
+    "output/2026-09-06-spectral-optimizer-investigation/continuation/iteration-006/pilot-decision.md",
+    "output/2026-09-06-spectral-optimizer-investigation/state.md"
+  ],
+  "verified_artifacts": {
+    "data/MNIST/raw/train-images-idx3-ubyte": {
+      "size_bytes": 47040016,
+      "sha256": "ba891046e6505d7aadcbbe25680a0738ad16aec93bde7f9b65e87a2fc25776db"
+    },
+    "data/MNIST/raw/train-labels-idx1-ubyte": {
+      "size_bytes": 60008,
+      "sha256": "65a50cbbf4e906d70832878ad85ccda5333a97f0f4c3dd2ef09a8a9eef7101c5"
+    },
+    "/tmp/spectral-experiment-artifacts/spectral-iteration006-pilot-jud8esbi/development-plan.npz": {
+      "size_bytes": 382083,
+      "sha256": "e55febe732160460d093cb8fadbb2fd1f05c27f258c8c82c52f481e2aff9a90a"
+    },
+    "/tmp/spectral-experiment-artifacts/spectral-iteration006-pilot-jud8esbi/timing-and-invariants.json": {
+      "size_bytes": 820756,
+      "sha256": "96d6b17f0aa373b4045e5feb2dd237e05a4fb0641b008cf8db7a89f75a921e8a"
+    }
+  },
+  "bulk_files": [
+    "/tmp/spectral-experiment-artifacts/spectral-iteration006-pilot-jud8esbi/development-plan.npz",
+    "/tmp/spectral-experiment-artifacts/spectral-iteration006-pilot-jud8esbi/timing-and-invariants.json"
+  ],
+  "bulk_bytes": 1202839,
+  "counts": {
+    "trajectory_digest_entries": 2640,
+    "on_off_trajectory_pairs": 1320,
+    "warmup_row_records": 1200,
+    "warmup_raw_applied_pairs": 1200,
+    "warmup_parameter_trajectory_links": 1200,
+    "cross_arm_warmup_row_pairs": 1000,
+    "observer_digest_entries": 1000,
+    "cross_arm_observer_history_pairs": 800,
+    "on_off_observer_history_pairs": 500,
+    "mandatory_delivery_gates": 2640,
+    "optional_state_checks": 30
+  },
+  "timings": [
+    {
+      "arm": "adamw",
+      "instrumented": false,
+      "elapsed_seconds": 1.3080662712454796,
+      "summed_step_seconds": 1.2024677339941263,
+      "warmup100_seconds": 0.7387356641702354,
+      "active101_220_mean_seconds": 0.003864433915199091,
+      "active101_220_median_seconds": 0.0038403524085879326,
+      "rank_minimum": 0,
+      "rank_maximum": 0,
+      "rank_final": 0,
+      "repair_steps": [],
+      "repair_count_final": 0
+    },
+    {
+      "arm": "adamw",
+      "instrumented": true,
+      "elapsed_seconds": 1.3635373539291322,
+      "summed_step_seconds": 1.2545682471245527,
+      "warmup100_seconds": 0.6115035046823323,
+      "active101_220_mean_seconds": 0.00535887285368517,
+      "active101_220_median_seconds": 0.0051031713373959064,
+      "rank_minimum": 0,
+      "rank_maximum": 0,
+      "rank_final": 0,
+      "repair_steps": [],
+      "repair_count_final": 0
+    },
+    {
+      "arm": "current32",
+      "instrumented": false,
+      "elapsed_seconds": 2.685425096657127,
+      "summed_step_seconds": 2.5774946715682745,
+      "warmup100_seconds": 1.8594896444119513,
+      "active101_220_mean_seconds": 0.005983375226302694,
+      "active101_220_median_seconds": 0.005934156943112612,
+      "rank_minimum": 0,
+      "rank_maximum": 32,
+      "rank_final": 32,
+      "repair_steps": [
+        100,
+        200
+      ],
+      "repair_count_final": 2
+    },
+    {
+      "arm": "current32",
+      "instrumented": true,
+      "elapsed_seconds": 2.9129921379499137,
+      "summed_step_seconds": 2.805729283951223,
+      "warmup100_seconds": 1.931129076052457,
+      "active101_220_mean_seconds": 0.007288335065823048,
+      "active101_220_median_seconds": 0.00709298555739224,
+      "rank_minimum": 0,
+      "rank_maximum": 32,
+      "rank_final": 32,
+      "repair_steps": [
+        100,
+        200
+      ],
+      "repair_count_final": 2
+    },
+    {
+      "arm": "lagged32",
+      "instrumented": false,
+      "elapsed_seconds": 2.6826109527610242,
+      "summed_step_seconds": 2.5717918598093092,
+      "warmup100_seconds": 1.831189558841288,
+      "active101_220_mean_seconds": 0.006171685841400177,
+      "active101_220_median_seconds": 0.006021869368851185,
+      "rank_minimum": 0,
+      "rank_maximum": 32,
+      "rank_final": 32,
+      "repair_steps": [
+        100,
+        200
+      ],
+      "repair_count_final": 2
+    },
+    {
+      "arm": "lagged32",
+      "instrumented": true,
+      "elapsed_seconds": 2.95306702516973,
+      "summed_step_seconds": 2.846256880555302,
+      "warmup100_seconds": 1.9489635727368295,
+      "active101_220_mean_seconds": 0.007477444231820603,
+      "active101_220_median_seconds": 0.007244580890983343,
+      "rank_minimum": 0,
+      "rank_maximum": 32,
+      "rank_final": 32,
+      "repair_steps": [
+        100,
+        200
+      ],
+      "repair_count_final": 2
+    },
+    {
+      "arm": "lagged32_current_norm",
+      "instrumented": false,
+      "elapsed_seconds": 2.709148365072906,
+      "summed_step_seconds": 2.5978168714791536,
+      "warmup100_seconds": 1.8380190073512495,
+      "active101_220_mean_seconds": 0.006331648867732535,
+      "active101_220_median_seconds": 0.006212834035977721,
+      "rank_minimum": 0,
+      "rank_maximum": 32,
+      "rank_final": 32,
+      "repair_steps": [
+        100,
+        200
+      ],
+      "repair_count_final": 2
+    },
+    {
+      "arm": "lagged32_current_norm",
+      "instrumented": true,
+      "elapsed_seconds": 2.9918404081836343,
+      "summed_step_seconds": 2.882575057912618,
+      "warmup100_seconds": 1.9631100636906922,
+      "active101_220_mean_seconds": 0.0076622082851827145,
+      "active101_220_median_seconds": 0.007406608900055289,
+      "rank_minimum": 0,
+      "rank_maximum": 32,
+      "rank_final": 32,
+      "repair_steps": [
+        100,
+        200
+      ],
+      "repair_count_final": 2
+    },
+    {
+      "arm": "scalar_current32",
+      "instrumented": false,
+      "elapsed_seconds": 2.716889656148851,
+      "summed_step_seconds": 2.6043439703062177,
+      "warmup100_seconds": 1.8497471660375595,
+      "active101_220_mean_seconds": 0.006288306702238818,
+      "active101_220_median_seconds": 0.006210732506588101,
+      "rank_minimum": 0,
+      "rank_maximum": 32,
+      "rank_final": 32,
+      "repair_steps": [
+        100,
+        200
+      ],
+      "repair_count_final": 2
+    },
+    {
+      "arm": "scalar_current32",
+      "instrumented": true,
+      "elapsed_seconds": 2.944142281077802,
+      "summed_step_seconds": 2.8329110564664006,
+      "warmup100_seconds": 1.933977834880352,
+      "active101_220_mean_seconds": 0.007491110179883739,
+      "active101_220_median_seconds": 0.0073429555632174015,
+      "rank_minimum": 0,
+      "rank_maximum": 32,
+      "rank_final": 32,
+      "repair_steps": [
+        100,
+        200
+      ],
+      "repair_count_final": 2
+    },
+    {
+      "arm": "scalar_lagged32",
+      "instrumented": false,
+      "elapsed_seconds": 2.6898768632672727,
+      "summed_step_seconds": 2.5780116356909275,
+      "warmup100_seconds": 1.8183863000012934,
+      "active101_220_mean_seconds": 0.006330211130746951,
+      "active101_220_median_seconds": 0.0061926827766001225,
+      "rank_minimum": 0,
+      "rank_maximum": 32,
+      "rank_final": 32,
+      "repair_steps": [
+        100,
+        200
+      ],
+      "repair_count_final": 2
+    },
+    {
+      "arm": "scalar_lagged32",
+      "instrumented": true,
+      "elapsed_seconds": 2.9682725560851395,
+      "summed_step_seconds": 2.860277744010091,
+      "warmup100_seconds": 1.9489171477034688,
+      "active101_220_mean_seconds": 0.007594671635888517,
+      "active101_220_median_seconds": 0.007376765133813024,
+      "rank_minimum": 0,
+      "rank_maximum": 32,
+      "rank_final": 32,
+      "repair_steps": [
+        100,
+        200
+      ],
+      "repair_count_final": 2
+    }
+  ],
+  "pilot_utc_elapsed_seconds": 32.724984,
+  "pilot_resources": {
+    "elapsed_seconds": 32.72470740787685,
+    "peak_rss_bytes": 1605783552,
+    "peak_gpu_allocated_bytes": 158846976,
+    "peak_gpu_reserved_bytes": 169869312
+  },
+  "process_elapsed_seconds": 34.34,
+  "instrumented_36_run_loop_extrapolation_seconds": 550.773728874512,
+  "extrapolation_excludes": [
+    "validation and training/test scoring",
+    "full-run checkpoint and raw-JSON I/O",
+    "later-trajectory changes in per-step cost",
+    "source/artifact hashes and startup overhead"
+  ],
+  "independence": "Author wrote full-study summarizer, not runner/pilot; no local module imported here.",
+  "limits": [
+    "No new-seed or fresh-context scientific re-execution; no learning verdict.",
+    "Digest sequences compared, not rehashed from absent per-step tensors.",
+    "Full final/core state equalities are source/live-assertion evidence; complete tensors were not retained.",
+    "Numerical gate counts are preserved execution evidence, not recomputation of omitted gradient metrics."
+  ]
+}

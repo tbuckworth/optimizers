@@ -1,0 +1,90 @@
+{
+  "input_sha256": {
+    "audit": "ab1f18eaea196aa758f12bd8ea9ab87a9efbc080b9890cef43a3d7db27966894",
+    "plot_csv": "2c959f80159c0dd85db9a97fb3dd2f7bd2a084f6a1136e5f9076e833c01ce3da",
+    "plot_manifest": "d88fe4e98e565297e3594603fb7e566bc928b91d02e25e8b833dbcdf6bf929cd",
+    "plot_png": "d2b03f1a59f23cc9050b48f5d83faae978272828b79d2fc7490a839b967c0389",
+    "summary": "122b840111cf6fc1cd1bbd09fcfa1b6aae6b8c4e5544796e13bf88daf1778348"
+  },
+  "maximum_absolute_difference": 2.0463630789890885e-12,
+  "registered_scalar_comparisons": 32380,
+  "root": "/tmp/spectral-experiment-artifacts/spectral-i18-001.bAQSuU",
+  "schema": "i18_tracking_report_corroboration_v1",
+  "scope": [
+    "NumPy/stdlib scalar recomputation from saved output and s arrays; no observer, RNG, optimizer or tensor replay.",
+    "MSE plot points and all CSV rows are checked against raw aggregates; alignment plot points are checked against the accepted summary.",
+    "The whole-horizon rows are post-hoc descriptions and do not replace the three fixed windows."
+  ],
+  "status": "pass",
+  "streams": 192,
+  "whole_horizon_descriptive": [
+    {
+      "drift": 0.0,
+      "ema_optimal_oracle_mse": null,
+      "native_cp_mse": {
+        "mean": 0.22880078022042097,
+        "negative_seeds": 0,
+        "positive_seeds": 32,
+        "standard_error": 0.004530755553569583,
+        "zero_seeds": 0
+      },
+      "optimal_minus_native_cp": null,
+      "posthoc_not_primary": true,
+      "window": "descriptive_whole_horizon_1_4000"
+    },
+    {
+      "drift": 0.01,
+      "ema_optimal_oracle_mse": {
+        "mean": 0.17868414683075362,
+        "negative_seeds": 0,
+        "positive_seeds": 32,
+        "standard_error": 0.006142171730384356,
+        "zero_seeds": 0
+      },
+      "native_cp_mse": {
+        "mean": 1.1610062641762018,
+        "negative_seeds": 0,
+        "positive_seeds": 32,
+        "standard_error": 0.006279316692027046,
+        "zero_seeds": 0
+      },
+      "optimal_minus_native_cp": {
+        "mean": -0.982322117345448,
+        "negative_seeds": 32,
+        "positive_seeds": 0,
+        "standard_error": 0.003953087068560101,
+        "zero_seeds": 0
+      },
+      "positive_favors": "native_cp",
+      "posthoc_not_primary": true,
+      "window": "descriptive_whole_horizon_1_4000"
+    },
+    {
+      "drift": 0.03,
+      "ema_optimal_oracle_mse": {
+        "mean": 0.3365793441487586,
+        "negative_seeds": 0,
+        "positive_seeds": 32,
+        "standard_error": 0.004339436286602749,
+        "zero_seeds": 0
+      },
+      "native_cp_mse": {
+        "mean": 0.4724757564515779,
+        "negative_seeds": 0,
+        "positive_seeds": 32,
+        "standard_error": 0.03380964607349441,
+        "zero_seeds": 0
+      },
+      "optimal_minus_native_cp": {
+        "mean": -0.13589641230281932,
+        "negative_seeds": 24,
+        "positive_seeds": 8,
+        "standard_error": 0.033338375293470814,
+        "zero_seeds": 0
+      },
+      "positive_favors": "native_cp",
+      "posthoc_not_primary": true,
+      "window": "descriptive_whole_horizon_1_4000"
+    }
+  ]
+}

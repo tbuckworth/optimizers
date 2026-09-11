@@ -1,0 +1,127 @@
+{
+  "status": "PASS",
+  "grade_sha256": "fe245ec2786414d83d9f109fe26e52c57668684a03fe49f52d66bfecd28a1f35",
+  "auditor_sha256": "0d2ca28ef809a7da1ee128a84915aa2db481b0a83c0321f018b03c1253789ffe",
+  "exact_item_rows": 256,
+  "committed_response_blobs": 5,
+  "all_reference_and_target_bindings": true,
+  "all_summary_counts": true,
+  "primary": {
+    "axis": "PC4",
+    "A_minus_C_credit_out_of_32": 6,
+    "A_reader_credit_out_of_16": {
+      "rater1": 16,
+      "rater3": 16
+    },
+    "A_minus_C_by_cohort_out_of_16": {
+      "1": 6,
+      "2": 0
+    },
+    "each_A_reader_exceeds_8": true,
+    "A_minus_C_positive_each_cohort": false
+  },
+  "arms": {
+    "A": {
+      "credit": 116,
+      "total": 128,
+      "correct": 116,
+      "incorrect": 12,
+      "exact_ties": 0,
+      "constant_FIRST_credit": 64,
+      "constant_SECOND_credit": 64
+    },
+    "C": {
+      "credit": 98,
+      "total": 128,
+      "correct": 98,
+      "incorrect": 30,
+      "exact_ties": 0,
+      "constant_FIRST_credit": 64,
+      "constant_SECOND_credit": 64
+    }
+  },
+  "per_axis": {
+    "PC1": {
+      "A": {
+        "credit": 28,
+        "total": 32,
+        "correct": 28,
+        "incorrect": 4,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16,
+        "constant_SECOND_credit": 16
+      },
+      "C": {
+        "credit": 28,
+        "total": 32,
+        "correct": 28,
+        "incorrect": 4,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16,
+        "constant_SECOND_credit": 16
+      }
+    },
+    "PC2": {
+      "A": {
+        "credit": 26,
+        "total": 32,
+        "correct": 26,
+        "incorrect": 6,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16,
+        "constant_SECOND_credit": 16
+      },
+      "C": {
+        "credit": 14,
+        "total": 32,
+        "correct": 14,
+        "incorrect": 18,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16,
+        "constant_SECOND_credit": 16
+      }
+    },
+    "PC3": {
+      "A": {
+        "credit": 30,
+        "total": 32,
+        "correct": 30,
+        "incorrect": 2,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16,
+        "constant_SECOND_credit": 16
+      },
+      "C": {
+        "credit": 30,
+        "total": 32,
+        "correct": 30,
+        "incorrect": 2,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16,
+        "constant_SECOND_credit": 16
+      }
+    },
+    "PC4": {
+      "A": {
+        "credit": 32,
+        "total": 32,
+        "correct": 32,
+        "incorrect": 0,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16,
+        "constant_SECOND_credit": 16
+      },
+      "C": {
+        "credit": 26,
+        "total": 32,
+        "correct": 26,
+        "incorrect": 6,
+        "exact_ties": 0,
+        "constant_FIRST_credit": 16,
+        "constant_SECOND_credit": 16
+      }
+    }
+  },
+  "model_calls": 0,
+  "grader_imported": false
+}

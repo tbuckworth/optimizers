@@ -1,0 +1,1556 @@
+{
+  "status": "SAVED_CASE_ACCOUNTING_COMPLETE",
+  "new_model_or_reader_calls": 0,
+  "source_sha256": "52c04d5f9f627c153f4ea3a69b8dee04e3e7e01d3ff442f9bc3e2a766fdad26a",
+  "inputs": {
+    "graded/grades.json": "4bae97cd90fb3de288a56624d919e57e739c90add2ac17519df5593a702dfe63",
+    "excerpts/dataset.json": "d57300cb8511e409ff78e6ddc9fb6e1cf11b91bc629bf5492db8932cf585b129",
+    "excerpts/pairs.json": "0ae85708e0b5da2942e31aa96af4ffa642c1294ff4c8b78612ec2dfc0ee54725"
+  },
+  "counts_out_of_64": {
+    "unchanged": 45,
+    "gain_both": 5,
+    "harm_both": 6,
+    "one_group_only": 7,
+    "opposed": 1
+  },
+  "matched_delta_counts_out_of_128": {
+    "0": 97,
+    "1": 15,
+    "-1": 16
+  },
+  "unchanged_credit_bits": {
+    "1111": 27,
+    "0000": 16,
+    "1100": 1,
+    "0011": 1
+  },
+  "classification_is_posthoc_not_replication": true,
+  "cases": [
+    {
+      "axis": "PC1",
+      "pair_id": "N01",
+      "topic": "astronomy",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N01-R",
+        "N01-R",
+        "N01-R",
+        "N01-R"
+      ],
+      "truth_id": "N01-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N01",
+      "topic": "astronomy",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N01-L",
+        "N01-L",
+        "N01-L",
+        "N01-L"
+      ],
+      "truth_id": "N01-R"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N01",
+      "topic": "astronomy",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N01-L",
+        "N01-L",
+        "N01-L",
+        "N01-L"
+      ],
+      "truth_id": "N01-L"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N01",
+      "topic": "astronomy",
+      "delta": [
+        1,
+        1
+      ],
+      "class": "gain_both",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N01-R",
+        "N01-L",
+        "N01-R",
+        "N01-L"
+      ],
+      "truth_id": "N01-R"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N02",
+      "topic": "astronomy",
+      "delta": [
+        -1,
+        -1
+      ],
+      "class": "harm_both",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N02-R",
+        "N02-L",
+        "N02-R",
+        "N02-L"
+      ],
+      "truth_id": "N02-L"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N02",
+      "topic": "astronomy",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N02-R",
+        "N02-R",
+        "N02-R",
+        "N02-R"
+      ],
+      "truth_id": "N02-L"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N02",
+      "topic": "astronomy",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N02-R",
+        "N02-R",
+        "N02-R",
+        "N02-R"
+      ],
+      "truth_id": "N02-L"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N02",
+      "topic": "astronomy",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N02-R",
+        "N02-R",
+        "N02-R",
+        "N02-R"
+      ],
+      "truth_id": "N02-R"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N03",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N03-R",
+        "N03-R",
+        "N03-R",
+        "N03-R"
+      ],
+      "truth_id": "N03-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N03",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N03-R",
+        "N03-R",
+        "N03-R",
+        "N03-R"
+      ],
+      "truth_id": "N03-R"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N03",
+      "topic": "programming",
+      "delta": [
+        -1,
+        -1
+      ],
+      "class": "harm_both",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N03-R",
+        "N03-L",
+        "N03-R",
+        "N03-L"
+      ],
+      "truth_id": "N03-L"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N03",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N03-L",
+        "N03-L",
+        "N03-L",
+        "N03-L"
+      ],
+      "truth_id": "N03-L"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N04",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N04-R",
+        "N04-R",
+        "N04-R",
+        "N04-R"
+      ],
+      "truth_id": "N04-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N04",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N04-L",
+        "N04-L",
+        "N04-L",
+        "N04-L"
+      ],
+      "truth_id": "N04-L"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N04",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N04-R",
+        "N04-R",
+        "N04-R",
+        "N04-R"
+      ],
+      "truth_id": "N04-R"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N04",
+      "topic": "programming",
+      "delta": [
+        -1,
+        -1
+      ],
+      "class": "harm_both",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N04-R",
+        "N04-L",
+        "N04-R",
+        "N04-L"
+      ],
+      "truth_id": "N04-L"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N05",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N05-L",
+        "N05-L",
+        "N05-L",
+        "N05-L"
+      ],
+      "truth_id": "N05-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N05",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N05-R",
+        "N05-R",
+        "N05-R",
+        "N05-R"
+      ],
+      "truth_id": "N05-L"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N05",
+      "topic": "programming",
+      "delta": [
+        1,
+        0
+      ],
+      "class": "one_group_only",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N05-L",
+        "N05-R",
+        "N05-L",
+        "N05-L"
+      ],
+      "truth_id": "N05-L"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N05",
+      "topic": "programming",
+      "delta": [
+        -1,
+        -1
+      ],
+      "class": "harm_both",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N05-L",
+        "N05-R",
+        "N05-L",
+        "N05-R"
+      ],
+      "truth_id": "N05-R"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N06",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N06-R",
+        "N06-R",
+        "N06-R",
+        "N06-R"
+      ],
+      "truth_id": "N06-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N06",
+      "topic": "programming",
+      "delta": [
+        -1,
+        0
+      ],
+      "class": "one_group_only",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N06-L",
+        "N06-R",
+        "N06-L",
+        "N06-L"
+      ],
+      "truth_id": "N06-R"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N06",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N06-L",
+        "N06-L",
+        "N06-L",
+        "N06-L"
+      ],
+      "truth_id": "N06-L"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N06",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N06-R",
+        "N06-R",
+        "N06-R",
+        "N06-R"
+      ],
+      "truth_id": "N06-R"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N07",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N07-L",
+        "N07-L",
+        "N07-L",
+        "N07-L"
+      ],
+      "truth_id": "N07-L"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N07",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N07-L",
+        "N07-L",
+        "N07-L",
+        "N07-L"
+      ],
+      "truth_id": "N07-R"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N07",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N07-L",
+        "N07-L",
+        "N07-L",
+        "N07-L"
+      ],
+      "truth_id": "N07-R"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N07",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N07-L",
+        "N07-L",
+        "N07-L",
+        "N07-L"
+      ],
+      "truth_id": "N07-R"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N08",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N08-R",
+        "N08-R",
+        "N08-R",
+        "N08-R"
+      ],
+      "truth_id": "N08-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N08",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N08-R",
+        "N08-R",
+        "N08-R",
+        "N08-R"
+      ],
+      "truth_id": "N08-L"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N08",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N08-R",
+        "N08-R",
+        "N08-R",
+        "N08-R"
+      ],
+      "truth_id": "N08-R"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N08",
+      "topic": "programming",
+      "delta": [
+        1,
+        1
+      ],
+      "class": "gain_both",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N08-L",
+        "N08-R",
+        "N08-L",
+        "N08-R"
+      ],
+      "truth_id": "N08-L"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N09",
+      "topic": "cooking",
+      "delta": [
+        1,
+        -1
+      ],
+      "class": "opposed",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N09-L",
+        "N09-R",
+        "N09-R",
+        "N09-L"
+      ],
+      "truth_id": "N09-L"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N09",
+      "topic": "cooking",
+      "delta": [
+        1,
+        1
+      ],
+      "class": "gain_both",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N09-L",
+        "N09-R",
+        "N09-L",
+        "N09-R"
+      ],
+      "truth_id": "N09-L"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N09",
+      "topic": "cooking",
+      "delta": [
+        1,
+        0
+      ],
+      "class": "one_group_only",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N09-L",
+        "N09-R",
+        "N09-L",
+        "N09-L"
+      ],
+      "truth_id": "N09-L"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N09",
+      "topic": "cooking",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N09-L",
+        "N09-L",
+        "N09-L",
+        "N09-L"
+      ],
+      "truth_id": "N09-L"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N10",
+      "topic": "astronomy",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N10-L",
+        "N10-L",
+        "N10-L",
+        "N10-L"
+      ],
+      "truth_id": "N10-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N10",
+      "topic": "astronomy",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N10-L",
+        "N10-L",
+        "N10-L",
+        "N10-L"
+      ],
+      "truth_id": "N10-L"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N10",
+      "topic": "astronomy",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N10-L",
+        "N10-L",
+        "N10-L",
+        "N10-L"
+      ],
+      "truth_id": "N10-L"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N10",
+      "topic": "astronomy",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N10-L",
+        "N10-L",
+        "N10-L",
+        "N10-L"
+      ],
+      "truth_id": "N10-L"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N11",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N11-R",
+        "N11-R",
+        "N11-R",
+        "N11-R"
+      ],
+      "truth_id": "N11-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N11",
+      "topic": "programming",
+      "delta": [
+        0,
+        -1
+      ],
+      "class": "one_group_only",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N11-L",
+        "N11-L",
+        "N11-L",
+        "N11-R"
+      ],
+      "truth_id": "N11-R"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N11",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N11-L",
+        "N11-L",
+        "N11-L",
+        "N11-L"
+      ],
+      "truth_id": "N11-R"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N11",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N11-L",
+        "N11-L",
+        "N11-L",
+        "N11-L"
+      ],
+      "truth_id": "N11-L"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N12",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N12-R",
+        "N12-R",
+        "N12-R",
+        "N12-R"
+      ],
+      "truth_id": "N12-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N12",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N12-R",
+        "N12-R",
+        "N12-R",
+        "N12-R"
+      ],
+      "truth_id": "N12-R"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N12",
+      "topic": "programming",
+      "delta": [
+        -1,
+        -1
+      ],
+      "class": "harm_both",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N12-R",
+        "N12-L",
+        "N12-R",
+        "N12-L"
+      ],
+      "truth_id": "N12-L"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N12",
+      "topic": "programming",
+      "delta": [
+        -1,
+        0
+      ],
+      "class": "one_group_only",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N12-L",
+        "N12-R",
+        "N12-L",
+        "N12-L"
+      ],
+      "truth_id": "N12-R"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N13",
+      "topic": "programming",
+      "delta": [
+        1,
+        1
+      ],
+      "class": "gain_both",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N13-R",
+        "N13-L",
+        "N13-R",
+        "N13-L"
+      ],
+      "truth_id": "N13-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N13",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N13-L",
+        "N13-L",
+        "N13-L",
+        "N13-L"
+      ],
+      "truth_id": "N13-R"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N13",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N13-L",
+        "N13-L",
+        "N13-L",
+        "N13-L"
+      ],
+      "truth_id": "N13-R"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N13",
+      "topic": "programming",
+      "delta": [
+        0,
+        1
+      ],
+      "class": "one_group_only",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N13-L",
+        "N13-L",
+        "N13-R",
+        "N13-L"
+      ],
+      "truth_id": "N13-R"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N14",
+      "topic": "cooking",
+      "delta": [
+        1,
+        1
+      ],
+      "class": "gain_both",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N14-R",
+        "N14-L",
+        "N14-R",
+        "N14-L"
+      ],
+      "truth_id": "N14-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N14",
+      "topic": "cooking",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N14-L",
+        "N14-L",
+        "N14-R",
+        "N14-R"
+      ],
+      "truth_id": "N14-L"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N14",
+      "topic": "cooking",
+      "delta": [
+        0,
+        1
+      ],
+      "class": "one_group_only",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N14-R",
+        "N14-R",
+        "N14-R",
+        "N14-L"
+      ],
+      "truth_id": "N14-R"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N14",
+      "topic": "cooking",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N14-R",
+        "N14-R",
+        "N14-R",
+        "N14-R"
+      ],
+      "truth_id": "N14-L"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N15",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N15-L",
+        "N15-L",
+        "N15-L",
+        "N15-L"
+      ],
+      "truth_id": "N15-R"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N15",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N15-R",
+        "N15-R",
+        "N15-R",
+        "N15-R"
+      ],
+      "truth_id": "N15-R"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N15",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N15-L",
+        "N15-L",
+        "N15-L",
+        "N15-L"
+      ],
+      "truth_id": "N15-L"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N15",
+      "topic": "programming",
+      "delta": [
+        -1,
+        -1
+      ],
+      "class": "harm_both",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N15-L",
+        "N15-R",
+        "N15-L",
+        "N15-R"
+      ],
+      "truth_id": "N15-R"
+    },
+    {
+      "axis": "PC1",
+      "pair_id": "N16",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N16-R",
+        "N16-R",
+        "N16-R",
+        "N16-R"
+      ],
+      "truth_id": "N16-L"
+    },
+    {
+      "axis": "PC2",
+      "pair_id": "N16",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N16-L",
+        "N16-L",
+        "N16-L",
+        "N16-L"
+      ],
+      "truth_id": "N16-L"
+    },
+    {
+      "axis": "PC3",
+      "pair_id": "N16",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N16-R",
+        "N16-R",
+        "N16-R",
+        "N16-R"
+      ],
+      "truth_id": "N16-R"
+    },
+    {
+      "axis": "PC4",
+      "pair_id": "N16",
+      "topic": "programming",
+      "delta": [
+        0,
+        0
+      ],
+      "class": "unchanged",
+      "credits_EA1_E1_EA2_E2": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "choices_EA1_E1_EA2_E2": [
+        "N16-L",
+        "N16-L",
+        "N16-R",
+        "N16-R"
+      ],
+      "truth_id": "N16-R"
+    }
+  ],
+  "toy": {
+    "label": "ILLUSTRATIVE ALGEBRA, NOT MODEL DATA",
+    "equal_probability": 0.25,
+    "states": [
+      {
+        "group": -1,
+        "Z": -1,
+        "h1": -2.732050807568877,
+        "h2": 1,
+        "score": -2.732050807568877,
+        "readout": -0.7320508075688772
+      },
+      {
+        "group": -1,
+        "Z": 1,
+        "h1": -0.7320508075688772,
+        "h2": -1,
+        "score": -0.7320508075688772,
+        "readout": -2.732050807568877
+      },
+      {
+        "group": 1,
+        "Z": -1,
+        "h1": 0.7320508075688772,
+        "h2": -1,
+        "score": 0.7320508075688772,
+        "readout": -1.2679491924311228
+      },
+      {
+        "group": 1,
+        "Z": 1,
+        "h1": 2.732050807568877,
+        "h2": 1,
+        "score": 2.732050807568877,
+        "readout": 4.732050807568877
+      }
+    ],
+    "covariance": [
+      [
+        4.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0
+      ]
+    ],
+    "slopes": {
+      "pooled": 0.9999999999999998,
+      "group_minus": -1.0,
+      "group_plus": 3.0
+    }
+  }
+}

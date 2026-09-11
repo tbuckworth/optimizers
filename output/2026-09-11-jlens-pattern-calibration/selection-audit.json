@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "scope": "independent saved metadata arithmetic, not selection replay or article eligibility",
+  "completed_utc": "2026-09-11T07:24:15.926836+00:00",
+  "source_sha256": "fa914bf3fecca38bc1cd06acfaaf7a96c23280f79dfb677f17fd785fd5f59d4b",
+  "inputs": [
+    {
+      "path": "output/2026-09-11-jlens-pattern-calibration/selection/manifest.json",
+      "sha256": "8287106e8e3238ccf18d0c60bc0a4b59de894c7a8fd038c6a870a2cd1e94ed63"
+    },
+    {
+      "path": "output/2026-09-11-jlens-pattern-calibration/protocol.md",
+      "sha256": "4d80a9eef24e32a475c1d5016f57ca05419cacb45f2b27504f9ca7f916fae762"
+    },
+    {
+      "path": "/tmp/spectral-experiment-artifacts/j-lens-pilot-20260909-MMxZIs/worktree/output/2026-09-11-j-lens-pattern-calibration/inventory.json",
+      "sha256": "e57b194d6ed0b6b0999097d64c12dc37198f7b73d9b27bb5c2dd31e51a54f7aa"
+    }
+  ],
+  "candidate_pairs": 86,
+  "unique_paired_articles": 172,
+  "unused_tails": [
+    [
+      "programming",
+      1695405
+    ]
+  ],
+  "role_counts": {
+    "calibration": 58,
+    "evaluation": 28
+  },
+  "candidate_topic_counts": {
+    "programming": 53,
+    "astronomy": 20,
+    "cooking": 13
+  },
+  "network_calls": 0,
+  "model_or_tokenizer_calls": 0
+}

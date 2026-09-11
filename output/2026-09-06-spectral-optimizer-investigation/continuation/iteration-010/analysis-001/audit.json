@@ -1,0 +1,18 @@
+{
+  "schema": "i10_branch_analysis_audit_v1",
+  "status": "pass",
+  "checks": 2272006,
+  "errors": [],
+  "warnings": [],
+  "completion_hash_files_verified": 422,
+  "hash_bytes_streamed": 1772302223,
+  "complete_state_tree_digests_verified": 213,
+  "maximum_train_residual_identity_error": 0.0,
+  "maximum_leakage_energy_identity_error": 4.336808689942018e-19,
+  "coverage": {
+    "physical": 189,
+    "logical": 216,
+    "baseline_parent_groups": 21
+  },
+  "energy_weighted_leakage_definition": "sum(step_norm^2 * saved per-step leakage fraction) / sum(step_norm^2)"
+}

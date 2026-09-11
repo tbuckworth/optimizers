@@ -1,0 +1,825 @@
+{
+  "counts": {
+    "PC": {
+      "jlens": {
+        "correct": 3,
+        "total": 4
+      },
+      "plain": {
+        "correct": 2,
+        "total": 4
+      },
+      "paired_difference_correct": 1
+    },
+    "random": {
+      "jlens": {
+        "correct": 3,
+        "total": 4
+      },
+      "plain": {
+        "correct": 2,
+        "total": 4
+      },
+      "paired_difference_correct": 1
+    }
+  },
+  "per_axis": [
+    {
+      "axis": "PC1",
+      "family": "PC",
+      "methods": {
+        "jlens": {
+          "card_id": "C15",
+          "assigned_rater": "rater1",
+          "correct": true,
+          "confidence": "high"
+        },
+        "plain": {
+          "card_id": "C13",
+          "assigned_rater": "rater2",
+          "correct": true,
+          "confidence": "low"
+        }
+      },
+      "endpoints": {
+        "-": {
+          "id": "cooking-4-note",
+          "score": -0.5405218763396115
+        },
+        "+": {
+          "id": "astronomy-4-note",
+          "score": 0.45209944134272667
+        }
+      },
+      "same_content_extrema": false
+    },
+    {
+      "axis": "PC2",
+      "family": "PC",
+      "methods": {
+        "jlens": {
+          "card_id": "C11",
+          "assigned_rater": "rater2",
+          "correct": true,
+          "confidence": "high"
+        },
+        "plain": {
+          "card_id": "C07",
+          "assigned_rater": "rater1",
+          "correct": true,
+          "confidence": "medium"
+        }
+      },
+      "endpoints": {
+        "+": {
+          "id": "football-4-plain",
+          "score": 0.11918199382459935
+        },
+        "-": {
+          "id": "programming-4-plain",
+          "score": -0.32842401406389077
+        }
+      },
+      "same_content_extrema": false
+    },
+    {
+      "axis": "PC3",
+      "family": "PC",
+      "methods": {
+        "jlens": {
+          "card_id": "C01",
+          "assigned_rater": "rater1",
+          "correct": true,
+          "confidence": "high"
+        },
+        "plain": {
+          "card_id": "C08",
+          "assigned_rater": "rater2",
+          "correct": false,
+          "confidence": "low"
+        }
+      },
+      "endpoints": {
+        "+": {
+          "id": "programming-4-plain",
+          "score": 0.39337272121769074
+        },
+        "-": {
+          "id": "football-5-plain",
+          "score": -0.3020092926753125
+        }
+      },
+      "same_content_extrema": false
+    },
+    {
+      "axis": "PC4",
+      "family": "PC",
+      "methods": {
+        "jlens": {
+          "card_id": "C09",
+          "assigned_rater": "rater2",
+          "correct": false,
+          "confidence": "medium"
+        },
+        "plain": {
+          "card_id": "C14",
+          "assigned_rater": "rater1",
+          "correct": false,
+          "confidence": "low"
+        }
+      },
+      "endpoints": {
+        "-": {
+          "id": "programming-5-plain",
+          "score": -0.39976725161675053
+        },
+        "+": {
+          "id": "cooking-4-note",
+          "score": 0.39638945594766894
+        }
+      },
+      "same_content_extrema": false
+    },
+    {
+      "axis": "random1",
+      "family": "random",
+      "methods": {
+        "jlens": {
+          "card_id": "C10",
+          "assigned_rater": "rater2",
+          "correct": true,
+          "confidence": "low"
+        },
+        "plain": {
+          "card_id": "C03",
+          "assigned_rater": "rater1",
+          "correct": false,
+          "confidence": "low"
+        }
+      },
+      "endpoints": {
+        "+": {
+          "id": "programming-5-note",
+          "score": 0.06463424013083668
+        },
+        "-": {
+          "id": "cooking-4-note",
+          "score": -0.04852029994646814
+        }
+      },
+      "same_content_extrema": false
+    },
+    {
+      "axis": "random2",
+      "family": "random",
+      "methods": {
+        "jlens": {
+          "card_id": "C12",
+          "assigned_rater": "rater1",
+          "correct": false,
+          "confidence": "low"
+        },
+        "plain": {
+          "card_id": "C16",
+          "assigned_rater": "rater2",
+          "correct": false,
+          "confidence": "low"
+        }
+      },
+      "endpoints": {
+        "-": {
+          "id": "programming-4-note",
+          "score": -0.0432839707408937
+        },
+        "+": {
+          "id": "astronomy-4-note",
+          "score": 0.044254808079604094
+        }
+      },
+      "same_content_extrema": false
+    },
+    {
+      "axis": "random3",
+      "family": "random",
+      "methods": {
+        "jlens": {
+          "card_id": "C05",
+          "assigned_rater": "rater2",
+          "correct": true,
+          "confidence": "low"
+        },
+        "plain": {
+          "card_id": "C04",
+          "assigned_rater": "rater1",
+          "correct": true,
+          "confidence": "low"
+        }
+      },
+      "endpoints": {
+        "+": {
+          "id": "football-4-plain",
+          "score": 0.07327367676028153
+        },
+        "-": {
+          "id": "astronomy-5-plain",
+          "score": -0.07516364446603878
+        }
+      },
+      "same_content_extrema": false
+    },
+    {
+      "axis": "random4",
+      "family": "random",
+      "methods": {
+        "jlens": {
+          "card_id": "C02",
+          "assigned_rater": "rater1",
+          "correct": true,
+          "confidence": "low"
+        },
+        "plain": {
+          "card_id": "C06",
+          "assigned_rater": "rater2",
+          "correct": true,
+          "confidence": "low"
+        }
+      },
+      "endpoints": {
+        "+": {
+          "id": "cooking-4-note",
+          "score": 0.06605819438039064
+        },
+        "-": {
+          "id": "cooking-5-plain",
+          "score": -0.037543165239012875
+        }
+      },
+      "same_content_extrema": false
+    }
+  ],
+  "per_card": [
+    {
+      "card_id": "C01",
+      "axis": "PC3",
+      "method": "jlens",
+      "assigned_rater": "rater1",
+      "correct_choice": "A1_B2",
+      "panel_signs": [
+        "+",
+        "-"
+      ],
+      "prefix_signs": [
+        "+",
+        "-"
+      ],
+      "candidate_ids": [
+        "programming-4-plain",
+        "football-5-plain"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        0.39337272121769074,
+        -0.3020092926753125
+      ],
+      "choice": "A1_B2",
+      "confidence": "high",
+      "correct": true
+    },
+    {
+      "card_id": "C02",
+      "axis": "random4",
+      "method": "jlens",
+      "assigned_rater": "rater1",
+      "correct_choice": "A2_B1",
+      "panel_signs": [
+        "-",
+        "+"
+      ],
+      "prefix_signs": [
+        "+",
+        "-"
+      ],
+      "candidate_ids": [
+        "cooking-4-note",
+        "cooking-5-plain"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        0.06605819438039064,
+        -0.037543165239012875
+      ],
+      "choice": "A2_B1",
+      "confidence": "low",
+      "correct": true
+    },
+    {
+      "card_id": "C03",
+      "axis": "random1",
+      "method": "plain",
+      "assigned_rater": "rater1",
+      "correct_choice": "A1_B2",
+      "panel_signs": [
+        "+",
+        "-"
+      ],
+      "prefix_signs": [
+        "+",
+        "-"
+      ],
+      "candidate_ids": [
+        "programming-5-note",
+        "cooking-4-note"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        0.06463424013083668,
+        -0.04852029994646814
+      ],
+      "choice": "A2_B1",
+      "confidence": "low",
+      "correct": false
+    },
+    {
+      "card_id": "C04",
+      "axis": "random3",
+      "method": "plain",
+      "assigned_rater": "rater1",
+      "correct_choice": "A2_B1",
+      "panel_signs": [
+        "-",
+        "+"
+      ],
+      "prefix_signs": [
+        "+",
+        "-"
+      ],
+      "candidate_ids": [
+        "football-4-plain",
+        "astronomy-5-plain"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        0.07327367676028153,
+        -0.07516364446603878
+      ],
+      "choice": "A2_B1",
+      "confidence": "low",
+      "correct": true
+    },
+    {
+      "card_id": "C05",
+      "axis": "random3",
+      "method": "jlens",
+      "assigned_rater": "rater2",
+      "correct_choice": "A2_B1",
+      "panel_signs": [
+        "-",
+        "+"
+      ],
+      "prefix_signs": [
+        "+",
+        "-"
+      ],
+      "candidate_ids": [
+        "football-4-plain",
+        "astronomy-5-plain"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        0.07327367676028153,
+        -0.07516364446603878
+      ],
+      "choice": "A2_B1",
+      "confidence": "low",
+      "correct": true
+    },
+    {
+      "card_id": "C06",
+      "axis": "random4",
+      "method": "plain",
+      "assigned_rater": "rater2",
+      "correct_choice": "A2_B1",
+      "panel_signs": [
+        "-",
+        "+"
+      ],
+      "prefix_signs": [
+        "+",
+        "-"
+      ],
+      "candidate_ids": [
+        "cooking-4-note",
+        "cooking-5-plain"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        0.06605819438039064,
+        -0.037543165239012875
+      ],
+      "choice": "A2_B1",
+      "confidence": "low",
+      "correct": true
+    },
+    {
+      "card_id": "C07",
+      "axis": "PC2",
+      "method": "plain",
+      "assigned_rater": "rater1",
+      "correct_choice": "A2_B1",
+      "panel_signs": [
+        "-",
+        "+"
+      ],
+      "prefix_signs": [
+        "+",
+        "-"
+      ],
+      "candidate_ids": [
+        "football-4-plain",
+        "programming-4-plain"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        0.11918199382459935,
+        -0.32842401406389077
+      ],
+      "choice": "A2_B1",
+      "confidence": "medium",
+      "correct": true
+    },
+    {
+      "card_id": "C08",
+      "axis": "PC3",
+      "method": "plain",
+      "assigned_rater": "rater2",
+      "correct_choice": "A1_B2",
+      "panel_signs": [
+        "-",
+        "+"
+      ],
+      "prefix_signs": [
+        "-",
+        "+"
+      ],
+      "candidate_ids": [
+        "football-5-plain",
+        "programming-4-plain"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        -0.3020092926753125,
+        0.39337272121769074
+      ],
+      "choice": "A2_B1",
+      "confidence": "low",
+      "correct": false
+    },
+    {
+      "card_id": "C09",
+      "axis": "PC4",
+      "method": "jlens",
+      "assigned_rater": "rater2",
+      "correct_choice": "A1_B2",
+      "panel_signs": [
+        "-",
+        "+"
+      ],
+      "prefix_signs": [
+        "-",
+        "+"
+      ],
+      "candidate_ids": [
+        "programming-5-plain",
+        "cooking-4-note"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        -0.39976725161675053,
+        0.39638945594766894
+      ],
+      "choice": "A2_B1",
+      "confidence": "medium",
+      "correct": false
+    },
+    {
+      "card_id": "C10",
+      "axis": "random1",
+      "method": "jlens",
+      "assigned_rater": "rater2",
+      "correct_choice": "A2_B1",
+      "panel_signs": [
+        "-",
+        "+"
+      ],
+      "prefix_signs": [
+        "+",
+        "-"
+      ],
+      "candidate_ids": [
+        "programming-5-note",
+        "cooking-4-note"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        0.06463424013083668,
+        -0.04852029994646814
+      ],
+      "choice": "A2_B1",
+      "confidence": "low",
+      "correct": true
+    },
+    {
+      "card_id": "C11",
+      "axis": "PC2",
+      "method": "jlens",
+      "assigned_rater": "rater2",
+      "correct_choice": "A1_B2",
+      "panel_signs": [
+        "-",
+        "+"
+      ],
+      "prefix_signs": [
+        "-",
+        "+"
+      ],
+      "candidate_ids": [
+        "programming-4-plain",
+        "football-4-plain"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        -0.32842401406389077,
+        0.11918199382459935
+      ],
+      "choice": "A1_B2",
+      "confidence": "high",
+      "correct": true
+    },
+    {
+      "card_id": "C12",
+      "axis": "random2",
+      "method": "jlens",
+      "assigned_rater": "rater1",
+      "correct_choice": "A2_B1",
+      "panel_signs": [
+        "+",
+        "-"
+      ],
+      "prefix_signs": [
+        "-",
+        "+"
+      ],
+      "candidate_ids": [
+        "programming-4-note",
+        "astronomy-4-note"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        -0.0432839707408937,
+        0.044254808079604094
+      ],
+      "choice": "A1_B2",
+      "confidence": "low",
+      "correct": false
+    },
+    {
+      "card_id": "C13",
+      "axis": "PC1",
+      "method": "plain",
+      "assigned_rater": "rater2",
+      "correct_choice": "A2_B1",
+      "panel_signs": [
+        "+",
+        "-"
+      ],
+      "prefix_signs": [
+        "-",
+        "+"
+      ],
+      "candidate_ids": [
+        "cooking-4-note",
+        "astronomy-4-note"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        -0.5405218763396115,
+        0.45209944134272667
+      ],
+      "choice": "A2_B1",
+      "confidence": "low",
+      "correct": true
+    },
+    {
+      "card_id": "C14",
+      "axis": "PC4",
+      "method": "plain",
+      "assigned_rater": "rater1",
+      "correct_choice": "A2_B1",
+      "panel_signs": [
+        "-",
+        "+"
+      ],
+      "prefix_signs": [
+        "+",
+        "-"
+      ],
+      "candidate_ids": [
+        "cooking-4-note",
+        "programming-5-plain"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        0.39638945594766894,
+        -0.39976725161675053
+      ],
+      "choice": "A1_B2",
+      "confidence": "low",
+      "correct": false
+    },
+    {
+      "card_id": "C15",
+      "axis": "PC1",
+      "method": "jlens",
+      "assigned_rater": "rater1",
+      "correct_choice": "A2_B1",
+      "panel_signs": [
+        "+",
+        "-"
+      ],
+      "prefix_signs": [
+        "-",
+        "+"
+      ],
+      "candidate_ids": [
+        "cooking-4-note",
+        "astronomy-4-note"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        -0.5405218763396115,
+        0.45209944134272667
+      ],
+      "choice": "A2_B1",
+      "confidence": "high",
+      "correct": true
+    },
+    {
+      "card_id": "C16",
+      "axis": "random2",
+      "method": "plain",
+      "assigned_rater": "rater2",
+      "correct_choice": "A2_B1",
+      "panel_signs": [
+        "-",
+        "+"
+      ],
+      "prefix_signs": [
+        "+",
+        "-"
+      ],
+      "candidate_ids": [
+        "astronomy-4-note",
+        "programming-4-note"
+      ],
+      "same_content_extrema": false,
+      "endpoint_scores": [
+        0.044254808079604094,
+        -0.0432839707408937
+      ],
+      "choice": "A1_B2",
+      "confidence": "low",
+      "correct": false
+    }
+  ],
+  "provenance": {
+    "responses_and_packets_locked_at_commit": "fc185c7210b5cd4c611a524c4490a4c204056aaa",
+    "verified_json_and_source_pins": [
+      {
+        "path": "output/2026-09-10-j-lens-completions/dataset.json",
+        "sha256": "b41b91381c1bfd6521ceb0b5d15c35ea28e0929d8eba57527b232a933a85cdd6"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-completions/readouts.json",
+        "sha256": "3f37f8918cdeea67ebeae12d3a33ef283f9b55baf7153e9384a6f1e3a9ab5769"
+      },
+      {
+        "path": "experiments/j_lens_completions.py",
+        "sha256": "ae04db8770538d278fca32b58542e8bb653f42785de39c2f2bf76d7a8fffe238"
+      },
+      {
+        "path": "scripts/package_j_lens_simple_comparison.py",
+        "sha256": "e06a5f471e440268840e49dcfdca9daeb7051b0bedb35bb26988ea2c78afa3c3"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/comparison-decision.md",
+        "sha256": "913c04d5e322232ac93cfa3f1bd179466ecd576d8d6a3ed5842d19055f5ba6be"
+      }
+    ],
+    "frozen_archive_pins_checked_as_records_only": [
+      {
+        "path": "output/2026-09-10-j-lens-completions/analysis_arrays.npz",
+        "sha256": "cbbe651ed084b36ed468a5932afcbc7e488c81ccdcc0fcd04bccf2fe9f6e7033"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-completions/features.npz",
+        "sha256": "96e936942fd5cde63c9c482ef19a004ba3fee5adbc46676373772fa5e4123b61"
+      }
+    ],
+    "archives_opened": false,
+    "grading_inputs": [
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/private-key.json",
+        "sha256": "b086db4791ba88a76b7b7b9e7f266894d455db92a80a19d2e619914f300ee03b"
+      },
+      {
+        "path": "scripts/report_j_lens_simple_comparison.py",
+        "sha256": "8896edb119aa465fd014e8de4be5c0a957be913f3ff8edd006d337fcf301eb3f"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/rater1-locked.json",
+        "sha256": "a9a2b6f5b953be78d694b944f4ec4643e60ced215a41602d55deb529c40f43cf"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/rater2-locked.json",
+        "sha256": "600176e12c99559a3e353f0bf341a82fcd2f67ebd07a8885792fa86946138b8b"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C01.json",
+        "sha256": "51dfd88719350272481cf5270967cb0dc1f4de9ac3d7a813bcd99b2c2a6633db"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C02.json",
+        "sha256": "b2e21814c997b9eeea8141fa4dafcab6cf9b88d391e074ff6c84b087d631f7eb"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C03.json",
+        "sha256": "1c5edf67ea272330b0e6821930da7d1e76768b3f680131efa999c9101a43a09b"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C04.json",
+        "sha256": "4204bb4b294534d9411000e319745a9aff0469c315a333736070a551d57bc79c"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C05.json",
+        "sha256": "7a17d81867ab64b2eb7fc189b7ecea3b0c372617ef07e1d31705850e81a33ff7"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C06.json",
+        "sha256": "f1943ce3ee254d65bdeb9c3ea24deb2e437f103436430077903262d9362fb625"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C07.json",
+        "sha256": "63bb8fcd59d332a36f537bf4267ddb0b444edad5e530113a3308439ba69b88af"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C08.json",
+        "sha256": "71b4f9c490e7d2acdd451356d0a023d8fd95cbcaef0975f4d8fd38a28f267fb4"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C09.json",
+        "sha256": "1ba31186aafa50af325b492372278872e1d5a9a37b45dba8b6cc8a40824f39b6"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C10.json",
+        "sha256": "f3dcadd3d87cc1d407736425a5f66168a8fe358a40b56fba969b3a4047728b6f"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C11.json",
+        "sha256": "e6d11a42d4c4cd5c5bdc5e8ef2e101edeee0a0bd962142ec18215ec77045be04"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C12.json",
+        "sha256": "09ba1d835b913a3d2cf92cc607b4efa26d12550869b48a9b8b2bc7fccb4e1238"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C13.json",
+        "sha256": "e0ca3b56f1a4341632704358aae10e49a03ca4e90fede04efe96ab1d997b31b9"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C14.json",
+        "sha256": "cd558a759428756dfcdf720dcbe7267b64cf21518ee1c02545ca04ee55f049d3"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C15.json",
+        "sha256": "873848096c2723df3e54cd7a53b202873301521dc0ea4dc41f4c2756cafa20bf"
+      },
+      {
+        "path": "output/2026-09-10-j-lens-simple-comparison/packet/public/C16.json",
+        "sha256": "8a225c5f270c2171e053b7e41b27cb5c5b6011e98ce0401372ff050de038e514"
+      }
+    ],
+    "rater_models": {
+      "rater1": "gpt-6-astra",
+      "rater2": "gpt-6-astra"
+    },
+    "random_control_provenance": "Reconstructs seed 20260910, default_rng.normal((1024,4)), np.linalg.qr. Original random vectors were not saved; acquisition.json, acquisition-start.json and launch-receipt.json do not record original interpreter/NumPy/build. Same recipe is verified, identical original basis is not certified. Random-axis correspondence is secondary and conditional on recipe reproduction; PC primary uses stored scores and is unaffected."
+  },
+  "validation": {
+    "fixed_roster": "PASS",
+    "rater_allocations": "PASS",
+    "choices_and_confidence": "PASS",
+    "public_card_source_correspondence": "PASS",
+    "declared_answer_key_polarity": "PASS",
+    "no_rejudging": true
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "maximum_independent_score_error": 1.1102230246251565e-16,
+  "rows": 32,
+  "pairs": 16,
+  "axes": 4,
+  "width": 1024,
+  "status": "PASS",
+  "source_sha256": "c2dbe87a7d74c43cf955b4e47d2cfcfc2ca543fcf3ed5d2fafd7385f461b9b8d",
+  "public_lock_verified_before_key": true,
+  "lock_sha256": "c4d57677b71f348dea84f66b2e41cacb9acb8c80450fa446d20766ea1321ad1e",
+  "lock_commit": "39d138e7452cfbd2beb018c9818afda7b89b8f98",
+  "evaluation_commit": "e955d2ddaad66693a5cc1aa8904126e50d5f0065",
+  "output_pins": [
+    {
+      "path": "features.npz",
+      "sha256": "75700d913df109da51bed2d55083e7700f7230ffc75cc59126199318830a73b8",
+      "size_bytes": 83710
+    },
+    {
+      "path": "inputs.json",
+      "sha256": "63350e88f9135ac5fd0310f8b21cf75be4cc988a81cad19aa58864352d5e0f95",
+      "size_bytes": 65515
+    },
+    {
+      "path": "scores.json",
+      "sha256": "34ee859b32be7c65e44d819a979c1eab500c845d19d6ee5647a2ba3008fd46d1",
+      "size_bytes": 5546
+    },
+    {
+      "path": "gaps.json",
+      "sha256": "7045dabc7b1ab8b0161de266099583ccb6d0507ac983e8ced7b6fbdd5a9a8d06",
+      "size_bytes": 5612
+    }
+  ],
+  "model_forwards": 0,
+  "completed_utc": "2026-09-11T09:34:43.132296+00:00"
+}

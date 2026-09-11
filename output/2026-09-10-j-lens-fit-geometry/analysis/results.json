@@ -1,0 +1,873 @@
+{
+  "schema": "jlens_fit_geometry_v1",
+  "normalization": "population moments, row-weighted, ddof=0",
+  "axes": [
+    {
+      "axis": "PC1",
+      "mean_score": -4.163336342344337e-17,
+      "V": 0.28445108688627446,
+      "B": 0.1754095601299153,
+      "Q": 0.10846493107176038,
+      "F": 0.0005765956845988484,
+      "fractions": {
+        "B": 0.616659834384972,
+        "Q": 0.38131311874763696,
+        "F": 0.002027046867391213
+      },
+      "reconstruction_residual_V_minus_B_Q_F": -5.4860629927766524e-17,
+      "framing_identity_residual_F_minus_mean_squared_shift_over_4": 1.0842021724855044e-19,
+      "mean_note_minus_plain": -0.020670852713944424,
+      "rms_note_minus_plain": 0.048024813777831486
+    },
+    {
+      "axis": "PC2",
+      "mean_score": -1.0408340855860843e-17,
+      "V": 0.25257163058878956,
+      "B": 0.21558186783518354,
+      "Q": 0.03629935575790862,
+      "F": 0.0006904069956973776,
+      "fractions": {
+        "B": 0.8535474365534392,
+        "Q": 0.14371905377214514,
+        "F": 0.002733509674415593
+      },
+      "reconstruction_residual_V_minus_B_Q_F": 1.951563910473908e-17,
+      "framing_identity_residual_F_minus_mean_squared_shift_over_4": -2.168404344971009e-19,
+      "mean_note_minus_plain": 0.03167092336355263,
+      "rms_note_minus_plain": 0.05255119392354004
+    },
+    {
+      "axis": "PC3",
+      "mean_score": 5.551115123125783e-17,
+      "V": 0.18900121377169024,
+      "B": 0.019957716873776003,
+      "Q": 0.16820036143203748,
+      "F": 0.0008431354658768466,
+      "fractions": {
+        "B": 0.10559570743225244,
+        "Q": 0.8899432870056603,
+        "F": 0.004461005562087753
+      },
+      "reconstruction_residual_V_minus_B_Q_F": -9.790345617544105e-17,
+      "framing_identity_residual_F_minus_mean_squared_shift_over_4": -2.168404344971009e-19,
+      "mean_note_minus_plain": 0.005912925433799843,
+      "rms_note_minus_plain": 0.05807359006904418
+    },
+    {
+      "axis": "PC4",
+      "mean_score": 1.3877787807814457e-17,
+      "V": 0.16508292848065895,
+      "B": 0.024927607751001973,
+      "Q": 0.13881649021826498,
+      "F": 0.001338830511391905,
+      "fractions": {
+        "B": 0.15100051822694968,
+        "Q": 0.8408894335462959,
+        "F": 0.008110048226753876
+      },
+      "reconstruction_residual_V_minus_B_Q_F": 9.237402509576498e-17,
+      "framing_identity_residual_F_minus_mean_squared_shift_over_4": 2.168404344971009e-19,
+      "mean_note_minus_plain": 0.06552647326387612,
+      "rms_note_minus_plain": 0.07318006590300134
+    }
+  ],
+  "rows": [
+    {
+      "id": "astronomy-0-plain",
+      "pair": "astronomy-0",
+      "group": "astronomy",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The telescope revealed",
+      "scores64": [
+        0.6034043239614469,
+        0.39116323737158076,
+        0.32359771044932184,
+        0.07065653959515975
+      ]
+    },
+    {
+      "id": "astronomy-0-note",
+      "pair": "astronomy-0",
+      "group": "astronomy",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe telescope revealed",
+      "scores64": [
+        0.5356839856261527,
+        0.3509425445854095,
+        0.3486753432838493,
+        0.1253680161037896
+      ]
+    },
+    {
+      "id": "astronomy-1-plain",
+      "pair": "astronomy-1",
+      "group": "astronomy",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The spacecraft photographed",
+      "scores64": [
+        1.214302408305508,
+        0.2881705108925994,
+        -0.45919164542935864,
+        0.4150371801681507
+      ]
+    },
+    {
+      "id": "astronomy-1-note",
+      "pair": "astronomy-1",
+      "group": "astronomy",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe spacecraft photographed",
+      "scores64": [
+        1.078026734744196,
+        0.3363673272894059,
+        -0.3413346421344824,
+        0.5108881581058252
+      ]
+    },
+    {
+      "id": "astronomy-2-plain",
+      "pair": "astronomy-2",
+      "group": "astronomy",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The comet released",
+      "scores64": [
+        0.19929028171645413,
+        0.30477337499509405,
+        -0.3739583318061258,
+        -0.24304411749705412
+      ]
+    },
+    {
+      "id": "astronomy-2-note",
+      "pair": "astronomy-2",
+      "group": "astronomy",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe comet released",
+      "scores64": [
+        0.1771689181449293,
+        0.30568517241620885,
+        -0.38646425064433576,
+        -0.20758689643021144
+      ]
+    },
+    {
+      "id": "astronomy-3-plain",
+      "pair": "astronomy-3",
+      "group": "astronomy",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The observatory detected",
+      "scores64": [
+        0.4010273251529387,
+        0.3231630715306387,
+        0.6650679114232547,
+        0.3561459435948755
+      ]
+    },
+    {
+      "id": "astronomy-3-note",
+      "pair": "astronomy-3",
+      "group": "astronomy",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe observatory detected",
+      "scores64": [
+        0.39469276729946123,
+        0.35563967728168966,
+        0.6294437132319937,
+        0.4501445054804283
+      ]
+    },
+    {
+      "id": "cooking-0-plain",
+      "pair": "cooking-0",
+      "group": "cooking",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The chef prepared",
+      "scores64": [
+        -0.31829865565601057,
+        -0.25094275797808363,
+        0.1986668358117053,
+        -0.23495512113192407
+      ]
+    },
+    {
+      "id": "cooking-0-note",
+      "pair": "cooking-0",
+      "group": "cooking",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe chef prepared",
+      "scores64": [
+        -0.293654169743906,
+        -0.18340296067150996,
+        0.16193068446759085,
+        -0.19728399423639087
+      ]
+    },
+    {
+      "id": "cooking-1-plain",
+      "pair": "cooking-1",
+      "group": "cooking",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The baker kneaded",
+      "scores64": [
+        -0.7058472032060662,
+        -0.8337541966201448,
+        -0.6534486302553333,
+        0.5139029240736226
+      ]
+    },
+    {
+      "id": "cooking-1-note",
+      "pair": "cooking-1",
+      "group": "cooking",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe baker kneaded",
+      "scores64": [
+        -0.7304805549486441,
+        -0.8049826013304066,
+        -0.7382030969596114,
+        0.5448137449883218
+      ]
+    },
+    {
+      "id": "cooking-2-plain",
+      "pair": "cooking-2",
+      "group": "cooking",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The cook added",
+      "scores64": [
+        -0.49878582732208737,
+        -0.28410044322283223,
+        0.15250406179582832,
+        -0.5641379954351581
+      ]
+    },
+    {
+      "id": "cooking-2-note",
+      "pair": "cooking-2",
+      "group": "cooking",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe cook added",
+      "scores64": [
+        -0.48409390000507474,
+        -0.23757265960829255,
+        0.14004774436408318,
+        -0.5521958627442939
+      ]
+    },
+    {
+      "id": "cooking-3-plain",
+      "pair": "cooking-3",
+      "group": "cooking",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The recipe combined",
+      "scores64": [
+        0.25130923676707956,
+        -0.4207961449480746,
+        -0.2973586210383764,
+        -0.7620299259570811
+      ]
+    },
+    {
+      "id": "cooking-3-note",
+      "pair": "cooking-3",
+      "group": "cooking",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe recipe combined",
+      "scores64": [
+        0.2927477637810743,
+        -0.4425784114159157,
+        -0.29620835243182964,
+        -0.7444725613358076
+      ]
+    },
+    {
+      "id": "football-0-plain",
+      "pair": "football-0",
+      "group": "football",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The striker scored",
+      "scores64": [
+        -0.5784907931743196,
+        0.8573969125209643,
+        -0.19065677081282406,
+        0.1296408450500748
+      ]
+    },
+    {
+      "id": "football-0-note",
+      "pair": "football-0",
+      "group": "football",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe striker scored",
+      "scores64": [
+        -0.6026480258610114,
+        0.9823364007042127,
+        -0.15987340955621943,
+        0.2374429709979693
+      ]
+    },
+    {
+      "id": "football-1-plain",
+      "pair": "football-1",
+      "group": "football",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The goalkeeper blocked",
+      "scores64": [
+        -0.5183039185939037,
+        0.2852546037166013,
+        -0.5823807093626705,
+        0.5117582721476178
+      ]
+    },
+    {
+      "id": "football-1-note",
+      "pair": "football-1",
+      "group": "football",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe goalkeeper blocked",
+      "scores64": [
+        -0.5254804120585811,
+        0.32413094213345683,
+        -0.5327206664059823,
+        0.589379662884243
+      ]
+    },
+    {
+      "id": "football-2-plain",
+      "pair": "football-2",
+      "group": "football",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The referee awarded",
+      "scores64": [
+        -0.5223393295179966,
+        0.6850007019069856,
+        0.4667091214133342,
+        -0.4436707720424715
+      ]
+    },
+    {
+      "id": "football-2-note",
+      "pair": "football-2",
+      "group": "football",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe referee awarded",
+      "scores64": [
+        -0.48226523502987234,
+        0.6518787865378802,
+        0.5190437371230433,
+        -0.37910341250419055
+      ]
+    },
+    {
+      "id": "football-3-plain",
+      "pair": "football-3",
+      "group": "football",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The midfielder delivered",
+      "scores64": [
+        -0.29552697058797744,
+        0.4011910627676627,
+        -0.1457435639103669,
+        -0.3306903552964051
+      ]
+    },
+    {
+      "id": "football-3-note",
+      "pair": "football-3",
+      "group": "football",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe midfielder delivered",
+      "scores64": [
+        -0.29781581317133926,
+        0.4479921988422211,
+        -0.08196794050853928,
+        -0.2530429548836113
+      ]
+    },
+    {
+      "id": "programming-0-plain",
+      "pair": "programming-0",
+      "group": "programming",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The programmer fixed",
+      "scores64": [
+        -0.15728842138003574,
+        -0.37410426850125233,
+        0.17381335022818678,
+        0.061083388603304006
+      ]
+    },
+    {
+      "id": "programming-0-note",
+      "pair": "programming-0",
+      "group": "programming",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe programmer fixed",
+      "scores64": [
+        -0.21674996576221517,
+        -0.3358013897242973,
+        0.24036595755516987,
+        0.19373456147749546
+      ]
+    },
+    {
+      "id": "programming-1-plain",
+      "pair": "programming-1",
+      "group": "programming",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The compiler translated",
+      "scores64": [
+        0.10878769810733734,
+        -0.6926985092739185,
+        0.4245400666891851,
+        0.03641589260707548
+      ]
+    },
+    {
+      "id": "programming-1-note",
+      "pair": "programming-1",
+      "group": "programming",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe compiler translated",
+      "scores64": [
+        0.05767640875697965,
+        -0.6032810247827384,
+        0.35056854023773265,
+        0.11781980584121257
+      ]
+    },
+    {
+      "id": "programming-2-plain",
+      "pair": "programming-2",
+      "group": "programming",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The developer tested",
+      "scores64": [
+        0.08140184225753343,
+        -0.6638550611878838,
+        0.7612559996395634,
+        0.411465750771826
+      ]
+    },
+    {
+      "id": "programming-2-note",
+      "pair": "programming-2",
+      "group": "programming",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe developer tested",
+      "scores64": [
+        0.0705503573237105,
+        -0.6605163490579987,
+        0.6713134856166239,
+        0.464697099287678
+      ]
+    },
+    {
+      "id": "programming-3-plain",
+      "pair": "programming-3",
+      "group": "programming",
+      "style": "plain",
+      "split": "fit",
+      "prefix": "The debugger located",
+      "scores64": [
+        0.9007248248816542,
+        -0.26922948087835774,
+        -0.5107201883057223,
+        -0.45179023536262153
+      ]
+    },
+    {
+      "id": "programming-3-note",
+      "pair": "programming-3",
+      "group": "programming",
+      "style": "note",
+      "split": "fit",
+      "prefix": "A brief factual note:\nThe debugger located",
+      "scores64": [
+        0.8612743191925847,
+        -0.2334702662909045,
+        -0.47731344376868734,
+        -0.3763910569214486
+      ]
+    }
+  ],
+  "topic_means": [
+    {
+      "group": "astronomy",
+      "count": 8,
+      "scores64": [
+        0.5754495931188859,
+        0.3319881145453284,
+        0.050729476046764616,
+        0.18470116614012044
+      ]
+    },
+    {
+      "group": "cooking",
+      "count": 8,
+      "scores64": [
+        -0.3108879137917044,
+        -0.43226627197440753,
+        -0.16650867178074286,
+        -0.24954484897233892
+      ]
+    },
+    {
+      "group": "football",
+      "count": 8,
+      "scores64": [
+        -0.4778588122493751,
+        0.5793977011412481,
+        -0.08844877525252812,
+        0.007714282044153309
+      ]
+    },
+    {
+      "group": "programming",
+      "count": 8,
+      "scores64": [
+        0.2132971329221936,
+        -0.47911954371216897,
+        0.20422797098650652,
+        0.057129400788065166
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "pair": "astronomy-0",
+      "group": "astronomy",
+      "plain_id": "astronomy-0-plain",
+      "note_id": "astronomy-0-note",
+      "count": 2,
+      "mean_scores64": [
+        0.5695441547937998,
+        0.37105289097849514,
+        0.33613652686658557,
+        0.09801227784947467
+      ],
+      "note_minus_plain64": [
+        -0.06772033833529423,
+        -0.04022069278617124,
+        0.025077632834527464,
+        0.05471147650862984
+      ]
+    },
+    {
+      "pair": "astronomy-1",
+      "group": "astronomy",
+      "plain_id": "astronomy-1-plain",
+      "note_id": "astronomy-1-note",
+      "count": 2,
+      "mean_scores64": [
+        1.146164571524852,
+        0.31226891909100263,
+        -0.4002631437819205,
+        0.46296266913698797
+      ],
+      "note_minus_plain64": [
+        -0.13627567356131198,
+        0.04819681639680651,
+        0.11785700329487625,
+        0.0958509779376745
+      ]
+    },
+    {
+      "pair": "astronomy-2",
+      "group": "astronomy",
+      "plain_id": "astronomy-2-plain",
+      "note_id": "astronomy-2-note",
+      "count": 2,
+      "mean_scores64": [
+        0.18822959993069172,
+        0.30522927370565145,
+        -0.3802112912252308,
+        -0.22531550696363278
+      ],
+      "note_minus_plain64": [
+        -0.022121363571524832,
+        0.0009117974211148017,
+        -0.01250591883820995,
+        0.03545722106684268
+      ]
+    },
+    {
+      "pair": "astronomy-3",
+      "group": "astronomy",
+      "plain_id": "astronomy-3-plain",
+      "note_id": "astronomy-3-note",
+      "count": 2,
+      "mean_scores64": [
+        0.39786004622619997,
+        0.3394013744061642,
+        0.6472558123276242,
+        0.4031452245376519
+      ],
+      "note_minus_plain64": [
+        -0.006334557853477474,
+        0.032476605751050935,
+        -0.03562419819126106,
+        0.09399856188555278
+      ]
+    },
+    {
+      "pair": "cooking-0",
+      "group": "cooking",
+      "plain_id": "cooking-0-plain",
+      "note_id": "cooking-0-note",
+      "count": 2,
+      "mean_scores64": [
+        -0.3059764126999583,
+        -0.2171728593247968,
+        0.18029876013964807,
+        -0.21611955768415747
+      ],
+      "note_minus_plain64": [
+        0.024644485912104552,
+        0.06753979730657367,
+        -0.036736151344114454,
+        0.0376711268955332
+      ]
+    },
+    {
+      "pair": "cooking-1",
+      "group": "cooking",
+      "plain_id": "cooking-1-plain",
+      "note_id": "cooking-1-note",
+      "count": 2,
+      "mean_scores64": [
+        -0.7181638790773551,
+        -0.8193683989752757,
+        -0.6958258636074723,
+        0.5293583345309723
+      ],
+      "note_minus_plain64": [
+        -0.024633351742577858,
+        0.028771595289738272,
+        -0.08475446670427811,
+        0.03091082091469921
+      ]
+    },
+    {
+      "pair": "cooking-2",
+      "group": "cooking",
+      "plain_id": "cooking-2-plain",
+      "note_id": "cooking-2-note",
+      "count": 2,
+      "mean_scores64": [
+        -0.49143986366358106,
+        -0.2608365514155624,
+        0.14627590307995575,
+        -0.558166929089726
+      ],
+      "note_minus_plain64": [
+        0.014691927317012632,
+        0.046527783614539686,
+        -0.012456317431745134,
+        0.011942132690864193
+      ]
+    },
+    {
+      "pair": "cooking-3",
+      "group": "cooking",
+      "plain_id": "cooking-3-plain",
+      "note_id": "cooking-3-note",
+      "count": 2,
+      "mean_scores64": [
+        0.27202850027407693,
+        -0.43168727818199515,
+        -0.296783486735103,
+        -0.7532512436464444
+      ],
+      "note_minus_plain64": [
+        0.04143852701399475,
+        -0.021782266467841094,
+        0.001150268606546767,
+        0.01755736462127344
+      ]
+    },
+    {
+      "pair": "football-0",
+      "group": "football",
+      "plain_id": "football-0-plain",
+      "note_id": "football-0-note",
+      "count": 2,
+      "mean_scores64": [
+        -0.5905694095176655,
+        0.9198666566125885,
+        -0.17526509018452174,
+        0.18354190802402204
+      ],
+      "note_minus_plain64": [
+        -0.024157232686691787,
+        0.1249394881832484,
+        0.030783361256604636,
+        0.10780212594789448
+      ]
+    },
+    {
+      "pair": "football-1",
+      "group": "football",
+      "plain_id": "football-1-plain",
+      "note_id": "football-1-note",
+      "count": 2,
+      "mean_scores64": [
+        -0.5218921653262424,
+        0.30469277292502905,
+        -0.5575506878843264,
+        0.5505689675159304
+      ],
+      "note_minus_plain64": [
+        -0.007176493464677414,
+        0.03887633841685556,
+        0.049660042956688244,
+        0.07762139073662522
+      ]
+    },
+    {
+      "pair": "football-2",
+      "group": "football",
+      "plain_id": "football-2-plain",
+      "note_id": "football-2-note",
+      "count": 2,
+      "mean_scores64": [
+        -0.5023022822739345,
+        0.6684397442224329,
+        0.49287642926818875,
+        -0.41138709227333103
+      ],
+      "note_minus_plain64": [
+        0.04007409448812421,
+        -0.03312191536910536,
+        0.0523346157097091,
+        0.06456735953828097
+      ]
+    },
+    {
+      "pair": "football-3",
+      "group": "football",
+      "plain_id": "football-3-plain",
+      "note_id": "football-3-note",
+      "count": 2,
+      "mean_scores64": [
+        -0.29667139187965835,
+        0.4245916308049419,
+        -0.1138557522094531,
+        -0.2918666550900082
+      ],
+      "note_minus_plain64": [
+        -0.0022888425833618165,
+        0.04680113607455838,
+        0.06377562340182763,
+        0.07764740041279383
+      ]
+    },
+    {
+      "pair": "programming-0",
+      "group": "programming",
+      "plain_id": "programming-0-plain",
+      "note_id": "programming-0-note",
+      "count": 2,
+      "mean_scores64": [
+        -0.18701919357112545,
+        -0.3549528291127748,
+        0.20708965389167833,
+        0.12740897504039972
+      ],
+      "note_minus_plain64": [
+        -0.05946154438217943,
+        0.03830287877695504,
+        0.0665526073269831,
+        0.13265117287419145
+      ]
+    },
+    {
+      "pair": "programming-1",
+      "group": "programming",
+      "plain_id": "programming-1-plain",
+      "note_id": "programming-1-note",
+      "count": 2,
+      "mean_scores64": [
+        0.08323205343215849,
+        -0.6479897670283284,
+        0.38755430346345887,
+        0.07711784922414402
+      ],
+      "note_minus_plain64": [
+        -0.051111289350357685,
+        0.08941748449118014,
+        -0.07397152645145244,
+        0.08140391323413709
+      ]
+    },
+    {
+      "pair": "programming-2",
+      "group": "programming",
+      "plain_id": "programming-2-plain",
+      "note_id": "programming-2-note",
+      "count": 2,
+      "mean_scores64": [
+        0.07597609979062196,
+        -0.6621857051229413,
+        0.7162847426280936,
+        0.438081425029752
+      ],
+      "note_minus_plain64": [
+        -0.01085148493382293,
+        0.003338712129885124,
+        -0.08994251402293951,
+        0.053231348515851984
+      ]
+    },
+    {
+      "pair": "programming-3",
+      "group": "programming",
+      "plain_id": "programming-3-plain",
+      "note_id": "programming-3-note",
+      "count": 2,
+      "mean_scores64": [
+        0.8809995720371194,
+        -0.2513498735846311,
+        -0.4940168160372048,
+        -0.41409064614203506
+      ],
+      "note_minus_plain64": [
+        -0.03945050568906949,
+        0.035759214587453236,
+        0.03340674453703496,
+        0.07539917844117294
+      ]
+    }
+  ],
+  "scope": "All 32 fit rows only; F includes content-dependent framing effects, not a universal causal style effect."
+}

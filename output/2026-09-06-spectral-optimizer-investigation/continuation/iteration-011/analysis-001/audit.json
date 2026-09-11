@@ -1,0 +1,23 @@
+{
+  "schema": "i11_continuation_analysis_audit_v1",
+  "status": "pass",
+  "checks": 3096535,
+  "errors": [],
+  "warnings": [],
+  "hash_files_verified": 299,
+  "hash_bytes_streamed": 1347509219,
+  "complete_state_tree_digests_verified": 147,
+  "maximum_train_residual_identity_error": 0.0,
+  "maximum_leakage_energy_identity_error": 4.336808689942018e-19,
+  "coverage": {
+    "physical": 63,
+    "logical": 72,
+    "i10_final_states": 63,
+    "i9_parent_states": 21
+  },
+  "audit_limits": [
+    "Recorded finite evaluations were schema/identity checked, not replayed from MNIST/model forwards.",
+    "Per-step leakage was checked from saved scalar norm/outside-energy identities; vectors were not saved.",
+    "Raw/current diagnostic use of the original I9 basis is source/hash bound, not tensor-recomputed."
+  ]
+}

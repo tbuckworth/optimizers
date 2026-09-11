@@ -1,0 +1,170 @@
+{
+  "feature": "activation_11",
+  "fit_ids": [
+    "astronomy-0-plain",
+    "astronomy-0-note",
+    "astronomy-1-plain",
+    "astronomy-1-note",
+    "astronomy-2-plain",
+    "astronomy-2-note",
+    "astronomy-3-plain",
+    "astronomy-3-note",
+    "cooking-0-plain",
+    "cooking-0-note",
+    "cooking-1-plain",
+    "cooking-1-note",
+    "cooking-2-plain",
+    "cooking-2-note",
+    "cooking-3-plain",
+    "cooking-3-note",
+    "football-0-plain",
+    "football-0-note",
+    "football-1-plain",
+    "football-1-note",
+    "football-2-plain",
+    "football-2-note",
+    "football-3-plain",
+    "football-3-note",
+    "programming-0-plain",
+    "programming-0-note",
+    "programming-1-plain",
+    "programming-1-note",
+    "programming-2-plain",
+    "programming-2-note",
+    "programming-3-plain",
+    "programming-3-note"
+  ],
+  "pc_input_names": [
+    "PC1+",
+    "PC1-",
+    "PC2+",
+    "PC2-",
+    "PC3+",
+    "PC3-",
+    "PC4+",
+    "PC4-"
+  ],
+  "exemplar_input_ids": [
+    "astronomy-1-plain",
+    "cooking-1-note",
+    "cooking-1-plain",
+    "cooking-3-plain",
+    "football-0-note",
+    "football-1-note",
+    "programming-2-plain"
+  ],
+  "axes": [
+    {
+      "axis": "PC1",
+      "poles": {
+        "+": {
+          "id": "astronomy-1-plain",
+          "prefix": "The spacecraft photographed",
+          "pair": "astronomy-1",
+          "style": "plain",
+          "fit_score": 1.214302408305508
+        },
+        "-": {
+          "id": "cooking-1-note",
+          "prefix": "A brief factual note:\nThe baker kneaded",
+          "pair": "cooking-1",
+          "style": "note",
+          "fit_score": -0.7304805549486441
+        }
+      },
+      "same_content_extrema": false,
+      "same_row_extrema": false,
+      "fit_mean_score": -1.3877787807814457e-17,
+      "fit_score_std_ddof1": 0.5418735354293795,
+      "fit_score_min": -0.7304805549486441,
+      "fit_score_max": 1.214302408305508,
+      "u32_to_v64_l2": 2.5696433790213937e-08
+    },
+    {
+      "axis": "PC2",
+      "poles": {
+        "+": {
+          "id": "football-0-note",
+          "prefix": "A brief factual note:\nThe striker scored",
+          "pair": "football-0",
+          "style": "note",
+          "fit_score": 0.9823364007042127
+        },
+        "-": {
+          "id": "cooking-1-plain",
+          "prefix": "The baker kneaded",
+          "pair": "cooking-1",
+          "style": "plain",
+          "fit_score": -0.8337541966201448
+        }
+      },
+      "same_content_extrema": false,
+      "same_row_extrema": false,
+      "fit_mean_score": -3.469446951953614e-18,
+      "fit_score_std_ddof1": 0.5106066025261196,
+      "fit_score_min": -0.8337541966201448,
+      "fit_score_max": 0.9823364007042127,
+      "u32_to_v64_l2": 2.31499781809604e-08
+    },
+    {
+      "axis": "PC3",
+      "poles": {
+        "+": {
+          "id": "programming-2-plain",
+          "prefix": "The developer tested",
+          "pair": "programming-2",
+          "style": "plain",
+          "fit_score": 0.7612559996395634
+        },
+        "-": {
+          "id": "cooking-1-note",
+          "prefix": "A brief factual note:\nThe baker kneaded",
+          "pair": "cooking-1",
+          "style": "note",
+          "fit_score": -0.7382030969596114
+        }
+      },
+      "same_content_extrema": false,
+      "same_row_extrema": false,
+      "fit_mean_score": 3.469446951953614e-17,
+      "fit_score_std_ddof1": 0.44169902322640947,
+      "fit_score_min": -0.7382030969596114,
+      "fit_score_max": 0.7612559996395634,
+      "u32_to_v64_l2": 2.405541057740143e-08
+    },
+    {
+      "axis": "PC4",
+      "poles": {
+        "+": {
+          "id": "football-1-note",
+          "prefix": "A brief factual note:\nThe goalkeeper blocked",
+          "pair": "football-1",
+          "style": "note",
+          "fit_score": 0.589379662884243
+        },
+        "-": {
+          "id": "cooking-3-plain",
+          "prefix": "The recipe combined",
+          "pair": "cooking-3",
+          "style": "plain",
+          "fit_score": -0.7620299259570811
+        }
+      },
+      "same_content_extrema": false,
+      "same_row_extrema": false,
+      "fit_mean_score": 0.0,
+      "fit_score_std_ddof1": 0.41280526188276656,
+      "fit_score_min": -0.7620299259570811,
+      "fit_score_max": 0.589379662884243,
+      "u32_to_v64_l2": 2.624059405529956e-08
+    }
+  ],
+  "fit_rows": 32,
+  "fit_content_pairs": 16,
+  "direction_recipe": "normalize saved V64 columns in float64, then cast float32",
+  "score_recipe": "(h.astype(float64)-source_mean64) @ u32.astype(float64)",
+  "individual_recipe": "normalize selected raw h in float64, then cast float32; never -h",
+  "selection": "fit max/min only; lexical ID tie-break; repetitions retained",
+  "old_analysis_scores_used": false,
+  "heldout_scores_computed": false
+}
